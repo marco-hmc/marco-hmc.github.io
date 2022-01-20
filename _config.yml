@@ -2,7 +2,7 @@ title:              Marco's bughome
 email:              marco_hmc@163.com
 description:        Knowledge is for sharing!
 author:             Marco Huang
-baseurl:            "/startbootstrap-clean-blog-jekyll"
+baseurl:            ""
 url:                "https://marco_hmc.github.io"
 
 # Social Profiles
