@@ -6,11 +6,11 @@ baseurl:            ""
 url:                "https://marco_hmc.github.io"
 
 # Social Profiles
-twitter_username:   wait
-github_username:    wait
-facebook_username:  wait
-instagram_username:  
-linkedin_username:
+# twitter_username:   wait
+github_username:    marco-hmc
+# facebook_username:  wait
+# instagram_username:  
+linkedin_username: 茂春-黄-02bb571a6
 
 # Add your google-analytics ID here to activate google analytics
 google_analytics:   UA-XXXXXXXXX-X # out your google-analytics code
