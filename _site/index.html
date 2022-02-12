@@ -1,283 +1,761 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="知所求 求所得 得所愿 愿长久">
+    <meta name="keywords" content="黄茂春, Marco黄茂春, Marco, 夏虫, Marco夏虫, 黄茂春的博客, Marco's Blog, 博客, 个人网站, 互联网, C++, 后台, 开发">
+    <meta name="theme-color" content="#000000">
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Open Graph -->
+    <meta property="og:title"
+        content="黄茂春的博客 | Marco's Blog | 夏虫">
+    
+    <meta property="og:type" content="website">
+    <meta property="og:description"
+        content="Knowledge is for sharing">
+    
+    <meta property="og:image" content="http://localhost:4000https://github.com/Huxpro.png">
+    <meta property="og:url" content="http://localhost:4000/">
+    <meta property="og:site_name" content="黄茂春的博客 | Marco's Blog | 夏虫">
 
-  <title>
-    Marco&#39;s bughome
-  </title>
+    <title>黄茂春的博客 | Marco's Blog | 夏虫</title>
 
-  <meta name="description" content="Knowledge is for sharing!">
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
 
-  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
 
-  <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" crossorigin="anonymous"></script>
+    <!-- Canonical URL -->
+    <link rel="canonical" href="http://localhost:4000/">
 
-  <link rel="stylesheet" href="/assets/main.css">
-  <link rel="canonical" href="http://localhost:4000/">
-  <link rel="alternate" type="application/rss+xml" title="Marco&#39;s bughome" href="/feed.xml">
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href=" /css/bootstrap.min.css">
 
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href=" /css/hux-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- Google AdSense -->
+    <script data-ad-client="ca-pub-6487568398225121" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
 
 
-<body>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
 
-  <!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
-  <div class="container">
-    <a class="navbar-brand" href="/">Marco&#39;s bughome</a>
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-      Menu
-      <i class="fa fa-bars"></i>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarResponsive">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="/">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/about">About</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/posts">Posts</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/contact">Contact</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
+    <!-- Navigation -->
 
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Marco's bughome</a>
+            </div>
 
-  <!-- Page Header -->
-
-<header class="masthead" style="background-image: url('/img/bg-index.jpg')">
-  
-    <div class="overlay"></div>
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
-          <div class="page-heading">
-            <h1>Marco's bughome</h1>
-            
-            <span class="subheading">Knowledge is for sharing!</span>
-            
-          </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="/archive/">Archive</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
         </div>
+        <!-- /.container -->
+    </nav>
+
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
+    <!-- Search -->
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
       </div>
     </div>
-  </header>
+  </div>
+</div>
 
+    <!-- Page Header -->
+
+
+
+
+
+
+
+<header class="intro-header" style="background-image: url('/img/bg-index.jpg')">
   <div class="container">
     <div class="row">
-      <div class="col-lg-8 col-md-10 mx-auto">
-
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         
-
-        <!-- Home Post List -->
+        <div class="site-heading">
         
-
-        <article class="post-preview">
-          <a href="/2022/02/06/linux%E7%94%A8c%E5%AE%9E%E7%8E%B0%E8%81%8A%E5%A4%A9%E5%AE%A4.html">
-            <h2 class="post-title">linux用c实现聊天室</h2>
-            
-            <h3 class="post-subtitle">简易版本</h3>
-            
-          </a>
-          <p class="post-meta">Posted by
-            
-            Marco Huang
-            
-            on
-            February 06, 2022 &middot; <span class="reading-time" title="Estimated read time">
-  
-   18 mins  read </span>
-            
-          </p>
-        </article>
-
-        <hr>
-
-        
-
-        <article class="post-preview">
-          <a href="/2022/02/06/bugs&designPriciple.html">
-            <h2 class="post-title">bugs&designPriciple</h2>
-            
-            <h3 class="post-subtitle">EnglishWriting</h3>
-            
-          </a>
-          <p class="post-meta">Posted by
-            
-            Marco Huang
-            
-            on
-            February 06, 2022 &middot; <span class="reading-time" title="Estimated read time">
-  
-   18 mins  read </span>
-            
-          </p>
-        </article>
-
-        <hr>
-
-        
-
-        <article class="post-preview">
-          <a href="/2022/02/06/.html">
-            <h2 class="post-title"></h2>
-            
-            <h3 class="post-subtitle"></h3>
-            
-          </a>
-          <p class="post-meta">Posted by
-            
-            Marco Huang
-            
-            on
-            February 06, 2022 &middot; <span class="reading-time" title="Estimated read time">
-  
-   1 min  read </span>
-            
-          </p>
-        </article>
-
-        <hr>
-
-        
-
-        <article class="post-preview">
-          <a href="/2022/02/05/%E6%A0%A1%E6%8B%9B%E6%97%B6%E9%97%B4%E8%8A%82%E7%82%B9.html">
-            <h2 class="post-title">校招时间节点</h2>
-            
-            <h3 class="post-subtitle">找工作前必须看的时间节点</h3>
-            
-          </a>
-          <p class="post-meta">Posted by
-            
-            Marco Huang
-            
-            on
-            February 05, 2022 &middot; <span class="reading-time" title="Estimated read time">
-  
-   17 mins  read </span>
-            
-          </p>
-        </article>
-
-        <hr>
-
-        
-
-        <article class="post-preview">
-          <a href="/2022/02/05/%E5%B8%B8%E8%A7%81%E6%A6%82%E5%BF%B5%E5%8C%BA%E5%88%86.html">
-            <h2 class="post-title">常见概念区分</h2>
-            
-            <h3 class="post-subtitle">你需要知道的术语解释</h3>
-            
-          </a>
-          <p class="post-meta">Posted by
-            
-            Marco Huang
-            
-            on
-            February 05, 2022 &middot; <span class="reading-time" title="Estimated read time">
-  
-   18 mins  read </span>
-            
-          </p>
-        </article>
-
-        <hr>
-
-        
-
-        <!-- Pager -->
-        <div class="clearfix">
-          <a class="btn btn-primary float-right" href="/posts">View All Posts &rarr;</a>
+          <h1>Marco's bughome</h1>
+          <span class="subheading">Knowledge is for sharing</span>
         </div>
-
       </div>
     </div>
   </div>
+</header>
 
 
-  <!-- Footer -->
-
+<!-- Main Content -->
+<div class="container">
+  <div class="row">
+    
+    <!-- NO SIDEBAR -->
+    <!-- PostList Container -->
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1
+      postlist-container">
+      
+<div class="post-preview">
+    <a href="/2022/02/11/cpp%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
+        <h2 class="post-title">
+            cpp设计模式
+        </h2>
+        
+        <h3 class="post-subtitle">
+            轻松学会设计模式
+        </h3>
+        
+        <div class="post-content-preview">
+            
+                     cpp设计模式   cpp设计模式-入门marcocpp设计模式-入门1. UML类图和时序图1.1 uml类图初认识1.2 uml中类的关系1.2.1 泛化关系1.2.2 实现关系1.2.3 聚合关系1.2.4 组合关系1.2.5 关联关系1.2.6 依赖关系1.3 时序图2. 创建型模式2.1 工厂模式2.1.1 相关概念2.1.2 实际例子2.1.3 总结2.2 单例模式2....
+            
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Marco's bughome on February 11, 2022
+    </p>
+</div>
 <hr>
 
-<footer>
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 col-md-10 mx-auto">
-        <ul class="list-inline text-center">
-          
-          <li class="list-inline-item">
-            <a href="mailto:marco_hmc@163.com">
-              <span class="fa-stack fa-lg">
-                <i class="fas fa-circle fa-stack-2x"></i>
-                <i class="far fa-envelope fa-stack-1x fa-inverse"></i>
-              </span>
-            </a>
-          </li>
-          
-          
-          
-          
-          <li class="list-inline-item">
-            <a href="https://www.linkedin.com/in/茂春-黄-02bb571a6">
-              <span class="fa-stack fa-lg">
-                <i class="fas fa-circle fa-stack-2x"></i>
-                <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
-              </span>
-            </a>
-          </li>
-          
-          
-          <li class="list-inline-item">
-            <a href="https://github.com/marco-hmc">
-              <span class="fa-stack fa-lg">
-                <i class="fas fa-circle fa-stack-2x"></i>
-                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
-              </span>
-            </a>
-          </li>
-          
-          
-        </ul>
-        <p class="copyright text-muted">Copyright &copy; Marco Huang 2022</p>
-      </div>
+<div class="post-preview">
+    <a href="/2022/02/07/bugs&principle/">
+        <h2 class="post-title">
+            bugs&principle
+        </h2>
+        
+        <div class="post-content-preview">
+            
+                     bugs&principle   bugs and design principleMarco&nbsp;It&#39;s true that people tend to search in Internet when they face some unknown bug, which is more convenient and fast.But I would like to...
+            
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Marco's bughome on February 7, 2022
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2022/02/06/linux%E7%94%A8c%E5%AE%9E%E7%8E%B0%E8%81%8A%E5%A4%A9%E5%AE%A4/">
+        <h2 class="post-title">
+            linux用c实现聊天室
+        </h2>
+        
+        <h3 class="post-subtitle">
+            简易版本
+        </h3>
+        
+        <div class="post-content-preview">
+            
+                     linux用c实现聊天室   chatRoomMarcochatRoom1. demo12. demo2本次项目并未有功能、或者设计上的突破，纯属造轮子。但很喜欢网上一句话，I don&#39;t understand if I can not write it.。因此也就有了这篇博文。完整做完实验，你可以有如下收获。一是用于巩固socket通信的用法；二是尝试使用简易的sql服务...
+            
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Marco's bughome on February 6, 2022
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2022/02/05/%E6%A0%A1%E6%8B%9B%E6%97%B6%E9%97%B4%E8%8A%82%E7%82%B9/">
+        <h2 class="post-title">
+            校招时间节点
+        </h2>
+        
+        <h3 class="post-subtitle">
+            找工作前必须看的时间节点
+        </h3>
+        
+        <div class="post-content-preview">
+            
+                     校招时间节点   面试时间marco面试时间1. 日常实习2. 暑期实习3. 秋招4. 春招如果说校招是笼统地理解为校园招聘，那按照性质以及时间可以作如下区分。暑期实习招聘、日常实习、秋招、秋招补录、春招、春招补录。&nbsp;1. 日常实习大部分日常实习是没有转正名额的，但是招聘条件较为宽松，以及不卡实习生毕业年限。适合研一、大二等课程比较轻松的学生。&nbsp;2. 暑期实习面...
+            
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Marco's bughome on February 5, 2022
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2022/02/05/%E5%B8%B8%E8%A7%81%E6%A6%82%E5%BF%B5%E5%8C%BA%E5%88%86/">
+        <h2 class="post-title">
+            常见概念区分
+        </h2>
+        
+        <h3 class="post-subtitle">
+            你需要知道的术语解释
+        </h3>
+        
+        <div class="post-content-preview">
+            
+                     常见概念区分   常见概念区分Marco常见概念区分1. 库、框架、架构的区别2. 设计模式-MVC3. 进程控制块PCB4. 文件描述符和句柄​ 因为互联网的野蛮快速发展，有时候缺乏统一的权威去明确各个概念的定义。很多时候，同一个名词在不同领域都使用，却略有不同；除此，还有些是因为翻译导致的。而我们分清概念的目的，是为了便于彼此沟通，不是成为老学究。有些概念不好区分，就在实践中思...
+            
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Marco's bughome on February 5, 2022
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2022/01/27/cmake%E7%AC%94%E8%AE%B0/">
+        <h2 class="post-title">
+            cmake笔记
+        </h2>
+        
+        <h3 class="post-subtitle">
+            cmake是你比make和gcc更需要掌握的
+        </h3>
+        
+        <div class="post-content-preview">
+            
+                     cmake笔记   cmake笔记cmake笔记1. Getting started推荐资料为cmake-example。原文质量实在太好，本来打算记录消化，随后却成了翻译的工作。这里建议直接学习其内容。希望有后来者看到make、gcc等教程时，可以顺便知道有一个这么好的cmake教程。1. Getting started什么是make工具，以及什么是CMake？不同的平台其mak...
+            
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Marco's bughome on January 27, 2022
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2022/01/26/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E5%88%86%E7%B1%BB/">
+        <h2 class="post-title">
+            编程语言分类
+        </h2>
+        
+        <h3 class="post-subtitle">
+            术语
+        </h3>
+        
+        <div class="post-content-preview">
+            
+                     编程语言分类   编程语言分类编程语言分类1. 按代际分类2. 按编译方式分类3. 按照数据类型4. 按照程序设计4. 其他分类笔者常常看见很多关于编程语言的术语，见得多了，虽说大概能猜测出一二。但还是觉得不妥，于是乎便整理如下。1. 按代际分类第一代：机器语言 cpu指令集 0,1组成第二代：汇编语言 第三代：高级语言 java/c/c++第四代：应用语言 sql2. 按编译方式...
+            
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Marco's bughome on January 26, 2022
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2022/01/26/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E4%B8%8E%E7%A1%AC%E4%BB%B6/">
+        <h2 class="post-title">
+            计算机组成与硬件
+        </h2>
+        
+        <h3 class="post-subtitle">
+            未完
+        </h3>
+        
+        <div class="post-content-preview">
+            
+                     计算机组成与硬件   计算机组成与硬件marco计算机组成与硬件1. CPU工作原理1.1 CPU cache附录什么是数据交换格式？&nbsp;1. CPU工作原理CPU从功能上可以分为三个模块，分别是控制单元、运算单元以及存储单元。控制单元 控制单元是整个CPU的指挥控制中心，由指令寄存器IR（Instruction Register）、指令译码器ID（Instruction ...
+            
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Marco's bughome on January 26, 2022
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2022/01/26/gcc%E7%AC%94%E8%AE%B0/">
+        <h2 class="post-title">
+            gcc笔记
+        </h2>
+        
+        <h3 class="post-subtitle">
+            入门-配仓库
+        </h3>
+        
+        <div class="post-content-preview">
+            
+                     gcc笔记   gcc笔记gcc笔记1. Getting started2. Examples2.1 Demo0 - 编译器完整流程2.2 Demo1 - 单文件2.3 Demo2 - 生成静态链接库2.3 Demo3 - 调用静态库2.4 Demo4 - 生成动态链接库2.5 Demo5 - 调用动态库3. Conclusion对应的仓库。 如果觉得对你有用，请给个star，让我...
+            
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Marco's bughome on January 26, 2022
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2022/01/26/%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B%E4%B8%8E%E5%8E%9F%E7%90%86/">
+        <h2 class="post-title">
+            编译过程与原理
+        </h2>
+        
+        <h3 class="post-subtitle">
+            入门
+        </h3>
+        
+        <div class="post-content-preview">
+            
+                     编译过程与原理   编译过程与原理编译过程与原理1. 编译过程 - 编译器在做什么？1.1 预处理1.2 编译1.3 汇编1.4 链接2. 编译原理 - 编译器是如何实现的？3. Conclusion附录1. 编译过程 - 编译器在做什么？如果想要机器按照我们的设想执行我们的命令，我们需要一个能够跟机器沟通的方式，而这种方式也就是==机器语言(第一代计算机语言)==，一堆01构成的...
+            
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Marco's bughome on January 26, 2022
+    </p>
+</div>
+<hr>
+
+
+<!-- Pager -->
+
+<ul class="pager">
+    
+    
+    <li class="next">
+        <a href="/page2">Older Posts &rarr;</a>
+    </li>
+    
+</ul>
+
+
     </div>
+    <!-- Sidebar Container -->
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1
+      sidebar-container">
+      <!-- Featured Tags -->
+      
+
+
+
+      <!-- Friends Blog -->
+      
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+  <li><a href="https://yanhaoy.github.io/">yanghao yang</a></li>
+  
+</ul>
+
+    </div>
+    
   </div>
+</div>
+
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/marco_hmc">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.linkedin.com/in/茂春-黄-02bb571a6">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Marco's bughome 2022
+                    <br>
+                    Powered by <a href="https://github.com/marco-hmc/marco-hmc.github.io">Marco's Blog</a> |
+                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"
+                        height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true">
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
 </footer>
 
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
 
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/assets/vendor/startbootstrap-clean-blog/js/scripts.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
 
-<script src="/assets/scripts.js"></script>
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/js/simple-jekyll-search.min.js"></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
 
 
-
-
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXXX-X"></script>
+<!-- async load function -->
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
 
-  gtag('config', 'UA-XXXXXXXXX-X');
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
 </script>
 
 
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-49627206-1';
+    var _gaDomain = 'huangxuan.me';
+
+    // Originial
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+<!-- Simple Jekyll Search -->
+<script>
+    // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+    function htmlDecode(input) {
+        var e = document.createElement('textarea');
+        e.innerHTML = input;
+        // handle case of empty input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('search-results'),
+        json: '/search.json',
+        searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+        noResultsText: 'No results',
+        limit: 50,
+        fuzzy: false,
+        // a hack to get escaped subtitle unescaped. for some reason, 
+        // post.subtitle w/o escape filter nuke entire search.
+        templateMiddleware: function (prop, value, template) {
+            if (prop === 'subtitle' || prop === 'title') {
+                if (value.indexOf("code")) {
+                    return htmlDecode(value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var $searchPage = $('.search-page');
+        var $searchOpen = $('.search-icon');
+        var $searchClose = $('.search-icon-close');
+        var $searchInput = $('#search-input');
+        var $body = $('body');
+
+        $searchOpen.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.toggleClass('search-active');
+            var prevClasses = $body.attr('class') || '';
+            setTimeout(function () {
+                $body.addClass('no-scroll');
+            }, 400)
+
+            if ($searchPage.hasClass('search-active')) {
+                $searchClose.on('click', function (e) {
+                    e.preventDefault();
+                    $searchPage.removeClass('search-active');
+                    $body.attr('class', prevClasses);  // from closure 
+                });
+                $searchInput.focus();
+            }
+        });
+    });
+</script>
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
 
 </body>
 

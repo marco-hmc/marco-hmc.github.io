@@ -1,18 +1,23 @@
 ---
 layout: page
-title: About Me
-description: This is what I do.
-background: '/img/bg-about.jpg'
+title: "About"
+description: "This is Marco"
+header-img: "img/about-bg.jpg"
+multilingual: true
 ---
 
-<p></p>
+{% include multilingual-sel.html %}
 
-<p>This is Marco, I' am doing a master's degree at South China University of Technology (SCUT). </p>
+<!-- Chinese Version -->
+<div class="zh post-container">
+    {% capture about_zh %}{% include about/zh.md %}{% endcapture %}
+    {{ about_zh | markdownify }}
+</div>
 
-<p>Knowing something about deep learning, python, c/c++, Linux. Determining to let the Internet bring everyone closer, and let the Internet make it less difficult to acquire knowledge.</p>
+<!-- English Version -->
+<div class="en post-container">
+    {% capture about_en %}{% include about/en.md %}{% endcapture %}
+    {{ about_en | markdownify }}
+</div>
 
-<p>I will share my knowledge of techs, some of them may just reading notes and I will put the link in the first few rows. I may also share some of my life experiences here.</p>
-
-
-<p>Sincerely hope that those who visit this blog can get something useful. </p>
 

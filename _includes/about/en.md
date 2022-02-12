@@ -1,0 +1,7 @@
+This is Marco, I' am doing a master's degree at South China University of Technology (SCUT).
+
+Knowing something about deep learning, python, c/c++, Linux. Determining to let the Internet bring everyone closer, and let the Internet make it less difficult to acquire knowledge.
+
+I will share my knowledge of techs, some of them may just reading notes and I will put the link in the first few rows. I may also share some of my life experiences here.
+
+Sincerely hope that those who visit this blog can get something useful.
