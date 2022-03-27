@@ -12,17 +12,26 @@
 
     <!-- Open Graph -->
     <meta property="og:title"
-        content="Archive - 黄茂春的博客 | Marco's Blog | 夏虫">
+        content="C++中的lambda - 黄茂春的博客 | Marco's Blog | 夏虫">
     
-    <meta property="og:type" content="website">
-    <meta property="og:description"
-        content="List of my posts">
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="C++中的lambda函数
+">
+    
+    <meta property="article:published_time" content=" 2022-03-23T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Marco">
+    
+    
+    <meta property="article:tag" content="c++">
+    
     
     <meta property="og:image" content="http://localhost:4000https://github.com/Huxpro.png">
-    <meta property="og:url" content="http://localhost:4000/archive/">
+    <meta property="og:url" content="http://localhost:4000/2022/03/23/lambda%E5%87%BD%E6%95%B0/">
     <meta property="og:site_name" content="黄茂春的博客 | Marco's Blog | 夏虫">
 
-    <title>Archive - 黄茂春的博客 | Marco's Blog | 夏虫</title>
+    <title>C++中的lambda - 黄茂春的博客 | Marco's Blog | 夏虫</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -31,7 +40,7 @@
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <!-- Canonical URL -->
-    <link rel="canonical" href="http://localhost:4000/archive/">
+    <link rel="canonical" href="http://localhost:4000/2022/03/23/lambda%E5%87%BD%E6%95%B0/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href=" /css/bootstrap.min.css">
@@ -67,8 +76,8 @@
 
     <!-- Navigation -->
 
-    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
-        
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top invert">
+    
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header page-scroll">
@@ -195,164 +204,283 @@
   </div>
 </div>
 
-    <!-- 
-Credits: this page shamelessly borrowed a lot from:
-https://github.com/kitian616/jekyll-TeXt-theme
--->
-<!-- Page Header -->
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/bg-index.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
 
 
 
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/bg-index.jpg');
+        background: ;
+    }
 
+    
+</style>
 
+<header class="intro-header style-text" >
 
-
-<header class="intro-header" style="background-image: url('/img/tag-bg.jpg')">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        
-        <div class="site-heading" id="tag-heading">
-        
-          <h1>Archive</h1>
-          <span class="subheading">List of my posts</span>
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=c%2B%2B" title="c++">c++</a>
+                        
+                    </div>
+                    <h1>C++中的lambda</h1>
+                    
+                    <h2 class="subheading"></h2>
+                    <span class="meta">Posted by Marco on March 23, 2022</span>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </header>
 
 
-<!-- Main Content -->
-<div class="container">
-	<div class="row">
-		<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-			<!-- Tags (as filter) -->
-			<div id='tag_cloud' class="tags tags-sup js-tags">
-				<a class="tag-button--all" data-encode="">
-					Show All
-					<sup>9</sup>
-				</a>
 
-				
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<h2 id="c中的lambda函数">C++中的lambda函数</h2>
+
+<p>​	c++11引入了lambda函数，也叫匿名函数。下面来介绍一下什么是lambda函数。</p>
+
+<h3 id="1-基本概念">1. 基本概念</h3>
+
+<ul>
+  <li>
+    <p><strong><em>什么是lambda函数？</em></strong></p>
+
+    <p>​	一种简单的无需定义标识符即函数名的函数或者子程序。一般来说lambda函数的形式如下。</p>
+
+    <p><code class="language-plaintext highlighter-rouge">[CAPTURE](PARAMETERS)-&gt;RETURN_TYPE{FUNCTION_BODY}</code></p>
+
+    <p>​	下面给几个实际例子。</p>
+
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="p">[](</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">;</span> <span class="p">}</span> <span class="c1">// 隐式返回类型</span>
+<span class="p">[](</span><span class="kt">int</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="o">++</span><span class="n">x</span><span class="p">;</span> <span class="p">}</span>   <span class="c1">// 没有return语句 -&gt; lambda 函数的返回类型是'void'</span>
+<span class="p">[]()</span> <span class="p">{</span> <span class="o">++</span><span class="n">global_x</span><span class="p">;</span> <span class="p">}</span>  <span class="c1">// 没有参数,仅访问某个全局变量</span>
+<span class="p">[]{</span> <span class="o">++</span><span class="n">global_x</span><span class="p">;</span> <span class="p">}</span>     <span class="c1">// 与上一个相同,省略了()</span>
+  
+<span class="p">[](</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="p">{</span> <span class="kt">int</span> <span class="n">z</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">;</span> <span class="k">return</span> <span class="n">z</span><span class="p">;</span> <span class="p">}</span>
+  
+</pre></td></tr></tbody></table></code></pre></div>    </div>
+
+    <p>​	其中<code class="language-plaintext highlighter-rouge">PARAMETERS</code>， <code class="language-plaintext highlighter-rouge">RETURN_TYPE</code>，以及<code class="language-plaintext highlighter-rouge">FUNCTION_BODY</code>都是很好理解。唯一让人搞不清为什么的是[CAPTURE]。</p>
+  </li>
+  <li>
+    <p><strong><em><code class="language-plaintext highlighter-rouge">[CAPTURE]</code>是什么</em></strong></p>
+
+    <p>​	<code class="language-plaintext highlighter-rouge">[CAPTURE]</code>可以声明如何处理在他之外声明的变量，这些变量的集合也叫做一个闭包。</p>
+
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="p">[]</span>        <span class="c1">//未定义变量.试图在Lambda内使用任何外部变量都是错误的.</span>
+<span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">y</span><span class="p">]</span>   <span class="c1">//x 按值捕获, y 按引用捕获.</span>
+<span class="p">[</span><span class="o">&amp;</span><span class="p">]</span>       <span class="c1">//用到的任何外部变量都隐式按引用捕获</span>
+<span class="p">[</span><span class="o">=</span><span class="p">]</span>       <span class="c1">//用到的任何外部变量都隐式按值捕获</span>
+<span class="p">[</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span>    <span class="c1">//x显式地按值捕获. 其它变量按引用捕获</span>
+<span class="p">[</span><span class="o">=</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">z</span><span class="p">]</span>   <span class="c1">//z按引用捕获. 其它变量按值捕获</span>
+</pre></td></tr></tbody></table></code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong><em>匿名函数有什么用？</em></strong></p>
+
+    <p>​	很多时候我们需要将一个函数作为参数传入另一个函数，lambda函数则是一个语法糖，能够不用去想函数名字，使得代码更简单，使得函数定义与函数实际使用距离近，便于阅读。特别是函数只用一次的情况下，而且函数代码量不长，使用lambda函数会使得代码看上去更简洁。</p>
+  </li>
+</ul>
+
+<h3 id="2-代码实战">2. 代码实战</h3>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">some_list</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">5</span><span class="p">;</span><span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="n">some_list</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">for_each</span><span class="p">(</span><span class="n">begin</span><span class="p">(</span><span class="n">some_list</span><span class="p">),</span> <span class="n">end</span><span class="p">(</span><span class="n">some_list</span><span class="p">),</span> <span class="p">[</span><span class="o">&amp;</span><span class="n">total</span><span class="p">](</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> 
+<span class="p">{</span>
+    <span class="n">total</span> <span class="o">+=</span> <span class="n">x</span><span class="p">;</span>
+<span class="p">});</span>
+<span class="c1">//此例计算list中所有元素的总和. </span>
+<span class="c1">//变量total被存为lambda函数闭包的一部分. 因为它是栈变量(局部变量)total的引用,所以可以改变它的值.  </span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">some_list</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">value</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">for_each</span><span class="p">(</span><span class="n">begin</span><span class="p">(</span><span class="n">some_list</span><span class="p">),</span> <span class="n">end</span><span class="p">(</span><span class="n">some_list</span><span class="p">),</span> <span class="p">[</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="k">this</span><span class="p">](</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> 
+  <span class="p">{</span>
+    <span class="n">total</span> <span class="o">+=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">value</span> <span class="o">*</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">some_func</span><span class="p">();</span>
+  <span class="p">});</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="附录">附录</h3>
+
+<ol>
+  <li><a href="https://www.cnblogs.com/pzhfei/archive/2013/01/14/lambda_expression.html">C++11中的匿名函数(lambda函数,lambda表达式)</a></li>
+  <li></li>
+</ol>
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2022/03/23/c++%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" data-toggle="tooltip" data-placement="top" title="C++中的智能指针">
+                        Previous<br>
+                        <span>C++中的智能指针</span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2022/03/23/%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%E4%B8%8E%E7%A7%BB%E5%8A%A8%E8%AF%AD%E4%B9%89/" data-toggle="tooltip" data-placement="top" title="C++中的右值引用与移动语义">
+                        Next<br>
+                        <span>C++中的右值引用与移动语义</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+            </div>  
+
+    <!-- Side Catalog Container -->
         
-				
-				
-				
-				<a data-sort="0005"
-					data-encode="%E6%95%B0%E6%8D%AE%E5%BA%93"
-					class="tag-button"
-					title="数据库" rel="4">
-					数据库
-					<sup>4</sup>
-				</a>
-				
-				<a data-sort="0006"
-					data-encode="c%2B%2B"
-					class="tag-button"
-					title="c++" rel="3">
-					c++
-					<sup>3</sup>
-				</a>
-				
-				<a data-sort="0007"
-					data-encode="%E6%8C%87%E9%92%88"
-					class="tag-button"
-					title="指针" rel="2">
-					指针
-					<sup>2</sup>
-				</a>
-			</div>
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
 
-            <!-- Article List -->
-			<div class="mini-post-list js-result d-none"><section>
-				<span class="fa listing-seperator">
-					<span class="tag-text">2022</span>
-				</span><div class="post-preview item" data-tags="">
-				    <a href="/2022/03/23/%E4%BC%81%E4%B8%9A%E9%82%AE%E7%AE%B1%E6%9C%8D%E5%8A%A1%E5%99%A8/">
-				        <h2 class="post-title">
-                            企业邮箱服务器
-				        </h2>
-				        
-				        <h3 class="post-subtitle">
-				            简单综述性质的调查
-				        </h3>
-				        
-				    </a>
-					<hr>
-				</div><div class="post-preview item" data-tags="">
-				    <a href="/2022/03/23/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%A4%E8%AF%86/">
-				        <h2 class="post-title">
-                            数据库认识
-				        </h2>
-				        
-				        <h3 class="post-subtitle">
-				            入门须知
-				        </h3>
-				        
-				    </a>
-					<hr>
-				</div><div class="post-preview item" data-tags="%E6%95%B0%E6%8D%AE%E5%BA%93">
-				    <a href="/2022/03/23/1_MySQL%E4%BA%8B%E5%8A%A1/">
-				        <h2 class="post-title">
-                            MySQL中的事务
-				        </h2>
-				        
-				    </a>
-					<hr>
-				</div><div class="post-preview item" data-tags="%E6%95%B0%E6%8D%AE%E5%BA%93">
-				    <a href="/2022/03/23/2_MySQL%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/">
-				        <h2 class="post-title">
-                            MySQL隔离级别
-				        </h2>
-				        
-				    </a>
-					<hr>
-				</div><div class="post-preview item" data-tags="%E6%95%B0%E6%8D%AE%E5%BA%93">
-				    <a href="/2022/03/23/3_MySQL%E9%94%81/">
-				        <h2 class="post-title">
-                            MySQL隔离级别
-				        </h2>
-				        
-				    </a>
-					<hr>
-				</div><div class="post-preview item" data-tags="%E6%95%B0%E6%8D%AE%E5%BA%93">
-				    <a href="/2022/03/23/4_MySQL%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6/">
-				        <h2 class="post-title">
-                            MySQL并发控制
-				        </h2>
-				        
-				    </a>
-					<hr>
-				</div><div class="post-preview item" data-tags="c%2B%2B,%E6%8C%87%E9%92%88">
-				    <a href="/2022/03/23/c++%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/">
-				        <h2 class="post-title">
-                            C++中的智能指针
-				        </h2>
-				        
-				    </a>
-					<hr>
-				</div><div class="post-preview item" data-tags="c%2B%2B">
-				    <a href="/2022/03/23/lambda%E5%87%BD%E6%95%B0/">
-				        <h2 class="post-title">
-                            C++中的lambda
-				        </h2>
-				        
-				    </a>
-					<hr>
-				</div><div class="post-preview item" data-tags="c%2B%2B,%E6%8C%87%E9%92%88">
-				    <a href="/2022/03/23/%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%E4%B8%8E%E7%A7%BB%E5%8A%A8%E8%AF%AD%E4%B9%89/">
-				        <h2 class="post-title">
-                            C++中的右值引用与移动语义
-				        </h2>
-				        
-				    </a>
-					<hr>
-				</div></section>
-			</div>
-		</div>
-	</div>
-</div>
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+
+                <!-- Friends Blog -->
+                
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+  <li><a href="https://yanhaoy.github.io/">yanghao yang</a></li>
+  
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
 
 
     <!-- Footer -->
@@ -462,18 +590,6 @@ https://github.com/kitian616/jekyll-TeXt-theme
 
 
 
-
-<!-- jquery.tagcloud.js -->
-<script>
-    async('/js/jquery.tagcloud.js', function () {
-        $.fn.tagcloud.defaults = {
-            //size: {start: 1, end: 1, unit: 'em'},
-            color: { start: '#bbbbee', end: '#2f93b4' },
-        };
-        $('#tag_cloud a').tagcloud();
-    })
-</script>
-<script src='/js/archive.js '></script>
 
 
 <!--fastClick.js -->

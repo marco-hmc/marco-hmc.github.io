@@ -1,0 +1,22 @@
+I"h<h2 id="mysql中的mvcc机制">MySQL中的MVCC机制</h2>
+
+<h3 id="1-基本概念">1. 基本概念</h3>
+
+<ul>
+  <li>
+    <p><strong><em>什么是mvcc机制？</em></strong></p>
+
+    <p>​	MVCC是一种多版本并发控制机制，是MySQL的InnoDB存储引擎实现隔离级别的一种具体方式，用于实现提交读和可重复读这两种隔离级别。</p>
+  </li>
+  <li>
+    <p><strong><em>MVCC的实现原理</em></strong></p>
+
+    <p>​	MVCC的两个实现核心是<strong>undo log</strong>和<strong>一致性视图</strong>，通过undo log来保存多版本的数据，通过一致性视图来保存当前活跃的事务列表，将两者结合和制定一定的规则来判断当前可读数据。</p>
+  </li>
+  <li>
+    <p><strong><em>实现原理</em></strong></p>
+
+    <p><a href="https://www.jianshu.com/p/20fa5703bd3e">这里</a></p>
+  </li>
+</ul>
+:ET
