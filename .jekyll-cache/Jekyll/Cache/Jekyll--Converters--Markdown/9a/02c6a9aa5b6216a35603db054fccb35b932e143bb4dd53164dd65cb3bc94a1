@@ -1,0 +1,386 @@
+I"Bf<h2 id="linux下的五种io模型">linux下的五种IO模型</h2>
+
+<h3 id="1-基本概念">1. 基本概念</h3>
+
+<ul>
+  <li>
+    <p><strong><em>什么是IO？</em></strong></p>
+
+    <p>​	IO最本质来说，指的就是文件的输入和输出。而这里的文件不是指<code class="language-plaintext highlighter-rouge">word</code>文件、<code class="language-plaintext highlighter-rouge">txt</code>文件。请接着往下看。</p>
+  </li>
+  <li>
+    <p><strong><em>什么是文件</em></strong></p>
+
+    <p>​	linux一个突出的设计理念在于，将一切外部设备看成一个文件来操作。任何东西都挂在文件系统之上，即使它们不是文件，也以文件的形式来呈现。这些一切外部设部都享有与内部文件一样的接口。</p>
+
+    <p>​	总结一下就是，linux这种设计理念是一种类似于面向对象的设计思想，而上文的文件包括但不限于<code class="language-plaintext highlighter-rouge">串口</code>，<code class="language-plaintext highlighter-rouge">内存</code>，<code class="language-plaintext highlighter-rouge">usb</code>，<code class="language-plaintext highlighter-rouge">进程信息</code>，<code class="language-plaintext highlighter-rouge">网卡</code>，<code class="language-plaintext highlighter-rouge">网络通讯socket</code>等等一切外部设备。把他们都当做文件，又便于我们统一写代码。</p>
+  </li>
+  <li>
+    <p><strong><em>为什么要区分这么多IO模型呢？或者说IO模型难点在哪里？</em></strong></p>
+
+    <p>​	首先因为IO读写是非直接的，因为程序无法直接访问硬件资源，具体原因可以看<a href="https://marco-hmc.github.io/2022/02/15/linux%E4%B8%8B%E7%94%A8%E6%88%B7%E6%80%81%E5%92%8C%E7%B3%BB%E7%BB%9F%E6%80%81%E7%9A%84%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%86/">这里</a>，数据是先从内核空间得到，然后复制到我们操作的用户空间的。</p>
+
+    <p>​	其次因为IO读写速度慢，因为从硬盘大批量读写数据是可以明显感知得很慢的，把一个文件从C盘拖到到D盘就可以感受出来了;除此之外，还有网络IO等，这个IO读写速度就更慢了。因此在程序设计中，我们需要根据场景判断这个IO完成读写没有，或者说提交读写请求后，就去处理其他事情，等他完成了再回来。专业一点就是常说的阻塞和非阻塞等。</p>
+  </li>
+  <li>
+    <p><strong><em>一次IO的读写过程示例</em></strong></p>
+
+    <p><img src="https://s2.loli.net/2022/02/18/rDRSXe5QnTOCUxd.png" alt="~replace~/assets/images/io-model/ioflow.png" /></p>
+
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="c1">// pseudo-code</span>
+<span class="n">fileStream</span> <span class="n">in</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">fileStream</span><span class="p">(</span><span class="s">"toBeRead.txt"</span><span class="p">);</span>
+<span class="n">fileStream</span> <span class="n">out</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">fileStream</span><span class="p">(</span><span class="s">"toBeWrtie.txt"</span><span class="p">);</span>
+      
+<span class="n">data</span> <span class="o">=</span> <span class="n">in</span><span class="p">.</span><span class="n">read</span><span class="p">();</span>
+<span class="n">out</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+</pre></td></tr></tbody></table></code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="2-io五大模型">2. IO五大模型</h3>
+
+<p>​	综上讨论，我们对IO是什么，做什么有了粗略的认识，我们现在就可以针对具体的五大模型展开讨论。</p>
+
+<h4 id="21-阻塞io---bio">2.1 阻塞I/O - BIO</h4>
+
+<ul>
+  <li>
+    <p><strong><em>流程图：</em></strong></p>
+
+    <p><img src="https://s2.loli.net/2022/02/27/FCRpnmBKAyqExvc.png" alt="image-20220227162111556" /></p>
+
+    <blockquote>
+      <p>PS: <code class="language-plaintext highlighter-rouge">read()</code>一般是指本地读取数据，通过硬盘文件；<code class="language-plaintext highlighter-rouge">recvfrom()</code>一般是指从<code class="language-plaintext highlighter-rouge">socket</code>接收数据，通过网络中的<code class="language-plaintext highlighter-rouge">socket</code>文件；</p>
+    </blockquote>
+  </li>
+  <li>
+    <p><strong><em>文字说明</em></strong></p>
+
+    <ol>
+      <li><code class="language-plaintext highlighter-rouge">application</code>向<code class="language-plaintext highlighter-rouge">kernel</code>发起<code class="language-plaintext highlighter-rouge">system call</code>的<code class="language-plaintext highlighter-rouge">read()/recvfrom()</code>请求</li>
+      <li><code class="language-plaintext highlighter-rouge">kernel</code>如果准备好了，就从<code class="language-plaintext highlighter-rouge">kernel space</code>拷贝数据到<code class="language-plaintext highlighter-rouge">user space</code></li>
+      <li>拷贝完成时，则返回ok。</li>
+      <li>此时<code class="language-plaintext highlighter-rouge">application</code>继续。</li>
+    </ol>
+  </li>
+  <li>
+    <p><strong><em>适用情况</em></strong></p>
+
+    <ul>
+      <li>简单易用，是本地IO的首选</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong><em>不足</em></strong></p>
+
+    <ul>
+      <li>如果是网络IO的话，要么就是空等，要么就是每一个线程开一个<code class="language-plaintext highlighter-rouge">socket()</code>。前者耗费时间，后者耗费资源</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="22-非阻塞io---nio">2.2 非阻塞I/O - NIO</h4>
+
+<ul>
+  <li>
+    <p><strong><em>流程图</em></strong></p>
+
+    <p><img src="https://s2.loli.net/2022/02/18/YJpWBrs53A4vFuS.gif" alt="~replace~/assets/images/io-model/nio.png" /></p>
+  </li>
+  <li>
+    <p><strong><em>文字说明</em></strong></p>
+
+    <ol>
+      <li><code class="language-plaintext highlighter-rouge">application</code>向<code class="language-plaintext highlighter-rouge">kernel</code>发起<code class="language-plaintext highlighter-rouge">system call</code>的<code class="language-plaintext highlighter-rouge">read()/recvfrom()</code>请求</li>
+      <li><code class="language-plaintext highlighter-rouge">kernel</code>如果没有准备好，就返回<code class="language-plaintext highlighter-rouge">EWOULDBLOCK</code>这个错误码。</li>
+      <li>继续回到<code class="language-plaintext highlighter-rouge">application</code>，该干嘛干嘛，然后再次发起<code class="language-plaintext highlighter-rouge">read()/recvfrom()</code>请求</li>
+      <li><code class="language-plaintext highlighter-rouge">kernel</code>如果准备好了，就从<code class="language-plaintext highlighter-rouge">kernel space</code>拷贝数据到<code class="language-plaintext highlighter-rouge">user space</code></li>
+      <li>拷贝完成时，则返回ok</li>
+      <li>此时<code class="language-plaintext highlighter-rouge">application</code>继续。</li>
+    </ol>
+  </li>
+  <li>
+    <p><strong><em>适用情况</em></strong></p>
+
+    <ul>
+      <li>网络IO情况。通过反复发起<code class="language-plaintext highlighter-rouge">system call</code>，如果没准备好，我就继续该干嘛干嘛，但是在数据拷贝的过程中，进程还是阻塞的。</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong><em>不足</em></strong></p>
+
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">system call</code>是比较耗费<code class="language-plaintext highlighter-rouge">cpu</code>的操作，如果频繁地发起<code class="language-plaintext highlighter-rouge">system call</code>也不是一个明智之举。</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="23-io复用---selectpollepoll">2.3 I/O复用 - (select/poll/epoll)</h4>
+
+<ul>
+  <li>
+    <p><strong><em>流程图</em></strong></p>
+
+    <p><img src="https://s2.loli.net/2022/02/18/14kRnPlX5HEU9dr.gif" alt="~replace~/assets/images/io-model/io_select.png" /></p>
+  </li>
+  <li>
+    <p><strong><em>文字说明</em></strong></p>
+
+    <ol>
+      <li><code class="language-plaintext highlighter-rouge">application</code>向<code class="language-plaintext highlighter-rouge">kernel</code>发起<code class="language-plaintext highlighter-rouge">system call</code>的<code class="language-plaintext highlighter-rouge">select()</code>请求，向<code class="language-plaintext highlighter-rouge">kernel</code>传入若干个<code class="language-plaintext highlighter-rouge">file descriptor</code>和操作目的(read, write)，这些一般被打包为<code class="language-plaintext highlighter-rouge">fd_set</code>数据。</li>
+      <li><code class="language-plaintext highlighter-rouge">kernel</code>同时检测若干个文件，当其中一个或多个<code class="language-plaintext highlighter-rouge">file descriptor</code>就绪，返回可执行的。</li>
+      <li><code class="language-plaintext highlighter-rouge">application</code>收到准备就绪的<code class="language-plaintext highlighter-rouge">file descriptor</code>后，对他们发起发起<code class="language-plaintext highlighter-rouge">system call</code>的<code class="language-plaintext highlighter-rouge">read()/recvfrom()</code>请求</li>
+      <li><code class="language-plaintext highlighter-rouge">kernel</code>这时候准备好了，就从<code class="language-plaintext highlighter-rouge">kernel space</code>拷贝数据到<code class="language-plaintext highlighter-rouge">user space</code></li>
+      <li>拷贝完成时，则返回ok</li>
+      <li>此时<code class="language-plaintext highlighter-rouge">application</code>继续。</li>
+    </ol>
+  </li>
+  <li>
+    <p><strong><em>适用情况</em></strong></p>
+
+    <ul>
+      <li>优化了非阻塞IO大量发起<code class="language-plaintext highlighter-rouge">system call</code>的问题，其核心思想在于通过一次发起大量IO请求，优先处理已经准备好的。</li>
+      <li>IO复用还是阻塞的</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong><em>不足</em></strong></p>
+
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">fd_set</code>受限于系统设定的<code class="language-plaintext highlighter-rouge">FD_SETSIZE</code>大小</li>
+      <li>如果<code class="language-plaintext highlighter-rouge">fd_set</code>数目很大，需要轮询所有fd找出就绪的fd,这里的性能也很大。</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="24-异步io---aio">2.4 异步I/O - (AIO)</h4>
+
+<ul>
+  <li><strong><em>流程图</em></strong></li>
+</ul>
+
+<p><img src="https://s2.loli.net/2022/02/18/E6dwWuM3Sljhiga.gif" alt="~replace~/assets/images/io-model/aio.png" /></p>
+
+<ul>
+  <li><strong><em>文字说明</em></strong>
+    <ol>
+      <li><code class="language-plaintext highlighter-rouge">application</code>向<code class="language-plaintext highlighter-rouge">kernel</code>发起<code class="language-plaintext highlighter-rouge">system call</code>的<code class="language-plaintext highlighter-rouge">aio_read()</code>请求，<code class="language-plaintext highlighter-rouge">kernel</code>立马返回。</li>
+      <li><code class="language-plaintext highlighter-rouge">application</code>继续运行，而<code class="language-plaintext highlighter-rouge">kernel</code>则会一直等待数据准备。</li>
+      <li><code class="language-plaintext highlighter-rouge">kernel</code>准备好数据时，<code class="language-plaintext highlighter-rouge">kernel</code>不需要让<code class="language-plaintext highlighter-rouge">application</code>再次发次请求，直接将数据从<code class="language-plaintext highlighter-rouge">kernel space</code>拷贝到<code class="language-plaintext highlighter-rouge">user space</code></li>
+      <li>当拷贝完成时，<code class="language-plaintext highlighter-rouge">kernel</code>向<code class="language-plaintext highlighter-rouge">application</code>发送完成信号。</li>
+    </ol>
+  </li>
+  <li><strong><em>适用情况</em></strong>
+    <ul>
+      <li>理论上，性能比之前的都要好。<code class="language-plaintext highlighter-rouge">application</code>可以完全不用</li>
+    </ul>
+  </li>
+  <li><strong><em>不足</em></strong>
+    <ul>
+      <li>太复杂了，比如网络框架<code class="language-plaintext highlighter-rouge">netty 5.0</code>被废弃的原因就在于引入AIO提高效率，但变得非常复杂，而性能没有得到太明显优化。</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="25-信号驱动io---sigio">2.5 信号驱动I/O - SIGIO</h4>
+
+<ul>
+  <li><strong><em>流程图</em></strong></li>
+</ul>
+
+<p><img src="https://s2.loli.net/2022/02/18/1v8xMSHKazQGfTi.gif" alt="~replace~/assets/images/io-model/sio.png" /></p>
+
+<ul>
+  <li>
+    <p><strong><em>特别说明</em></strong></p>
+
+    <p>​	这种IO模型相对复杂，一般不使用，相关的资料也比较少。如果有感兴趣的可以点击这里查看<a href="http://www.masterraghu.com/subjects/np/introduction/unix_network_programming_v1.3/ch25lev1sec2.html#ch25lev1sec2">Signal-Driven I/O for Sockets</a></p>
+  </li>
+</ul>
+
+<h4 id="26-总结">2.6 总结</h4>
+
+<p><img src="https://s2.loli.net/2022/02/18/xYu6VHtAJRP2QNl.png" alt="image-20220218222819682" /></p>
+
+<ul>
+  <li>
+    <p><strong><em>阻塞与非阻塞的区分</em></strong></p>
+
+    <p>​	两者区别在于，非阻塞IO会不断发生system call。</p>
+  </li>
+  <li>
+    <p><strong><em>同步和异步的区分</em></strong></p>
+
+    <p>​	两者区别在于，从<code class="language-plaintext highlighter-rouge">kernel space</code>拷贝到<code class="language-plaintext highlighter-rouge">user space</code>时，进程是否还在执行。哪怕是NIO，知道数据就绪后，也是等待数据拷贝完成后，再执行下一步；而AIO则是不管<code class="language-plaintext highlighter-rouge">kernel space</code>拷贝完成没都继续进行，<code class="language-plaintext highlighter-rouge">kernel space</code>拷贝完成才告诉<code class="language-plaintext highlighter-rouge">application</code></p>
+  </li>
+  <li>
+    <p><strong><em>IO复用也可以设置为非阻塞模式的</em></strong></p>
+  </li>
+</ul>
+
+<h3 id="3-selectpollepoll">3. select/poll/epoll</h3>
+
+<p>​	IO复用模型中又可进一步分为select、poll和epoll方法。前面出于排版的原因，反正这下面来进一步讲解</p>
+
+<h4 id="31-select">3.1 select</h4>
+
+<ul>
+  <li>
+    <p><strong><em>代码</em></strong></p>
+
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="kt">int</span> <span class="nf">select</span> <span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="n">fd_set</span> <span class="o">*</span><span class="n">readfds</span><span class="p">,</span> <span class="n">fd_set</span> <span class="o">*</span><span class="n">writefds</span><span class="p">,</span> <span class="n">fd_set</span> <span class="o">*</span><span class="n">exceptfds</span><span class="p">,</span> <span class="k">struct</span> <span class="nc">timeval</span> <span class="o">*</span><span class="n">timeout</span><span class="p">);</span>
+</pre></td></tr></tbody></table></code></pre></div>    </div>
+
+    <p>​	<code class="language-plaintext highlighter-rouge">select</code>函数监视的文件描述符分3类，分别是<code class="language-plaintext highlighter-rouge">writefds</code>、<code class="language-plaintext highlighter-rouge">readfds</code>、和<code class="language-plaintext highlighter-rouge">exceptfds</code>。调用后<code class="language-plaintext highlighter-rouge">select</code>函数会阻塞，直到有描述副就绪（有数据 可读、可写、或者有<code class="language-plaintext highlighter-rouge">except</code>），或者超时（<code class="language-plaintext highlighter-rouge">timeout</code>指定等待时间，如果立即返回设为<code class="language-plaintext highlighter-rouge">null</code>即可），函数返回。当<code class="language-plaintext highlighter-rouge">select</code>函数返回后，可以 通过遍历<code class="language-plaintext highlighter-rouge">fd_set</code>，来找到就绪的描述符。</p>
+  </li>
+  <li>
+    <p><strong><em>特点</em></strong></p>
+
+    <p>​	<code class="language-plaintext highlighter-rouge">select</code>目前几乎在所有的平台上支持，其良好跨平台支持也是它的一个优点。select的一 个缺点在于单个进程能够监视的文件描述符的数量存在最大限制，在<code class="language-plaintext highlighter-rouge">Linux</code>上一般为1024，可以通过修改宏定义甚至重新编译内核的方式提升这一限制，但 是这样也会造成效率的降低。</p>
+  </li>
+  <li>
+    <p><strong><em>不足</em></strong></p>
+    <ul>
+      <li>每次调用<code class="language-plaintext highlighter-rouge">select</code>，都需要把<code class="language-plaintext highlighter-rouge">fd</code>集合从用户态拷贝到内核态，这个开销在fd很多时会很大</li>
+      <li>同时每次调用<code class="language-plaintext highlighter-rouge">select</code>都需要在内核遍历传递进来的所有<code class="language-plaintext highlighter-rouge">fd</code>，这个开销在fd很多时也很大</li>
+      <li><code class="language-plaintext highlighter-rouge">select</code>支持的文件描述符数量太小了，默认是1024</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="32-poll">3.2 poll</h4>
+
+<ul>
+  <li>
+    <p><strong><em>代码</em></strong></p>
+
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="kt">int</span> <span class="nf">poll</span> <span class="p">(</span><span class="k">struct</span> <span class="nc">pollfd</span> <span class="o">*</span><span class="n">fds</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">nfds</span><span class="p">,</span> <span class="kt">int</span> <span class="n">timeout</span><span class="p">);</span>
+</pre></td></tr></tbody></table></code></pre></div>    </div>
+
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="k">struct</span> <span class="nc">pollfd</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">fd</span><span class="p">;</span> <span class="cm">/* file descriptor */</span>
+    <span class="kt">short</span> <span class="n">events</span><span class="p">;</span> <span class="cm">/* requested events to watch */</span>
+    <span class="kt">short</span> <span class="n">revents</span><span class="p">;</span> <span class="cm">/* returned events witnessed */</span>
+<span class="p">};</span>
+</pre></td></tr></tbody></table></code></pre></div>    </div>
+
+    <p>​	不同于<code class="language-plaintext highlighter-rouge">select</code>使用三个<code class="language-plaintext highlighter-rouge">fd_set</code>，<code class="language-plaintext highlighter-rouge">poll</code>使用一个<code class="language-plaintext highlighter-rouge">pollfd</code>的指针实现。而<code class="language-plaintext highlighter-rouge">pollfd</code>结构包含了要监视的<code class="language-plaintext highlighter-rouge">event</code>和发生的<code class="language-plaintext highlighter-rouge">event</code>，不再使用<code class="language-plaintext highlighter-rouge">select</code>“参数-值”传递的方式。同时，pollfd并没有最大数量限制。</p>
+  </li>
+  <li>
+    <p><strong><em>特点</em></strong></p>
+
+    <p>​	<code class="language-plaintext highlighter-rouge">poll</code>和<code class="language-plaintext highlighter-rouge">select</code>类似，但是没有最大链接数的限制，因为是基于==链表存储==的。</p>
+  </li>
+  <li>
+    <p><strong><em>不足</em></strong></p>
+
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">poll</code>没有本质上改变<code class="language-plaintext highlighter-rouge">select</code>的方法，只是没有<code class="language-plaintext highlighter-rouge">fd_maxsize</code>的限制。<code class="language-plaintext highlighter-rouge">select</code>和<code class="language-plaintext highlighter-rouge">epoll</code>的不足之处还是类似的</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="33-epoll">3.3 epoll</h4>
+
+<ul>
+  <li>
+    <p><strong><em>代码</em></strong></p>
+
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="kt">int</span> <span class="nf">epoll_create</span><span class="p">(</span><span class="kt">int</span> <span class="n">size</span><span class="p">)</span><span class="err">；</span><span class="c1">//创建一个epoll的句柄，size用来告诉内核这个监听的数目一共有多大</span>
+<span class="kt">int</span> <span class="n">epoll_ctl</span><span class="p">(</span><span class="kt">int</span> <span class="n">epfd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">op</span><span class="p">,</span> <span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="k">struct</span> <span class="nc">epoll_event</span> <span class="o">*</span><span class="n">event</span><span class="p">)</span><span class="err">；</span>
+<span class="kt">int</span> <span class="n">epoll_wait</span><span class="p">(</span><span class="kt">int</span> <span class="n">epfd</span><span class="p">,</span> <span class="k">struct</span> <span class="nc">epoll_event</span> <span class="o">*</span> <span class="n">events</span><span class="p">,</span> <span class="kt">int</span> <span class="n">maxevents</span><span class="p">,</span> <span class="kt">int</span> <span class="n">timeout</span><span class="p">);</span>
+</pre></td></tr></tbody></table></code></pre></div>    </div>
+
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></td><td class="rouge-code"><pre><span class="k">struct</span> <span class="nc">epoll_event</span> <span class="p">{</span>
+  <span class="n">__uint32_t</span> <span class="n">events</span><span class="p">;</span>  <span class="cm">/* Epoll events */</span>
+  <span class="n">epoll_data_t</span> <span class="n">data</span><span class="p">;</span>  <span class="cm">/* User data variable */</span>
+<span class="p">};</span>
+  
+<span class="cm">/*
+	events可以是以下几个宏的集合：
+	EPOLLIN ：表示对应的文件描述符可以读（包括对端SOCKET正常关闭）；
+	EPOLLOUT：表示对应的文件描述符可以写；
+	EPOLLPRI：表示对应的文件描述符有紧急的数据可读（这里应该表示有带外数据到来）；
+	EPOLLERR：表示对应的文件描述符发生错误；
+	EPOLLHUP：表示对应的文件描述符被挂断；
+	EPOLLET： 将EPOLL设为边缘触发(Edge Triggered)模式，这是相对于水平触发(Level Triggered)来说的。
+	EPOLLONESHOT：只监听一次事件，当监听完这次事件之后，如果还需要继续监听这个socket的话，需要再次把这个socket加入到EPOLL队列里
+*/</span>
+</pre></td></tr></tbody></table></code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong><em>特点</em></strong></p>
+
+    <p>​	<code class="language-plaintext highlighter-rouge">epoll</code>较<code class="language-plaintext highlighter-rouge">select/poll</code>，主要改进两个缺点。一个是性能开销，一个是文件描述符少。</p>
+
+    <ul>
+      <li>性能优化
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">epoll</code>从<code class="language-plaintext highlighter-rouge">select/poll</code>中的主动轮询变为变动通知，当有事件发生的时候，被动接收通知。所以<code class="language-plaintext highlighter-rouge">epoll</code>模型注册套接字后，主程序可以继续执行。</li>
+          <li><code class="language-plaintext highlighter-rouge">epoll</code>通过内核和用户空间共享一块内存来实现。</li>
+        </ul>
+      </li>
+      <li>监视的描述符不受限制
+        <ul>
+          <li>采用红黑树存储文件描述符集合</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><strong><em>不足</em></strong></p>
+    <ul>
+      <li>代码比较复杂</li>
+      <li>如果没有大量的idle -connection或者dead-connection，epoll的效率并不会比select/poll高很多，但是当遇到大量的idle- connection，就会发现epoll的效率大大高于select/poll。</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="34-总结">3.4 总结</h4>
+
+<p><img src="https://s2.loli.net/2022/02/19/ApTbgqxUoIzhOPv.png" alt="image-20220219001249601" /></p>
+
+<blockquote>
+  <p>图片来自<a href="https://juejin.cn/post/6931543528971436046">这里</a></p>
+</blockquote>
+
+<h3 id="参考">参考</h3>
+
+<p><a href="https://zhuanlan.zhihu.com/p/272891398">一文搞懂select、poll和epoll区别</a></p>
+
+<p><a href="https://segmentfault.com/a/1190000003063859">Linux IO模式及 select、poll、epoll详解</a></p>
+
+<p><a href="https://www.cnblogs.com/aspirant/p/9166944.html">select/poll/epoll的区别</a></p>
+
+:ET

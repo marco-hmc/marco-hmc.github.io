@@ -5,8 +5,8 @@
     <description>知所求 求所得 得所愿 愿长久</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 27 Mar 2022 01:02:55 +0800</pubDate>
-    <lastBuildDate>Sun, 27 Mar 2022 01:02:55 +0800</lastBuildDate>
+    <pubDate>Tue, 29 Mar 2022 14:14:06 +0800</pubDate>
+    <lastBuildDate>Tue, 29 Mar 2022 14:14:06 +0800</lastBuildDate>
     <generator>Jekyll v4.2.1</generator>
     
       <item>
@@ -27,6 +27,439 @@
         <pubDate>Wed, 23 Mar 2022 22:42:01 +0800</pubDate>
         <link>http://localhost:4000/2022/03/23/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%A4%E8%AF%86/</link>
         <guid isPermaLink="true">http://localhost:4000/2022/03/23/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%A4%E8%AF%86/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>编译过程与原理</title>
+        <description>&lt;h2 id=&quot;编译过程与原理&quot;&gt;编译过程与原理&lt;/h2&gt;
+
+&lt;h3 id=&quot;1-编译过程---编译器在做什么&quot;&gt;1. 编译过程 - 编译器在做什么？&lt;/h3&gt;
+
+&lt;p&gt;如果想要机器按照我们的设想执行我们的命令，我们需要一个能够跟机器沟通的方式，而这种方式也就是==机器语言(第一代计算机语言)==，一堆&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;01&lt;/code&gt;构成的指令。我们需要事先设计好指令集到机器上，比如说规定好从某寄存器阅读值的指令为什么。&lt;/p&gt;
+
+&lt;p&gt;可这种方式面临的第一个问题就是，不同机器之间指令集不一致，比如说DSP和ARM在实现加法上，可能就会出现不同寄存器的调用方法。那很显然就会设想出一种统一的语言，即==汇编语言(第二代计算机语言)==。而汇编实现的只是将&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;01&lt;/code&gt;等机器码指令使用一个统一的命名，如&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ADD&lt;/code&gt;而已。令所有机器指令集可与汇编语言转换即可。&lt;/p&gt;
+
+&lt;p&gt;汇编语言仍存在很多问题，主要表现为阅读性极差、开发难度大、开发周期长、移植问题没有彻底解决。因此也就出现了==高级语言(第三代语言)==，在汇编语言的基础上实现了抽象，避免了繁琐寄存器的操作。&lt;/p&gt;
+
+&lt;p&gt;那源代码(高级语言)是如何让计算机理解的呢？其步骤是？&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;如果源代码在操作系统上：源代码生成汇编代码，再通过汇编和链接方式形成可执行文件，然后通过加载器加载到操作系统执行。&lt;/li&gt;
+  &lt;li&gt;如果源代码在虚拟机(解释器)上：源代码生成中间代码(人可以直接理解的，而汇编则认为人无法理解)，如字节码等。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;在Linux系统下，可用以下指令完成源程序到目标程序的转化：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;gcc -o hello hello.c main.c&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;gcc 编译器驱动程序读取源文件hello.c和main.c，经过预处理、编译、汇编、链接（分别使用预处理器、编译器、汇编器、链接器，这四个程序构成了编译系统）四个步骤，将其翻译成可执行目标程序hello。如下图所示：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2022/01/26/VGdicgwP6QvRBT8.png&quot; alt=&quot;image-20200228004704609&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;11-预处理&quot;&gt;1.1 预处理&lt;/h4&gt;
+
+&lt;p&gt;预处理器(CPP)根据源程序中以字符”#”开头的命令，修改源程序，得到另一个源程序，常以.i作为文件扩展名。修改主要包括#include、#define和条件编译三个方面。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;gcc -o main.i -E main.c&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;预处理只是对源文件进行了扩展，得到的仍然是C语言源程序。&lt;/p&gt;
+
+&lt;h4 id=&quot;12-编译&quot;&gt;1.2 编译&lt;/h4&gt;
+
+&lt;p&gt;编译程序所要作得工作就是通过词法分析和语法分析，在确认所有的指令都符合语法规则之后，将其翻译成等价的中间代码表示或汇编代码。&lt;/p&gt;
+
+&lt;p&gt;编译器(CCL)将经过预处理器处理得到的文本文件hello.i和main.i翻译成hello.s与main.s，其中包含了汇编语言程序，汇编语言程序以一种标准的文本格式确切描述一条低级机器语言指令。 
+ 运行以下命令进行编译：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;gcc -S main.i hello.i&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;13-汇编&quot;&gt;1.3 汇编&lt;/h4&gt;
+
+&lt;p&gt;汇编器(AS)将hello.s和main.s翻译成机器语言指令，并打包成可重定位目标程序，一般以.o为文件扩展名。可重定位目标程序是二进制文件，它的字节编码是机器语言指令而不是字符。 
+ 运行以下指令可得到重定位目标程序main.o和hello.o：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;gcc -c main.s hello.s&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;用文本编辑器打开main.o和hello.o发现文件是乱码，因为此时已经是二进制文件。&lt;/p&gt;
+
+&lt;h4 id=&quot;14-链接&quot;&gt;1.4 链接&lt;/h4&gt;
+
+&lt;p&gt;链接程序(LD）将main.o和hello.o以及一些其他必要的目标文件组合起来，创建可执行目标文件。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;gcc -o hello main.o hello.o&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;得到可执行程序hello. 
+ 在终端运行./hello，程序加载并运行.&lt;/p&gt;
+
+&lt;p&gt;根据开发人员指定的同库函数的链接方式的不同，链接处理可分为两种：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;静态链接 
+在这种链接方式下，函数的代码将从其所在的静态链接库中被拷贝到最终的可执行程序中。这样该程序在被执行时这些代码将被装入到该进程的虚拟地址空间中。静态链接库实际上是一个目标文件的集合，其中的每个文件含有库中的一个或者一组相关函数的代码。&lt;/li&gt;
+  &lt;li&gt;动态链接 
+在此种方式下，函数的代码被放到称作是动态链接库或共享对象的某个目标文件中。链接程序此时所作的只是在最终的可执行程序中记录下共享对象的名字以及其它少量的登记信息。在此可执行文件被执行时，动态链接库的全部内容将被映射到运行时相应进程的虚地址空间。动态链接程序将根据可执行程序中记录的信息找到相应的函数代码。 
+ 对于可执行文件中的函数调用，可分别采用动态链接或静态链接的方法。使用动态链接能够使最终的可执行文件比较短小，并且当共享对象被多个进程使用时能节约一些内存，因为在内存中只需要保存一份此共享对象的代码。但并不是使用动态链接就一定比使用静态链接要优越。在某些情况下动态链接可能带来一些性能上损害。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://kshttps0.wiz.cn/ks/note/view/2336be1c-7b66-490d-91e0-240081977c3d/e730f0ac-0a19-4994-8f7f-1355d3c86eec/#动态链接&quot;&gt;动态链接&lt;/a&gt;
+&lt;a href=&quot;https://kshttps0.wiz.cn/ks/note/view/2336be1c-7b66-490d-91e0-240081977c3d/e730f0ac-0a19-4994-8f7f-1355d3c86eec/#动态库的编译&quot;&gt;动态库的编译&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;2-编译原理---编译器是如何实现的&quot;&gt;2. 编译原理 - 编译器是如何实现的？&lt;/h3&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;[编译原理入门篇&lt;/td&gt;
+      &lt;td&gt;一篇文章理解编译全过程](https://www.cnblogs.com/fisherss/p/13905395.html)&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2022/01/26/xVbeED8TKaYIG2w.png&quot; alt=&quot;image-20220126215910369&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;3-实战篇&quot;&gt;3. 实战篇&lt;/h3&gt;
+
+&lt;h4 id=&quot;31-gcc的基本用法&quot;&gt;3.1 gcc的基本用法&lt;/h4&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://c.biancheng.net/gcc/&quot;&gt;gcc编译器30分钟入门篇&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;​	从上面看下来，应该大概知道了编译的大概过程以及为什么了。而gcc就是代表的C语言的编译器。除了gcc之外还有很多，但是GCC是免费且开源的，因此更广为使用。最开始的时候是 GNU C Compiler, 就是一个c编译器。但是后来因为这个项目里边集成了更多其他不同语言的编译器，GCC就代表 the GNU Compiler Collection，所以表示一堆编译器的合集。 g++则是GCC的c++编译器。&lt;/p&gt;
+
+&lt;p&gt;​	现在你在编译代码时调用的gcc，已经不是当初那个c语言编译器了，更确切的说他是一个驱动程序，根据代码的后缀名来判断调用c编译器还是c++编译器 (g++)。比如你的代码后缀是*.c，他会调用c编译器还有linker去链接c的library。如果你的代码后缀是cpp, 他会调用g++编译器，当然library call也是c++版本的。&lt;/p&gt;
+
+&lt;p&gt;​	但一般来说,gcc指c语言编译器，g++值c++语言编译器.&lt;/p&gt;
+
+&lt;h4 id=&quot;32-make&quot;&gt;3.2 make&lt;/h4&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/remonbonbon/makefile-example&quot;&gt;makefile-example&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;​	在运行代码前，需要使用make完成构建(build)的工作，即告诉代码要包含那些库目录，要引入哪些头文件。gcc当然也是提供简单的链接指令的，但是当工程够大的时候，就必须有一个工具来完成。这个工具就叫做make。可以理解为make就是通过makefile这一种脚本文件的形式去运行gcc。&lt;/p&gt;
+
+&lt;h4 id=&quot;33-cmake&quot;&gt;3.3 cmake&lt;/h4&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://blog.csdn.net/afei__/article/details/81201039&quot;&gt;CMakeLists.txt 语法介绍与实例演练&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://juejin.im/post/5ceb7fb0f265da1b5e72d12f&quot;&gt;CMake 语法 - 详解 CMakeLists.txt&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/ttroy50/cmake-examples&quot;&gt;cmake-example&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;​	但是make语法仍然繁琐了，makefile往往写得又臭又长，这时候就出来了cmake。cmake可以理解为是make语法的抽象。通过写cmakelists的方式生成makefile达到我们想要的目的。&lt;/p&gt;
+
+&lt;h3 id=&quot;4-conclusion&quot;&gt;4. Conclusion&lt;/h3&gt;
+
+&lt;p&gt;本文分为三部分，编译过程，编译原理和实战，其中前者是我们在生产环境中实际接触到的部分，后者更像是如何制作编译器。后者非笔者所熟悉的，因此附上我认为比较好的资料。最后一部分实战篇，鉴于已经有很多好的资料，我就一并附上了。本文初衷仅在于梳理。&lt;/p&gt;
+
+&lt;h3 id=&quot;5附录&quot;&gt;5.附录&lt;/h3&gt;
+
+&lt;h4 id=&quot;1-cpp编译器有那些&quot;&gt;1. cpp编译器有那些&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;GCC
+    &lt;ul&gt;
+      &lt;li&gt;移植到windows版本对应的就是MinGW和TDM-GCC&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;llvm+clang&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;MSVC
+    &lt;ul&gt;
+      &lt;li&gt;与Visual Studio集成发布，微软自己的编译器&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;2-gcc和g的区别&quot;&gt;2. GCC和G++的区别&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;GCC:GNU Compiler Collection(GUN 编译器集合)，它可以编译C、C++、JAV、Fortran、Pascal、Object-C等语言。&lt;/li&gt;
+  &lt;li&gt;gcc是GCC中的GUN C Compiler（C 编译器）&lt;/li&gt;
+  &lt;li&gt;g++是GCC中的GUN C++ Compiler（C++编译器）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;由于编译器是可以更换的，所以gcc不仅仅可以编译C文件&lt;/p&gt;
+
+&lt;p&gt;所以，更准确的说法是：gcc调用了C compiler，而g++调用了C++ compiler&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;gcc和g++的主要区别&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;对于 &lt;em&gt;.c和&lt;/em&gt;.cpp文件，gcc分别当做c和cpp文件编译（c和cpp的语法强度是不一样的）&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;对于 &lt;em&gt;.c和&lt;/em&gt;.cpp文件，g++则统一当做cpp文件编译&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;使用g++编译文件时，&lt;strong&gt;g++会自动链接标准库STL，而gcc不会自动链接STL&lt;/strong&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;gcc在编译C文件时，可使用的预定义宏是比较少的&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;gcc在编译cpp文件时/g++在编译c文件和cpp文件时（这时候gcc和g++调用的都是cpp文件的编译器），会加入一些额外的宏。&lt;/li&gt;
+  &lt;li&gt;在用gcc编译c++文件时，为了能够使用STL，需要加参数 –lstdc++ ，但这并不代表 gcc –lstdc++ 和 g++等价，它们的区别不仅仅是这个。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;3-静态库和动态库的用法&quot;&gt;3. 静态库和动态库的用法&lt;/h4&gt;
+
+&lt;h5 id=&quot;31-定义&quot;&gt;3.1 定义&lt;/h5&gt;
+
+&lt;p&gt;​	静态库和动态库从字面意思来看，区别就是静态和动态。&lt;strong&gt;而这里的静态和动态指的是库的链接阶段&lt;/strong&gt;。可以看如下的编译过程。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;静态库：在链接阶段库将会与目标汇编后的目标文件.o一起打包生成可执行文件。成为可执行文件的一部分，后续此库就可以消失了。&lt;strong&gt;也就是说在编译的最后一步（链接阶段），如果程序需要使用静态库，在这一步都会一起打包到可执行文件中。&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;动态库：而动态库在编译阶段都不会有什么动作，&lt;strong&gt;只有在程序运行时才被加载，也就是动态库的链接是发生在程序运行时期的，它和可执行文件是分开的，只是可执行文件在运行的某个时期调用了它。&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&quot;32--优缺点&quot;&gt;3.2  优缺点&lt;/h5&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt; &lt;/th&gt;
+      &lt;th&gt;优点&lt;/th&gt;
+      &lt;th&gt;缺点&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;静态库&lt;/td&gt;
+      &lt;td&gt;1、  使可执行文件依赖项少，已经被打包到可执行文件中了&lt;br /&gt;2、  编译阶段完成链接，执行期间代码装载速度快&lt;/td&gt;
+      &lt;td&gt;1、  使可执行文件变大&lt;br /&gt;2、  若作为其他库的依赖库，将会造成多余的副本，因为必须与目标文件打包&lt;br /&gt;3、  升级不方便，升级必须重新编译&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;动态库&lt;/td&gt;
+      &lt;td&gt;1、  动态库可以实现进程之间资源共享，有一份就行&lt;br /&gt; 2、  升级程序简单，不需要重新编译&lt;/td&gt;
+      &lt;td&gt;1、  运行期间在加载，将会减慢代码执行速度 &lt;br /&gt;2、  增加程序的依赖项，必须跟着可执行文件一起&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h5 id=&quot;33-文件形式&quot;&gt;3.3 文件形式&lt;/h5&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt; &lt;/th&gt;
+      &lt;th&gt;windows&lt;/th&gt;
+      &lt;th&gt;linux&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;静态库&lt;/td&gt;
+      &lt;td&gt;.lib&lt;/td&gt;
+      &lt;td&gt;Libxxx.a&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;动态库&lt;/td&gt;
+      &lt;td&gt;.dll与.lib&lt;/td&gt;
+      &lt;td&gt;libxxx.so&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;参考&quot;&gt;参考&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://lotabout.me/2015/write-a-C-interpreter-0/&quot;&gt;手把手教你构建C语言编译器&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://blog.csdn.net/wuchuanpingstone/article/details/50259947&quot;&gt;DLL文件与so文件的区别&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Wed, 23 Mar 2022 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2022/03/23/%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B%E4%B8%8E%E5%8E%9F%E7%90%86/</link>
+        <guid isPermaLink="true">http://localhost:4000/2022/03/23/%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B%E4%B8%8E%E5%8E%9F%E7%90%86/</guid>
+        
+        <category>编译原理</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>数据库基础导论</title>
+        <description>&lt;h2 id=&quot;数据库基础导论&quot;&gt;数据库基础导论&lt;/h2&gt;
+
+&lt;h3 id=&quot;1-基本概念&quot;&gt;1. 基本概念&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;数据库有什么用&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;​	简单来说，数据库就是为了实现增删改查。一般面向的对象为服务器等。而且因为考虑到高并发情况，如双11的时候对淘宝发起的页面请求是非常恐怖的，要求加载非常非常多的数据，增删改查速度的影响非常大。&lt;/p&gt;
+
+    &lt;p&gt;​	除此之外，数据库在实现基本增删改查的功能下，还希望有以下特性。&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;减少数据冗余，相同数据尽量不要重复储存。&lt;/li&gt;
+      &lt;li&gt;故障恢复，或者说备份。&lt;/li&gt;
+      &lt;li&gt;数据一致性，主要是使得多个用户操作时不发生冲突&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;数据库有哪些分类？&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;关系型数据库(SQL)&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;Orade&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;MySQL&lt;/strong&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;非关系型数据库(NoSQL)&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;
+            &lt;p&gt;键值存储数据库&lt;/p&gt;
+
+            &lt;blockquote&gt;
+              &lt;p&gt;含义：数据格式一般不特别限制，最常用，相对其他方法胜在简单，易部署和高并发。&lt;/p&gt;
+            &lt;/blockquote&gt;
+
+            &lt;ul&gt;
+              &lt;li&gt;&lt;strong&gt;redis&lt;/strong&gt;&lt;/li&gt;
+              &lt;li&gt;Memcached&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;文档存储数据库&lt;/p&gt;
+
+            &lt;blockquote&gt;
+              &lt;p&gt;含义：其数据以XML、JSON等文档为主。&lt;/p&gt;
+            &lt;/blockquote&gt;
+
+            &lt;ul&gt;
+              &lt;li&gt;MongoDB&lt;/li&gt;
+              &lt;li&gt;CouchDB&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;图结构数据库&lt;/p&gt;
+
+            &lt;blockquote&gt;
+              &lt;p&gt;含义：其数据以图结构为主&lt;/p&gt;
+            &lt;/blockquote&gt;
+
+            &lt;ul&gt;
+              &lt;li&gt;Neo4J&lt;/li&gt;
+              &lt;li&gt;InforGrid&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;列存储数据库&lt;/p&gt;
+
+            &lt;blockquote&gt;
+              &lt;p&gt;含义：按列存储，而其他数据库一般都是按行存储的，如果比如说我有一个学生成绩表，我想算全班平均分。如果是按行存储的，我只能一行一行读来得到学生成绩，再求平均分；如果是按列存储的，我直接读成绩一栏，就可以知道所有学生成绩了，而不是一行一行。&lt;/p&gt;
+
+              &lt;p&gt;&lt;a href=&quot;https://juejin.cn/post/6844904118872440840&quot;&gt;进一步资料&lt;/a&gt;&lt;/p&gt;
+            &lt;/blockquote&gt;
+
+            &lt;ul&gt;
+              &lt;li&gt;Hbase&lt;/li&gt;
+              &lt;li&gt;Cassandra&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;关系数据库和非关系数据库具体区别是什么？&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;​	关系数据库采用了关系模式来组织数据格式，用人话来说就是数据都是类似于表格的，常用B树、B+树等方式存储。而且要求支持事务机制，比如说一系列的操作中数据可能位于不同的服务器，这时候是分布式的事务，为了实现原子性需要彼此协调，而这个协调的过程是耗时的，每台机器在一个大事务过程都必须依次确认。&lt;/p&gt;
+
+    &lt;p&gt;​	非关系数据库采用了非关系模式来组织数据格式，最重要的是事务机制有所妥协，所以性能会达到优化。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;2-mysql&quot;&gt;2. MySQL&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;MySQL语法学习&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;https://www.w3school.com.cn/sql/index.asp&quot;&gt;SQL tutorial&lt;/a&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;https://github.com/jaywcjlove/mysql-tutorial&quot;&gt;MySQL入门教程&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;特点&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;读写相对慢，哪怕使用了B+树减少了硬盘IO次数，而redis这种非关系型数据库是在内存的，所以更快。&lt;/li&gt;
+      &lt;li&gt;难扩展，如果加入很多新的数据，树的形状会发生极大改变，索引需要更改。&lt;/li&gt;
+      &lt;li&gt;支持复杂查询条件，比如说我想查询学生班级有没有两米的，我只需要在学生班级中逐个找就好了，可以基于关系简历多级索引。&lt;/li&gt;
+      &lt;li&gt;利于维护，一是因为表格数据，能给人类很大信息量；二是因为，数据不容易冗余&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;MySQL中的基本概念有哪些？&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;如果想要深入地了解MySQL，需要对以下知识进行了解，因为篇幅受限，我会新开一篇博文进行介绍。&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;事务&lt;/li&gt;
+      &lt;li&gt;锁&lt;/li&gt;
+      &lt;li&gt;隔离级别&lt;/li&gt;
+      &lt;li&gt;索引&lt;/li&gt;
+      &lt;li&gt;表优化&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;3-redis&quot;&gt;3 Redis&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;&lt;em&gt;特点&lt;/em&gt;&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;读写快，因为是基于键值对的，哈希映射，一步就能够到目标节点。&lt;/li&gt;
+      &lt;li&gt;便于扩展，用户自己根据&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;key&lt;/code&gt;添加&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;value&lt;/code&gt;即可。&lt;/li&gt;
+      &lt;li&gt;不支持复杂查询条件，同样地如果说我想查询学生班级有没有两米的，因为不存在学生班级这个概念，根本就无从下手。&lt;/li&gt;
+      &lt;li&gt;不利于维护，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;key-value&lt;/code&gt;不直观难理解，数据容易冗余&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;redis是什么？&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;​	Redis是一种支持key-value等多种数据结构的存储系统。可用于缓存，事件发布或订阅，高速队列等场景。支持网络，提供字符串，哈希，列表，队列，集合结构直接存取，基于内存，可持久化。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;redis的缺点&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;数据库容量容易收到物理内存的限制，不能用于海量数据的高性能读写，只能适用于较小数据的高性能操作。&lt;/li&gt;
+      &lt;li&gt;不具备自动容错和回复功能。主机和从机的宕机都会导致请求失败，需要重启。&lt;/li&gt;
+      &lt;li&gt;redis较难支持在线扩容。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.cnblogs.com/wmyskxz/p/12568926.html&quot;&gt;redis知识总结&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;4-附录&quot;&gt;4. 附录&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.cnblogs.com/xrq730/p/11039384.html&quot;&gt;SQL or NoSQL，看完这一篇你就懂了&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://pdai.tech/md/db/nosql-redis/db-redis-x-event.html&quot;&gt;java全栈知识体系-数据库篇&lt;/a&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 23 Mar 2022 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2022/03/23/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%A4%E8%AF%86/</link>
+        <guid isPermaLink="true">http://localhost:4000/2022/03/23/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%A4%E8%AF%86/</guid>
+        
+        <category>数据库</category>
         
         
       </item>
@@ -142,6 +575,510 @@
         <category>c++</category>
         
         <category>指针</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>linux下的五种IO模型</title>
+        <description>&lt;h2 id=&quot;linux下的五种io模型&quot;&gt;linux下的五种IO模型&lt;/h2&gt;
+
+&lt;h3 id=&quot;1-基本概念&quot;&gt;1. 基本概念&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;什么是IO？&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;​	IO最本质来说，指的就是文件的输入和输出。而这里的文件不是指&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;word&lt;/code&gt;文件、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;txt&lt;/code&gt;文件。请接着往下看。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;什么是文件&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;​	linux一个突出的设计理念在于，将一切外部设备看成一个文件来操作。任何东西都挂在文件系统之上，即使它们不是文件，也以文件的形式来呈现。这些一切外部设部都享有与内部文件一样的接口。&lt;/p&gt;
+
+    &lt;p&gt;​	总结一下就是，linux这种设计理念是一种类似于面向对象的设计思想，而上文的文件包括但不限于&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;串口&lt;/code&gt;，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;内存&lt;/code&gt;，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;usb&lt;/code&gt;，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;进程信息&lt;/code&gt;，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;网卡&lt;/code&gt;，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;网络通讯socket&lt;/code&gt;等等一切外部设备。把他们都当做文件，又便于我们统一写代码。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;为什么要区分这么多IO模型呢？或者说IO模型难点在哪里？&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;​	首先因为IO读写是非直接的，因为程序无法直接访问硬件资源，具体原因可以看&lt;a href=&quot;https://marco-hmc.github.io/2022/02/15/linux%E4%B8%8B%E7%94%A8%E6%88%B7%E6%80%81%E5%92%8C%E7%B3%BB%E7%BB%9F%E6%80%81%E7%9A%84%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%86/&quot;&gt;这里&lt;/a&gt;，数据是先从内核空间得到，然后复制到我们操作的用户空间的。&lt;/p&gt;
+
+    &lt;p&gt;​	其次因为IO读写速度慢，因为从硬盘大批量读写数据是可以明显感知得很慢的，把一个文件从C盘拖到到D盘就可以感受出来了;除此之外，还有网络IO等，这个IO读写速度就更慢了。因此在程序设计中，我们需要根据场景判断这个IO完成读写没有，或者说提交读写请求后，就去处理其他事情，等他完成了再回来。专业一点就是常说的阻塞和非阻塞等。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;一次IO的读写过程示例&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2022/02/18/rDRSXe5QnTOCUxd.png&quot; alt=&quot;~replace~/assets/images/io-model/ioflow.png&quot; /&gt;&lt;/p&gt;
+
+    &lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;c1&quot;&gt;// pseudo-code&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;fileStream&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fileStream&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;toBeRead.txt&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;fileStream&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;out&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fileStream&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;toBeWrtie.txt&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+      
+&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;2-io五大模型&quot;&gt;2. IO五大模型&lt;/h3&gt;
+
+&lt;p&gt;​	综上讨论，我们对IO是什么，做什么有了粗略的认识，我们现在就可以针对具体的五大模型展开讨论。&lt;/p&gt;
+
+&lt;h4 id=&quot;21-阻塞io---bio&quot;&gt;2.1 阻塞I/O - BIO&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;流程图：&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2022/02/27/FCRpnmBKAyqExvc.png&quot; alt=&quot;image-20220227162111556&quot; /&gt;&lt;/p&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;PS: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;read()&lt;/code&gt;一般是指本地读取数据，通过硬盘文件；&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;recvfrom()&lt;/code&gt;一般是指从&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;socket&lt;/code&gt;接收数据，通过网络中的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;socket&lt;/code&gt;文件；&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;文字说明&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;application&lt;/code&gt;向&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kernel&lt;/code&gt;发起&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;system call&lt;/code&gt;的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;read()/recvfrom()&lt;/code&gt;请求&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kernel&lt;/code&gt;如果准备好了，就从&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kernel space&lt;/code&gt;拷贝数据到&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;user space&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;拷贝完成时，则返回ok。&lt;/li&gt;
+      &lt;li&gt;此时&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;application&lt;/code&gt;继续。&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;适用情况&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;简单易用，是本地IO的首选&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;不足&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;如果是网络IO的话，要么就是空等，要么就是每一个线程开一个&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;socket()&lt;/code&gt;。前者耗费时间，后者耗费资源&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;22-非阻塞io---nio&quot;&gt;2.2 非阻塞I/O - NIO&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;流程图&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2022/02/18/YJpWBrs53A4vFuS.gif&quot; alt=&quot;~replace~/assets/images/io-model/nio.png&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;文字说明&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;application&lt;/code&gt;向&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kernel&lt;/code&gt;发起&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;system call&lt;/code&gt;的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;read()/recvfrom()&lt;/code&gt;请求&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kernel&lt;/code&gt;如果没有准备好，就返回&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;EWOULDBLOCK&lt;/code&gt;这个错误码。&lt;/li&gt;
+      &lt;li&gt;继续回到&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;application&lt;/code&gt;，该干嘛干嘛，然后再次发起&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;read()/recvfrom()&lt;/code&gt;请求&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kernel&lt;/code&gt;如果准备好了，就从&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kernel space&lt;/code&gt;拷贝数据到&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;user space&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;拷贝完成时，则返回ok&lt;/li&gt;
+      &lt;li&gt;此时&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;application&lt;/code&gt;继续。&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;适用情况&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;网络IO情况。通过反复发起&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;system call&lt;/code&gt;，如果没准备好，我就继续该干嘛干嘛，但是在数据拷贝的过程中，进程还是阻塞的。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;不足&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;system call&lt;/code&gt;是比较耗费&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cpu&lt;/code&gt;的操作，如果频繁地发起&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;system call&lt;/code&gt;也不是一个明智之举。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;23-io复用---selectpollepoll&quot;&gt;2.3 I/O复用 - (select/poll/epoll)&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;流程图&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2022/02/18/14kRnPlX5HEU9dr.gif&quot; alt=&quot;~replace~/assets/images/io-model/io_select.png&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;文字说明&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;application&lt;/code&gt;向&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kernel&lt;/code&gt;发起&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;system call&lt;/code&gt;的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;select()&lt;/code&gt;请求，向&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kernel&lt;/code&gt;传入若干个&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;file descriptor&lt;/code&gt;和操作目的(read, write)，这些一般被打包为&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fd_set&lt;/code&gt;数据。&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kernel&lt;/code&gt;同时检测若干个文件，当其中一个或多个&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;file descriptor&lt;/code&gt;就绪，返回可执行的。&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;application&lt;/code&gt;收到准备就绪的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;file descriptor&lt;/code&gt;后，对他们发起发起&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;system call&lt;/code&gt;的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;read()/recvfrom()&lt;/code&gt;请求&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kernel&lt;/code&gt;这时候准备好了，就从&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kernel space&lt;/code&gt;拷贝数据到&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;user space&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;拷贝完成时，则返回ok&lt;/li&gt;
+      &lt;li&gt;此时&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;application&lt;/code&gt;继续。&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;适用情况&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;优化了非阻塞IO大量发起&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;system call&lt;/code&gt;的问题，其核心思想在于通过一次发起大量IO请求，优先处理已经准备好的。&lt;/li&gt;
+      &lt;li&gt;IO复用还是阻塞的&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;不足&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fd_set&lt;/code&gt;受限于系统设定的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;FD_SETSIZE&lt;/code&gt;大小&lt;/li&gt;
+      &lt;li&gt;如果&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fd_set&lt;/code&gt;数目很大，需要轮询所有fd找出就绪的fd,这里的性能也很大。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;24-异步io---aio&quot;&gt;2.4 异步I/O - (AIO)&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;&lt;em&gt;流程图&lt;/em&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2022/02/18/E6dwWuM3Sljhiga.gif&quot; alt=&quot;~replace~/assets/images/io-model/aio.png&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;&lt;em&gt;文字说明&lt;/em&gt;&lt;/strong&gt;
+    &lt;ol&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;application&lt;/code&gt;向&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kernel&lt;/code&gt;发起&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;system call&lt;/code&gt;的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;aio_read()&lt;/code&gt;请求，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kernel&lt;/code&gt;立马返回。&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;application&lt;/code&gt;继续运行，而&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kernel&lt;/code&gt;则会一直等待数据准备。&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kernel&lt;/code&gt;准备好数据时，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kernel&lt;/code&gt;不需要让&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;application&lt;/code&gt;再次发次请求，直接将数据从&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kernel space&lt;/code&gt;拷贝到&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;user space&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;当拷贝完成时，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kernel&lt;/code&gt;向&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;application&lt;/code&gt;发送完成信号。&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;&lt;em&gt;适用情况&lt;/em&gt;&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;理论上，性能比之前的都要好。&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;application&lt;/code&gt;可以完全不用&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;&lt;em&gt;不足&lt;/em&gt;&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;太复杂了，比如网络框架&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;netty 5.0&lt;/code&gt;被废弃的原因就在于引入AIO提高效率，但变得非常复杂，而性能没有得到太明显优化。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;25-信号驱动io---sigio&quot;&gt;2.5 信号驱动I/O - SIGIO&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;&lt;em&gt;流程图&lt;/em&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2022/02/18/1v8xMSHKazQGfTi.gif&quot; alt=&quot;~replace~/assets/images/io-model/sio.png&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;特别说明&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;​	这种IO模型相对复杂，一般不使用，相关的资料也比较少。如果有感兴趣的可以点击这里查看&lt;a href=&quot;http://www.masterraghu.com/subjects/np/introduction/unix_network_programming_v1.3/ch25lev1sec2.html#ch25lev1sec2&quot;&gt;Signal-Driven I/O for Sockets&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;26-总结&quot;&gt;2.6 总结&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2022/02/18/xYu6VHtAJRP2QNl.png&quot; alt=&quot;image-20220218222819682&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;阻塞与非阻塞的区分&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;​	两者区别在于，非阻塞IO会不断发生system call。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;同步和异步的区分&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;​	两者区别在于，从&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kernel space&lt;/code&gt;拷贝到&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;user space&lt;/code&gt;时，进程是否还在执行。哪怕是NIO，知道数据就绪后，也是等待数据拷贝完成后，再执行下一步；而AIO则是不管&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kernel space&lt;/code&gt;拷贝完成没都继续进行，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kernel space&lt;/code&gt;拷贝完成才告诉&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;application&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;IO复用也可以设置为非阻塞模式的&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;3-selectpollepoll&quot;&gt;3. select/poll/epoll&lt;/h3&gt;
+
+&lt;p&gt;​	IO复用模型中又可进一步分为select、poll和epoll方法。前面出于排版的原因，反正这下面来进一步讲解&lt;/p&gt;
+
+&lt;h4 id=&quot;31-select&quot;&gt;3.1 select&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;代码&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fd_set&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;readfds&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fd_set&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;writefds&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fd_set&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exceptfds&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;timeval&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;timeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;​	&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;select&lt;/code&gt;函数监视的文件描述符分3类，分别是&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;writefds&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;readfds&lt;/code&gt;、和&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;exceptfds&lt;/code&gt;。调用后&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;select&lt;/code&gt;函数会阻塞，直到有描述副就绪（有数据 可读、可写、或者有&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;except&lt;/code&gt;），或者超时（&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;timeout&lt;/code&gt;指定等待时间，如果立即返回设为&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;null&lt;/code&gt;即可），函数返回。当&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;select&lt;/code&gt;函数返回后，可以 通过遍历&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fd_set&lt;/code&gt;，来找到就绪的描述符。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;特点&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;​	&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;select&lt;/code&gt;目前几乎在所有的平台上支持，其良好跨平台支持也是它的一个优点。select的一 个缺点在于单个进程能够监视的文件描述符的数量存在最大限制，在&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Linux&lt;/code&gt;上一般为1024，可以通过修改宏定义甚至重新编译内核的方式提升这一限制，但 是这样也会造成效率的降低。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;不足&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;每次调用&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;select&lt;/code&gt;，都需要把&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fd&lt;/code&gt;集合从用户态拷贝到内核态，这个开销在fd很多时会很大&lt;/li&gt;
+      &lt;li&gt;同时每次调用&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;select&lt;/code&gt;都需要在内核遍历传递进来的所有&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fd&lt;/code&gt;，这个开销在fd很多时也很大&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;select&lt;/code&gt;支持的文件描述符数量太小了，默认是1024&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;32-poll&quot;&gt;3.2 poll&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;代码&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;poll&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;pollfd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fds&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nfds&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;timeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;pollfd&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* file descriptor */&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;short&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;events&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* requested events to watch */&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;short&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;revents&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* returned events witnessed */&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;​	不同于&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;select&lt;/code&gt;使用三个&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fd_set&lt;/code&gt;，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;poll&lt;/code&gt;使用一个&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pollfd&lt;/code&gt;的指针实现。而&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pollfd&lt;/code&gt;结构包含了要监视的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;event&lt;/code&gt;和发生的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;event&lt;/code&gt;，不再使用&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;select&lt;/code&gt;“参数-值”传递的方式。同时，pollfd并没有最大数量限制。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;特点&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;​	&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;poll&lt;/code&gt;和&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;select&lt;/code&gt;类似，但是没有最大链接数的限制，因为是基于==链表存储==的。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;不足&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;poll&lt;/code&gt;没有本质上改变&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;select&lt;/code&gt;的方法，只是没有&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fd_maxsize&lt;/code&gt;的限制。&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;select&lt;/code&gt;和&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;epoll&lt;/code&gt;的不足之处还是类似的&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;33-epoll&quot;&gt;3.3 epoll&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;代码&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;epoll_create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;；&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//创建一个epoll的句柄，size用来告诉内核这个监听的数目一共有多大&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;epoll_ctl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;epfd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;op&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;epoll_event&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;；&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;epoll_wait&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;epfd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;epoll_event&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;events&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;maxevents&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;timeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;epoll_event&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;__uint32_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;events&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;  &lt;span class=&quot;cm&quot;&gt;/* Epoll events */&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;epoll_data_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;  &lt;span class=&quot;cm&quot;&gt;/* User data variable */&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+  
+&lt;span class=&quot;cm&quot;&gt;/*
+	events可以是以下几个宏的集合：
+	EPOLLIN ：表示对应的文件描述符可以读（包括对端SOCKET正常关闭）；
+	EPOLLOUT：表示对应的文件描述符可以写；
+	EPOLLPRI：表示对应的文件描述符有紧急的数据可读（这里应该表示有带外数据到来）；
+	EPOLLERR：表示对应的文件描述符发生错误；
+	EPOLLHUP：表示对应的文件描述符被挂断；
+	EPOLLET： 将EPOLL设为边缘触发(Edge Triggered)模式，这是相对于水平触发(Level Triggered)来说的。
+	EPOLLONESHOT：只监听一次事件，当监听完这次事件之后，如果还需要继续监听这个socket的话，需要再次把这个socket加入到EPOLL队列里
+*/&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;特点&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;​	&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;epoll&lt;/code&gt;较&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;select/poll&lt;/code&gt;，主要改进两个缺点。一个是性能开销，一个是文件描述符少。&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;性能优化
+        &lt;ul&gt;
+          &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;epoll&lt;/code&gt;从&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;select/poll&lt;/code&gt;中的主动轮询变为变动通知，当有事件发生的时候，被动接收通知。所以&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;epoll&lt;/code&gt;模型注册套接字后，主程序可以继续执行。&lt;/li&gt;
+          &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;epoll&lt;/code&gt;通过内核和用户空间共享一块内存来实现。&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;监视的描述符不受限制
+        &lt;ul&gt;
+          &lt;li&gt;采用红黑树存储文件描述符集合&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;不足&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;代码比较复杂&lt;/li&gt;
+      &lt;li&gt;如果没有大量的idle -connection或者dead-connection，epoll的效率并不会比select/poll高很多，但是当遇到大量的idle- connection，就会发现epoll的效率大大高于select/poll。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;34-总结&quot;&gt;3.4 总结&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2022/02/19/ApTbgqxUoIzhOPv.png&quot; alt=&quot;image-20220219001249601&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;图片来自&lt;a href=&quot;https://juejin.cn/post/6931543528971436046&quot;&gt;这里&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;参考&quot;&gt;参考&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/272891398&quot;&gt;一文搞懂select、poll和epoll区别&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://segmentfault.com/a/1190000003063859&quot;&gt;Linux IO模式及 select、poll、epoll详解&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.cnblogs.com/aspirant/p/9166944.html&quot;&gt;select/poll/epoll的区别&lt;/a&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 23 Mar 2022 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2022/03/23/linux%E4%B8%8B%E7%9A%84%E4%BA%94%E7%A7%8DIO%E6%A8%A1%E5%9E%8B/</link>
+        <guid isPermaLink="true">http://localhost:4000/2022/03/23/linux%E4%B8%8B%E7%9A%84%E4%BA%94%E7%A7%8DIO%E6%A8%A1%E5%9E%8B/</guid>
+        
+        <category>操作系统</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>linux下用户态和系统态的基础认识</title>
+        <description>&lt;h2 id=&quot;linux下用户态和系统态的基础认识&quot;&gt;linux下用户态和系统态的基础认识&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;用户态和系统态的分层设计重要初衷之一是限制不同成不同程序之间的访问能力，是linux编程下重要偏为重要的概念，在IO编程中广泛设计。希望本文能够让阅读者对用户态和系统态有个基本的认识，增进linux编程技能。&lt;/p&gt;
+
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;1-基本概念&quot;&gt;1. 基本概念&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;什么是用户态和系统态？&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;​	由于需要限制不同的程序之间的访问能力, 防止他们获取别的程序的内存数据, 或者获取外围设备的数据, 并发送到网络, CPU划分出两个权限等级 – 用户态和内核态。&lt;/p&gt;
+
+    &lt;p&gt;​	一句话，线程在CPU的运行状态分为两种，用户态和系统态。其中系统态较用户态享有更高级的指令权限。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;什么是指令权限？&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;​	每一个汇编语句对应一条&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CPU指令&lt;/code&gt;，而非常多的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cpu指令&lt;/code&gt;组成&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CPU指令集&lt;/code&gt;。&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CPU指令集&lt;/code&gt;是CPU实现软件指挥硬件执行的媒介，比如说读取某个寄存器值，写到某个寄存器上等。也就是说硬件的一切操作都是由CPU指挥的，而硬件的操作是非常繁杂和重要的，非常有可能你执行的某一个非法操作，导致操作系统内核、其他正在运行的程序崩溃。&lt;/p&gt;
+
+    &lt;p&gt;​	如果不对指令进行权限设置的话，当你生成了一个野指针时，该野指针就有可能飘到其他程序内存，甚至硬盘的某个文件上。而因为存在权限指令，这个野指针的取值范围就有限了。&lt;/p&gt;
+
+    &lt;p&gt;​	Intel把&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CPU指令集&lt;/code&gt;分为4个级别：&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ring 0&lt;/code&gt;：权限最高，可以使用使用指令。==又被叫做内核态，完全在操作系统中运行。==&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ring 1&lt;/code&gt;：&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ring 2&lt;/code&gt;：&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ring 3&lt;/code&gt;：不能操作硬件资源，如IO读写、网卡访问、申请内存。==又被叫做用户态，在应用程序中运行。==&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;​	 linux仅有&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ring 0&lt;/code&gt;和&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ring 3&lt;/code&gt;这两种权限。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;用户态和系统态是什么？&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;​	在明白&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CPU指令集权限&lt;/code&gt;后，现在理解用户态和系统态就很简单了。每个进程中都会有两个栈，分别是用户栈和内核栈，分别对应用户态与内核态的使用。&lt;/p&gt;
+
+    &lt;p&gt;​	如果进程需要执行硬件操作，如读写&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;IO&lt;/code&gt;等，就必然需要切换到内核态，使用完了，再切换回用户态。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;2-进阶概念&quot;&gt;2. 进阶概念&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;用户态和内核态的切换是如何切换的？&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;保留用户态现场（上下文、寄存器、用户栈等）&lt;/li&gt;
+      &lt;li&gt;复制用户态参数，用户栈切到内核栈，进入内核态&lt;/li&gt;
+      &lt;li&gt;额外的检查（因为内核代码对用户不信任）&lt;/li&gt;
+      &lt;li&gt;执行内核态代码&lt;/li&gt;
+      &lt;li&gt;复制内核态代码执行结果，回到用户态&lt;/li&gt;
+      &lt;li&gt;恢复用户态现场（上下文、寄存器、用户栈等）&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;用户态和内核态是如何分开的？&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;​	用户态和内核态的分割不仅仅是概念上的区分，是存在实际区别的。每个进程都创建都会分配虚拟空间地址，以&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;linux32&lt;/code&gt;位操作系统为例，其寻址范围是4G，而操作系统会把虚拟控制地址分为两部分，一部分是内核空间，一部分是用户空间。如下图所示：&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2022/02/16/FPTwMRZJhEOGHI4.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;用户态：只能操作 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0-3G&lt;/code&gt; 范围的低位虚拟空间地址&lt;/li&gt;
+      &lt;li&gt;内核态：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0-4G&lt;/code&gt; 范围的虚拟空间地址都可以操作，尤其是对 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;3-4G&lt;/code&gt; 范围的高位虚拟空间地址必须由内核态去操作&lt;/li&gt;
+      &lt;li&gt;补充：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;3G-4G&lt;/code&gt; 部分大家是共享的（指所有进程的内核态逻辑地址是共享同一块内存地址），是内核态的地址空间，这里存放在整个内核的代码和所有的内核模块，以及内核所维护的数据&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;用户态切换到内核态的方式是？&lt;/em&gt;&lt;/strong&gt;&lt;img src=&quot;https://s2.loli.net/2022/02/16/3XZMWyeQdnS7PKV.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;​	如图不能知道，一个处于用户态的应用程序如果想要操作CPU、IO等内核功能，必须通过系统调用的方式。你可以直接使用系统调用方法、也可以通过shell、函数库等对系统接口进行封装过后的方法来切换到内核态。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;什么情况下会导致用户态切换到内核态？&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;主动切换：即用户态进程主动通过系统调用的方式切换到内核态，如&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fork()&lt;/code&gt;和&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;read()/write()&lt;/code&gt;操作等。&lt;/li&gt;
+      &lt;li&gt;被动切换：
+        &lt;ul&gt;
+          &lt;li&gt;异常：当 C P U 在执行用户态的进程时，发生了一些没有预知的异常，这时当前运行进程会切换到处理此异常的内核相关进程中，也就是切换到了内核态，如缺页异常&lt;/li&gt;
+          &lt;li&gt;中断：当 C P U 在执行用户态的进程时，外围设备完成用户请求的操作后，会向 C P U 发出相应的中断信号，这时 C P U 会暂停执行下一条即将要执行的指令，转到与中断信号对应的处理程序去执行，也就是切换到了内核态。如硬盘读写操作完成，系统会切换到硬盘读写的中断处理程序中执行后边的操作等。&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;​&lt;/p&gt;
+
+&lt;p&gt;​&lt;/p&gt;
+</description>
+        <pubDate>Wed, 23 Mar 2022 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2022/03/23/linux%E4%B8%8B%E7%94%A8%E6%88%B7%E6%80%81%E5%92%8C%E7%B3%BB%E7%BB%9F%E6%80%81%E7%9A%84%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%86/</link>
+        <guid isPermaLink="true">http://localhost:4000/2022/03/23/linux%E4%B8%8B%E7%94%A8%E6%88%B7%E6%80%81%E5%92%8C%E7%B3%BB%E7%BB%9F%E6%80%81%E7%9A%84%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%86/</guid>
+        
+        <category>操作系统</category>
         
         
       </item>
@@ -265,6 +1202,46 @@
       </item>
     
       <item>
+        <title>Dot图的绘画</title>
+        <description>&lt;h2 id=&quot;graphviz安利与入门&quot;&gt;graphViz安利与入门&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;画图永远是提升表达能力，促进沟通效率的最佳方法之一。而画图最头疼的地方就在于太麻烦了。graphViz就是为了解决这个问题而提出来的，他内置了很多图形函数，可以让其他人通过写代码的方式画图。&lt;/p&gt;
+
+  &lt;p&gt;对应&lt;a href=&quot;https://github.com/marco-hmc/graphViz_tutorial&quot;&gt;仓库&lt;/a&gt;
+估计阅读函数：3h&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;1-安装&quot;&gt;1. 安装&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;在linux下如何安装？&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;​	输入&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo apt-get install graphviz&lt;/code&gt;安装即可，在终端输入&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dot -v&lt;/code&gt;检验即可知道是否安装成功。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;em&gt;怎么免安装就可以使用？&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;​	&lt;a href=&quot;https://dreampuf.github.io/GraphvizOnline/#digraph%20G%20%7B%0A%0A%20%20subgraph%20cluster_0%20%7B%0A%20%20%20%20style%3Dfilled%3B%0A%20%20%20%20color%3Dlightgrey%3B%0A%20%20%20%20node%20%5Bstyle%3Dfilled%2Ccolor%3Dwhite%5D%3B%0A%20%20%20%20a0%20-%3E%20a1%20-%3E%20a2%20-%3E%20a3%3B%0A%20%20%20%20label%20%3D%20%22process%20%231%22%3B%0A%20%20%7D%0A%0A%20%20subgraph%20cluster_1%20%7B%0A%20%20%20%20node%20%5Bstyle%3Dfilled%5D%3B%0A%20%20%20%20b0%20-%3E%20b1%20-%3E%20b2%20-%3E%20b3%3B%0A%20%20%20%20label%20%3D%20%22process%20%232%22%3B%0A%20%20%20%20color%3Dblue%0A%20%20%7D%0A%20%20start%20-%3E%20a0%3B%0A%20%20start%20-%3E%20b0%3B%0A%20%20a1%20-%3E%20b3%3B%0A%20%20b2%20-%3E%20a3%3B%0A%20%20a3%20-%3E%20a0%3B%0A%20%20a3%20-%3E%20end%3B%0A%20%20b3%20-%3E%20end%3B%0A%0A%20%20start%20%5Bshape%3DMdiamond%5D%3B%0A%20%20end%20%5Bshape%3DMsquare%5D%3B%0A%7D&quot;&gt;链接&lt;/a&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2022/02/27/A8QyUJZqETFIc4B.png&quot; alt=&quot;image-20220227151821762&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;2-示例&quot;&gt;2. 示例&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2022/02/27/24bdoCUzulTScyW.png&quot; alt=&quot;示例&quot; /&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 23 Mar 2022 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2022/03/23/dot%E5%9B%BE%E7%9A%84%E7%BB%98%E7%94%BB/</link>
+        <guid isPermaLink="true">http://localhost:4000/2022/03/23/dot%E5%9B%BE%E7%9A%84%E7%BB%98%E7%94%BB/</guid>
+        
+        
+      </item>
+    
+      <item>
         <title>C++中的智能指针</title>
         <description>&lt;h2 id=&quot;c中的智能指针&quot;&gt;C++中的智能指针&lt;/h2&gt;
 
@@ -315,363 +1292,6 @@
         <category>c++</category>
         
         <category>指针</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>MySQL并发控制</title>
-        <description>&lt;h2 id=&quot;mysql中的mvcc机制&quot;&gt;MySQL中的MVCC机制&lt;/h2&gt;
-
-&lt;h3 id=&quot;1-基本概念&quot;&gt;1. 基本概念&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;&lt;em&gt;什么是mvcc机制？&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-    &lt;p&gt;​	MVCC是一种多版本并发控制机制，是MySQL的InnoDB存储引擎实现隔离级别的一种具体方式，用于实现提交读和可重复读这两种隔离级别。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;&lt;em&gt;MVCC的实现原理&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-    &lt;p&gt;​	MVCC的两个实现核心是&lt;strong&gt;undo log&lt;/strong&gt;和&lt;strong&gt;一致性视图&lt;/strong&gt;，通过undo log来保存多版本的数据，通过一致性视图来保存当前活跃的事务列表，将两者结合和制定一定的规则来判断当前可读数据。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;&lt;em&gt;实现原理&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-    &lt;p&gt;&lt;a href=&quot;https://www.jianshu.com/p/20fa5703bd3e&quot;&gt;这里&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Wed, 23 Mar 2022 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2022/03/23/4_MySQL%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6/</link>
-        <guid isPermaLink="true">http://localhost:4000/2022/03/23/4_MySQL%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6/</guid>
-        
-        <category>数据库</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>MySQL隔离级别</title>
-        <description>&lt;h2 id=&quot;mysql中的锁&quot;&gt;MySQL中的锁&lt;/h2&gt;
-
-&lt;h3 id=&quot;1-基本概念&quot;&gt;1. 基本概念&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;&lt;em&gt;锁的定义以及目的&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-    &lt;p&gt;​	计算机协调多个进程或线程访问某一个资源的机制。MySQL中特别是处理多线程（多事务）下对数据的竞争。不同的存储引擎，其锁的支持程度、类别会有不同。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;&lt;em&gt;锁有什么缺点&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-    &lt;p&gt;​	所有锁都是额外的开销，上锁，解锁，检测锁都需要增加系统额外的开销&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;&lt;em&gt;锁的种类&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;按照锁的空间分
-        &lt;ul&gt;
-          &lt;li&gt;行锁&lt;/li&gt;
-          &lt;li&gt;表锁&lt;/li&gt;
-          &lt;li&gt;页锁&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;按照锁的权限分
-        &lt;ul&gt;
-          &lt;li&gt;排他锁：当前操作未完成之前，不给读不给写&lt;/li&gt;
-          &lt;li&gt;共享锁：多个读操作可以同时进行&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;如何解决表锁和行锁之间的冲突？&lt;/p&gt;
-
-    &lt;p&gt;&lt;a href=&quot;https://www.zhihu.com/question/51513268/answer/127777478&quot;&gt;InnoDB 的意向锁有什么作用？ - 发条地精的回答 - 知乎&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;&lt;em&gt;如何避免数据库的死锁&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;加锁顺序一致&lt;/li&gt;
-      &lt;li&gt;使用较低的隔离级别&lt;/li&gt;
-      &lt;li&gt;尽量使用索引访问数据&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;&lt;em&gt;乐观锁和悲观锁的设计理念&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;乐观锁
-        &lt;ul&gt;
-          &lt;li&gt;定义：假定会发生并发冲突&lt;/li&gt;
-          &lt;li&gt;机制：表锁、行锁&lt;/li&gt;
-          &lt;li&gt;实现层面：数据库本身实现&lt;/li&gt;
-          &lt;li&gt;使用场景：并发量大&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;悲观锁
-        &lt;ul&gt;
-          &lt;li&gt;定义：假定不会发生并发冲突，只在提交操作的时候，检测是否冲突。&lt;/li&gt;
-          &lt;li&gt;机制：提交更新是，检查版本号以及时间戳是否符合。&lt;/li&gt;
-          &lt;li&gt;实现层面：业务代码&lt;/li&gt;
-          &lt;li&gt;使用场景：并发量小&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;2-实战篇&quot;&gt;2. 实战篇&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;&lt;em&gt;表锁中如何上锁&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;隐式上锁
-        &lt;ul&gt;
-          &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;select //读锁&lt;/code&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;insert、update、delete //写锁&lt;/code&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;显式上锁
-        &lt;ul&gt;
-          &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;lock table A read // 读锁&lt;/code&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;lock table A write // 写锁&lt;/code&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;手动解锁
-        &lt;ul&gt;
-          &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;unlock tables&lt;/code&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;&lt;em&gt;行锁中如何上锁&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;隐式上锁
-        &lt;ul&gt;
-          &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;select //读锁&lt;/code&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;insert、update、delete //写锁&lt;/code&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;显式上锁
-        &lt;ul&gt;
-          &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;select * from A lock in share mode // 读锁&lt;/code&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;select * from A for update // 写锁&lt;/code&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;手动解锁
-        &lt;ul&gt;
-          &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;unlock tables&lt;/code&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;参考&quot;&gt;参考&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://learnku.com/articles/39212?order_by=vote_count&amp;amp;&quot;&gt;一张图搞定MySQL的锁机制&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Wed, 23 Mar 2022 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2022/03/23/3_MySQL%E9%94%81/</link>
-        <guid isPermaLink="true">http://localhost:4000/2022/03/23/3_MySQL%E9%94%81/</guid>
-        
-        <category>数据库</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>MySQL隔离级别</title>
-        <description>&lt;h2 id=&quot;mysql隔离级别&quot;&gt;MySQL隔离级别&lt;/h2&gt;
-
-&lt;h3 id=&quot;1-基本概念&quot;&gt;1. 基本概念&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;&lt;em&gt;为什么要有隔离？&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-    &lt;p&gt;​	如果有多个事务并发执行，每个事务作出的修改必须与其他事务隔离；在实际运用中主要有四种隔离级别，分别是读未提交、不可重复读、可重复读、串行化。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;&lt;em&gt;为什么要有不同的事务隔离级别？&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-    &lt;p&gt;​	事务隔离级别的本质是通过锁来实现的，选择隔离级别越低的，锁的粒度也就越小，对其他事务的影响也就越少，相应速度也就越快。而在数据库的角度，并行事务一般会导致的冲突有三种，分别是脏读、不可重复读以及幻读如下表所示。
-| 事务隔离级别                 |   脏读   | 不可重复读 |   幻读   |
-| —————————- | :——: | :——–: | :——: |
-| 读未提交（read-uncommitted） | 不可避免 |  不可避免  | 不可避免 |
-| 已提交读（read-committed）   |  可避免  |  不可避免  | 不可避免 |
-| 可重复读（repeatable-read）  |  可避免  |   可避免   | 不可避免 |
-| 串行化（serializable）       |  可避免  |   可避免   |  可避免  |&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;&lt;em&gt;什么是脏读、不可重复读、幻读？&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-    &lt;blockquote&gt;
-      &lt;p&gt;&lt;a href=&quot;https://www.cnblogs.com/yubaolee/p/10398633.html#%E7%AC%AC%E4%B8%80%E7%B1%BB%E4%B8%A2%E5%A4%B1%E6%9B%B4%E6%96%B0%EF%BC%88Lost%20Update%EF%BC%89&quot;&gt;参考&lt;/a&gt;&lt;/p&gt;
-    &lt;/blockquote&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;脏读&lt;/p&gt;
-
-        &lt;p&gt;&lt;a href=&quot;https://img2018.cnblogs.com/blog/42655/201902/42655-20190223001813296-1087539034.png&quot;&gt;&lt;img src=&quot;https://s2.loli.net/2022/03/27/nJbx8vT379pYMX5.png&quot; alt=&quot;微信截图_20190223000611&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-        &lt;p&gt;​	A事务执行过程中，B事务读取了A事务的修改。但是由于某些原因，A事务可能没有完成提交，发生RollBack了操作，则B事务所读取的数据就会是不正确的。这个未提交数据就是脏读（Dirty Read）。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;不可重复读&lt;/p&gt;
-
-        &lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2022/03/27/PdpIJFzwMnXO7fH.png&quot; alt=&quot;微信截图_20190223004632&quot; /&gt;&lt;/p&gt;
-
-        &lt;p&gt;​	B事务读取了两次数据，在这两次的读取过程中A事务修改了数据，B事务的这两次读取出来的数据不一样。B事务这种读取的结果，即为不可重复读（Nonrepeatable Read）。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;幻读&lt;/p&gt;
-
-        &lt;p&gt;&lt;a href=&quot;https://img2018.cnblogs.com/blog/42655/201902/42655-20190223103301213-1545516085.png&quot;&gt;&lt;img src=&quot;https://s2.loli.net/2022/03/27/mjqTMzFX9uKG4sn.png&quot; alt=&quot;微信截图_20190223102400&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-        &lt;p&gt;​	B事务读取了两次数据，在这两次的读取过程中A事务添加了数据，B事务的这两次读取出来的集合不一样。&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;四种隔离级别的简单介绍&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;读未提交（Read Uncommitted）&lt;/p&gt;
-
-        &lt;p&gt;​	在该隔离级别，所有事务都可以看到其他未提交事务的执行结果。本隔离级别是最低的隔离级别，虽然拥有超高的并发处理能力及很低的系统开销，但很少用于实际应用。因为采用这种隔离级别只能防止第一类更新丢失问题，不能解决脏读，不可重复读及幻读问题。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;读已提交（Read Committed）&lt;/p&gt;
-
-        &lt;p&gt;​	&lt;strong&gt;数据的读取不加锁，数据的写入、修改、删除需要加行锁，可以克服脏读，但无法避免不可重复读&lt;/strong&gt;&lt;/p&gt;
-
-        &lt;p&gt;​	这是大多数数据库系统的默认隔离级别（但不是MySQL默认的）。它满足了隔离的简单定义：一个事务只能看见已经提交事务所做的改变。这种隔离级别可以防止脏读问题，但会出现不可重复读及幻读问题。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;可重复读（Repeatable Read）&lt;/p&gt;
-
-        &lt;p&gt;​	通过MVCC机制实现。&lt;/p&gt;
-
-        &lt;p&gt;​	这是MySQL的默认事务隔离级别，它确保同一事务的多个实例在并发读取数据时，会看到同样的数据行。这种隔离级别可以防止除幻读外的其他问题。&lt;/p&gt;
-
-        &lt;blockquote&gt;
-          &lt;p&gt;单纯加行锁是无法解决的，T2先读取x值，T1之后经过加锁、解锁步骤，更新x的值，提交事务。T2再读的话，读出来的是T1更新后的值，两次读取结果不一致。&lt;/p&gt;
-
-          &lt;p&gt;​	&lt;img src=&quot;https://s2.loli.net/2022/03/27/dxJMSUyz5riel7N.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
-        &lt;/blockquote&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;可串行化（Serializable）&lt;/p&gt;
-
-        &lt;p&gt;​	这是最高的隔离级别，它通过强制事务排序，使之不可能相互冲突，从而解决幻读、第二类更新丢失问题。在这个级别，可以解决上面提到的所有并发问题，但可能导致大量的超时现象和锁竞争，通常数据库不会用这个隔离级别，我们需要其他的机制来解决这些问题:乐观锁和悲观锁。&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-        <pubDate>Wed, 23 Mar 2022 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2022/03/23/2_MySQL%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/</link>
-        <guid isPermaLink="true">http://localhost:4000/2022/03/23/2_MySQL%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/</guid>
-        
-        <category>数据库</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>MySQL中的事务</title>
-        <description>&lt;h2 id=&quot;mysql中的事务&quot;&gt;MySQL中的事务&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;marco&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;1-基本概念&quot;&gt;1. 基本概念&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;&lt;em&gt;什么是事务(Transaction)&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-    &lt;p&gt;​	一组SQL语句就是事务。在开启autoCommit(默认开启)的情况下，输入的SQL就是一组事务；在autoCommit关闭的情况下，还有补上commit才是一组事务。一个良好的事务系统，一般需要满足ACID特性。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;&lt;em&gt;什么是ACID&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;A:atomiciy 原子性：一个事务必须保证其中的操作要么全部执行，要么全部回滚，不可能存在只执行了一部分这种情况出现。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;C:consistency 一致性：数据必须保证从一种一致性的状态转换为另一种一致性状态。比如上一个事务中执行了第二步时系统崩溃了，数据也不会出现 A 的账户少了100块，但是 B 的账户没变的情况。要么维持原装（全部回滚），要么 A 少了100块同时 B 多了100块，只有这两种一致性状态的。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;I：isolation 隔离性：如果有多个事务并发执行，每个事务作出的修改必须与其他事务隔离；&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;D:durability 持久性：事务一旦 commit，则数据就会保存下来，即使提交完之后系统崩溃，数据也不会丢失。&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;2-进阶概念&quot;&gt;2. 进阶概念&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;&lt;em&gt;ACID是如何实现的？&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-    &lt;blockquote&gt;
-      &lt;p&gt;&lt;a href=&quot;https://blog.csdn.net/zycxnanwang/article/details/105742160&quot;&gt;参考&lt;/a&gt;&lt;/p&gt;
-
-      &lt;p&gt;&lt;a href=&quot;https://blog.csdn.net/star1210644725/article/details/96829608&quot;&gt;参考2&lt;/a&gt;&lt;/p&gt;
-    &lt;/blockquote&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;原子性&lt;/p&gt;
-
-        &lt;p&gt;​	通过&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undo log&lt;/code&gt;实现的。事务的所有修改操作(增、删、改)的相反操作都会写入undo log,比如事务执行了一条insert语句，那么undo log就会记录一条相应的delete语句。所以undo log是一个逻辑文件，记录的是相应的SQL语句一旦由于故障，导致事务无法成功提交，系统则会执行undo log中相应的撤销操作，达到事务回滚的目的。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;持久性&lt;/p&gt;
-
-        &lt;p&gt;​	事务的所有修改操作(增、删、改)，数据库都会生成一条redo日志记录到redo log.区别于undo log记录SQL语句、redo log记录的是事务对数据库的哪个数据页做了什么修改，属于物理日志。&lt;/p&gt;
-
-        &lt;p&gt;redo日志应用场景：数据库系统直接崩溃，需要进行恢复，一般数据库都会使用按时间点备份的策略，首先将数据库恢复到最近备份的时间点状态，之后读取该时间点之后的redo log记录，重新执行相应记录，达到最终恢复的目的。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;隔离性&lt;/p&gt;
-
-        &lt;p&gt;​	隔离性的实现将在下一篇MySQL中的隔离级别中进行介绍。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;一致性&lt;/p&gt;
-
-        &lt;p&gt;​	从数据库层面，数据库通过原子性、隔离性、持久性来保证一致性。也就是说ACID四大特性之中，C(一致性)是目的，A(原子性)、I(隔离性)、D(持久性)是手段，是为了保证一致性，数据库提供的手段。数据库必须要实现AID三大特性，才有可能实现一致性。例如，原子性无法保证，显然一致性也无法保证。&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Wed, 23 Mar 2022 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2022/03/23/1_MySQL%E4%BA%8B%E5%8A%A1/</link>
-        <guid isPermaLink="true">http://localhost:4000/2022/03/23/1_MySQL%E4%BA%8B%E5%8A%A1/</guid>
-        
-        <category>数据库</category>
         
         
       </item>

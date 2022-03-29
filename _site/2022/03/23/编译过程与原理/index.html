@@ -12,10 +12,10 @@
 
     <!-- Open Graph -->
     <meta property="og:title"
-        content="C++中的右值引用与移动语义 - 黄茂春的博客 | Marco's Blog | 夏虫">
+        content="编译过程与原理 - 黄茂春的博客 | Marco's Blog | 夏虫">
     
     <meta property="og:type" content="article">
-    <meta property="og:description" content="C++中的右值引用与移动语义
+    <meta property="og:description" content="编译过程与原理
 ">
     
     <meta property="article:published_time" content=" 2022-03-23T00:00:00Z">
@@ -24,16 +24,14 @@
     <meta property="article:author" content="Marco">
     
     
-    <meta property="article:tag" content="c++">
-    
-    <meta property="article:tag" content="指针">
+    <meta property="article:tag" content="编译原理">
     
     
     <meta property="og:image" content="http://localhost:4000https://github.com/Huxpro.png">
-    <meta property="og:url" content="http://localhost:4000/2022/03/23/%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%E4%B8%8E%E7%A7%BB%E5%8A%A8%E8%AF%AD%E4%B9%89/">
+    <meta property="og:url" content="http://localhost:4000/2022/03/23/%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B%E4%B8%8E%E5%8E%9F%E7%90%86/">
     <meta property="og:site_name" content="黄茂春的博客 | Marco's Blog | 夏虫">
 
-    <title>C++中的右值引用与移动语义 - 黄茂春的博客 | Marco's Blog | 夏虫</title>
+    <title>编译过程与原理 - 黄茂春的博客 | Marco's Blog | 夏虫</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -42,7 +40,7 @@
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <!-- Canonical URL -->
-    <link rel="canonical" href="http://localhost:4000/2022/03/23/%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%E4%B8%8E%E7%A7%BB%E5%8A%A8%E8%AF%AD%E4%B9%89/">
+    <link rel="canonical" href="http://localhost:4000/2022/03/23/%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B%E4%B8%8E%E5%8E%9F%E7%90%86/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href=" /css/bootstrap.min.css">
@@ -234,12 +232,10 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/archive/?tag=c%2B%2B" title="c++">c++</a>
-                        
-                        <a class="tag" href="/archive/?tag=%E6%8C%87%E9%92%88" title="指针">指针</a>
+                        <a class="tag" href="/archive/?tag=%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86" title="编译原理">编译原理</a>
                         
                     </div>
-                    <h1>C++中的右值引用与移动语义</h1>
+                    <h1>编译过程与原理</h1>
                     
                     <h2 class="subheading"></h2>
                     <span class="meta">Posted by Marco on March 23, 2022</span>
@@ -268,124 +264,266 @@
                 <!-- Multi-Lingual -->
                 
 
-				<h2 id="c中的右值引用与移动语义">C++中的右值引用与移动语义</h2>
+				<h2 id="编译过程与原理">编译过程与原理</h2>
 
-<p>​	右值引用是C++11的新特性。时常看到网上论坛有人讨论。因此这里做个说明。</p>
+<h3 id="1-编译过程---编译器在做什么">1. 编译过程 - 编译器在做什么？</h3>
 
-<h3 id="1-基本概念">1. 基本概念</h3>
+<p>如果想要机器按照我们的设想执行我们的命令，我们需要一个能够跟机器沟通的方式，而这种方式也就是==机器语言(第一代计算机语言)==，一堆<code class="language-plaintext highlighter-rouge">01</code>构成的指令。我们需要事先设计好指令集到机器上，比如说规定好从某寄存器阅读值的指令为什么。</p>
+
+<p>可这种方式面临的第一个问题就是，不同机器之间指令集不一致，比如说DSP和ARM在实现加法上，可能就会出现不同寄存器的调用方法。那很显然就会设想出一种统一的语言，即==汇编语言(第二代计算机语言)==。而汇编实现的只是将<code class="language-plaintext highlighter-rouge">01</code>等机器码指令使用一个统一的命名，如<code class="language-plaintext highlighter-rouge">ADD</code>而已。令所有机器指令集可与汇编语言转换即可。</p>
+
+<p>汇编语言仍存在很多问题，主要表现为阅读性极差、开发难度大、开发周期长、移植问题没有彻底解决。因此也就出现了==高级语言(第三代语言)==，在汇编语言的基础上实现了抽象，避免了繁琐寄存器的操作。</p>
+
+<p>那源代码(高级语言)是如何让计算机理解的呢？其步骤是？</p>
 
 <ul>
-  <li>
-    <p><strong><em>什么是左值，右值？</em></strong></p>
+  <li>如果源代码在操作系统上：源代码生成汇编代码，再通过汇编和链接方式形成可执行文件，然后通过加载器加载到操作系统执行。</li>
+  <li>如果源代码在虚拟机(解释器)上：源代码生成中间代码(人可以直接理解的，而汇编则认为人无法理解)，如字节码等。</li>
+</ul>
 
+<p>在Linux系统下，可用以下指令完成源程序到目标程序的转化：</p>
+
+<blockquote>
+  <p>gcc -o hello hello.c main.c</p>
+</blockquote>
+
+<p>gcc 编译器驱动程序读取源文件hello.c和main.c，经过预处理、编译、汇编、链接（分别使用预处理器、编译器、汇编器、链接器，这四个程序构成了编译系统）四个步骤，将其翻译成可执行目标程序hello。如下图所示：</p>
+
+<p><img src="https://s2.loli.net/2022/01/26/VGdicgwP6QvRBT8.png" alt="image-20200228004704609" /></p>
+
+<h4 id="11-预处理">1.1 预处理</h4>
+
+<p>预处理器(CPP)根据源程序中以字符”#”开头的命令，修改源程序，得到另一个源程序，常以.i作为文件扩展名。修改主要包括#include、#define和条件编译三个方面。</p>
+
+<blockquote>
+  <p>gcc -o main.i -E main.c</p>
+</blockquote>
+
+<p>预处理只是对源文件进行了扩展，得到的仍然是C语言源程序。</p>
+
+<h4 id="12-编译">1.2 编译</h4>
+
+<p>编译程序所要作得工作就是通过词法分析和语法分析，在确认所有的指令都符合语法规则之后，将其翻译成等价的中间代码表示或汇编代码。</p>
+
+<p>编译器(CCL)将经过预处理器处理得到的文本文件hello.i和main.i翻译成hello.s与main.s，其中包含了汇编语言程序，汇编语言程序以一种标准的文本格式确切描述一条低级机器语言指令。 
+ 运行以下命令进行编译：</p>
+
+<blockquote>
+  <p>gcc -S main.i hello.i</p>
+</blockquote>
+
+<h4 id="13-汇编">1.3 汇编</h4>
+
+<p>汇编器(AS)将hello.s和main.s翻译成机器语言指令，并打包成可重定位目标程序，一般以.o为文件扩展名。可重定位目标程序是二进制文件，它的字节编码是机器语言指令而不是字符。 
+ 运行以下指令可得到重定位目标程序main.o和hello.o：</p>
+
+<blockquote>
+  <p>gcc -c main.s hello.s</p>
+</blockquote>
+
+<p>用文本编辑器打开main.o和hello.o发现文件是乱码，因为此时已经是二进制文件。</p>
+
+<h4 id="14-链接">1.4 链接</h4>
+
+<p>链接程序(LD）将main.o和hello.o以及一些其他必要的目标文件组合起来，创建可执行目标文件。</p>
+
+<blockquote>
+  <p>gcc -o hello main.o hello.o</p>
+</blockquote>
+
+<p>得到可执行程序hello. 
+ 在终端运行./hello，程序加载并运行.</p>
+
+<p>根据开发人员指定的同库函数的链接方式的不同，链接处理可分为两种：</p>
+
+<ul>
+  <li>静态链接 
+在这种链接方式下，函数的代码将从其所在的静态链接库中被拷贝到最终的可执行程序中。这样该程序在被执行时这些代码将被装入到该进程的虚拟地址空间中。静态链接库实际上是一个目标文件的集合，其中的每个文件含有库中的一个或者一组相关函数的代码。</li>
+  <li>动态链接 
+在此种方式下，函数的代码被放到称作是动态链接库或共享对象的某个目标文件中。链接程序此时所作的只是在最终的可执行程序中记录下共享对象的名字以及其它少量的登记信息。在此可执行文件被执行时，动态链接库的全部内容将被映射到运行时相应进程的虚地址空间。动态链接程序将根据可执行程序中记录的信息找到相应的函数代码。 
+ 对于可执行文件中的函数调用，可分别采用动态链接或静态链接的方法。使用动态链接能够使最终的可执行文件比较短小，并且当共享对象被多个进程使用时能节约一些内存，因为在内存中只需要保存一份此共享对象的代码。但并不是使用动态链接就一定比使用静态链接要优越。在某些情况下动态链接可能带来一些性能上损害。</li>
+</ul>
+
+<p><a href="https://kshttps0.wiz.cn/ks/note/view/2336be1c-7b66-490d-91e0-240081977c3d/e730f0ac-0a19-4994-8f7f-1355d3c86eec/#动态链接">动态链接</a>
+<a href="https://kshttps0.wiz.cn/ks/note/view/2336be1c-7b66-490d-91e0-240081977c3d/e730f0ac-0a19-4994-8f7f-1355d3c86eec/#动态库的编译">动态库的编译</a></p>
+
+<h3 id="2-编译原理---编译器是如何实现的">2. 编译原理 - 编译器是如何实现的？</h3>
+
+<table>
+  <tbody>
+    <tr>
+      <td>[编译原理入门篇</td>
+      <td>一篇文章理解编译全过程](https://www.cnblogs.com/fisherss/p/13905395.html)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><img src="https://s2.loli.net/2022/01/26/xVbeED8TKaYIG2w.png" alt="image-20220126215910369" /></p>
+
+<h3 id="3-实战篇">3. 实战篇</h3>
+
+<h4 id="31-gcc的基本用法">3.1 gcc的基本用法</h4>
+
+<p><a href="http://c.biancheng.net/gcc/">gcc编译器30分钟入门篇</a></p>
+
+<p>​	从上面看下来，应该大概知道了编译的大概过程以及为什么了。而gcc就是代表的C语言的编译器。除了gcc之外还有很多，但是GCC是免费且开源的，因此更广为使用。最开始的时候是 GNU C Compiler, 就是一个c编译器。但是后来因为这个项目里边集成了更多其他不同语言的编译器，GCC就代表 the GNU Compiler Collection，所以表示一堆编译器的合集。 g++则是GCC的c++编译器。</p>
+
+<p>​	现在你在编译代码时调用的gcc，已经不是当初那个c语言编译器了，更确切的说他是一个驱动程序，根据代码的后缀名来判断调用c编译器还是c++编译器 (g++)。比如你的代码后缀是*.c，他会调用c编译器还有linker去链接c的library。如果你的代码后缀是cpp, 他会调用g++编译器，当然library call也是c++版本的。</p>
+
+<p>​	但一般来说,gcc指c语言编译器，g++值c++语言编译器.</p>
+
+<h4 id="32-make">3.2 make</h4>
+
+<p><a href="https://github.com/remonbonbon/makefile-example">makefile-example</a></p>
+
+<p>​	在运行代码前，需要使用make完成构建(build)的工作，即告诉代码要包含那些库目录，要引入哪些头文件。gcc当然也是提供简单的链接指令的，但是当工程够大的时候，就必须有一个工具来完成。这个工具就叫做make。可以理解为make就是通过makefile这一种脚本文件的形式去运行gcc。</p>
+
+<h4 id="33-cmake">3.3 cmake</h4>
+
+<p><a href="https://blog.csdn.net/afei__/article/details/81201039">CMakeLists.txt 语法介绍与实例演练</a></p>
+
+<p><a href="https://juejin.im/post/5ceb7fb0f265da1b5e72d12f">CMake 语法 - 详解 CMakeLists.txt</a></p>
+
+<p><a href="https://github.com/ttroy50/cmake-examples">cmake-example</a></p>
+
+<p>​	但是make语法仍然繁琐了，makefile往往写得又臭又长，这时候就出来了cmake。cmake可以理解为是make语法的抽象。通过写cmakelists的方式生成makefile达到我们想要的目的。</p>
+
+<h3 id="4-conclusion">4. Conclusion</h3>
+
+<p>本文分为三部分，编译过程，编译原理和实战，其中前者是我们在生产环境中实际接触到的部分，后者更像是如何制作编译器。后者非笔者所熟悉的，因此附上我认为比较好的资料。最后一部分实战篇，鉴于已经有很多好的资料，我就一并附上了。本文初衷仅在于梳理。</p>
+
+<h3 id="5附录">5.附录</h3>
+
+<h4 id="1-cpp编译器有那些">1. cpp编译器有那些</h4>
+
+<ul>
+  <li>GCC
     <ul>
-      <li>左值：可以取地址，一般在等号左边。如下面例子，<code class="language-plaintext highlighter-rouge">a</code>可以通过<code class="language-plaintext highlighter-rouge">&amp;</code>取地址，所以<code class="language-plaintext highlighter-rouge">a</code>是左值。</li>
-      <li>右值：不可以取地址，一般在等号右边。如下面例子，<code class="language-plaintext highlighter-rouge">A()</code>是个临时值，没办法通过<code class="language-plaintext highlighter-rouge">&amp;</code>取地址，所以<code class="language-plaintext highlighter-rouge">A()</code>是右值</li>
+      <li>移植到windows版本对应的就是MinGW和TDM-GCC</li>
     </ul>
-
-    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-</pre></td><td class="rouge-code"><pre><span class="k">struct</span> <span class="nc">A</span> <span class="p">{</span>
-    <span class="n">A</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">a_</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
-    <span class="p">}</span>
-   
-    <span class="kt">int</span> <span class="n">a_</span><span class="p">;</span>
-<span class="p">};</span>
-   
-<span class="n">A</span> <span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">();</span>
-</pre></td></tr></tbody></table></code></pre></div>    </div>
   </li>
   <li>
-    <p><strong><em>什么是左值引用？</em></strong></p>
-
-    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-</pre></td><td class="rouge-code"><pre><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
-<span class="kt">int</span> <span class="o">&amp;</span><span class="n">ref_a</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span> <span class="c1">// 左值引用指向左值，编译通过</span>
-<span class="kt">int</span> <span class="o">&amp;</span><span class="n">ref_a</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span> <span class="c1">// 左值引用指向了右值，会编译失败</span>
-</pre></td></tr></tbody></table></code></pre></div>    </div>
-
-    <p>​	<strong>引用是变量的别名，由于右值没有地址，没法被修改，所以左值引用无法指向右值。</strong>但是，const左值引用是可以指向右值的：</p>
-
-    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre><span class="k">const</span> <span class="kt">int</span> <span class="o">&amp;</span><span class="n">ref_a</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>  <span class="c1">// 编译通过</span>
-</pre></td></tr></tbody></table></code></pre></div>    </div>
-
-    <p>const左值引用不会修改指向值，因此可以指向右值，这也是为什么要使用<code class="language-plaintext highlighter-rouge">const &amp;</code>作为函数参数的原因之一，如<code class="language-plaintext highlighter-rouge">std::vector</code>的<code class="language-plaintext highlighter-rouge">push_back</code>：</p>
-
-    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre><span class="kt">void</span> <span class="nf">push_back</span> <span class="p">(</span><span class="k">const</span> <span class="n">value_type</span><span class="o">&amp;</span> <span class="n">val</span><span class="p">);</span>
-</pre></td></tr></tbody></table></code></pre></div>    </div>
-
-    <p>如果没有<code class="language-plaintext highlighter-rouge">const</code>，<code class="language-plaintext highlighter-rouge">vec.push_back(5)</code>这样的代码就无法编译通过了。</p>
+    <p>llvm+clang</p>
   </li>
-  <li>
-    <p><strong><em>什么是右值引用？</em></strong></p>
-
-    <p>​	再看下右值引用，右值引用的标志是<code class="language-plaintext highlighter-rouge">&amp;&amp;</code>，顾名思义，右值引用专门为右值而生，<strong>可以指向右值，不能指向左值</strong>：</p>
-
-    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-</pre></td><td class="rouge-code"><pre><span class="kt">int</span> <span class="o">&amp;&amp;</span><span class="n">ref_a_right</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span> <span class="c1">// ok</span>
-   
-<span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
-<span class="kt">int</span> <span class="o">&amp;&amp;</span><span class="n">ref_a_left</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span> <span class="c1">// 编译不过，右值引用不可以指向左值</span>
-   
-<span class="n">ref_a_right</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span> <span class="c1">// 右值引用的用途：可以修改右值</span>
-</pre></td></tr></tbody></table></code></pre></div>    </div>
+  <li>MSVC
+    <ul>
+      <li>与Visual Studio集成发布，微软自己的编译器</li>
+    </ul>
   </li>
-  <li>
-    <p><strong>为什么要有右值引用？</strong></p>
-
-    <p>​	函数的定义一般是<code class="language-plaintext highlighter-rouge">void foo(Test &amp;t){…}</code>，因为这里使用<code class="language-plaintext highlighter-rouge">&amp; t</code>可以避免函数内部再次创建对象，提升速度。</p>
-
-    <p>​	可问题来了，如果我想这样调用函数<code class="language-plaintext highlighter-rouge">foo(Test())</code>呢？往<code class="language-plaintext highlighter-rouge">foo()</code>传输一个<code class="language-plaintext highlighter-rouge">Test()</code>的临时变量，因为<code class="language-plaintext highlighter-rouge">Test()</code>是一次性的，如果是通过<code class="language-plaintext highlighter-rouge">Test A(); foo(A);</code>感觉太麻烦了，而且又要再构建一次A。当然如果函数改成<code class="language-plaintext highlighter-rouge">void foo(Test t)</code>倒是可以，但是又跟<code class="language-plaintext highlighter-rouge">void foo(Test &amp;t)</code>冲突了。</p>
-
-    <p>​	那有没有办法实现这个呢？一个是通过const方法，这里不讲；另外一个就是通过右值引用。在这个<a href="https://www.cnblogs.com/sunchaothu/p/11392116.html">例子</a>中使用右值引用实现了移动语义。</p>
-  </li>
-  <li></li>
 </ul>
 
-<h3 id="2-代码">2. 代码</h3>
-
-<h3 id="附录">附录</h3>
+<h4 id="2-gcc和g的区别">2. GCC和G++的区别</h4>
 
 <ul>
-  <li><a href="https://zhuanlan.zhihu.com/p/335994370">一文读懂C++右值引用和std::move</a></li>
-  <li><a href="https://blog.csdn.net/waxtear/article/details/104199314">c++11为什么要引入右值引用</a></li>
-  <li><a href="https://blog.csdn.net/zxc024000/article/details/51153743">c++有几种构造函数</a></li>
+  <li>GCC:GNU Compiler Collection(GUN 编译器集合)，它可以编译C、C++、JAV、Fortran、Pascal、Object-C等语言。</li>
+  <li>gcc是GCC中的GUN C Compiler（C 编译器）</li>
+  <li>g++是GCC中的GUN C++ Compiler（C++编译器）</li>
 </ul>
 
+<p>由于编译器是可以更换的，所以gcc不仅仅可以编译C文件</p>
+
+<p>所以，更准确的说法是：gcc调用了C compiler，而g++调用了C++ compiler</p>
+
+<p><strong>gcc和g++的主要区别</strong></p>
+
+<ol>
+  <li>
+    <p>对于 <em>.c和</em>.cpp文件，gcc分别当做c和cpp文件编译（c和cpp的语法强度是不一样的）</p>
+  </li>
+  <li>
+    <p>对于 <em>.c和</em>.cpp文件，g++则统一当做cpp文件编译</p>
+  </li>
+  <li>
+    <p>使用g++编译文件时，<strong>g++会自动链接标准库STL，而gcc不会自动链接STL</strong></p>
+  </li>
+  <li>
+    <p>gcc在编译C文件时，可使用的预定义宏是比较少的</p>
+  </li>
+  <li>gcc在编译cpp文件时/g++在编译c文件和cpp文件时（这时候gcc和g++调用的都是cpp文件的编译器），会加入一些额外的宏。</li>
+  <li>在用gcc编译c++文件时，为了能够使用STL，需要加参数 –lstdc++ ，但这并不代表 gcc –lstdc++ 和 g++等价，它们的区别不仅仅是这个。</li>
+</ol>
+
+<h4 id="3-静态库和动态库的用法">3. 静态库和动态库的用法</h4>
+
+<h5 id="31-定义">3.1 定义</h5>
+
+<p>​	静态库和动态库从字面意思来看，区别就是静态和动态。<strong>而这里的静态和动态指的是库的链接阶段</strong>。可以看如下的编译过程。</p>
+
+<ul>
+  <li>静态库：在链接阶段库将会与目标汇编后的目标文件.o一起打包生成可执行文件。成为可执行文件的一部分，后续此库就可以消失了。<strong>也就是说在编译的最后一步（链接阶段），如果程序需要使用静态库，在这一步都会一起打包到可执行文件中。</strong></li>
+  <li>动态库：而动态库在编译阶段都不会有什么动作，<strong>只有在程序运行时才被加载，也就是动态库的链接是发生在程序运行时期的，它和可执行文件是分开的，只是可执行文件在运行的某个时期调用了它。</strong></li>
+</ul>
+
+<h5 id="32--优缺点">3.2  优缺点</h5>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>优点</th>
+      <th>缺点</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>静态库</td>
+      <td>1、  使可执行文件依赖项少，已经被打包到可执行文件中了<br />2、  编译阶段完成链接，执行期间代码装载速度快</td>
+      <td>1、  使可执行文件变大<br />2、  若作为其他库的依赖库，将会造成多余的副本，因为必须与目标文件打包<br />3、  升级不方便，升级必须重新编译</td>
+    </tr>
+    <tr>
+      <td>动态库</td>
+      <td>1、  动态库可以实现进程之间资源共享，有一份就行<br /> 2、  升级程序简单，不需要重新编译</td>
+      <td>1、  运行期间在加载，将会减慢代码执行速度 <br />2、  增加程序的依赖项，必须跟着可执行文件一起</td>
+    </tr>
+  </tbody>
+</table>
+
+<h5 id="33-文件形式">3.3 文件形式</h5>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>windows</th>
+      <th>linux</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>静态库</td>
+      <td>.lib</td>
+      <td>Libxxx.a</td>
+    </tr>
+    <tr>
+      <td>动态库</td>
+      <td>.dll与.lib</td>
+      <td>libxxx.so</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="参考">参考</h2>
+
+<p><a href="https://lotabout.me/2015/write-a-C-interpreter-0/">手把手教你构建C语言编译器</a></p>
+
+<p><a href="https://blog.csdn.net/wuchuanpingstone/article/details/50259947">DLL文件与so文件的区别</a></p>
 
 
                 <hr style="visibility: hidden;">
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2022/03/23/linux%E4%B8%8B%E7%9A%84%E4%BA%94%E7%A7%8DIO%E6%A8%A1%E5%9E%8B/" data-toggle="tooltip" data-placement="top" title="linux下的五种IO模型">
+                        <a href="/2022/03/23/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%A4%E8%AF%86/" data-toggle="tooltip" data-placement="top" title="数据库基础导论">
                         Previous<br>
-                        <span>linux下的五种IO模型</span>
+                        <span>数据库基础导论</span>
                         </a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/2022/03/23/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%A4%E8%AF%86/" data-toggle="tooltip" data-placement="top" title="数据库基础导论">
+                        <a href="/2022/03/23/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%A4%E8%AF%86/" data-toggle="tooltip" data-placement="top" title="数据库认识">
                         Next<br>
-                        <span>数据库基础导论</span>
+                        <span>数据库认识</span>
                         </a>
                     </li>
                     

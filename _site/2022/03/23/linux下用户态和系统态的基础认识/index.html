@@ -12,10 +12,10 @@
 
     <!-- Open Graph -->
     <meta property="og:title"
-        content="C++中的右值引用与移动语义 - 黄茂春的博客 | Marco's Blog | 夏虫">
+        content="linux下用户态和系统态的基础认识 - 黄茂春的博客 | Marco's Blog | 夏虫">
     
     <meta property="og:type" content="article">
-    <meta property="og:description" content="C++中的右值引用与移动语义
+    <meta property="og:description" content="linux下用户态和系统态的基础认识
 ">
     
     <meta property="article:published_time" content=" 2022-03-23T00:00:00Z">
@@ -24,16 +24,14 @@
     <meta property="article:author" content="Marco">
     
     
-    <meta property="article:tag" content="c++">
-    
-    <meta property="article:tag" content="指针">
+    <meta property="article:tag" content="操作系统">
     
     
     <meta property="og:image" content="http://localhost:4000https://github.com/Huxpro.png">
-    <meta property="og:url" content="http://localhost:4000/2022/03/23/%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%E4%B8%8E%E7%A7%BB%E5%8A%A8%E8%AF%AD%E4%B9%89/">
+    <meta property="og:url" content="http://localhost:4000/2022/03/23/linux%E4%B8%8B%E7%94%A8%E6%88%B7%E6%80%81%E5%92%8C%E7%B3%BB%E7%BB%9F%E6%80%81%E7%9A%84%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%86/">
     <meta property="og:site_name" content="黄茂春的博客 | Marco's Blog | 夏虫">
 
-    <title>C++中的右值引用与移动语义 - 黄茂春的博客 | Marco's Blog | 夏虫</title>
+    <title>linux下用户态和系统态的基础认识 - 黄茂春的博客 | Marco's Blog | 夏虫</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -42,7 +40,7 @@
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <!-- Canonical URL -->
-    <link rel="canonical" href="http://localhost:4000/2022/03/23/%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%E4%B8%8E%E7%A7%BB%E5%8A%A8%E8%AF%AD%E4%B9%89/">
+    <link rel="canonical" href="http://localhost:4000/2022/03/23/linux%E4%B8%8B%E7%94%A8%E6%88%B7%E6%80%81%E5%92%8C%E7%B3%BB%E7%BB%9F%E6%80%81%E7%9A%84%E5%9F%BA%E7%A1%80%E8%AE%A4%E8%AF%86/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href=" /css/bootstrap.min.css">
@@ -234,12 +232,10 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/archive/?tag=c%2B%2B" title="c++">c++</a>
-                        
-                        <a class="tag" href="/archive/?tag=%E6%8C%87%E9%92%88" title="指针">指针</a>
+                        <a class="tag" href="/archive/?tag=%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F" title="操作系统">操作系统</a>
                         
                     </div>
-                    <h1>C++中的右值引用与移动语义</h1>
+                    <h1>linux下用户态和系统态的基础认识</h1>
                     
                     <h2 class="subheading"></h2>
                     <span class="meta">Posted by Marco on March 23, 2022</span>
@@ -268,124 +264,118 @@
                 <!-- Multi-Lingual -->
                 
 
-				<h2 id="c中的右值引用与移动语义">C++中的右值引用与移动语义</h2>
+				<h2 id="linux下用户态和系统态的基础认识">linux下用户态和系统态的基础认识</h2>
 
-<p>​	右值引用是C++11的新特性。时常看到网上论坛有人讨论。因此这里做个说明。</p>
+<blockquote>
+  <p>用户态和系统态的分层设计重要初衷之一是限制不同成不同程序之间的访问能力，是linux编程下重要偏为重要的概念，在IO编程中广泛设计。希望本文能够让阅读者对用户态和系统态有个基本的认识，增进linux编程技能。</p>
+
+</blockquote>
 
 <h3 id="1-基本概念">1. 基本概念</h3>
 
 <ul>
   <li>
-    <p><strong><em>什么是左值，右值？</em></strong></p>
+    <p><strong><em>什么是用户态和系统态？</em></strong></p>
+
+    <p>​	由于需要限制不同的程序之间的访问能力, 防止他们获取别的程序的内存数据, 或者获取外围设备的数据, 并发送到网络, CPU划分出两个权限等级 – 用户态和内核态。</p>
+
+    <p>​	一句话，线程在CPU的运行状态分为两种，用户态和系统态。其中系统态较用户态享有更高级的指令权限。</p>
+  </li>
+  <li>
+    <p><strong><em>什么是指令权限？</em></strong></p>
+
+    <p>​	每一个汇编语句对应一条<code class="language-plaintext highlighter-rouge">CPU指令</code>，而非常多的<code class="language-plaintext highlighter-rouge">cpu指令</code>组成<code class="language-plaintext highlighter-rouge">CPU指令集</code>。<code class="language-plaintext highlighter-rouge">CPU指令集</code>是CPU实现软件指挥硬件执行的媒介，比如说读取某个寄存器值，写到某个寄存器上等。也就是说硬件的一切操作都是由CPU指挥的，而硬件的操作是非常繁杂和重要的，非常有可能你执行的某一个非法操作，导致操作系统内核、其他正在运行的程序崩溃。</p>
+
+    <p>​	如果不对指令进行权限设置的话，当你生成了一个野指针时，该野指针就有可能飘到其他程序内存，甚至硬盘的某个文件上。而因为存在权限指令，这个野指针的取值范围就有限了。</p>
+
+    <p>​	Intel把<code class="language-plaintext highlighter-rouge">CPU指令集</code>分为4个级别：</p>
 
     <ul>
-      <li>左值：可以取地址，一般在等号左边。如下面例子，<code class="language-plaintext highlighter-rouge">a</code>可以通过<code class="language-plaintext highlighter-rouge">&amp;</code>取地址，所以<code class="language-plaintext highlighter-rouge">a</code>是左值。</li>
-      <li>右值：不可以取地址，一般在等号右边。如下面例子，<code class="language-plaintext highlighter-rouge">A()</code>是个临时值，没办法通过<code class="language-plaintext highlighter-rouge">&amp;</code>取地址，所以<code class="language-plaintext highlighter-rouge">A()</code>是右值</li>
+      <li><code class="language-plaintext highlighter-rouge">ring 0</code>：权限最高，可以使用使用指令。==又被叫做内核态，完全在操作系统中运行。==</li>
+      <li><code class="language-plaintext highlighter-rouge">ring 1</code>：</li>
+      <li><code class="language-plaintext highlighter-rouge">ring 2</code>：</li>
+      <li><code class="language-plaintext highlighter-rouge">ring 3</code>：不能操作硬件资源，如IO读写、网卡访问、申请内存。==又被叫做用户态，在应用程序中运行。==</li>
     </ul>
 
-    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-</pre></td><td class="rouge-code"><pre><span class="k">struct</span> <span class="nc">A</span> <span class="p">{</span>
-    <span class="n">A</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">a_</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
-    <span class="p">}</span>
-   
-    <span class="kt">int</span> <span class="n">a_</span><span class="p">;</span>
-<span class="p">};</span>
-   
-<span class="n">A</span> <span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">();</span>
-</pre></td></tr></tbody></table></code></pre></div>    </div>
+    <p>​	 linux仅有<code class="language-plaintext highlighter-rouge">ring 0</code>和<code class="language-plaintext highlighter-rouge">ring 3</code>这两种权限。</p>
   </li>
   <li>
-    <p><strong><em>什么是左值引用？</em></strong></p>
+    <p><strong><em>用户态和系统态是什么？</em></strong></p>
 
-    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-</pre></td><td class="rouge-code"><pre><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
-<span class="kt">int</span> <span class="o">&amp;</span><span class="n">ref_a</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span> <span class="c1">// 左值引用指向左值，编译通过</span>
-<span class="kt">int</span> <span class="o">&amp;</span><span class="n">ref_a</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span> <span class="c1">// 左值引用指向了右值，会编译失败</span>
-</pre></td></tr></tbody></table></code></pre></div>    </div>
+    <p>​	在明白<code class="language-plaintext highlighter-rouge">CPU指令集权限</code>后，现在理解用户态和系统态就很简单了。每个进程中都会有两个栈，分别是用户栈和内核栈，分别对应用户态与内核态的使用。</p>
 
-    <p>​	<strong>引用是变量的别名，由于右值没有地址，没法被修改，所以左值引用无法指向右值。</strong>但是，const左值引用是可以指向右值的：</p>
-
-    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre><span class="k">const</span> <span class="kt">int</span> <span class="o">&amp;</span><span class="n">ref_a</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>  <span class="c1">// 编译通过</span>
-</pre></td></tr></tbody></table></code></pre></div>    </div>
-
-    <p>const左值引用不会修改指向值，因此可以指向右值，这也是为什么要使用<code class="language-plaintext highlighter-rouge">const &amp;</code>作为函数参数的原因之一，如<code class="language-plaintext highlighter-rouge">std::vector</code>的<code class="language-plaintext highlighter-rouge">push_back</code>：</p>
-
-    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre><span class="kt">void</span> <span class="nf">push_back</span> <span class="p">(</span><span class="k">const</span> <span class="n">value_type</span><span class="o">&amp;</span> <span class="n">val</span><span class="p">);</span>
-</pre></td></tr></tbody></table></code></pre></div>    </div>
-
-    <p>如果没有<code class="language-plaintext highlighter-rouge">const</code>，<code class="language-plaintext highlighter-rouge">vec.push_back(5)</code>这样的代码就无法编译通过了。</p>
+    <p>​	如果进程需要执行硬件操作，如读写<code class="language-plaintext highlighter-rouge">IO</code>等，就必然需要切换到内核态，使用完了，再切换回用户态。</p>
   </li>
-  <li>
-    <p><strong><em>什么是右值引用？</em></strong></p>
-
-    <p>​	再看下右值引用，右值引用的标志是<code class="language-plaintext highlighter-rouge">&amp;&amp;</code>，顾名思义，右值引用专门为右值而生，<strong>可以指向右值，不能指向左值</strong>：</p>
-
-    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-</pre></td><td class="rouge-code"><pre><span class="kt">int</span> <span class="o">&amp;&amp;</span><span class="n">ref_a_right</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span> <span class="c1">// ok</span>
-   
-<span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
-<span class="kt">int</span> <span class="o">&amp;&amp;</span><span class="n">ref_a_left</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span> <span class="c1">// 编译不过，右值引用不可以指向左值</span>
-   
-<span class="n">ref_a_right</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span> <span class="c1">// 右值引用的用途：可以修改右值</span>
-</pre></td></tr></tbody></table></code></pre></div>    </div>
-  </li>
-  <li>
-    <p><strong>为什么要有右值引用？</strong></p>
-
-    <p>​	函数的定义一般是<code class="language-plaintext highlighter-rouge">void foo(Test &amp;t){…}</code>，因为这里使用<code class="language-plaintext highlighter-rouge">&amp; t</code>可以避免函数内部再次创建对象，提升速度。</p>
-
-    <p>​	可问题来了，如果我想这样调用函数<code class="language-plaintext highlighter-rouge">foo(Test())</code>呢？往<code class="language-plaintext highlighter-rouge">foo()</code>传输一个<code class="language-plaintext highlighter-rouge">Test()</code>的临时变量，因为<code class="language-plaintext highlighter-rouge">Test()</code>是一次性的，如果是通过<code class="language-plaintext highlighter-rouge">Test A(); foo(A);</code>感觉太麻烦了，而且又要再构建一次A。当然如果函数改成<code class="language-plaintext highlighter-rouge">void foo(Test t)</code>倒是可以，但是又跟<code class="language-plaintext highlighter-rouge">void foo(Test &amp;t)</code>冲突了。</p>
-
-    <p>​	那有没有办法实现这个呢？一个是通过const方法，这里不讲；另外一个就是通过右值引用。在这个<a href="https://www.cnblogs.com/sunchaothu/p/11392116.html">例子</a>中使用右值引用实现了移动语义。</p>
-  </li>
-  <li></li>
 </ul>
 
-<h3 id="2-代码">2. 代码</h3>
-
-<h3 id="附录">附录</h3>
+<h3 id="2-进阶概念">2. 进阶概念</h3>
 
 <ul>
-  <li><a href="https://zhuanlan.zhihu.com/p/335994370">一文读懂C++右值引用和std::move</a></li>
-  <li><a href="https://blog.csdn.net/waxtear/article/details/104199314">c++11为什么要引入右值引用</a></li>
-  <li><a href="https://blog.csdn.net/zxc024000/article/details/51153743">c++有几种构造函数</a></li>
+  <li>
+    <p><strong><em>用户态和内核态的切换是如何切换的？</em></strong></p>
+
+    <ul>
+      <li>保留用户态现场（上下文、寄存器、用户栈等）</li>
+      <li>复制用户态参数，用户栈切到内核栈，进入内核态</li>
+      <li>额外的检查（因为内核代码对用户不信任）</li>
+      <li>执行内核态代码</li>
+      <li>复制内核态代码执行结果，回到用户态</li>
+      <li>恢复用户态现场（上下文、寄存器、用户栈等）</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong><em>用户态和内核态是如何分开的？</em></strong></p>
+
+    <p>​	用户态和内核态的分割不仅仅是概念上的区分，是存在实际区别的。每个进程都创建都会分配虚拟空间地址，以<code class="language-plaintext highlighter-rouge">linux32</code>位操作系统为例，其寻址范围是4G，而操作系统会把虚拟控制地址分为两部分，一部分是内核空间，一部分是用户空间。如下图所示：</p>
+
+    <p><img src="https://s2.loli.net/2022/02/16/FPTwMRZJhEOGHI4.png" alt="img" /></p>
+
+    <ul>
+      <li>用户态：只能操作 <code class="language-plaintext highlighter-rouge">0-3G</code> 范围的低位虚拟空间地址</li>
+      <li>内核态：<code class="language-plaintext highlighter-rouge">0-4G</code> 范围的虚拟空间地址都可以操作，尤其是对 <code class="language-plaintext highlighter-rouge">3-4G</code> 范围的高位虚拟空间地址必须由内核态去操作</li>
+      <li>补充：<code class="language-plaintext highlighter-rouge">3G-4G</code> 部分大家是共享的（指所有进程的内核态逻辑地址是共享同一块内存地址），是内核态的地址空间，这里存放在整个内核的代码和所有的内核模块，以及内核所维护的数据</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong><em>用户态切换到内核态的方式是？</em></strong><img src="https://s2.loli.net/2022/02/16/3XZMWyeQdnS7PKV.png" alt="img" /></p>
+
+    <p>​	如图不能知道，一个处于用户态的应用程序如果想要操作CPU、IO等内核功能，必须通过系统调用的方式。你可以直接使用系统调用方法、也可以通过shell、函数库等对系统接口进行封装过后的方法来切换到内核态。</p>
+  </li>
+  <li>
+    <p><strong><em>什么情况下会导致用户态切换到内核态？</em></strong></p>
+
+    <ul>
+      <li>主动切换：即用户态进程主动通过系统调用的方式切换到内核态，如<code class="language-plaintext highlighter-rouge">fork()</code>和<code class="language-plaintext highlighter-rouge">read()/write()</code>操作等。</li>
+      <li>被动切换：
+        <ul>
+          <li>异常：当 C P U 在执行用户态的进程时，发生了一些没有预知的异常，这时当前运行进程会切换到处理此异常的内核相关进程中，也就是切换到了内核态，如缺页异常</li>
+          <li>中断：当 C P U 在执行用户态的进程时，外围设备完成用户请求的操作后，会向 C P U 发出相应的中断信号，这时 C P U 会暂停执行下一条即将要执行的指令，转到与中断信号对应的处理程序去执行，也就是切换到了内核态。如硬盘读写操作完成，系统会切换到硬盘读写的中断处理程序中执行后边的操作等。</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
 </ul>
 
+<p>​</p>
+
+<p>​</p>
 
 
                 <hr style="visibility: hidden;">
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2022/03/23/linux%E4%B8%8B%E7%9A%84%E4%BA%94%E7%A7%8DIO%E6%A8%A1%E5%9E%8B/" data-toggle="tooltip" data-placement="top" title="linux下的五种IO模型">
+                        <a href="/2022/03/23/lambda%E5%87%BD%E6%95%B0/" data-toggle="tooltip" data-placement="top" title="C++中的lambda">
                         Previous<br>
-                        <span>linux下的五种IO模型</span>
+                        <span>C++中的lambda</span>
                         </a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/2022/03/23/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%A4%E8%AF%86/" data-toggle="tooltip" data-placement="top" title="数据库基础导论">
+                        <a href="/2022/03/23/linux%E4%B8%8B%E7%9A%84%E4%BA%94%E7%A7%8DIO%E6%A8%A1%E5%9E%8B/" data-toggle="tooltip" data-placement="top" title="linux下的五种IO模型">
                         Next<br>
-                        <span>数据库基础导论</span>
+                        <span>linux下的五种IO模型</span>
                         </a>
                     </li>
                     
