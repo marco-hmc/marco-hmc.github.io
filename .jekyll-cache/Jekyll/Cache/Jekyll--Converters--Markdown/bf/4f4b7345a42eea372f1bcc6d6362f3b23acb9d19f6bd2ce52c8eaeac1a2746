@@ -1,0 +1,268 @@
+I"+B<h2 id="生产者-消费者队列">生产者-消费者队列</h2>
+
+<h3 id="1-基本概念">1. 基本概念</h3>
+
+<blockquote>
+  <p>第一章节很多概念都是直接转载自<a href="https://zhuanlan.zhihu.com/p/73442055">这里</a></p>
+</blockquote>
+
+<ul>
+  <li>
+    <p><strong><em>什么是生产者-消费者？</em></strong></p>
+
+    <p>​	比如有两个进程A和B，它们共享一个<strong>固定大小的缓冲区</strong>，A进程产生数据放入缓冲区，B进程从缓冲区中取出数据进行计算，那么这里其实就是一个生产者和消费者的模式，A相当于生产者，B相当于消费者</p>
+
+    <p><img src="https://s2.loli.net/2022/03/29/4e1XQFa2BApM9tV.jpg" alt="img" /></p>
+  </li>
+  <li>
+    <p><strong><em>为什么用生产者-消费者模式？</em></strong></p>
+
+    <p>​	在多线程开发中，如果生产者生产数据的速度很快，而消费者消费数据的速度很慢，那么生产者就必须等待消费者消费完了数据才能够继续生产数据，因为生产那么多也没有地方放啊；同理如果消费者的速度大于生产者那么消费者就会经常处理等待状态，所以为了达到生产者和消费者生产数据和消费数据之间的<strong>平衡</strong>，那么就需要一个缓冲区用来存储生产者生产的数据，所以就引入了生产者-消费者模式</p>
+
+    <p>​	简单来说这里的缓冲区的作用就是为了平衡生产者和消费者的处理能力，起到一个数据缓存的作用，同时也达到了一个解耦的作用</p>
+  </li>
+  <li>
+    <p><strong>生产者-消费者模式的特点</strong></p>
+
+    <ul>
+      <li>保证生产者不会在缓冲区满的时候继续向缓冲区放入数据，而消费者也不会在缓冲区空的时候，消耗数据</li>
+      <li>当缓冲区满的时候，生产者会进入休眠状态，当下次消费者开始消耗缓冲区的数据时，生产者才会被唤醒，开始往缓冲区中添加数据；当缓冲区空的时候，消费者也会进入休眠状态，直到生产者往缓冲区中添加数据时才会被唤醒</li>
+    </ul>
+
+    <p><img src="https://s2.loli.net/2022/03/29/yGVrs7CRoNOjUuz.jpg" alt="img" /></p>
+  </li>
+  <li>
+    <p><strong>生产者-消费者模式的应用场景</strong></p>
+
+    <p>生产者-消费者模式一般用于将生产数据的一方和消费数据的一方分割开来，将生产数据与消费数据的过程解耦开来</p>
+
+    <ul>
+      <li>Excutor任务执行框架：
+        <ul>
+          <li>通过将任务的提交和任务的执行解耦开来，提交任务的操作相当于生产者，执行任务的操作相当于消费者</li>
+          <li>例如使用Excutor构建web服务器，用于处理线程的请求：生产者将任务提交给线程池，线程池创建线程处理任务，如果需要运行的任务数大于线程池的基本线程数，那么就把任务扔到阻塞队列（通过线程池+阻塞队列的方式比只使用一个阻塞队列的效率高很多，因为消费者能够处理就直接处理掉了，不用每个消费者都要先从阻塞队列中取出任务再执行）</li>
+        </ul>
+      </li>
+      <li>消息中间件activeMQ:
+        <ul>
+          <li>双十一的时候，会产生大量的订单，那么不可能同时处理那么多的订单，需要将订单放入一个队列里面，然后由专门的线程处理订单。这里用户下单就是生产者，处理订单的线程就是消费者；再比如12306的抢票功能，先由一个容器存储用户提交的订单，然后再由专门处理订单的线程慢慢处理，这样可以在短时间内支持高并发服务</li>
+        </ul>
+      </li>
+      <li>任务的处理时间比较长的情况下：
+        <ul>
+          <li>比如上传附近并处理，那么这个时候可以将用户上传和处理附件分成两个过程，用一个队列暂时存储用户上传的附近，然后立刻返回用户上传成功，然后有专门的线程处理队列中的附近</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>生产者-消费者模式的优点</strong></p>
+    <ul>
+      <li>解耦：将生产者类和消费者类进行解耦，消除代码之间的依赖性，简化工作负载的管理</li>
+      <li>复用：通过将生产者类和消费者类独立开来，那么可以对生产者类和消费者类进行独立的复用与扩展</li>
+      <li>调整并发数：由于生产者和消费者的处理速度是不一样的，可以调整并发数，给予慢的一方多的并发数，来提高任务的处理速度</li>
+      <li>异步：对于生产者和消费者来说能够各司其职，生产者只需要关心缓冲区是否还有数据，不需要等待消费者处理完；同样的对于消费者来说，也只需要关注缓冲区的内容，不需要关注生产者，通过异步的方式支持高并发，将一个耗时的流程拆成生产和消费两个阶段，这样生产者因为执行put()的时间比较短，而支持高并发</li>
+      <li>支持分布式：生产者和消费者通过队列进行通讯，所以不需要运行在同一台机器上，在分布式环境中可以通过redis的list作为队列，而消费者只需要轮询队列中是否有数据。同时还能支持集群的伸缩性，当某台机器宕掉的时候，不会导致整个集群宕掉</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="2-实战篇">2. 实战篇</h3>
+
+<blockquote>
+  <p><a href="https://www.zhihu.com/question/36902051">参考自</a></p>
+
+  <p><a href="https://www.cnblogs.com/haippy/p/3252092.html">参考自2</a></p>
+</blockquote>
+
+<h4 id="21-组成">2.1 组成</h4>
+
+<ul>
+  <li>
+    <p><strong><em>生产者-消费者模式有哪些组成？</em></strong></p>
+
+    <p>​	生产者-消费者模式主要是设计一个缓冲区，生产者的产出放在缓冲区，消费者的消耗来自缓冲区。而两者通过使用互斥锁和条件变量，保证如果缓冲区产品满了，则停止生产；如果缓冲区没有产品，则停止消费。</p>
+  </li>
+</ul>
+
+<h4 id="22-代码">2.2 代码</h4>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+</pre></td><td class="rouge-code"><pre><span class="cp">#include &lt;pthread.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+</span>
+
+<span class="k">const</span> <span class="kt">int</span> <span class="n">BUFFER_LENGTH</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">buffer</span><span class="p">[</span><span class="n">BUFFER_LENGTH</span><span class="p">];</span>
+<span class="kt">int</span> <span class="n">front</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">rear</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="c1">// 缓冲区的前端和尾端</span>
+<span class="kt">int</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="n">pthread_mutex_t</span> <span class="n">mutex</span> <span class="o">=</span> <span class="n">PTHREAD_MUTEX_INITIALIZER</span><span class="p">;</span>
+<span class="n">pthread_cond_t</span> <span class="n">cond</span> <span class="o">=</span> <span class="n">PTHREAD_COND_INITIALIZER</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="o">*</span><span class="nf">producer</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">);</span>
+<span class="kt">void</span> <span class="o">*</span><span class="nf">consumer</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">);</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">pthread_t</span> <span class="n">producer_id</span><span class="p">;</span>
+    <span class="n">pthread_t</span> <span class="n">consumer_id</span><span class="p">;</span>
+
+    <span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">producer_id</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">producer</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+    
+    <span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">consumer_id</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">consumer</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+    
+	<span class="c1">//主线程运行结束，子线程也就运行结束了</span>
+	<span class="c1">//http://bbs.chinaunix.net/thread-1286290-1-1.html</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="o">*</span><span class="nf">producer</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span>
+<span class="p">{</span>    
+   <span class="c1">//pthread_detach(threadid)函数的功能是使线程ID为threadid的线程处于分离状态，一旦线程处于分离状态，</span>
+  <span class="c1">//该线程终止时底 层资源立即被回收；否则终止子线程的状态会一直保存（占用系统资源）直到主线程调用pthread_join(threadid,NULL)获取线程的退 出状态。</span>
+  <span class="c1">//通常是主线程使用pthread_create()创建子线程以后，一般可以调用pthread_detach(threadid)分离刚刚创建的子线程，</span>
+ 
+  <span class="c1">//这里的threadid是指子线程的threadid；如此以来，该子线程止时底层资源立即被回收；</span>
+  <span class="c1">//被创建的子线程也可以自己分离自己，子线程调用pthread_detach(pthread_self())就是分离自己，</span>
+ <span class="c1">//因为pthread_self()这个函数返回的就是自己本身的线程ID；</span>
+    <span class="n">pthread_detach</span><span class="p">(</span><span class="n">pthread_self</span><span class="p">());</span>
+    
+    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">size</span> <span class="o">==</span> <span class="n">BUFFER_LENGTH</span><span class="p">)</span> <span class="c1">// 如果缓冲区已满，等待; 否则，添加新产品</span>
+        <span class="p">{</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"buffer is full. producer is waiting...</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+            <span class="n">pthread_cond_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">cond</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="c1">// 往尾端添加一个产品</span>
+        <span class="n">rear</span> <span class="o">=</span> <span class="p">(</span><span class="n">rear</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">BUFFER_LENGTH</span><span class="p">;</span>
+        <span class="n">buffer</span><span class="p">[</span><span class="n">rear</span><span class="p">]</span> <span class="o">=</span> <span class="n">rand</span><span class="p">()</span> <span class="o">%</span> <span class="n">BUFFER_LENGTH</span><span class="p">;</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"producer produces the item %d: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">rear</span><span class="p">,</span> <span class="n">buffer</span><span class="p">[</span><span class="n">rear</span><span class="p">]);</span>
+        <span class="o">++</span><span class="n">size</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">// 如果当前size=1, 说明以前size=0, 消费者在等待，则给消费者发信号</span>
+        <span class="p">{</span>
+           <span class="n">pthread_cond_signal</span><span class="p">(</span><span class="o">&amp;</span><span class="n">cond</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="o">*</span><span class="nf">consumer</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">pthread_detach</span><span class="p">(</span><span class="n">pthread_self</span><span class="p">());</span>
+    
+    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">// 如果缓冲区已空，等待; 否则，消费产品</span>
+        <span class="p">{</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"buffer is empty. consumer is waiting...</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+            <span class="n">pthread_cond_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">cond</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="c1">// 从前端消费一个产品</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"consumer consumes an item%d: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">front</span><span class="p">,</span> <span class="n">buffer</span><span class="p">[</span><span class="n">front</span><span class="p">]);</span>
+        <span class="n">front</span> <span class="o">=</span> <span class="p">(</span><span class="n">front</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">BUFFER_LENGTH</span><span class="p">;</span>
+        <span class="o">--</span><span class="n">size</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">size</span> <span class="o">==</span> <span class="n">BUFFER_LENGTH</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="c1">// 如果当前size=BUFFER_LENGTH-1，说明以前生产者在等待，则给生产者发信号</span>
+        <span class="p">{</span>
+            <span class="n">pthread_cond_signal</span><span class="p">(</span><span class="o">&amp;</span><span class="n">cond</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+:ET
