@@ -1,5 +1,5 @@
 ---
-title: "MySQL聚簇索引与非聚簇索引"
+title: "5_聚簇索引与非聚簇索引"
 layout: post
 author: "Marco"
 header-style: text
@@ -8,7 +8,7 @@ tags:
   - 数据库
 ---
 
-## MySQL聚簇索引与非聚簇索引
+## 聚簇索引与非聚簇索引
 
 ### 1. 基本概念
 
