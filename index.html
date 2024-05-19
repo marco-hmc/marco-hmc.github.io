@@ -2,39 +2,54 @@
 <html lang="en">
 
 <head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3L3KV1JBV4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-3L3KV1JBV4');
+</script>
+  
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Marco’s Blog</title>
-  <meta name='description' content='Marco’s Blog'>
+  <title>Originalnicodr</title>
+  <meta name='description' content='Originalnicodr's site'>
 
-  <link rel="canonical" href="/">
+  <link rel="canonical" href="https://originalnicodr.github.io/">
+
+  
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Marco’s Blog">
-  <meta name="twitter:description" content="Marco’s Blog">
-  <meta name="twitter:image:src" content="/images/avatar.jpg">
+  <meta name="twitter:title" content="Originalnicodr">
+  <meta name="twitter:description" content="Originalnicodr&apos;s site">
+  <meta name="twitter:image" content="https://originalnicodr.github.io/images/corgi.jpg">
 
   <!-- Facebook OpenGraph -->
-  <meta property="og:title" content="Marco’s Blog">
-  <meta property="og:description" content="Marco’s Blog">
-  <meta property="og:image" content="/images/avatar.jpg">
+  <meta property="og:title" content="Originalnicodr">
+  <meta property="og:description" content="Originalnicodr&apos;s site">
+  <meta property="og:image" content="https://originalnicodr.github.io/images/corgi.jpg">
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 
   <!-- Ionicons -->
-  <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+  <link href="https://unpkg.com/ionicons@4.5.0/dist/css/ionicons.min.css" rel="stylesheet">
 
   <link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" href="/assets/spoiler-tag.css">
+
+  <script src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
+  <script src="../../js/album/jquery.swipebox.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.4.4/css/swipebox.min.css">
+  <meta name="google-site-verification" content="lKjy4N2ySkMpOrcLwEzSnOUG5-_wtxIbDRcz1dR8iI4" />
 </head>
 
 <body>
-
-    
-
     <!-- begin header -->
 <header class="c-header">
   <div class="container">
@@ -42,11 +57,11 @@
       <div class="c-header__inner">
 
         <div class="logo">
-          <a class="logo__link" href="/">
           
-            <img class="logo__image" src="/images/mc_logo1.ico" alt="Marco’s Blog">
+            <a class="logo__link" href="/">
+              <img class="logo__image" src="/images/corgi.jpg" alt="Originalnicodr">
+            </a>
           
-          </a>
         </div>
 
         <nav class="main-nav">
@@ -57,6 +72,16 @@
             </div>
 
             <div class="nav__title">Menu</div>
+
+              <!--bookshop-live name(dark-mode-toggler.jekyll.html) params() context() -->
+          <a class="dark-mode-button" onmouseover="" style="cursor: pointer;">
+  <i class="ion ion-md-moon"></i>
+</a>
+
+<script src="https://cdn.jsdelivr.net/npm/darkreader@4.9.44/darkreader.js"></script>
+<script src="../../js/dark-mode.js"></script>
+
+          <!--bookshop-live end-->
 
               <ul class="nav__list list-reset">
 
@@ -69,13 +94,24 @@
               
                 
                 <li class="nav__item">
+                  <a href="/blog/" class="nav__link">Blog</a>
+                </li>
+                
+              
+                
+                  
+
+                
+              
+                
+                <li class="nav__item">
                   <a href="/projects/" class="nav__link">Projects</a>
                 </li>
                 
               
                 
                 <li class="nav__item">
-                  <a href="/blog/" class="nav__link">Blog</a>
+                  <a href="/virtual-photography/" class="nav__link">Virtual Photography</a>
                 </li>
                 
               
@@ -89,20 +125,30 @@
             </ul>
           </div>
 
-          <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
-<!--bookshop-live name(social-link.jekyll.html) params() context() -->
-
+          <!--bookshop-live name(social-link.jekyll.html) params() context() -->
+          
 <div class="social">
   <ul class="social__list list-reset">
     
     <li class="social__item">
-      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+      <a class="social__link" href="https://twitter.com/originalnicodr" target="_blank" rel="noopener" aria-label="twitter icon"><i class="ion ion-logo-twitter"></i></a>
     </li>
     
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/originalnicodr" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+    <li class="social__item">
+      <a class="social__link" href="https://www.linkedin.com/in/nicol%C3%A1s-uriel-navall-b38022174/" target="_blank" rel="noopener" aria-label="linkedin icon"><i class="ion ion-logo-linkedin"></i></a>
+    </li>
+    
+    <li class="social__item">
+      <a class="social__link" href="mailto:niconavall@gmail.com" target="_blank" rel="noopener" aria-label="icon"><i class="ion ion-md-mail"></i></a>
+    </li>
   </ul>
 </div>
 
-<!--bookshop-live end-->
+          <!--bookshop-live end-->
         </nav>
 
         <div class="nav-button">
@@ -117,18 +163,17 @@
 
     
 
-    <!--
-        Bookshop components are accessed using the bookshop tag,
+    <!-- 
+        Bookshop components are accessed using the bookshop tag, 
         using the same syntax as the standard Jekyll include tag.
     -->
-    <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
-<!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
-
+    <!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
+          
 <div class="c-page">
 
 
     <!--bookshop-live name(hero/hero.jekyll.html) params(bind=block) context(block=content_blocks[0]) -->
-<!-- begin hero -->
+          <!-- begin hero -->
 
 <section class="c-hero animate">
   <div class="container">
@@ -137,19 +182,17 @@
         <div class="c-hero__inner">
 
           <div class="c-hero__left">
-            <h1 class="c-hero__title">Hi there, I am Marco</h1>
-            <div class="c-hero__description"><p>懂一些计算机</p> <p>捣鼓过一会儿机器人</p> <p>偶尔也写一些杂文分享生活</p> <p>希望有一些东西能够能对你有些帮助</p></div>
+            <h1 class="c-hero__title">Hi there, I am Nico</h1>
+            <div class="c-hero__description"><p><strong>Computer science student</strong> currently working as a <strong>software engineer</strong> who loves to express himself creatively through code.</p></div>
             <div class="c-hero__btn">
-              <a href="#contact" class="cta-button c-button c-button--primary c-button--small">Get in touch</a>
-              <a class="works-button c-button c-button--secondary c-button--small" href="#projects">
-                <span class="circle-bg"><i class="ion ion-md-arrow-down button-arrow"></i></span> See my notes
-              </a>
+              <a href="mailto:niconavall@gmail.com" class="cta-button c-button c-button--primary c-button--small">Get in touch</a>
+              
             </div>
           </div>
 
           <div class="c-hero__right">
             <div class="c-hero__image">
-              <img loading="lazy" src="/images/avatar.jpg" alt="">
+              <img loading="lazy" src="images/about/photo.jpg" alt="">
             </div>
           </div>
 
@@ -159,178 +202,10 @@
   </div>
 </section>
 <!-- end hero -->
-<!--bookshop-live end-->
+          <!--bookshop-live end-->
 
-    <!--bookshop-live name(projects-section/projects-section.jekyll.html) params(bind=block) context(block=content_blocks[1]) -->
-<!-- begin projects -->
-<section class="section projects" id="projects">
-  <div class="container">
-    <div class="row">
-      <div class="col col-12">
-        <div class="contaniner__inner animate">
-
-          <div class="section__info">
-            <div class="section__head">
-              <h2 class="section__title">Category Posts</h2>
-              <a class="section__link" href="/projects">View all <i class="ion ion-md-arrow-forward"></i></a>
-            </div>
-            <div class="section__description"><p>那些零零碎碎的点</p> <p>经过分门别类以及汇聚后</p> <p>就慢慢成为知识了吧</p></div>
-          </div>
-
-          
-          <div class="row">
-            
-              
-                <!--bookshop-live name(project-card/project-card.jekyll.html) params(project=project) context(project=site.projects[0]) -->
-
-<article class="c-project-card col col-4 col-d-6 col-t-12">
-  <div class="c-project-card__content">
-    <a href="/project/green-plant" class="c-project-card__image">
-      <img loading="lazy" src="/images/project/project-1.jpg" alt="操作系统">
-    </a>
-    <div class="c-project-card__info">
-      <div class="c-project-card__info-wrap">
-        <h3 class="c-project-card__title">操作系统</h3>
-      </div>
-      <div class="c-project-card__info-wrap">
-        
-        <div class="c-project-card__subtitle">Operating System</div>
-        
-      </div>
-    </div>
-  </div>
-</article>
-<!--bookshop-live end-->
-              
-            
-              
-                <!--bookshop-live name(project-card/project-card.jekyll.html) params(project=project) context(project=site.projects[1]) -->
-
-<article class="c-project-card col col-4 col-d-6 col-t-12">
-  <div class="c-project-card__content">
-    <a href="/project/antelope-anyon" class="c-project-card__image">
-      <img loading="lazy" src="/images/project/project-2.jpg" alt="计算机网络">
-    </a>
-    <div class="c-project-card__info">
-      <div class="c-project-card__info-wrap">
-        <h3 class="c-project-card__title">计算机网络</h3>
-      </div>
-      <div class="c-project-card__info-wrap">
-        
-        <div class="c-project-card__subtitle">Computer Network</div>
-        
-      </div>
-    </div>
-  </div>
-</article>
-<!--bookshop-live end-->
-              
-            
-              
-                <!--bookshop-live name(project-card/project-card.jekyll.html) params(project=project) context(project=site.projects[2]) -->
-
-<article class="c-project-card col col-4 col-d-6 col-t-12">
-  <div class="c-project-card__content">
-    <a href="/project/quiet-lake" class="c-project-card__image">
-      <img loading="lazy" src="/images/project/project-3.jpg" alt="c/c++">
-    </a>
-    <div class="c-project-card__info">
-      <div class="c-project-card__info-wrap">
-        <h3 class="c-project-card__title">c/c++</h3>
-      </div>
-      <div class="c-project-card__info-wrap">
-        
-        <div class="c-project-card__subtitle">/</div>
-        
-      </div>
-    </div>
-  </div>
-</article>
-<!--bookshop-live end-->
-              
-            
-              
-                <!--bookshop-live name(project-card/project-card.jekyll.html) params(project=project) context(project=site.projects[3]) -->
-
-<article class="c-project-card col col-4 col-d-6 col-t-12">
-  <div class="c-project-card__content">
-    <a href="/project/the-rocks" class="c-project-card__image">
-      <img loading="lazy" src="/images/project/project-6.jpg" alt="编译原理">
-    </a>
-    <div class="c-project-card__info">
-      <div class="c-project-card__info-wrap">
-        <h3 class="c-project-card__title">编译原理</h3>
-      </div>
-      <div class="c-project-card__info-wrap">
-        
-        <div class="c-project-card__subtitle">Complier Principles</div>
-        
-      </div>
-    </div>
-  </div>
-</article>
-<!--bookshop-live end-->
-              
-            
-              
-                <!--bookshop-live name(project-card/project-card.jekyll.html) params(project=project) context(project=site.projects[4]) -->
-
-<article class="c-project-card col col-4 col-d-6 col-t-12">
-  <div class="c-project-card__content">
-    <a href="/project/big-airplane" class="c-project-card__image">
-      <img loading="lazy" src="/images/project/project-5.jpg" alt="随笔">
-    </a>
-    <div class="c-project-card__info">
-      <div class="c-project-card__info-wrap">
-        <h3 class="c-project-card__title">随笔</h3>
-      </div>
-      <div class="c-project-card__info-wrap">
-        
-        <div class="c-project-card__subtitle">Essay</div>
-        
-      </div>
-    </div>
-  </div>
-</article>
-<!--bookshop-live end-->
-              
-            
-              
-                <!--bookshop-live name(project-card/project-card.jekyll.html) params(project=project) context(project=site.projects[5]) -->
-
-<article class="c-project-card col col-4 col-d-6 col-t-12">
-  <div class="c-project-card__content">
-    <a href="/project/mountains" class="c-project-card__image">
-      <img loading="lazy" src="/images/project/project-4.jpg" alt="数据结构与算法">
-    </a>
-    <div class="c-project-card__info">
-      <div class="c-project-card__info-wrap">
-        <h3 class="c-project-card__title">数据结构与算法</h3>
-      </div>
-      <div class="c-project-card__info-wrap">
-        
-        <div class="c-project-card__subtitle">Data Structure and Algorithm</div>
-        
-      </div>
-    </div>
-  </div>
-</article>
-<!--bookshop-live end-->
-              
-            
-          </div>
-          
-
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- end projects -->
-<!--bookshop-live end-->
-
-    <!--bookshop-live name(blog-section/blog-section.jekyll.html) params(bind=block) context(block=content_blocks[2]) -->
-<!-- begin blog -->
+    <!--bookshop-live name(blog-section/blog-section.jekyll.html) params(bind=block) context(block=content_blocks[1]) -->
+          <!-- begin blog -->
 <section class="section blog">
   <div class="container">
     <div class="row">
@@ -339,148 +214,547 @@
 
           <div class="section__info">
             <div class="section__head">
-              <h2 class="section__title">Recent Posts</h2>
+              <h2 class="section__title">Recent blog posts</h2>
               <a class="section__link" href="/blog">View all <i class="ion ion-md-arrow-forward"></i></a>
             </div>
             <div class="section__description"> </div>
           </div>
 
+          <div class="row">
+            
+              
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+                  <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[22]) -->
+          
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/how-to-create-and-host-your-own-portfolio-for-free">
+        <img loading="lazy" src="/images/blog/post-2.jpg" alt="How to create and host your own portfolio for free">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+      <div class="c-blog-card__tags-box">
+        
+        <a href="/tag/project" class="c-blog-card__tag">project</a>
+        
+        <a href="/tag/virtual-photography" class="c-blog-card__tag">virtual-photography</a>
+        
+      </div>
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/how-to-create-and-host-your-own-portfolio-for-free">How to create and host your own portfolio for free</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        Need a website in which to show your work, have total control over it, and don't have to pay anything to make or host (besides your sanity)? Say no more!
+      </p>
+
+      <div class="c-blog-card__meta">
+
+        
+<span class="reading-time" title="Estimated read time">
+  
+
+  
+    27 minute-read
+  
+</span>
+
+        <span class="date"><time datetime="2023-02-06T00:00:00+00:00">06 Feb 2023</time></span>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+          <!--bookshop-live end-->
+                  
+                  
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+                  <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[56]) -->
+          
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/how-we-made-a-high-quality-image-gallery-without-paying-a-single-dime">
+        <img loading="lazy" src="/images/blog/post-1.jpg" alt="How we made a high quality image gallery without paying a single dime">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+      <div class="c-blog-card__tags-box">
+        
+        <a href="/tag/programming" class="c-blog-card__tag">programming</a>
+        
+        <a href="/tag/project" class="c-blog-card__tag">project</a>
+        
+        <a href="/tag/virtual-photography" class="c-blog-card__tag">virtual-photography</a>
+        
+      </div>
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/how-we-made-a-high-quality-image-gallery-without-paying-a-single-dime">How we made a high quality image gallery without paying a single dime</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        A dive into how the poor man's necessity sharpens one's problem solving ability (or how we took advantage of multiple million dollar companies' free services).
+      </p>
+
+      <div class="c-blog-card__meta">
+
+        
+<span class="reading-time" title="Estimated read time">
+  
+
+  
+    20 minute-read
+  
+</span>
+
+        <span class="date"><time datetime="2021-09-18T00:00:00+00:00">18 Sep 2021</time></span>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+          <!--bookshop-live end-->
+                  
+                  
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+            
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- end blog -->
+          <!--bookshop-live end-->
+
+    <!--bookshop-live name(album-section/album-section.jekyll.html) params(bind=block) context(block=content_blocks[2]) -->
+          <!-- begin albums -->
+<section class="section albums" id="albums">
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+        <div class="contaniner__inner animate">
+
+          <div class="section__info">
+            <div class="section__head">
+              <h2 class="section__title">Virtual Photography</h2>
+              <a class="section__link" href="/virtual-photography">View all <i class="ion ion-md-arrow-forward"></i></a>
+            </div>
+            <div class="section__description"></div>
+          </div>
+
+          
           
           <div class="row">
             
               
-                <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[0]) -->
+                <!--bookshop-live name(album-card/album-card.jekyll.html) params(album=album) context(album=ordered=albums[0]) -->
+          
 
-<div class="c-blog-card col col-4 col-d-6 col-t-12">
-  <div class="c-blog-card__inner">
 
-    
-    <div class="c-blog-card__image-wrap">
-      <a class="c-blog-card__image" href="/blog/10-%E6%B7%B1%E5%BA%A6%E6%8E%A2%E7%B4%A2c-%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B">
-        <img loading="lazy" src="/images/post/post-6.jpg" alt="深度探索C++对象模型">
-      </a>
-    </div>
-    
 
-    <div class="c-blog-card__content">
-
-      
-
-      <h2 class="c-blog-card__title">
-        <a href="/blog/10-%E6%B7%B1%E5%BA%A6%E6%8E%A2%E7%B4%A2c-%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B">深度探索C++对象模型</a>
-      </h2>
-
-      <p class="c-blog-card__excerpt">
-        深度探索C++对象模型
-
-[toc]
-1. 关于对象
-
-  C++对象模型的组成:
-    
-      所有的非静态数据成员存储在对象本身中.
-      所有的静态数据成员/成员函数(包括静态与非静态)都置于对象之外.
-     ...
-      </p>
-
-      <div class="c-blog-card__meta">
-        <div class="c-blog-card__author-image">
-          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
-        </div>
-        <div class="c-blog-card__info">
-          <div class="c-blog-card__author-name">Marco Hwong</div>
-          <span class="c-blog-card__date"><time datetime="2024-05-19T05:57:31+00:00">19 May 2024</time></span>
-        </div>
+<article class="c-album-card col col-4 col-d-6 col-t-12">
+  <div class="c-album-card__content">
+    <a href="/virtual-photography/favourites" class="c-album-card__image">
+      <img loading="lazy" src="https://f005.backblazeb2.com/b2api/v2/b2_download_file_by_id?fileId=4_z589fa6a87944eb3d8fd00b1d_f1054075c58cdecd4_d20240304_m020331_c005_v0501017_t0038_u01709517811207" alt="Favourites">
+    </a>
+    <div class="c-album-card__info">
+      <div class="c-album-card__info-wrap">
+        <h3 class="c-album-card__title">Favourites</h3>
       </div>
-
+      <div class="c-album-card__info-wrap">
+        
+      </div>
     </div>
   </div>
-</div>
-<!--bookshop-live end-->
+</article>
+          <!--bookshop-live end-->
               
-                <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[1]) -->
-
-<div class="c-blog-card col col-4 col-d-6 col-t-12">
-  <div class="c-blog-card__inner">
-
-    
-    <div class="c-blog-card__image-wrap">
-      <a class="c-blog-card__image" href="/blog/9-%E4%BB%80%E4%B9%88%E6%98%AFsoa%E5%92%8Caos">
-        <img loading="lazy" src="/images/post/post-9.jpg" alt="什么是soa和aos">
-      </a>
-    </div>
-    
-
-    <div class="c-blog-card__content">
-
-      
-
-      <h2 class="c-blog-card__title">
-        <a href="/blog/9-%E4%BB%80%E4%B9%88%E6%98%AFsoa%E5%92%8Caos">什么是soa和aos</a>
-      </h2>
-
-      <p class="c-blog-card__excerpt">
-        什么是soa和aos
-好的，让我们通过一个具体的例子来解释 SOA（Structure of Arrays）和 AOS（Array of Structures）。
-
-假设我们有一个粒子系统，每个粒子都有位置（x，y，z）和速度（vx，...
-      </p>
-
-      <div class="c-blog-card__meta">
-        <div class="c-blog-card__author-image">
-          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
-        </div>
-        <div class="c-blog-card__info">
-          <div class="c-blog-card__author-name">Marco Hwong</div>
-          <span class="c-blog-card__date"><time datetime="2024-05-19T05:57:24+00:00">19 May 2024</time></span>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-<!--bookshop-live end-->
+            
               
-                <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[2]) -->
+                <!--bookshop-live name(album-card/album-card.jekyll.html) params(album=album) context(album=ordered=albums[1]) -->
+          
 
-<div class="c-blog-card col col-4 col-d-6 col-t-12">
-  <div class="c-blog-card__inner">
 
-    
-    <div class="c-blog-card__image-wrap">
-      <a class="c-blog-card__image" href="/blog/8-c-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6-shared-ptr%E7%9A%84%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0%E5%87%BA%E7%8E%B0%E5%BE%AA%E7%8E%AF%E5%BC%95%E7%94%A8%E6%80%8E%E4%B9%88%E5%8A%9E">
-        <img loading="lazy" src="/images/post/post-3.jpg" alt="C++垃圾回收,shared_ptr的引用计数出现循环引用怎么办">
-      </a>
-    </div>
-    
 
-    <div class="c-blog-card__content">
-
-      
-
-      <h2 class="c-blog-card__title">
-        <a href="/blog/8-c-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6-shared-ptr%E7%9A%84%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0%E5%87%BA%E7%8E%B0%E5%BE%AA%E7%8E%AF%E5%BC%95%E7%94%A8%E6%80%8E%E4%B9%88%E5%8A%9E">C++垃圾回收,shared_ptr的引用计数出现循环引用怎么办</a>
-      </h2>
-
-      <p class="c-blog-card__excerpt">
-        std::weak_ptr 是一个不控制资源生命周期的智能指针,是对对象的一种弱引用,只是提供了对其管理的资源的一个访问手段,引入它的目的为协助 std::shared_ptr 工作.
-std::weak_ptr 可以从一个 std:...
-      </p>
-
-      <div class="c-blog-card__meta">
-        <div class="c-blog-card__author-image">
-          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
-        </div>
-        <div class="c-blog-card__info">
-          <div class="c-blog-card__author-name">Marco Hwong</div>
-          <span class="c-blog-card__date"><time datetime="2024-05-19T05:57:15+00:00">19 May 2024</time></span>
-        </div>
+<article class="c-album-card col col-4 col-d-6 col-t-12">
+  <div class="c-album-card__content">
+    <a href="/virtual-photography/star-wars-jedi-survivor" class="c-album-card__image">
+      <img loading="lazy" src="https://f005.backblazeb2.com/b2api/v2/b2_download_file_by_id?fileId=4_z589fa6a87944eb3d8fd00b1d_f10507f11738cf856_d20240304_m021233_c005_v0501018_t0055_u01709518353093" alt="Star Wars Jedi: Survivor">
+    </a>
+    <div class="c-album-card__info">
+      <div class="c-album-card__info-wrap">
+        <h3 class="c-album-card__title">Star Wars Jedi: Survivor</h3>
       </div>
-
+      <div class="c-album-card__info-wrap">
+        
+      </div>
     </div>
   </div>
-</div>
-<!--bookshop-live end-->
+</article>
+          <!--bookshop-live end-->
+              
+            
+              
+                <!--bookshop-live name(album-card/album-card.jekyll.html) params(album=album) context(album=ordered=albums[2]) -->
+          
+
+
+
+<article class="c-album-card col col-4 col-d-6 col-t-12">
+  <div class="c-album-card__content">
+    <a href="/virtual-photography/horizon-zero-dawn" class="c-album-card__image">
+      <img loading="lazy" src="https://f005.backblazeb2.com/b2api/v2/b2_download_file_by_id?fileId=4_z589fa6a87944eb3d8fd00b1d_f10367716e10e2acc_d20240304_m013428_c005_v0501018_t0023_u01709516068763" alt="Horizon Zero Dawn">
+    </a>
+    <div class="c-album-card__info">
+      <div class="c-album-card__info-wrap">
+        <h3 class="c-album-card__title">Horizon Zero Dawn</h3>
+      </div>
+      <div class="c-album-card__info-wrap">
+        
+      </div>
+    </div>
+  </div>
+</article>
+          <!--bookshop-live end-->
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
               
             
           </div>
@@ -491,13 +765,13 @@ std::weak_ptr 可以从一个 std:...
     </div>
   </div>
 </section>
-<!-- end blog -->
-<!--bookshop-live end-->
+<!-- end album -->
+          <!--bookshop-live end-->
 
 
 </div>
 
-<!--bookshop-live end-->
+          <!--bookshop-live end-->
 
     <div class="top" title="Top"><i class="ion ion-ios-arrow-up"></i></div>
 
@@ -507,20 +781,30 @@ std::weak_ptr 可以从一个 std:...
     <div class="row">
       <div class="col col-12">
 
-        <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
-<!--bookshop-live name(social-link.jekyll.html) params() context() -->
-
+        <!--bookshop-live name(social-link.jekyll.html) params() context() -->
+          
 <div class="social">
   <ul class="social__list list-reset">
     
     <li class="social__item">
-      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+      <a class="social__link" href="https://twitter.com/originalnicodr" target="_blank" rel="noopener" aria-label="twitter icon"><i class="ion ion-logo-twitter"></i></a>
     </li>
     
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/originalnicodr" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+    <li class="social__item">
+      <a class="social__link" href="https://www.linkedin.com/in/nicol%C3%A1s-uriel-navall-b38022174/" target="_blank" rel="noopener" aria-label="linkedin icon"><i class="ion ion-logo-linkedin"></i></a>
+    </li>
+    
+    <li class="social__item">
+      <a class="social__link" href="mailto:niconavall@gmail.com" target="_blank" rel="noopener" aria-label="icon"><i class="ion ion-md-mail"></i></a>
+    </li>
   </ul>
 </div>
 
-<!--bookshop-live end-->
+          <!--bookshop-live end-->
 
         <ul class="footer_nav list-reset">
           
@@ -529,24 +813,24 @@ std::weak_ptr 可以从一个 std:...
           </li>
           
           <li class="footer_nav__item">
+            <a href="/blog/" class="footer_nav__link">Blog</a>
+          </li>
+          
+          <li class="footer_nav__item">
             <a href="/projects/" class="footer_nav__link">Projects</a>
           </li>
           
           <li class="footer_nav__item">
-            <a href="/elements/" class="footer_nav__link">Elements</a>
+            <a href="/virtual-photography/" class="footer_nav__link">Virtual Photography</a>
           </li>
           
           <li class="footer_nav__item">
             <a href="/about/" class="footer_nav__link">About</a>
           </li>
           
-          <li class="footer_nav__item">
-            <a href="/blog/" class="footer_nav__link">Blog</a>
-          </li>
-          
         </ul>
 
-        <div class="copyright"><p> 2021 &copy; <a href="/">Vonge</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
+        <div class="copyright"><p>Made with <i class="ion ion-md-heart"></i> and Jekyll.</p> <p>Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
 
       </div>
     </div>
@@ -554,7 +838,41 @@ std::weak_ptr 可以从一个 std:...
 </footer>
 <!-- end footer -->
 
+    <!--
+        load the live component for CloudCannon live previews.
+    -->
+    <script>
+(function(){
+  const bookshopLiveSetup = (CloudCannon) => {
+    CloudCannon.enableEvents();
+
+    const head = document.querySelector('head');
+    const script = document.createElement('script');
+    script.src = `/_cloudcannon/bookshop-live.js`;
+    script.onload = function() {
+      window.bookshopLive = new window.BookshopLive({
+        remoteGlobals: ['/_cloudcannon/bookshop-site-data.json']
+      });
+      const updateBookshopLive = async () => {
+        const frontMatter = await CloudCannon.value();
+        const options = window.bookshopLiveOptions || {};
+        await window.bookshopLive.update({page: frontMatter}, options);
+        CloudCannon?.refreshInterface?.();
+      }
+      document.addEventListener('cloudcannon:update', updateBookshopLive);
+      updateBookshopLive();
+    }
+    head.appendChild(script);
+  }
+
+  document.addEventListener('cloudcannon:load', function (e) {
+    bookshopLiveSetup(e.detail.CloudCannon);
+  });
+})();
+</script>
+
     <script src="/js/scripts.js"></script>
     <script src="/js/common.js"></script>
+    <script src="/js/spoiler-tag.js"></script>
 </body>
 </html>

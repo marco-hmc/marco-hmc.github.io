@@ -2,39 +2,54 @@
 <html lang="en">
 
 <head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3L3KV1JBV4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-3L3KV1JBV4');
+</script>
+  
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>About</title>
-  <meta name='description' content='Marco’s Blog'>
+  <meta name='description' content='Originalnicodr's site'>
 
-  <link rel="canonical" href="/about/">
+  <link rel="canonical" href="https://originalnicodr.github.io/about/">
+
+  
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="About – Marco’s Blog">
+  <meta name="twitter:title" content="About – Originalnicodr">
   <meta name="twitter:description" content="">
-  <meta name="twitter:image:src" content="">
+  <meta name="twitter:image" content="https://originalnicodr.github.io/images/corgi.jpg">
 
   <!-- Facebook OpenGraph -->
-  <meta property="og:title" content="About – Marco’s Blog">
+  <meta property="og:title" content="About – Originalnicodr">
   <meta property="og:description" content="">
-  <meta property="og:image" content="">
+  <meta property="og:image" content="https://originalnicodr.github.io/images/corgi.jpg">
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 
   <!-- Ionicons -->
-  <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+  <link href="https://unpkg.com/ionicons@4.5.0/dist/css/ionicons.min.css" rel="stylesheet">
 
   <link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" href="/assets/spoiler-tag.css">
+
+  <script src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
+  <script src="../../js/album/jquery.swipebox.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.4.4/css/swipebox.min.css">
+  <meta name="google-site-verification" content="lKjy4N2ySkMpOrcLwEzSnOUG5-_wtxIbDRcz1dR8iI4" />
 </head>
 
 <body>
-
-    
-
     <!-- begin header -->
 <header class="c-header">
   <div class="container">
@@ -42,11 +57,11 @@
       <div class="c-header__inner">
 
         <div class="logo">
-          <a class="logo__link" href="/">
           
-            <img class="logo__image" src="/images/mc_logo1.ico" alt="Marco’s Blog">
+            <a class="logo__link" href="/">
+              <img class="logo__image" src="/images/corgi.jpg" alt="Originalnicodr">
+            </a>
           
-          </a>
         </div>
 
         <nav class="main-nav">
@@ -57,6 +72,16 @@
             </div>
 
             <div class="nav__title">Menu</div>
+
+              <!--bookshop-live name(dark-mode-toggler.jekyll.html) params() context() -->
+          <a class="dark-mode-button" onmouseover="" style="cursor: pointer;">
+  <i class="ion ion-md-moon"></i>
+</a>
+
+<script src="https://cdn.jsdelivr.net/npm/darkreader@4.9.44/darkreader.js"></script>
+<script src="../../js/dark-mode.js"></script>
+
+          <!--bookshop-live end-->
 
               <ul class="nav__list list-reset">
 
@@ -69,13 +94,24 @@
               
                 
                 <li class="nav__item">
+                  <a href="/blog/" class="nav__link">Blog</a>
+                </li>
+                
+              
+                
+                  
+
+                
+              
+                
+                <li class="nav__item">
                   <a href="/projects/" class="nav__link">Projects</a>
                 </li>
                 
               
                 
                 <li class="nav__item">
-                  <a href="/blog/" class="nav__link">Blog</a>
+                  <a href="/virtual-photography/" class="nav__link">Virtual Photography</a>
                 </li>
                 
               
@@ -89,20 +125,30 @@
             </ul>
           </div>
 
-          <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
-<!--bookshop-live name(social-link.jekyll.html) params() context() -->
-
+          <!--bookshop-live name(social-link.jekyll.html) params() context() -->
+          
 <div class="social">
   <ul class="social__list list-reset">
     
     <li class="social__item">
-      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+      <a class="social__link" href="https://twitter.com/originalnicodr" target="_blank" rel="noopener" aria-label="twitter icon"><i class="ion ion-logo-twitter"></i></a>
     </li>
     
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/originalnicodr" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+    <li class="social__item">
+      <a class="social__link" href="https://www.linkedin.com/in/nicol%C3%A1s-uriel-navall-b38022174/" target="_blank" rel="noopener" aria-label="linkedin icon"><i class="ion ion-logo-linkedin"></i></a>
+    </li>
+    
+    <li class="social__item">
+      <a class="social__link" href="mailto:niconavall@gmail.com" target="_blank" rel="noopener" aria-label="icon"><i class="ion ion-md-mail"></i></a>
+    </li>
   </ul>
 </div>
 
-<!--bookshop-live end-->
+          <!--bookshop-live end-->
         </nav>
 
         <div class="nav-button">
@@ -117,53 +163,44 @@
 
     
 
-    <!--
-        Bookshop components are accessed using the bookshop tag,
+    <!-- 
+        Bookshop components are accessed using the bookshop tag, 
         using the same syntax as the standard Jekyll include tag.
     -->
-    <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
-<!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
-
+    <!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
+          
 <div class="c-page">
 
 
     <!--bookshop-live name(page-heading/page-heading.jekyll.html) params(bind=block) context(block=content_blocks[0]) -->
-
+          
 <div class="container">
   <div class="c-page-heading">
-    <h1 class="c-page-heading__title">About</h1>
+    
+      <h1 class="c-page-heading__title">About</h1>
+    
     
   </div>
 </div>
-<!--bookshop-live end-->
+          <!--bookshop-live end-->
 
-    <!--bookshop-live name(page-image/page-image.jekyll.html) params(bind=block) context(block=content_blocks[1]) -->
-
-<div class="container">
-  <div class="row">
-    <div class="col col-12">
-      <div class="c-page-image animate">
-        <img loading="lazy" src="/images/page-1.jpg" alt="My best photo">
-      </div>
-    </div>
-  </div>
-</div>
-<!--bookshop-live end-->
-
-    <!--bookshop-live name(content/content.jekyll.html) params(bind=block) context(block=content_blocks[2]) -->
-<div class="container">
+    <!--bookshop-live name(content/content.jekyll.html) params(bind=block) context(block=content_blocks[1]) -->
+          <div class="container">
   <div class="page animate">
-    <blockquote>
-  <p>我想写些东西 写一些我知道的 写一些我所想的</p>
-</blockquote> <p>我知道我些许是一个有些老套的人</p> <p>毕竟这年代还有写作习惯的人确实不多了</p> <p>但我曾听过这么一句话</p> <p>一个人闲暇时候会去做的</p> <p>决定了这个人和他人有什么不同</p> <P>那与其浪费时间 不如就写些什么吧</P> <p>在这个过程中，去学会自己做自己的老师吧</p> <p>毕竟学习和思考也不算件枯燥的事</p> <p>在这个过程中，也去学会自己和自己对话吧</p> <p>让我的"自我"能够永远滋滋地作响</p> <p>翻腾不休 像火炭上的一颗糖</p> <p>不被他人同化 不去随波逐流</p>
+    <img class="about-photo" src=/images/about/photo.jpg alt=Photo/> <p>My name is <strong>Nicolás Uriel Navall</strong> and I am an Argentinian computer science student who loves to express himself creatively through code.</p>
+<p>I like to work on interesting and challenging problems and reach simple and elegant solutions. I enjoy working on projects that I (and hopefully others) find helpful, especially if none has aimed to do something similar yet.</p>
+<p>I like to use programming as a creative outlet with projects and learn in the process. I consider myself a versatile developer, open to learning the necessary tools to achieve my goals, as well as sharing my enthusiasm about them and trying to teach what I learned <a href="../blog/">on my blog</a>.<p>
+My interests vary from modding, math, and machine learning to software engineering, game design, and the gaming industry as a whole; and, as you may probably notice with this site, virtual photography and writing in general.</p>
+<p>You can check out some of the projects I have been working on in my <a href="https://github.com/originalnicodr">Github</a>, and the game projects I have been involved in on <a href="https://itch.io/profile/originalnicodr">itch.io</a> (all of which are also linked in the <a href="../projects/">projects section</a>). I also tend to collaborate on the <a href="https://framedsc.com/">Framed site</a> by writing guides, doing maintenance, and more.</p>
+<p>If you have a question about any of my projects, are interested in collaborating, or simply want to chat, please don't hesitate to reach out <a href="mailto:niconavall@gmail.com">via email</a>.</p>
   </div>
 </div>
-<!--bookshop-live end-->
+          <!--bookshop-live end-->
 
 
 </div>
 
-<!--bookshop-live end-->
+          <!--bookshop-live end-->
 
     <div class="top" title="Top"><i class="ion ion-ios-arrow-up"></i></div>
 
@@ -173,20 +210,30 @@
     <div class="row">
       <div class="col col-12">
 
-        <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
-<!--bookshop-live name(social-link.jekyll.html) params() context() -->
-
+        <!--bookshop-live name(social-link.jekyll.html) params() context() -->
+          
 <div class="social">
   <ul class="social__list list-reset">
     
     <li class="social__item">
-      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+      <a class="social__link" href="https://twitter.com/originalnicodr" target="_blank" rel="noopener" aria-label="twitter icon"><i class="ion ion-logo-twitter"></i></a>
     </li>
     
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/originalnicodr" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+    <li class="social__item">
+      <a class="social__link" href="https://www.linkedin.com/in/nicol%C3%A1s-uriel-navall-b38022174/" target="_blank" rel="noopener" aria-label="linkedin icon"><i class="ion ion-logo-linkedin"></i></a>
+    </li>
+    
+    <li class="social__item">
+      <a class="social__link" href="mailto:niconavall@gmail.com" target="_blank" rel="noopener" aria-label="icon"><i class="ion ion-md-mail"></i></a>
+    </li>
   </ul>
 </div>
 
-<!--bookshop-live end-->
+          <!--bookshop-live end-->
 
         <ul class="footer_nav list-reset">
           
@@ -195,24 +242,24 @@
           </li>
           
           <li class="footer_nav__item">
+            <a href="/blog/" class="footer_nav__link">Blog</a>
+          </li>
+          
+          <li class="footer_nav__item">
             <a href="/projects/" class="footer_nav__link">Projects</a>
           </li>
           
           <li class="footer_nav__item">
-            <a href="/elements/" class="footer_nav__link">Elements</a>
+            <a href="/virtual-photography/" class="footer_nav__link">Virtual Photography</a>
           </li>
           
           <li class="footer_nav__item">
             <a href="/about/" class="footer_nav__link">About</a>
           </li>
           
-          <li class="footer_nav__item">
-            <a href="/blog/" class="footer_nav__link">Blog</a>
-          </li>
-          
         </ul>
 
-        <div class="copyright"><p> 2021 &copy; <a href="/">Vonge</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
+        <div class="copyright"><p>Made with <i class="ion ion-md-heart"></i> and Jekyll.</p> <p>Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
 
       </div>
     </div>
@@ -220,7 +267,41 @@
 </footer>
 <!-- end footer -->
 
+    <!--
+        load the live component for CloudCannon live previews.
+    -->
+    <script>
+(function(){
+  const bookshopLiveSetup = (CloudCannon) => {
+    CloudCannon.enableEvents();
+
+    const head = document.querySelector('head');
+    const script = document.createElement('script');
+    script.src = `/_cloudcannon/bookshop-live.js`;
+    script.onload = function() {
+      window.bookshopLive = new window.BookshopLive({
+        remoteGlobals: ['/_cloudcannon/bookshop-site-data.json']
+      });
+      const updateBookshopLive = async () => {
+        const frontMatter = await CloudCannon.value();
+        const options = window.bookshopLiveOptions || {};
+        await window.bookshopLive.update({page: frontMatter}, options);
+        CloudCannon?.refreshInterface?.();
+      }
+      document.addEventListener('cloudcannon:update', updateBookshopLive);
+      updateBookshopLive();
+    }
+    head.appendChild(script);
+  }
+
+  document.addEventListener('cloudcannon:load', function (e) {
+    bookshopLiveSetup(e.detail.CloudCannon);
+  });
+})();
+</script>
+
     <script src="/js/scripts.js"></script>
     <script src="/js/common.js"></script>
+    <script src="/js/spoiler-tag.js"></script>
 </body>
 </html>

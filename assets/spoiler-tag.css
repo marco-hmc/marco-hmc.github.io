@@ -1,0 +1,82 @@
+.huge {
+  font-size: 5rem;
+}
+
+.spoiler-text {
+  background: black;
+  color: transparent;
+  cursor: help;
+  user-select: none;
+  transition: background 0.3s ease 0.2s, color 0.2s ease 0.25s;
+}
+
+.spoiler-text:hover,
+.spoiler-text:focus {
+  background: #e8e8e8;
+  color: inherit;
+}
+
+.spoiler-details {
+  border: 1px solid #bbb;
+  border-radius: 5px;
+  padding: 0.5rem;
+  margin: 0.5rem;
+  max-width: 50%;
+  min-width: 300px;
+}
+
+.spoiler-details summary {
+  cursor: pointer;
+  font-weight: bold;
+  list-style: none;
+  padding: 0.25rem;
+}
+
+.spoiler-details[open] summary {
+  border-bottom: 1px solid #bbb;
+}
+
+.spoiler-details.animated[open] {
+  animation: flash 0.5s ease-in-out;
+}
+
+.spoiler-details.animated[open] .content {
+  opacity: 0;
+  animation: slide 0.5s 1s ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+@keyframes flash {
+  0% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes slide {
+  0% {
+    margin-left: -50%;
+    opacity: 0;
+  }
+  100% {
+    margin-left: inherit;
+    opacity: 1;
+  }
+}
+.js-spoiler {
+  background: #e8e8e8;
+}
+
+.js-spoiler.hidden {
+  background: black;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.js-spoiler.hidden span {
+  opacity: 0;
+  user-select: none;
+}
+
+/*# sourceMappingURL=spoiler-tag.css.map */
