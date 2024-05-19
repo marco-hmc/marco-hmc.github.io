@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>错误码</title>
+  <meta name='description' content='Marco’s Blog'>
+
+  <link rel="canonical" href="/blog/7-%E9%94%99%E8%AF%AF%E7%A0%81">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="错误码 – Marco’s Blog">
+  <meta name="twitter:description" content="错误码
+">
+  <meta name="twitter:image:src" content="/images/post/post-10.jpg">
+
+  <!-- Facebook OpenGraph -->
+  <meta property="og:title" content="错误码 – Marco’s Blog">
+  <meta property="og:description" content="错误码
+">
+  <meta property="og:image" content="/images/post/post-10.jpg">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Ionicons -->
+  <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/main.css">
+</head>
+
+<body>
+
+    
+
+    <!-- begin header -->
+<header class="c-header">
+  <div class="container">
+    <div class="row">
+      <div class="c-header__inner">
+
+        <div class="logo">
+          <a class="logo__link" href="/">
+          
+            <img class="logo__image" src="/images/mc_logo1.ico" alt="Marco’s Blog">
+          
+          </a>
+        </div>
+
+        <nav class="main-nav">
+          <div class="main-nav__box">
+
+            <div class="nav__icon-close">
+              <i class="ion ion-md-close"></i>
+            </div>
+
+            <div class="nav__title">Menu</div>
+
+              <ul class="nav__list list-reset">
+
+              
+                
+                <li class="nav__item">
+                  <a href="/" class="nav__link">Home</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/projects/" class="nav__link">Projects</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/blog/" class="nav__link">Blog</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/about/" class="nav__link">About</a>
+                </li>
+                
+              
+
+            </ul>
+          </div>
+
+          <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+        </nav>
+
+        <div class="nav-button">
+          <i class="nav__icon nav__icon-menu ion ion-md-menu"></i>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+<!-- end header -->
+
+    <div class="post-top">
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="col col-6 col-d-12">
+        <div class="post-image">
+          <img loading="lazy" src="/images/post/post-10.jpg" alt="错误码">
+        </div>
+      </div>
+      
+
+      <div class="col col-6 col-d-12">
+        <div class="post__info">
+
+          
+
+
+          <h1 class="post__title">错误码</h1>
+
+          <div class="post__meta">
+            <div class="post__author-image">
+              <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+            </div>
+
+            <div class="post__meta-bottom">
+              <div class="post__author">Marco Hwong</div>
+              <time class="post__date" datetime="2024-05-19T05:57:03+00:00">19 May 2024</time>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- begin post -->
+<div class="container animate">
+
+  <article class="post">
+
+    <div class="post__content">
+      <h2 id="错误码">错误码</h2>
+
+<p>错误处理,一般而言有两种处理方法</p>
+<ul>
+  <li>错误码</li>
+  <li>异常机制</li>
+</ul>
+
+<p>目前C++提供了统一的异常机制机制,但是没有提供统一的错误码机制.</p>
+
+<ul>
+  <li>
+    <p>而C++标准库没有提供统一的错误码,主要有以下几个原因:</p>
+
+    <ol>
+      <li>
+        <p><strong>灵活性</strong>:C++是一种通用的编程语言,用于各种不同的应用领域.在不同的应用领域中,可能需要处理的错误类型和数量都会有所不同.如果标准库提供了统一的错误码,可能无法满足所有应用领域的需求.</p>
+      </li>
+      <li>
+        <p><strong>异常处理</strong>:C++提供了异常处理机制,这是一种更强大/更灵活的错误处理方式.通过抛出异常,可以提供比错误码更丰富的错误信息,而且可以处理更复杂的错误情况.</p>
+      </li>
+      <li>
+        <p><strong>历史原因</strong>:C++的设计者选择了异常处理作为主要的错误处理机制,而不是错误码.这是一个设计决策,可能受到了历史原因的影响.</p>
+      </li>
+    </ol>
+
+    <p>虽然C++标准库没有提供统一的错误码,但是它提供了一些类和函数来处理错误.例如,<code class="language-plaintext highlighter-rouge">std::error_code</code>和<code class="language-plaintext highlighter-rouge">std::error_condition</code>类可以用来表示和处理错误,<code class="language-plaintext highlighter-rouge">std::system_error</code>异常可以用来抛出包含错误码的异常.此外,许多C++标准库函数(如文件I/O函数)会设置<code class="language-plaintext highlighter-rouge">errno</code>变量来表示错误,这可以看作是一种错误码机制.</p>
+  </li>
+  <li>
+    <p>异常处理机制和错误码机制都是处理错误的方式,它们各有优点和适用场景.</p>
+
+    <p><strong>异常处理机制</strong>更适合以下情况:</p>
+
+    <ol>
+      <li>
+        <p><strong>错误无法预见或无法立即处理</strong>:例如,内存分配失败/无效的类型转换等情况,这些错误无法预见,也无法立即处理,使用异常可以将错误处理逻辑和正常逻辑分离,使代码更清晰.</p>
+      </li>
+      <li>
+        <p><strong>错误需要跨越多个调用层次</strong>:如果错误需要跨越多个调用层次传播,使用异常可以简化代码,避免在每一层都检查和传递错误码.</p>
+      </li>
+      <li>
+        <p><strong>面向对象编程</strong>:在面向对象编程中,构造函数不能返回错误码,因此使用异常是处理构造函数错误的唯一方式.</p>
+      </li>
+    </ol>
+
+    <p><strong>错误码机制</strong>更适合以下情况:</p>
+
+    <ol>
+      <li>
+        <p><strong>错误可以预见并立即处理</strong>:例如,打开文件失败/找不到指定的元素等情况,这些错误可以预见,也可以立即处理,使用错误码可以让调用者直接知道函数是否成功.</p>
+      </li>
+      <li>
+        <p><strong>性能敏感的代码</strong>:异常处理可能会对性能产生影响,尤其是当异常被频繁抛出时.对于性能敏感的代码,使用错误码可以避免这种性能损失.</p>
+      </li>
+      <li>
+        <p><strong>与C语言代码交互</strong>:C++的异常不能跨越C++和C语言的边界.如果你的C++代码需要与C语言代码交互,使用错误码是更好的选择.</p>
+      </li>
+    </ol>
+
+    <p>总的来说,选择使用异常处理还是错误码,取决于具体的应用场景和需求.</p>
+  </li>
+  <li>
+    <p>总结</p>
+    <ul>
+      <li>一般项目代码,非太底层的可以优先使用错误码机制</li>
+    </ul>
+  </li>
+</ul>
+
+    </div>
+
+    <div class="post__share">
+  <div class="share__head">
+    <div class="share__title">Share this Post</div>
+  </div>
+  <ul class="share__list list-reset">
+    <li class="share__item">
+      <a class="share__link share__twitter"
+        href="https://twitter.com/intent/tweet?text=%E9%94%99%E8%AF%AF%E7%A0%81&url=/blog/7-%E9%94%99%E8%AF%AF%E7%A0%81"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__facebook"
+        href="https://www.facebook.com/sharer/sharer.php?u=/blog/7-%E9%94%99%E8%AF%AF%E7%A0%81"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__pinterest"
+        href="http://pinterest.com/pin/create/button/?url=/blog/7-%E9%94%99%E8%AF%AF%E7%A0%81&amp;media=/images/post/post-10.jpg&amp;description=%E9%94%99%E8%AF%AF%E7%A0%81"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Pinterest" rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&url=/blog/7-%E9%94%99%E8%AF%AF%E7%A0%81&title=%E9%94%99%E8%AF%AF%E7%A0%81&summary=&source=Vonge"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
+    </li>
+  </ul>
+</div>
+
+  </article>
+</div>
+<!-- end post -->
+
+<div class="container">
+  <div class="row">
+    <div class="col col-10 col-d-12 push-d-0 push-1">
+      <div class="post__navigation animate">
+  
+  <a class="post__prev" href="/blog/6-%E5%86%85%E5%AD%98%E5%BA%8F">
+    <div class="prev__image">
+      <img loading="lazy" src="/images/post/post-2.jpg" alt="错误码">
+    </div>
+    <div class="prev__box">
+      <span class="post__nav post__nav__prev">Prev post</span>
+      <h2 class="post__nav__title">内存序</h2>
+    </div>
+  </a>
+  
+
+  
+  <a class="post__next" href="/blog/8-c-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6-shared-ptr%E7%9A%84%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0%E5%87%BA%E7%8E%B0%E5%BE%AA%E7%8E%AF%E5%BC%95%E7%94%A8%E6%80%8E%E4%B9%88%E5%8A%9E">
+    <div class="next__box">
+      <span class="post__nav post__nav__next">Next post</span>
+      <h2 class="post__nav__title">C++垃圾回收,shared_ptr的引用计数出现循环引用怎么办</h2>
+    </div>
+    <div class="next__image">
+      <img loading="lazy" src="/images/post/post-3.jpg" alt="错误码">
+    </div>
+  </a>
+  
+</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- begin related posts -->
+<div class="container">
+  <section class="related-posts  animate">
+    <div class="row">
+      <div class="col col-12">
+        <div class="container__inner">
+          <div class="section__info">
+            <div class="section__head">
+              <h2 class="section__title">You may also like</h2>
+              <a class="section__link" href="/blog">
+                
+              </a>
+            </div>
+          </div>
+          <div class="row">
+
+          
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- end related posts -->
+
+
+
+
+
+
+    <!--
+        Bookshop components are accessed using the bookshop tag,
+        using the same syntax as the standard Jekyll include tag.
+    -->
+    <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
+
+<!--bookshop-live end-->
+
+    <div class="top" title="Top"><i class="ion ion-ios-arrow-up"></i></div>
+
+    <!-- begin footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+
+        <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+
+        <ul class="footer_nav list-reset">
+          
+          <li class="footer_nav__item">
+            <a href="/" class="footer_nav__link">Home</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/projects/" class="footer_nav__link">Projects</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/elements/" class="footer_nav__link">Elements</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/about/" class="footer_nav__link">About</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/blog/" class="footer_nav__link">Blog</a>
+          </li>
+          
+        </ul>
+
+        <div class="copyright"><p> 2021 &copy; <a href="/">Vonge</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
+
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- end footer -->
+
+    <script src="/js/scripts.js"></script>
+    <script src="/js/common.js"></script>
+</body>
+</html>
