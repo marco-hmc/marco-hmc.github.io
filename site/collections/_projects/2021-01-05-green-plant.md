@@ -1,0 +1,7 @@
+---
+date: 2021-01-05 05:20:35 +0300
+title: 操作系统
+subtitle: Operating System
+image: '/images/project/project-1.jpg'
+project: project_os
+---

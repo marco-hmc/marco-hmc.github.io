@@ -2,14 +2,14 @@ footer_menu__settings:
   menu__items:
     - title: 'Home'
       url: '/'
-    - title: 'Publications'
-      url: '/papers/'
     - title: 'Projects'
       url: '/projects/'
-    - title: 'Blog'
-      url: '/blog/'
+    - title: 'Elements'
+      url: '/elements/'
     - title: 'About'
       url: '/about/'
+    - title: 'Blog'
+      url: '/blog/'
 
 copyright_text_html: >-
-  <p> 2024 &copy; <a href="/">Haoyu Deng</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p>
+  <p> 2021 &copy; <a href="/">Vonge</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p>
