@@ -2,37 +2,25 @@
 <html lang="en">
 
 <head>
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-3L3KV1JBV4"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-3L3KV1JBV4');
-</script>
-  
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>404</title>
-  <meta name='description' content='Originalnicodr's site'>
+  <title>Oops, you're lost!</title>
+  <meta name='description' content='Haoyu Deng's personal page'>
 
-  <link rel="canonical" href="https://originalnicodr.github.io/404.html">
-
-  
+  <link rel="canonical" href="/404.html">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="404 – Originalnicodr">
+  <meta name="twitter:title" content="Oops, you're lost! – Haoyu Deng's page">
   <meta name="twitter:description" content="">
-  <meta name="twitter:image" content="https://originalnicodr.github.io/images/corgi.jpg">
+  <meta name="twitter:image:src" content="">
 
   <!-- Facebook OpenGraph -->
-  <meta property="og:title" content="404 – Originalnicodr">
+  <meta property="og:title" content="Oops, you're lost! – Haoyu Deng's page">
   <meta property="og:description" content="">
-  <meta property="og:image" content="https://originalnicodr.github.io/images/corgi.jpg">
+  <meta property="og:image" content="">
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
@@ -41,15 +29,23 @@
   <link href="https://unpkg.com/ionicons@4.5.0/dist/css/ionicons.min.css" rel="stylesheet">
 
   <link rel="stylesheet" href="/assets/main.css">
-  <link rel="stylesheet" href="/assets/spoiler-tag.css">
-
-  <script src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
-  <script src="../../js/album/jquery.swipebox.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.swipebox/1.4.4/css/swipebox.min.css">
-  <meta name="google-site-verification" content="lKjy4N2ySkMpOrcLwEzSnOUG5-_wtxIbDRcz1dR8iI4" />
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script> 
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$']],
+        displayMath: [['$$','$$'], ['\\(','\\)'], ['\\[','\\]']],
+        processEscapes: true
+      }
+    };
+    </script>
 </head>
 
 <body>
+
+    
+
     <!-- begin header -->
 <header class="c-header">
   <div class="container">
@@ -57,11 +53,11 @@
       <div class="c-header__inner">
 
         <div class="logo">
+          <a class="logo__link" href="/">
           
-            <a class="logo__link" href="/">
-              <img class="logo__image" src="/images/corgi.jpg" alt="Originalnicodr">
-            </a>
+            Haoyu Deng
           
+          </a>
         </div>
 
         <nav class="main-nav">
@@ -72,16 +68,6 @@
             </div>
 
             <div class="nav__title">Menu</div>
-
-              <!--bookshop-live name(dark-mode-toggler.jekyll.html) params() context() -->
-          <a class="dark-mode-button" onmouseover="" style="cursor: pointer;">
-  <i class="ion ion-md-moon"></i>
-</a>
-
-<script src="https://cdn.jsdelivr.net/npm/darkreader@4.9.44/darkreader.js"></script>
-<script src="../../js/dark-mode.js"></script>
-
-          <!--bookshop-live end-->
 
               <ul class="nav__list list-reset">
 
@@ -94,13 +80,8 @@
               
                 
                 <li class="nav__item">
-                  <a href="/blog/" class="nav__link">Blog</a>
+                  <a href="/publications/" class="nav__link">Publications</a>
                 </li>
-                
-              
-                
-                  
-
                 
               
                 
@@ -111,14 +92,22 @@
               
                 
                 <li class="nav__item">
-                  <a href="/virtual-photography/" class="nav__link">Virtual Photography</a>
+                  <a href="/blog/" class="nav__link">Blog</a>
                 </li>
                 
               
                 
-                <li class="nav__item">
-                  <a href="/about/" class="nav__link">About</a>
+                <li class="nav__item dropdown">
+                  <span class="nav__link dropdown-toggle">Pages <i class="ion ion-ios-arrow-down arrow-down"></i></span>
+                  <div class="dropdown-menu">
+                    
+                      <a href="/about/" class="nav__link">About</a>
+                    
+                      <a href="/single_pages/" class="nav__link">Single Page Resource</a>
+                    
+                  </div>
                 </li>
+
                 
               
 
@@ -131,20 +120,9 @@
   <ul class="social__list list-reset">
     
     <li class="social__item">
-      <a class="social__link" href="https://twitter.com/originalnicodr" target="_blank" rel="noopener" aria-label="twitter icon"><i class="ion ion-logo-twitter"></i></a>
+      <a class="social__link" href="https://github.com/RisingEntropy" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
     </li>
     
-    <li class="social__item">
-      <a class="social__link" href="https://github.com/originalnicodr" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
-    </li>
-    
-    <li class="social__item">
-      <a class="social__link" href="https://www.linkedin.com/in/nicol%C3%A1s-uriel-navall-b38022174/" target="_blank" rel="noopener" aria-label="linkedin icon"><i class="ion ion-logo-linkedin"></i></a>
-    </li>
-    
-    <li class="social__item">
-      <a class="social__link" href="mailto:niconavall@gmail.com" target="_blank" rel="noopener" aria-label="icon"><i class="ion ion-md-mail"></i></a>
-    </li>
   </ul>
 </div>
 
@@ -161,7 +139,7 @@
 </header>
 <!-- end header -->
 
-    <p></p>
+    
 
     <!-- 
         Bookshop components are accessed using the bookshop tag, 
@@ -176,11 +154,7 @@
           
 <div class="container">
   <div class="c-page-heading">
-    
-      <h1 class="c-page-heading__title">¯\_(ツ)_/¯</h1>
-    
-    
-      <p class="c-page-heading__description">Error 404 mate</p>
+    <h1 class="c-page-heading__title">You're lost! The page does not exit.</h1>
     
   </div>
 </div>
@@ -205,20 +179,9 @@
   <ul class="social__list list-reset">
     
     <li class="social__item">
-      <a class="social__link" href="https://twitter.com/originalnicodr" target="_blank" rel="noopener" aria-label="twitter icon"><i class="ion ion-logo-twitter"></i></a>
+      <a class="social__link" href="https://github.com/RisingEntropy" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
     </li>
     
-    <li class="social__item">
-      <a class="social__link" href="https://github.com/originalnicodr" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
-    </li>
-    
-    <li class="social__item">
-      <a class="social__link" href="https://www.linkedin.com/in/nicol%C3%A1s-uriel-navall-b38022174/" target="_blank" rel="noopener" aria-label="linkedin icon"><i class="ion ion-logo-linkedin"></i></a>
-    </li>
-    
-    <li class="social__item">
-      <a class="social__link" href="mailto:niconavall@gmail.com" target="_blank" rel="noopener" aria-label="icon"><i class="ion ion-md-mail"></i></a>
-    </li>
   </ul>
 </div>
 
@@ -231,7 +194,7 @@
           </li>
           
           <li class="footer_nav__item">
-            <a href="/blog/" class="footer_nav__link">Blog</a>
+            <a href="/papers/" class="footer_nav__link">Publications</a>
           </li>
           
           <li class="footer_nav__item">
@@ -239,7 +202,7 @@
           </li>
           
           <li class="footer_nav__item">
-            <a href="/virtual-photography/" class="footer_nav__link">Virtual Photography</a>
+            <a href="/blog/" class="footer_nav__link">Blog</a>
           </li>
           
           <li class="footer_nav__item">
@@ -248,7 +211,7 @@
           
         </ul>
 
-        <div class="copyright"><p>Made with <i class="ion ion-md-heart"></i> and Jekyll.</p> <p>Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
+        <div class="copyright"><p> 2024 &copy; <a href="/">Haoyu Deng</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
 
       </div>
     </div>
@@ -291,6 +254,5 @@
 
     <script src="/js/scripts.js"></script>
     <script src="/js/common.js"></script>
-    <script src="/js/spoiler-tag.js"></script>
 </body>
 </html>

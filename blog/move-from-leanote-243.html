@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>FFT&NTT</title>
+  <meta name='description' content='Haoyu Deng's personal page'>
+
+  <link rel="canonical" href="/blog/move-from-leanote-243">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="FFT&NTT – Haoyu Deng's page">
+  <meta name="twitter:description" content="FFT
+学习了FFT 法法塔 感受到了人和人之间是有不少差距的Orz。
+首先要介绍一个单位根，说的玄妙，其实就把它看做一个角度好了，然后在坐标系里面以自己角的大小为步长，进行旋转，然后它会回到自己就完了。如果我口胡太严重了，就去看这篇博客好了，写的很好，但是我感觉它代码有问题。
+首先介绍一下单位根($\omega_n^1$)的一些性质：
+$\omega_n^k = (\omega_n^1)^k$
+$\omega_{2n}^{2k} = \omega_n^k$
+$\omega_n^0 = 1$
+$\omega_n^k*\omega_n^j = \omega_n^{j+k}$
+然后就差不多使用如下性质。然后再说FFT。FFT是用来求卷积的，所谓的卷积就是由两个函数生成第三个函数的运算。即$h(x) = \int\limits_{-\infty}^{\infty}f(i)*g(x-i)$，然后这玩意和傅里叶变化有很大关系，可以简化计算。注意由于计算机只能处理非连续的数据，所以需要把上面的积分符号换成$\sum$。FFT的过程如下
+$F(x) = a_0+a_0x^1+…+a_nx^n$
+然后按照奇偶项拆开
+$F(x) = (a_0+a_2x^2…)+x*(a_1x^1+…)$
+化为,然后发现这玩意可以分治
+$F(x) = FL(x^2)+x*FR(x^2)$
+把x代为单位根：
+\(F(x) = FL(x^2)+x*FR(x^2)\\
+F(w_n^k) = FL((w_{n}^k)^2)+w_n^kFR((w_{n}^k)^2)\\
+F(w_n^k) = FL(w_{n/2}^k)+w_n^kFR(w_{n/2}^k)\\
+solve:w_n^0...w_n^{n/2-1}\\
+to: w_n^{n/2-1}...w_n^{n-1}\\\)
+假设$k&amp;lt;n/2$,由于：
+\(w_n^k = w_n^{k\%n}\)
+所以可以做如下转化
+\(F(w_n^{k+n/2}) = FL((w_n^{k+n/2})^2)+w_n^{k+n/2}FR((w_n^{k+n/2})^2)\\
+bacause\\
+(w_n^k)^j = w_n^{kj}\\
+therefore\\
+=FL(w_n^{2k+n})+w_n^{k+n/2}FR(w_n^{2k+n})\\
+w_n^k = w_n^{k\%n}\\
+= FL(w_n^{2k})+w_n^{k+n/2}FR(w_n^{2k})\\
+w_{2n}^{2k} = w_n^k\\
+= FL(w_{n/2}^k)+w_n^{k+n/2}FR(w_{n/2}^k)\\
+w_n^{k+n/2} = -w_n^{k}\\
+therefore \\
+FL(w_{n/2}^k)-w_n^{k}FR(w_{n/2}^k)\)
+然后计算就行了。最后有一个玄学蝴蝶优化，大概就是不写递归的感觉，因为分治就像一个线段树，于是我把每个区间单独取出来处理一下，就免了递归，方便卡常
+板子代码：
+```cpp
+include 
+include 
+include 
+include 
+using namespace std;
+const int MAXN = (int)4e6+10;
+const double PI = acos(-1);
+struct complex{
+	double x,y;
+	complex(double a = 0.0,double b = 0.0):x(a),y(b){}
+	complex operator+(complex b){return complex(x+b.x,y+b.y);}
+	complex operator-(complex b){return complex(x-b.x,y-b.y);}
+	complex operator(complex b){return complex(xb.x-yb.y,xb.y+yb.x);}
+}f[MAXN],g[MAXN];
+int n,m,len;
+int R[MAXN],lg;
+void init(){for(int i = 0;i&amp;lt;len;i++)R[i] = (R[i»1]»1)|((i&amp;amp;1)«(lg-1));}
+void DFT(complex *f,int op){
+	for(int i = 0;i&amp;lt;len;i++)if(i&amp;lt;R[i])swap(f[i],f[R[i]]);
+	for(int j = 1;j&amp;lt;len;j«=1){
+		complex base = complex(cos(PI/j),opsin(PI/j));
+		for(int k = 0;k&amp;lt;len;k+=(j«1)){
+			complex t(1,0);
+			for(int l = 0;l&amp;lt;j;l++,t = tbase){
+				complex nx = f[k+l],ny = f[j+k+l]t;
+				f[k+l] = nx+ny;
+				f[k+j+l] = nx-ny;
+			}
+		}
+	}
+}
+">
+  <meta name="twitter:image:src" content="/images/posts/OI.png">
+
+  <!-- Facebook OpenGraph -->
+  <meta property="og:title" content="FFT&NTT – Haoyu Deng's page">
+  <meta property="og:description" content="FFT
+学习了FFT 法法塔 感受到了人和人之间是有不少差距的Orz。
+首先要介绍一个单位根，说的玄妙，其实就把它看做一个角度好了，然后在坐标系里面以自己角的大小为步长，进行旋转，然后它会回到自己就完了。如果我口胡太严重了，就去看这篇博客好了，写的很好，但是我感觉它代码有问题。
+首先介绍一下单位根($\omega_n^1$)的一些性质：
+$\omega_n^k = (\omega_n^1)^k$
+$\omega_{2n}^{2k} = \omega_n^k$
+$\omega_n^0 = 1$
+$\omega_n^k*\omega_n^j = \omega_n^{j+k}$
+然后就差不多使用如下性质。然后再说FFT。FFT是用来求卷积的，所谓的卷积就是由两个函数生成第三个函数的运算。即$h(x) = \int\limits_{-\infty}^{\infty}f(i)*g(x-i)$，然后这玩意和傅里叶变化有很大关系，可以简化计算。注意由于计算机只能处理非连续的数据，所以需要把上面的积分符号换成$\sum$。FFT的过程如下
+$F(x) = a_0+a_0x^1+…+a_nx^n$
+然后按照奇偶项拆开
+$F(x) = (a_0+a_2x^2…)+x*(a_1x^1+…)$
+化为,然后发现这玩意可以分治
+$F(x) = FL(x^2)+x*FR(x^2)$
+把x代为单位根：
+\(F(x) = FL(x^2)+x*FR(x^2)\\
+F(w_n^k) = FL((w_{n}^k)^2)+w_n^kFR((w_{n}^k)^2)\\
+F(w_n^k) = FL(w_{n/2}^k)+w_n^kFR(w_{n/2}^k)\\
+solve:w_n^0...w_n^{n/2-1}\\
+to: w_n^{n/2-1}...w_n^{n-1}\\\)
+假设$k&amp;lt;n/2$,由于：
+\(w_n^k = w_n^{k\%n}\)
+所以可以做如下转化
+\(F(w_n^{k+n/2}) = FL((w_n^{k+n/2})^2)+w_n^{k+n/2}FR((w_n^{k+n/2})^2)\\
+bacause\\
+(w_n^k)^j = w_n^{kj}\\
+therefore\\
+=FL(w_n^{2k+n})+w_n^{k+n/2}FR(w_n^{2k+n})\\
+w_n^k = w_n^{k\%n}\\
+= FL(w_n^{2k})+w_n^{k+n/2}FR(w_n^{2k})\\
+w_{2n}^{2k} = w_n^k\\
+= FL(w_{n/2}^k)+w_n^{k+n/2}FR(w_{n/2}^k)\\
+w_n^{k+n/2} = -w_n^{k}\\
+therefore \\
+FL(w_{n/2}^k)-w_n^{k}FR(w_{n/2}^k)\)
+然后计算就行了。最后有一个玄学蝴蝶优化，大概就是不写递归的感觉，因为分治就像一个线段树，于是我把每个区间单独取出来处理一下，就免了递归，方便卡常
+板子代码：
+```cpp
+include 
+include 
+include 
+include 
+using namespace std;
+const int MAXN = (int)4e6+10;
+const double PI = acos(-1);
+struct complex{
+	double x,y;
+	complex(double a = 0.0,double b = 0.0):x(a),y(b){}
+	complex operator+(complex b){return complex(x+b.x,y+b.y);}
+	complex operator-(complex b){return complex(x-b.x,y-b.y);}
+	complex operator(complex b){return complex(xb.x-yb.y,xb.y+yb.x);}
+}f[MAXN],g[MAXN];
+int n,m,len;
+int R[MAXN],lg;
+void init(){for(int i = 0;i&amp;lt;len;i++)R[i] = (R[i»1]»1)|((i&amp;amp;1)«(lg-1));}
+void DFT(complex *f,int op){
+	for(int i = 0;i&amp;lt;len;i++)if(i&amp;lt;R[i])swap(f[i],f[R[i]]);
+	for(int j = 1;j&amp;lt;len;j«=1){
+		complex base = complex(cos(PI/j),opsin(PI/j));
+		for(int k = 0;k&amp;lt;len;k+=(j«1)){
+			complex t(1,0);
+			for(int l = 0;l&amp;lt;j;l++,t = tbase){
+				complex nx = f[k+l],ny = f[j+k+l]t;
+				f[k+l] = nx+ny;
+				f[k+j+l] = nx-ny;
+			}
+		}
+	}
+}
+">
+  <meta property="og:image" content="/images/posts/OI.png">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Ionicons -->
+  <link href="https://unpkg.com/ionicons@4.5.0/dist/css/ionicons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script> 
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$']],
+        displayMath: [['$$','$$'], ['\\(','\\)'], ['\\[','\\]']],
+        processEscapes: true
+      }
+    };
+    </script>
+</head>
+
+<body>
+
+    
+
+    <!-- begin header -->
+<header class="c-header">
+  <div class="container">
+    <div class="row">
+      <div class="c-header__inner">
+
+        <div class="logo">
+          <a class="logo__link" href="/">
+          
+            Haoyu Deng
+          
+          </a>
+        </div>
+
+        <nav class="main-nav">
+          <div class="main-nav__box">
+
+            <div class="nav__icon-close">
+              <i class="ion ion-md-close"></i>
+            </div>
+
+            <div class="nav__title">Menu</div>
+
+              <ul class="nav__list list-reset">
+
+              
+                
+                <li class="nav__item">
+                  <a href="/" class="nav__link">Home</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/publications/" class="nav__link">Publications</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/projects/" class="nav__link">Projects</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/blog/" class="nav__link">Blog</a>
+                </li>
+                
+              
+                
+                <li class="nav__item dropdown">
+                  <span class="nav__link dropdown-toggle">Pages <i class="ion ion-ios-arrow-down arrow-down"></i></span>
+                  <div class="dropdown-menu">
+                    
+                      <a href="/about/" class="nav__link">About</a>
+                    
+                      <a href="/single_pages/" class="nav__link">Single Page Resource</a>
+                    
+                  </div>
+                </li>
+
+                
+              
+
+            </ul>
+          </div>
+
+          <!--bookshop-live name(social-link.jekyll.html) params() context() -->
+          
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/RisingEntropy" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+          <!--bookshop-live end-->
+        </nav>
+
+        <div class="nav-button">
+          <i class="nav__icon nav__icon-menu ion ion-md-menu"></i>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+<!-- end header -->
+
+    <div class="post-top">
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="col col-6 col-d-12">
+        <div class="post-image">
+          <img loading="lazy" src="/images/posts/OI.png" alt="FFT&NTT">
+        </div>
+      </div>
+      
+
+      <div class="col col-6 col-d-12">
+        <div class="post__info">
+
+          
+          <div class="post-tags">
+            
+              <a href="/tag/oi" class="post-tags__tag">OI</a>
+            
+              <a href="/tag/former blog" class="post-tags__tag">former blog</a>
+            
+          </div>
+          
+
+          <h1 class="post__title">
+            FFT&NTT
+          </h1>
+
+          <div class="post__meta">
+            <div class="post__author-image">
+              <img loading="lazy" src="/images/avatar.jpg" alt="Haoyu Deng">
+            </div>
+
+            <div class="post__meta-bottom">
+              <div class="post__author">Haoyu Deng</div>
+              <time class="post__date" datetime="2019-08-30T12:42:06+00:00">30 Aug 2019</time>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- begin post -->
+<div class="container animate">
+
+  <article class="post">
+
+    <div class="post__content">
+      <h1 id="fft">FFT</h1>
+<p>学习了FFT <del>法法塔</del> 感受到了人和人之间是有不少差距的Orz。
+首先要介绍一个单位根，说的玄妙，其实就把它看做一个角度好了，然后在坐标系里面以自己角的大小为步长，进行旋转，然后它会回到自己就完了。如果我口胡太严重了，就去看这篇<a href="https://www.luogu.org/blog/command-block/fft-xue-xi-bi-ji">博客</a>好了，写的很好，但是我感觉它代码有问题。
+首先介绍一下单位根($\omega_n^1$)的一些性质：
+$\omega_n^k = (\omega_n^1)^k$
+$\omega_{2n}^{2k} = \omega_n^k$
+$\omega_n^0 = 1$
+$\omega_n^k*\omega_n^j = \omega_n^{j+k}$
+然后就差不多使用如下性质。然后再说FFT。FFT是用来求卷积的，所谓的卷积就是由两个函数生成第三个函数的运算。即$h(x) = \int\limits_{-\infty}^{\infty}f(i)*g(x-i)$，然后这玩意和傅里叶变化有很大关系，可以简化计算。注意由于计算机只能处理非连续的数据，所以需要把上面的积分符号换成$\sum$。FFT的过程如下
+$F(x) = a_0+a_0x^1+…+a_nx^n$
+然后按照奇偶项拆开
+$F(x) = (a_0+a_2x^2…)+x*(a_1x^1+…)$
+化为,然后发现这玩意可以分治
+$F(x) = FL(x^2)+x*FR(x^2)$
+把x代为单位根：
+\(F(x) = FL(x^2)+x*FR(x^2)\\
+F(w_n^k) = FL((w_{n}^k)^2)+w_n^kFR((w_{n}^k)^2)\\
+F(w_n^k) = FL(w_{n/2}^k)+w_n^kFR(w_{n/2}^k)\\
+solve:w_n^0...w_n^{n/2-1}\\
+to: w_n^{n/2-1}...w_n^{n-1}\\\)
+假设$k&lt;n/2$,由于：
+\(w_n^k = w_n^{k\%n}\)
+所以可以做如下转化
+\(F(w_n^{k+n/2}) = FL((w_n^{k+n/2})^2)+w_n^{k+n/2}FR((w_n^{k+n/2})^2)\\
+bacause\\
+(w_n^k)^j = w_n^{kj}\\
+therefore\\
+=FL(w_n^{2k+n})+w_n^{k+n/2}FR(w_n^{2k+n})\\
+w_n^k = w_n^{k\%n}\\
+= FL(w_n^{2k})+w_n^{k+n/2}FR(w_n^{2k})\\
+w_{2n}^{2k} = w_n^k\\
+= FL(w_{n/2}^k)+w_n^{k+n/2}FR(w_{n/2}^k)\\
+w_n^{k+n/2} = -w_n^{k}\\
+therefore \\
+FL(w_{n/2}^k)-w_n^{k}FR(w_{n/2}^k)\)
+然后计算就行了。最后有一个玄学蝴蝶优化，大概就是不写递归的感觉，因为分治就像一个线段树，于是我把每个区间单独取出来处理一下，就免了递归，方便卡常
+板子代码：</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp"># include &lt;iostream&gt;
+# include &lt;cstring&gt;
+# include &lt;cstdio&gt;
+# include &lt;cmath&gt;
+</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="k">const</span> <span class="kt">int</span> <span class="n">MAXN</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="mf">4e6</span><span class="o">+</span><span class="mi">10</span><span class="p">;</span>
+<span class="k">const</span> <span class="kt">double</span> <span class="n">PI</span> <span class="o">=</span> <span class="n">acos</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+<span class="k">struct</span> <span class="nc">complex</span><span class="p">{</span>
+	<span class="kt">double</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">;</span>
+	<span class="n">complex</span><span class="p">(</span><span class="kt">double</span> <span class="n">a</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span><span class="kt">double</span> <span class="n">b</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">)</span><span class="o">:</span><span class="n">x</span><span class="p">(</span><span class="n">a</span><span class="p">),</span><span class="n">y</span><span class="p">(</span><span class="n">b</span><span class="p">){}</span>
+	<span class="n">complex</span> <span class="k">operator</span><span class="o">+</span><span class="p">(</span><span class="n">complex</span> <span class="n">b</span><span class="p">){</span><span class="k">return</span> <span class="n">complex</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">b</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="o">+</span><span class="n">b</span><span class="p">.</span><span class="n">y</span><span class="p">);}</span>
+	<span class="n">complex</span> <span class="k">operator</span><span class="o">-</span><span class="p">(</span><span class="n">complex</span> <span class="n">b</span><span class="p">){</span><span class="k">return</span> <span class="n">complex</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">b</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="o">-</span><span class="n">b</span><span class="p">.</span><span class="n">y</span><span class="p">);}</span>
+	<span class="n">complex</span> <span class="k">operator</span><span class="o">*</span><span class="p">(</span><span class="n">complex</span> <span class="n">b</span><span class="p">){</span><span class="k">return</span> <span class="n">complex</span><span class="p">(</span><span class="n">x</span><span class="o">*</span><span class="n">b</span><span class="p">.</span><span class="n">x</span><span class="o">-</span><span class="n">y</span><span class="o">*</span><span class="n">b</span><span class="p">.</span><span class="n">y</span><span class="p">,</span><span class="n">x</span><span class="o">*</span><span class="n">b</span><span class="p">.</span><span class="n">y</span><span class="o">+</span><span class="n">y</span><span class="o">*</span><span class="n">b</span><span class="p">.</span><span class="n">x</span><span class="p">);}</span>
+<span class="p">}</span><span class="n">f</span><span class="p">[</span><span class="n">MAXN</span><span class="p">],</span><span class="n">g</span><span class="p">[</span><span class="n">MAXN</span><span class="p">];</span>
+<span class="kt">int</span> <span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="p">,</span><span class="n">len</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">R</span><span class="p">[</span><span class="n">MAXN</span><span class="p">],</span><span class="n">lg</span><span class="p">;</span>
+<span class="kt">void</span> <span class="nf">init</span><span class="p">(){</span><span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">len</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="n">R</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">R</span><span class="p">[</span><span class="n">i</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="p">]</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="p">)</span><span class="o">|</span><span class="p">((</span><span class="n">i</span><span class="o">&amp;</span><span class="mi">1</span><span class="p">)</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">lg</span><span class="o">-</span><span class="mi">1</span><span class="p">));}</span>
+<span class="kt">void</span> <span class="nf">DFT</span><span class="p">(</span><span class="n">complex</span> <span class="o">*</span><span class="n">f</span><span class="p">,</span><span class="kt">int</span> <span class="n">op</span><span class="p">){</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">len</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">&lt;</span><span class="n">R</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="n">swap</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">f</span><span class="p">[</span><span class="n">R</span><span class="p">[</span><span class="n">i</span><span class="p">]]);</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span><span class="n">j</span><span class="o">&lt;</span><span class="n">len</span><span class="p">;</span><span class="n">j</span><span class="o">&lt;&lt;=</span><span class="mi">1</span><span class="p">){</span>
+		<span class="n">complex</span> <span class="n">base</span> <span class="o">=</span> <span class="n">complex</span><span class="p">(</span><span class="n">cos</span><span class="p">(</span><span class="n">PI</span><span class="o">/</span><span class="n">j</span><span class="p">),</span><span class="n">op</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">PI</span><span class="o">/</span><span class="n">j</span><span class="p">));</span>
+		<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="n">k</span><span class="o">&lt;</span><span class="n">len</span><span class="p">;</span><span class="n">k</span><span class="o">+=</span><span class="p">(</span><span class="n">j</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">)){</span>
+			<span class="n">complex</span> <span class="n">t</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+			<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">l</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="n">l</span><span class="o">&lt;</span><span class="n">j</span><span class="p">;</span><span class="n">l</span><span class="o">++</span><span class="p">,</span><span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="o">*</span><span class="n">base</span><span class="p">){</span>
+				<span class="n">complex</span> <span class="n">nx</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">k</span><span class="o">+</span><span class="n">l</span><span class="p">],</span><span class="n">ny</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="n">k</span><span class="o">+</span><span class="n">l</span><span class="p">]</span><span class="o">*</span><span class="n">t</span><span class="p">;</span>
+				<span class="n">f</span><span class="p">[</span><span class="n">k</span><span class="o">+</span><span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="n">nx</span><span class="o">+</span><span class="n">ny</span><span class="p">;</span>
+				<span class="n">f</span><span class="p">[</span><span class="n">k</span><span class="o">+</span><span class="n">j</span><span class="o">+</span><span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="n">nx</span><span class="o">-</span><span class="n">ny</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+	<span class="n">scanf</span><span class="p">(</span><span class="s">"%d%d"</span><span class="p">,</span><span class="o">&amp;</span><span class="n">n</span><span class="p">,</span><span class="o">&amp;</span><span class="n">m</span><span class="p">);</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;=</span><span class="n">n</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="n">scanf</span><span class="p">(</span><span class="s">"%lf"</span><span class="p">,</span><span class="o">&amp;</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x</span><span class="p">);</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;=</span><span class="n">m</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="n">scanf</span><span class="p">(</span><span class="s">"%lf"</span><span class="p">,</span><span class="o">&amp;</span><span class="n">g</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x</span><span class="p">);</span>
+	<span class="n">m</span><span class="o">+=</span><span class="n">n</span><span class="p">;</span><span class="n">lg</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">for</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span><span class="n">n</span><span class="o">&lt;=</span><span class="n">m</span><span class="p">;</span><span class="n">n</span><span class="o">&lt;&lt;=</span><span class="mi">1</span><span class="p">)</span><span class="n">lg</span><span class="o">++</span><span class="p">;</span>
+	<span class="n">len</span> <span class="o">=</span> <span class="n">n</span><span class="p">;</span><span class="n">init</span><span class="p">();</span>
+	<span class="n">DFT</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="n">DFT</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;=</span><span class="n">n</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">g</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+	<span class="n">DFT</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;=</span><span class="n">m</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="n">printf</span><span class="p">(</span><span class="s">"%d "</span><span class="p">,(</span><span class="kt">int</span><span class="p">)(</span><span class="n">fabs</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="n">n</span><span class="o">+</span><span class="mf">0.5</span><span class="p">));</span>
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<h1 id="ntt">NTT</h1>
+<p>上面的做法因为要使用三角函数和复数，复数又要用到double，卡精度卡的厉害。于是考虑能不能优化。现引出原根的概念：
+设$p = r*2^k+1$k足够大，设原根为$g$,则$g^{0~n-1}$为互不相同的整数。然后定义剩余系下的原根$\omega_n^1 = g^{(p-1)/n}$可以证明它是一个整数，且$g^{0~n-1}$为互不相同的整数。
+然后这个原根拥有和FFT的复数一样的性质。用就行了。但是要注意一点，不同的模数对应不同的原根，如998244353对应的原根是3，3在模998244353意义下的的逆元是332748118。原根的求法如下：
+原根的判定：如果$g^k\equiv 1(mod p)$中k的最小解为(mod-1)，则g是一个原根。
+求法就是枚举1-100(因为大部分原根都小于100)，然后判断就行了。判断的过程就是枚举(mod-1)的因数，如果它满足上述条件，说明这个数不是模mod意义下的原根。
+然后代码里面有一些细节，比如FFT里面的</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">complex</span> <span class="n">base</span> <span class="o">=</span> <span class="n">comple</span><span class="p">(</span><span class="n">cos</span><span class="p">(</span><span class="n">PI</span><span class="o">/</span><span class="n">j</span><span class="p">),</span><span class="n">op</span><span class="o">*</span><span class="p">(</span><span class="n">PI</span><span class="o">/</span><span class="n">j</span><span class="p">))</span>
+</code></pre></div></div>
+<p>来实现DFT和IDFT的过程，但是使用NTT就更简单了，直接计算原根的k次方或者原根的逆元的k次方来实现。具体代码就是：</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">long</span> <span class="kt">long</span> <span class="n">base</span> <span class="o">=</span> <span class="n">fp</span><span class="p">(</span><span class="n">op</span><span class="o">==</span><span class="mi">1</span><span class="o">?</span><span class="n">g</span><span class="o">:</span><span class="n">revg</span><span class="p">,</span><span class="n">mod</span><span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">j</span><span class="o">*</span><span class="mi">2</span><span class="p">));</span>
+</code></pre></div></div>
+<p>至于为什么j要乘以2，我也没搞清楚，这两天状态太差了。
+代码实现如下：</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp"># include &lt;iostream&gt;
+# include &lt;cstring&gt;
+# include &lt;cstdio&gt;
+# include &lt;cmath&gt;
+</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="k">const</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">mod</span> <span class="o">=</span> <span class="mi">998244353</span><span class="p">;</span>
+<span class="k">const</span> <span class="kt">int</span> <span class="n">MAXN</span> <span class="o">=</span> <span class="mf">4e6</span><span class="o">+</span><span class="mi">10</span><span class="p">;</span>
+<span class="k">const</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">G</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="p">,</span><span class="n">R</span><span class="p">[</span><span class="n">MAXN</span><span class="p">];</span>
+<span class="kt">long</span> <span class="kt">long</span> <span class="n">f</span><span class="p">[</span><span class="n">MAXN</span><span class="p">],</span><span class="n">g</span><span class="p">[</span><span class="n">MAXN</span><span class="p">],</span><span class="n">invG</span> <span class="o">=</span> <span class="mi">332748118</span><span class="p">;</span>
+<span class="kr">inline</span> <span class="kt">int</span> <span class="nf">read</span><span class="p">()</span> <span class="p">{</span> 
+    <span class="kt">char</span> <span class="n">c</span> <span class="o">=</span> <span class="n">getchar</span><span class="p">();</span> <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">c</span> <span class="o">&lt;</span> <span class="sc">'0'</span> <span class="o">||</span> <span class="n">c</span> <span class="o">&gt;</span> <span class="sc">'9'</span><span class="p">)</span> <span class="p">{</span><span class="k">if</span><span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="sc">'-'</span><span class="p">)</span> <span class="n">f</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="n">c</span> <span class="o">=</span> <span class="n">getchar</span><span class="p">();}</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">c</span> <span class="o">&gt;=</span> <span class="sc">'0'</span> <span class="o">&amp;&amp;</span> <span class="n">c</span> <span class="o">&lt;=</span> <span class="sc">'9'</span><span class="p">)</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="n">c</span> <span class="o">-</span> <span class="sc">'0'</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">getchar</span><span class="p">();</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">f</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">long</span> <span class="kt">long</span> <span class="nf">fp</span><span class="p">(</span><span class="kt">long</span> <span class="kt">long</span> <span class="n">b</span><span class="p">,</span><span class="kt">long</span> <span class="kt">long</span> <span class="n">p</span> <span class="o">=</span> <span class="n">mod</span><span class="o">-</span><span class="mi">2</span><span class="p">){</span>
+	<span class="kt">long</span> <span class="kt">long</span> <span class="n">ans</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+	<span class="k">while</span><span class="p">(</span><span class="n">p</span><span class="p">){</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">p</span><span class="o">&amp;</span><span class="mi">1</span><span class="p">)</span><span class="n">ans</span> <span class="o">=</span> <span class="n">ans</span><span class="o">*</span><span class="n">b</span><span class="o">%</span><span class="n">mod</span><span class="p">;</span>
+		<span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="o">*</span><span class="n">b</span><span class="o">%</span><span class="n">mod</span><span class="p">;</span>
+		<span class="n">p</span><span class="o">&gt;&gt;=</span><span class="mi">1</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="n">ans</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="n">len</span><span class="p">,</span><span class="n">lg</span><span class="p">;</span>
+<span class="kt">void</span> <span class="nf">init</span><span class="p">(){</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">len</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="n">R</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">R</span><span class="p">[</span><span class="n">i</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="p">]</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="p">)</span><span class="o">|</span><span class="p">((</span><span class="n">i</span><span class="o">&amp;</span><span class="mi">1</span><span class="p">)</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">lg</span><span class="o">-</span><span class="mi">1</span><span class="p">));</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="nf">NTT</span><span class="p">(</span><span class="kt">long</span> <span class="kt">long</span> <span class="o">*</span><span class="n">f</span><span class="p">,</span><span class="kt">int</span> <span class="n">op</span><span class="p">){</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">len</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">&lt;</span><span class="n">R</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="n">swap</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">f</span><span class="p">[</span><span class="n">R</span><span class="p">[</span><span class="n">i</span><span class="p">]]);</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span><span class="n">j</span><span class="o">&lt;</span><span class="n">len</span><span class="p">;</span><span class="n">j</span><span class="o">&lt;&lt;=</span><span class="mi">1</span><span class="p">){</span>
+		<span class="kt">long</span> <span class="kt">long</span> <span class="n">base</span> <span class="o">=</span> <span class="n">fp</span><span class="p">(</span><span class="n">op</span><span class="o">==</span><span class="mi">1</span><span class="o">?</span><span class="n">G</span><span class="o">:</span><span class="n">invG</span><span class="p">,(</span><span class="n">mod</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">j</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">));</span>
+		<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="n">k</span><span class="o">&lt;</span><span class="n">len</span><span class="p">;</span><span class="n">k</span><span class="o">+=</span><span class="p">(</span><span class="n">j</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">)){</span>
+			<span class="kt">long</span> <span class="kt">long</span> <span class="n">t</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+			<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">l</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="n">l</span><span class="o">&lt;</span><span class="n">j</span><span class="p">;</span><span class="n">l</span><span class="o">++</span><span class="p">,</span><span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="n">t</span><span class="o">*</span><span class="n">base</span><span class="p">)</span><span class="o">%</span><span class="n">mod</span><span class="p">){</span>
+				<span class="kt">int</span> <span class="n">nx</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">k</span><span class="o">+</span><span class="n">l</span><span class="p">],</span><span class="n">ny</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="n">k</span><span class="o">+</span><span class="n">l</span><span class="p">]</span><span class="o">*</span><span class="n">t</span><span class="o">%</span><span class="n">mod</span><span class="p">;</span>
+				<span class="n">f</span><span class="p">[</span><span class="n">k</span><span class="o">+</span><span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">nx</span><span class="o">+</span><span class="n">ny</span><span class="p">)</span><span class="o">%</span><span class="n">mod</span><span class="p">;</span>
+				<span class="n">f</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="n">k</span><span class="o">+</span><span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">nx</span><span class="o">-</span><span class="n">ny</span><span class="o">+</span><span class="n">mod</span><span class="p">)</span><span class="o">%</span><span class="n">mod</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+	<span class="n">scanf</span><span class="p">(</span><span class="s">"%d%d"</span><span class="p">,</span><span class="o">&amp;</span><span class="n">n</span><span class="p">,</span><span class="o">&amp;</span><span class="n">m</span><span class="p">);</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;=</span><span class="n">n</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">read</span><span class="p">();</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;=</span><span class="n">m</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="n">g</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">read</span><span class="p">();</span>
+	<span class="n">m</span><span class="o">+=</span><span class="n">n</span><span class="p">;</span>
+	<span class="k">for</span><span class="p">(</span><span class="n">len</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span><span class="n">len</span><span class="o">&lt;=</span><span class="n">m</span><span class="p">;</span><span class="n">len</span><span class="o">&lt;&lt;=</span><span class="mi">1</span><span class="p">)</span><span class="n">lg</span><span class="o">++</span><span class="p">;</span><span class="n">init</span><span class="p">();</span>
+	<span class="n">NTT</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="n">NTT</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">len</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">g</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">%</span><span class="n">mod</span><span class="p">;</span>
+	<span class="n">NTT</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+	<span class="kt">long</span> <span class="kt">long</span> <span class="n">rev</span> <span class="o">=</span> <span class="n">fp</span><span class="p">(</span><span class="n">len</span><span class="p">,</span><span class="n">mod</span><span class="o">-</span><span class="mi">2</span><span class="p">);</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;=</span><span class="n">m</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="n">printf</span><span class="p">(</span><span class="s">"%lld "</span><span class="p">,(</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">rev</span><span class="o">%</span><span class="n">mod</span><span class="o">+</span><span class="n">mod</span><span class="p">)</span><span class="o">%</span><span class="n">mod</span><span class="p">);</span>
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+    </div>
+
+    <div class="post__share">
+  <div class="share__head">
+    <div class="share__title">Share this Post</div>
+  </div>
+  <ul class="share__list list-reset">
+    <li class="share__item">
+      <a class="share__link share__twitter"
+        href="https://twitter.com/intent/tweet?text=FFT&NTT&url=/blog/move-from-leanote-243"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__facebook"
+        href="https://www.facebook.com/sharer/sharer.php?u=/blog/move-from-leanote-243"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__pinterest"
+        href="http://pinterest.com/pin/create/button/?url=/blog/move-from-leanote-243&amp;media=/images/posts/OI.png&amp;description=FFT&NTT"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Pinterest" rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&url=/blog/move-from-leanote-243&title=FFT&NTT&summary=&source=Haoyu%20Deng's%20page"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
+    </li>
+  </ul>
+</div>
+
+  </article>
+</div>
+<!-- end post -->
+
+<div class="container">
+  <div class="row">
+    <div class="col col-10 col-d-12 push-d-0 push-1">
+      <div class="post__navigation animate">
+  
+  <a class="post__prev" href="/blog/move-from-leanote-242">
+    <div class="prev__image">
+      <img loading="lazy" src="/images/posts/OI.png" alt="FFT&NTT">
+    </div>
+    <div class="prev__box">
+      <span class="post__nav post__nav__prev">Prev post</span>
+      <h2 class="post__nav__title">椭圆</h2>
+    </div>
+  </a>
+  
+
+  
+  <a class="post__next" href="/blog/move-from-leanote-244">
+    <div class="next__box">
+      <span class="post__nav post__nav__next">Next post</span>
+      <h2 class="post__nav__title">【拓扑排序】woj3969 球的序列</h2>
+    </div>
+    <div class="next__image">
+      <img loading="lazy" src="/images/posts/OI.png" alt="FFT&NTT">
+    </div>
+  </a>
+  
+</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- begin related posts -->
+<div class="container">
+  <section class="related-posts is-related animate">
+    <div class="row">
+      <div class="col col-12">
+        <div class="container__inner">
+          <div class="section__info">
+            <div class="section__head">
+              <h2 class="section__title">You may also like</h2>
+              <a class="section__link" href="/blog">
+                
+                
+                  
+                    <a href="/tags/OI" class="section__link related-tag">See all<span> OI</span> <i class="ion ion-md-arrow-forward"></i></a>
+                  
+                
+                  
+                
+              
+              </a>
+            </div>
+          </div>
+          <div class="row">
+
+          
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/move-from-leanote-293">
+                      <img loading="lazy" src="/images/posts/OI.png" alt="科研训练">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/oi" class="article__tag">OI</a>
+                      
+                      <a href="/tag/former blog" class="article__tag">former blog</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/move-from-leanote-293">科研训练</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      #  寒假30篇论文计划
+- [] 1、SEWResnet
+- [] 2、Resnet
+- [] 3、Spikeformer
+- [] 4、TVConv
+- [] 5、
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar.jpg" alt="Haoyu Deng">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Haoyu Deng</div>
+                        <span class="article__date"><time datetime="2022-07-11T12:09:06+00:00">11 Jul 2022</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/move-from-leanote-292">
+                      <img loading="lazy" src="/images/posts/OI.png" alt="unknown title">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/oi" class="article__tag">OI</a>
+                      
+                      <a href="/tag/former blog" class="article__tag">former blog</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/move-from-leanote-292">unknown title</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      We used SOTA architecture to demonstrate that the improvement is due to the deployment of TCJA rather than a change i...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar.jpg" alt="Haoyu Deng">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Haoyu Deng</div>
+                        <span class="article__date"><time datetime="2022-04-16T15:45:11+00:00">16 Apr 2022</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/move-from-leanote-291">
+                      <img loading="lazy" src="/images/posts/OI.png" alt="一点小想法">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/oi" class="article__tag">OI</a>
+                      
+                      <a href="/tag/former blog" class="article__tag">former blog</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/move-from-leanote-291">一点小想法</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      # 想法
+对于人眼来说，看东西颜色是非常重要的。天空中飘着红色带点黄色的东西，只需要瞟一眼，就可以知道那是国旗。而计算机处理图像是按照（R,G,B）分立成3个通道的方式处理的，也就是说，计算机没有把颜色作为一个整体处理，把三个通道割裂...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar.jpg" alt="Haoyu Deng">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Haoyu Deng</div>
+                        <span class="article__date"><time datetime="2022-03-08T12:00:31+00:00">08 Mar 2022</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+                  
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- end related posts -->
+
+
+
+
+
+
+    <!-- 
+        Bookshop components are accessed using the bookshop tag, 
+        using the same syntax as the standard Jekyll include tag.
+    -->
+    <!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
+          
+          <!--bookshop-live end-->
+
+    <div class="top" title="Top"><i class="ion ion-ios-arrow-up"></i></div>
+
+    <!-- begin footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+
+        <!--bookshop-live name(social-link.jekyll.html) params() context() -->
+          
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/RisingEntropy" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+          <!--bookshop-live end-->
+
+        <ul class="footer_nav list-reset">
+          
+          <li class="footer_nav__item">
+            <a href="/" class="footer_nav__link">Home</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/papers/" class="footer_nav__link">Publications</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/projects/" class="footer_nav__link">Projects</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/blog/" class="footer_nav__link">Blog</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/about/" class="footer_nav__link">About</a>
+          </li>
+          
+        </ul>
+
+        <div class="copyright"><p> 2024 &copy; <a href="/">Haoyu Deng</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
+
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- end footer -->
+
+    <!--
+        load the live component for CloudCannon live previews.
+    -->
+    <script>
+(function(){
+  const bookshopLiveSetup = (CloudCannon) => {
+    CloudCannon.enableEvents();
+
+    const head = document.querySelector('head');
+    const script = document.createElement('script');
+    script.src = `/_cloudcannon/bookshop-live.js`;
+    script.onload = function() {
+      window.bookshopLive = new window.BookshopLive({
+        remoteGlobals: ['/_cloudcannon/bookshop-site-data.json']
+      });
+      const updateBookshopLive = async () => {
+        const frontMatter = await CloudCannon.value();
+        const options = window.bookshopLiveOptions || {};
+        await window.bookshopLive.update({page: frontMatter}, options);
+        CloudCannon?.refreshInterface?.();
+      }
+      document.addEventListener('cloudcannon:update', updateBookshopLive);
+      updateBookshopLive();
+    }
+    head.appendChild(script);
+  }
+
+  document.addEventListener('cloudcannon:load', function (e) {
+    bookshopLiveSetup(e.detail.CloudCannon);
+  });
+})();
+</script>
+
+    <script src="/js/scripts.js"></script>
+    <script src="/js/common.js"></script>
+</body>
+</html>
