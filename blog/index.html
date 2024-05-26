@@ -1,31 +1,34 @@
-<!DOCTYPE html><html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
   <meta charset="utf-8">
-  <meta content="IE=edge" http-equiv="X-UA-Compatible">
-  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Blog</title>
-  <meta content="Marco’s Blog" name="description">
+  <meta name='description' content='Marco’s Blog'>
 
-  <link href="/blog/" rel="canonical">
+  <link rel="canonical" href="/blog/">
 
   <!-- Twitter Card -->
-  <meta content="summary_large_image" name="twitter:card">
-  <meta content="Blog – Marco’s Blog" name="twitter:title">
-  <meta content="" name="twitter:description">
-  <meta content="" name="twitter:image:src">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Blog – Marco’s Blog">
+  <meta name="twitter:description" content="">
+  <meta name="twitter:image:src" content="">
 
   <!-- Facebook OpenGraph -->
-  <meta content="Blog – Marco’s Blog" property="og:title">
-  <meta content="" property="og:description">
-  <meta content="" property="og:image">
+  <meta property="og:title" content="Blog – Marco’s Blog">
+  <meta property="og:description" content="">
+  <meta property="og:image" content="">
 
   <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 
   <!-- Ionicons -->
   <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
 
-  <link href="/assets/main.css" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/main.css">
 </head>
 
 <body>
@@ -41,7 +44,7 @@
         <div class="logo">
           <a class="logo__link" href="/">
           
-            <img alt="Marco’s Blog" class="logo__image" src="/images/mc_logo1.ico">
+            <img class="logo__image" src="/images/mc_logo1.ico" alt="Marco’s Blog">
           
           </a>
         </div>
@@ -60,25 +63,25 @@
               
                 
                 <li class="nav__item">
-                  <a class="nav__link" href="/">Home</a>
+                  <a href="/" class="nav__link">Home</a>
                 </li>
                 
               
                 
                 <li class="nav__item">
-                  <a class="nav__link" href="/projects/">Projects</a>
+                  <a href="/projects/" class="nav__link">Projects</a>
                 </li>
                 
               
                 
                 <li class="nav__item">
-                  <a class="nav__link active-link" href="/blog/">Blog</a>
+                  <a href="/blog/" class="nav__link active-link">Blog</a>
                 </li>
                 
               
                 
                 <li class="nav__item">
-                  <a class="nav__link" href="/about/">About</a>
+                  <a href="/about/" class="nav__link">About</a>
                 </li>
                 
               
@@ -86,19 +89,20 @@
             </ul>
           </div>
 
-          <!--bookshop-live name(social-link.jekyll.html) params() context() -->
-          
+          <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
 <div class="social">
   <ul class="social__list list-reset">
     
     <li class="social__item">
-      <a aria-label="github icon" class="social__link" href="https://github.com/marco-hmc/" rel="noopener" target="_blank"><i class="ion ion-logo-github"></i></a>
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
     </li>
     
   </ul>
 </div>
 
-          <!--bookshop-live end-->
+<!--bookshop-live end-->
         </nav>
 
         <div class="nav-button">
@@ -117,35 +121,38 @@
         Bookshop components are accessed using the bookshop tag,
         using the same syntax as the standard Jekyll include tag.
     -->
-    <!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
-          
+    <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
+
 <div class="c-page">
 
 
     <!--bookshop-live name(page-heading/page-heading.jekyll.html) params(bind=block) context(block=content_blocks[0]) -->
-          
+
 <div class="container">
   <div class="c-page-heading">
     <h1 class="c-page-heading__title">Blog</h1>
     
-      <p class="c-page-heading__description">我想证明并没有普通人那样一种东西<br>我们都有着深刻的内心生活<br>我们都燃烧着惊人的激情<br>我们都曾经历着一些难忘的事<br>我们身上都有一些值得记下来的事</p>
+      <p class="c-page-heading__description">我想证明并没有普通人那样一种东西<br />我们都有着深刻的内心生活<br />我们都燃烧着惊人的激情<br />我们都曾经历着一些难忘的事<br />我们身上都有一些值得记下来的事</p>
     
   </div>
 </div>
-          <!--bookshop-live end-->
+<!--bookshop-live end-->
 
     <!--bookshop-live name(posts-list/posts-list.jekyll.html) params(bind=block) context(block=content_blocks[1]) -->
-          
+
 <div class="container animate">
-  <div class="row">
+  <div class="row" data-pagebreak="6">
     
-      <div class="c-blog-card col col-4 col-d-6 col-t-12">
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[0]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
   <div class="c-blog-card__inner">
 
     
     <div class="c-blog-card__image-wrap">
       <a class="c-blog-card__image" href="/blog/10-%E6%B7%B1%E5%BA%A6%E6%8E%A2%E7%B4%A2c-%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B">
-        <img alt="深度探索C++对象模型" loading="lazy" src="/images/post/post-6.jpg">
+        <img loading="lazy" src="/images/post/post-6.jpg" alt="深度探索C++对象模型">
       </a>
     </div>
     
@@ -173,7 +180,7 @@
 
       <div class="c-blog-card__meta">
         <div class="c-blog-card__author-image">
-          <img alt="Marco Hwong" loading="lazy" src="/images/avatar_2.jpg">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
         </div>
         <div class="c-blog-card__info">
           <div class="c-blog-card__author-name">Marco Hwong</div>
@@ -184,14 +191,17 @@
     </div>
   </div>
 </div>
+<!--bookshop-live end-->
     
-      <div class="c-blog-card col col-4 col-d-6 col-t-12">
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[1]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
   <div class="c-blog-card__inner">
 
     
     <div class="c-blog-card__image-wrap">
       <a class="c-blog-card__image" href="/blog/9-%E4%BB%80%E4%B9%88%E6%98%AFsoa%E5%92%8Caos">
-        <img alt="什么是soa和aos" loading="lazy" src="/images/post/post-9.jpg">
+        <img loading="lazy" src="/images/post/post-9.jpg" alt="什么是soa和aos">
       </a>
     </div>
     
@@ -213,7 +223,7 @@
 
       <div class="c-blog-card__meta">
         <div class="c-blog-card__author-image">
-          <img alt="Marco Hwong" loading="lazy" src="/images/avatar_2.jpg">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
         </div>
         <div class="c-blog-card__info">
           <div class="c-blog-card__author-name">Marco Hwong</div>
@@ -224,14 +234,17 @@
     </div>
   </div>
 </div>
+<!--bookshop-live end-->
     
-      <div class="c-blog-card col col-4 col-d-6 col-t-12">
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[2]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
   <div class="c-blog-card__inner">
 
     
     <div class="c-blog-card__image-wrap">
       <a class="c-blog-card__image" href="/blog/8-c-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6-shared-ptr%E7%9A%84%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0%E5%87%BA%E7%8E%B0%E5%BE%AA%E7%8E%AF%E5%BC%95%E7%94%A8%E6%80%8E%E4%B9%88%E5%8A%9E">
-        <img alt="C++垃圾回收,shared_ptr的引用计数出现循环引用怎么办" loading="lazy" src="/images/post/post-3.jpg">
+        <img loading="lazy" src="/images/post/post-3.jpg" alt="C++垃圾回收,shared_ptr的引用计数出现循环引用怎么办">
       </a>
     </div>
     
@@ -251,7 +264,7 @@ std::weak_ptr 可以从一个 std:...
 
       <div class="c-blog-card__meta">
         <div class="c-blog-card__author-image">
-          <img alt="Marco Hwong" loading="lazy" src="/images/avatar_2.jpg">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
         </div>
         <div class="c-blog-card__info">
           <div class="c-blog-card__author-name">Marco Hwong</div>
@@ -262,14 +275,17 @@ std::weak_ptr 可以从一个 std:...
     </div>
   </div>
 </div>
+<!--bookshop-live end-->
     
-      <div class="c-blog-card col col-4 col-d-6 col-t-12">
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[3]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
   <div class="c-blog-card__inner">
 
     
     <div class="c-blog-card__image-wrap">
       <a class="c-blog-card__image" href="/blog/7-%E9%94%99%E8%AF%AF%E7%A0%81">
-        <img alt="错误码" loading="lazy" src="/images/post/post-10.jpg">
+        <img loading="lazy" src="/images/post/post-10.jpg" alt="错误码">
       </a>
     </div>
     
@@ -303,7 +319,7 @@ std::weak_ptr 可以从一个 std:...
 
       <div class="c-blog-card__meta">
         <div class="c-blog-card__author-image">
-          <img alt="Marco Hwong" loading="lazy" src="/images/avatar_2.jpg">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
         </div>
         <div class="c-blog-card__info">
           <div class="c-blog-card__author-name">Marco Hwong</div>
@@ -314,14 +330,17 @@ std::weak_ptr 可以从一个 std:...
     </div>
   </div>
 </div>
+<!--bookshop-live end-->
     
-      <div class="c-blog-card col col-4 col-d-6 col-t-12">
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[4]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
   <div class="c-blog-card__inner">
 
     
     <div class="c-blog-card__image-wrap">
       <a class="c-blog-card__image" href="/blog/6-%E5%86%85%E5%AD%98%E5%BA%8F">
-        <img alt="内存序" loading="lazy" src="/images/post/post-2.jpg">
+        <img loading="lazy" src="/images/post/post-2.jpg" alt="内存序">
       </a>
     </div>
     
@@ -348,7 +367,7 @@ std::weak_ptr 可以从一个 std:...
 
       <div class="c-blog-card__meta">
         <div class="c-blog-card__author-image">
-          <img alt="Marco Hwong" loading="lazy" src="/images/avatar_2.jpg">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
         </div>
         <div class="c-blog-card__info">
           <div class="c-blog-card__author-name">Marco Hwong</div>
@@ -359,14 +378,17 @@ std::weak_ptr 可以从一个 std:...
     </div>
   </div>
 </div>
+<!--bookshop-live end-->
     
-      <div class="c-blog-card col col-4 col-d-6 col-t-12">
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[5]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
   <div class="c-blog-card__inner">
 
     
     <div class="c-blog-card__image-wrap">
       <a class="c-blog-card__image" href="/blog/4-%E5%90%91%E9%87%8F%E5%8C%96%E6%98%AF%E4%BB%80%E4%B9%88%E6%84%8F%E6%80%9D">
-        <img alt="向量化是什么意思?" loading="lazy" src="/images/post/post-1.jpg">
+        <img loading="lazy" src="/images/post/post-1.jpg" alt="向量化是什么意思?">
       </a>
     </div>
     
@@ -389,7 +411,7 @@ std::vector&lt;int&gt; v {1, 2...
 
       <div class="c-blog-card__meta">
         <div class="c-blog-card__author-image">
-          <img alt="Marco Hwong" loading="lazy" src="/images/avatar_2.jpg">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
         </div>
         <div class="c-blog-card__info">
           <div class="c-blog-card__author-name">Marco Hwong</div>
@@ -400,29 +422,368 @@ std::vector&lt;int&gt; v {1, 2...
     </div>
   </div>
 </div>
+<!--bookshop-live end-->
     
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[6]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/0-cpp-quiz">
+        <img loading="lazy" src="/images/post/post-8.jpg" alt="cpp quiz">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/0-cpp-quiz">cpp quiz</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        cpp quiz
+
+xzxcv
+zxcv
+
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2024-05-19T05:45:18+00:00">19 May 2024</time></span>
+        </div>
       </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[7]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/3-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">
+        <img loading="lazy" src="/images/post/post-5.jpg" alt="性能优化">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/3-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">性能优化</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        性能优化
+
+1. 这些是一些常见操作的成本的数量级的概念:
+
+这些操作的精确耗时取决于许多因素,包括硬件/操作系统/网络条件等.以下是一些大致的估计:
+
+
+  
+    一次内存访问:大约在100纳秒级别.这是从CPU访问主内存的时间...
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2024-05-18T06:19:58+00:00">18 May 2024</time></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[8]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/2-%E5%AD%97%E7%AC%A6%E5%92%8Cunicode%E6%A0%87%E5%87%86">
+        <img loading="lazy" src="/images/post/post-7.jpg" alt="字符和unicode标准">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/2-%E5%AD%97%E7%AC%A6%E5%92%8Cunicode%E6%A0%87%E5%87%86">字符和unicode标准</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        字符和unicode标准
+
+1. 数据类型
+在编程语言中，字符的数据类型决定了可以存储哪些字符以及如何存储这些字符。
+在 C 和 C++ 中，有两种主要字符类型
+
+  char
+    
+      主要用于ASCII
+    
+  ...
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2024-05-18T06:19:56+00:00">18 May 2024</time></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[9]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/1-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%85%BC%E5%AE%B9">
+        <img loading="lazy" src="/images/post/post-4.jpg" alt="二进制兼容">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/1-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%85%BC%E5%AE%B9">二进制兼容</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        二进制兼容
+
+1. 什么是二进制兼容问题?
+
+在升级库文件的时候,不必重新编译使用此库的可执行文件或其他库文件,并且程序的功能不被破坏.
+
+2. 二进制兼容有什么好处?
+
+保持二进制兼容性是为了确保软件的更新和升级过程更加平滑和无缝,...
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2024-05-18T05:58:17+00:00">18 May 2024</time></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[10]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/the-way-i-see-it-every-life-is-a-pile-of-good-things">
+        <img loading="lazy" src="/images/post/post-3.jpg" alt="The way I see it, every life is a pile of good things">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+      <div class="c-blog-card__tags-box">
+        
+        <a href="/tag/notes" class="c-blog-card__tag">notes</a>
+        
+        <a href="/tag/story" class="c-blog-card__tag">story</a>
+        
+        <a href="/tag/rest" class="c-blog-card__tag">rest</a>
+        
+      </div>
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/the-way-i-see-it-every-life-is-a-pile-of-good-things">The way I see it, every life is a pile of good things</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        In qua quid est boni praeter summam voluptatem, et eam sempiternam. Cur post Tarentum ad Archytam. Qua ex cognitione ...
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2018-10-31T12:01:35+00:00">31 Oct 2018</time></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[11]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/everything-has-beauty-but-not-everyone-can-see">
+        <img loading="lazy" src="/images/post/post-2.jpg" alt="Everything has beauty, but not everyone can see">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+      <div class="c-blog-card__tags-box">
+        
+        <a href="/tag/travel" class="c-blog-card__tag">travel</a>
+        
+        <a href="/tag/rest" class="c-blog-card__tag">rest</a>
+        
+      </div>
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/everything-has-beauty-but-not-everyone-can-see">Everything has beauty, but not everyone can see</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        
+
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2018-05-29T15:05:55+00:00">29 May 2018</time></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[12]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/it-is-never-too-late-to-be-what-you-might-have-been">
+        <img loading="lazy" src="/images/post/post-1.jpg" alt="It is never too late to be what you might have been">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+      <div class="c-blog-card__tags-box">
+        
+        <a href="/tag/travel" class="c-blog-card__tag">travel</a>
+        
+        <a href="/tag/notes" class="c-blog-card__tag">notes</a>
+        
+      </div>
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/it-is-never-too-late-to-be-what-you-might-have-been">It is never too late to be what you might have been</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        
+
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2018-04-24T12:01:35+00:00">24 Apr 2018</time></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+  </div>
 </div>
 
 <!--bookshop-live name(pagination.jekyll.html) params() context() -->
-          <!-- begin pagination -->
+<!-- begin pagination -->
 <nav class="pagination">
   <div class="container">
     <div class="pagination__inner">
 
       <div class="pagination__list">
         
-        
-        <span class="pagination__prev disabled"><i class="ion ion-ios-arrow-back"></i> Prev</span>
+        <a data-pagebreak-control="prev" href="." class="pagination__prev"><i class="ion ion-ios-arrow-back"></i> Prev</a> 
+        <span data-pagebreak-control="!prev" class="pagination__prev disabled"><i class="ion ion-ios-arrow-back"></i> Prev</span>
 
         <div class="pagination__count">
-          Page <span>1</span>
-          of <span>3</span>
+          Page <span data-pagebreak-label="current">1</span>
+          of <span data-pagebreak-label="total">1</span>
         </div>
 
         
-        <a class="pagination__next" href="./page/2/">Next <i class="ion ion-ios-arrow-forward"></i></a>
-        
+        <a data-pagebreak-control="next" href="." class="pagination__next">Next <i class="ion ion-ios-arrow-forward"></i></a>
+        <span data-pagebreak-control="!next" class="pagination__next disabled">Next <i class="ion ion-ios-arrow-forward"></i></span>
       </div>
 
     </div>
@@ -430,14 +791,14 @@ std::vector&lt;int&gt; v {1, 2...
 </nav>
 <!-- end pagination -->
 
-          <!--bookshop-live end-->
+<!--bookshop-live end-->
 
-          <!--bookshop-live end-->
+<!--bookshop-live end-->
 
 
 </div>
 
-          <!--bookshop-live end-->
+<!--bookshop-live end-->
 
     <div class="top" title="Top"><i class="ion ion-ios-arrow-up"></i></div>
 
@@ -447,45 +808,46 @@ std::vector&lt;int&gt; v {1, 2...
     <div class="row">
       <div class="col col-12">
 
-        <!--bookshop-live name(social-link.jekyll.html) params() context() -->
-          
+        <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
 <div class="social">
   <ul class="social__list list-reset">
     
     <li class="social__item">
-      <a aria-label="github icon" class="social__link" href="https://github.com/marco-hmc/" rel="noopener" target="_blank"><i class="ion ion-logo-github"></i></a>
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
     </li>
     
   </ul>
 </div>
 
-          <!--bookshop-live end-->
+<!--bookshop-live end-->
 
         <ul class="footer_nav list-reset">
           
           <li class="footer_nav__item">
-            <a class="footer_nav__link" href="/">Home</a>
+            <a href="/" class="footer_nav__link">Home</a>
           </li>
           
           <li class="footer_nav__item">
-            <a class="footer_nav__link" href="/projects/">Projects</a>
+            <a href="/projects/" class="footer_nav__link">Projects</a>
           </li>
           
           <li class="footer_nav__item">
-            <a class="footer_nav__link" href="/elements/">Elements</a>
+            <a href="/elements/" class="footer_nav__link">Elements</a>
           </li>
           
           <li class="footer_nav__item">
-            <a class="footer_nav__link" href="/about/">About</a>
+            <a href="/about/" class="footer_nav__link">About</a>
           </li>
           
           <li class="footer_nav__item">
-            <a class="footer_nav__link" href="/blog/">Blog</a>
+            <a href="/blog/" class="footer_nav__link">Blog</a>
           </li>
           
         </ul>
 
-        <div class="copyright"><p> 2021 © <a href="/">Vonge</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
+        <div class="copyright"><p> 2021 &copy; <a href="/">Vonge</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
 
       </div>
     </div>
@@ -495,5 +857,5 @@ std::vector&lt;int&gt; v {1, 2...
 
     <script src="/js/scripts.js"></script>
     <script src="/js/common.js"></script>
-
-</body></html>
+</body>
+</html>
