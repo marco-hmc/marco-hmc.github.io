@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>命中率</title>
+  <meta name='description' content='Marco’s Blog'>
+
+  <link rel="canonical" href="/blog/6-%E5%91%BD%E4%B8%AD%E7%8E%87">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="命中率 – Marco’s Blog">
+  <meta name="twitter:description" content="分布式系统中常用缓存方案
+">
+  <meta name="twitter:image:src" content="/images/post/post-48.jpg">
+
+  <!-- Facebook OpenGraph -->
+  <meta property="og:title" content="命中率 – Marco’s Blog">
+  <meta property="og:description" content="分布式系统中常用缓存方案
+">
+  <meta property="og:image" content="/images/post/post-48.jpg">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Ionicons -->
+  <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/main.css">
+</head>
+
+<body>
+
+    
+
+    <!-- begin header -->
+<header class="c-header">
+  <div class="container">
+    <div class="row">
+      <div class="c-header__inner">
+
+        <div class="logo">
+          <a class="logo__link" href="/">
+          
+            <img class="logo__image" src="/images/mc_logo1.ico" alt="Marco’s Blog">
+          
+          </a>
+        </div>
+
+        <nav class="main-nav">
+          <div class="main-nav__box">
+
+            <div class="nav__icon-close">
+              <i class="ion ion-md-close"></i>
+            </div>
+
+            <div class="nav__title">Menu</div>
+
+              <ul class="nav__list list-reset">
+
+              
+                
+                <li class="nav__item">
+                  <a href="/" class="nav__link">Home</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/projects/" class="nav__link">Projects</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/blog/" class="nav__link">Blog</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/about/" class="nav__link">About</a>
+                </li>
+                
+              
+
+            </ul>
+          </div>
+
+          <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+        </nav>
+
+        <div class="nav-button">
+          <i class="nav__icon nav__icon-menu ion ion-md-menu"></i>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+<!-- end header -->
+
+    <div class="post-top">
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="col col-6 col-d-12">
+        <div class="post-image">
+          <img loading="lazy" src="/images/post/post-48.jpg" alt="命中率">
+        </div>
+      </div>
+      
+
+      <div class="col col-6 col-d-12">
+        <div class="post__info">
+
+          
+
+
+          <h1 class="post__title">命中率</h1>
+
+          <div class="post__meta">
+            <div class="post__author-image">
+              <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+            </div>
+
+            <div class="post__meta-bottom">
+              <div class="post__author">Marco Hwong</div>
+              <time class="post__date" datetime="2024-06-01T07:40:39+00:00">01 Jun 2024</time>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- begin post -->
+<div class="container animate">
+
+  <article class="post">
+
+    <div class="post__content">
+      <h1 id="分布式系统中常用缓存方案">分布式系统中常用缓存方案</h1>
+
+<ul>
+  <li>客户端缓存：页面和浏览器缓存，app缓存，h5缓存，localStorage，sessionStorage</li>
+  <li>CDN缓存：内容存储：数据缓存，内容分发：负载均衡</li>
+  <li>nginx缓存：静态资源</li>
+  <li>服务端缓存：本地缓存，外部缓存</li>
+  <li>数据库缓存：持久层缓存(mybatis，hibernate多级缓存)，mysql查询缓存</li>
+  <li>操作系统缓存：page cache，buffer cache</li>
+</ul>
+
+<h1 id="缓存特征">缓存特征</h1>
+
+<h2 id="命中率">命中率</h2>
+
+<ul>
+  <li>
+    <p>当某个请求能够通过访问缓存而得到响应时，称为缓存命中</p>
+  </li>
+  <li>
+    <p>缓存命中率越高，缓存的利用率也就越高</p>
+  </li>
+</ul>
+
+<h2 id="最大空间">最大空间</h2>
+
+<ul>
+  <li>
+    <p>缓存通常位于内存中，内存的空间通常比磁盘空间小的多，因此缓存的最大空间不可能非常大。</p>
+  </li>
+  <li>
+    <p>当缓存存放的数据量超过最大空间时，就需要淘汰部分数据来存放新到达的数据。</p>
+  </li>
+</ul>
+
+<h2 id="淘汰策略">淘汰策略</h2>
+
+<ul>
+  <li>FIFO（First In First Out）：先进先出策略，在实时性的场景下，需要经常访问最新的数据，那么就可以使用 FIFO，使得最先进入的数据（最晚的数据）被淘汰。</li>
+  <li>LRU（Least Recently Used）：最近最久未使用策略，优先淘汰最久未使用的数据，也就是上次被访问时间距离现在最久的数据。该策略可以保证内存中的数据都是热点数据，也就是经常被访问的数据，从而保证缓存命中率。</li>
+  <li>LFU（Least Frequently Used）：最不经常使用策略，优先淘汰一段时间内使用次数最少的数据。</li>
+</ul>
+
+<h1 id="缓存位置">缓存位置</h1>
+
+<h2 id="浏览器">浏览器</h2>
+
+<ul>
+  <li>当 HTTP 响应允许进行缓存时，浏览器会将 HTML、CSS、JavaScript、图片等静态资源进行缓存。</li>
+</ul>
+
+<h2 id="isp">ISP</h2>
+
+<ul>
+  <li>网络服务提供商（ISP）是网络访问的第一跳，通过将数据缓存在 ISP 中能够大大提高用户的访问速度。</li>
+</ul>
+
+<h2 id="反向代理">反向代理</h2>
+
+<ul>
+  <li>反向代理位于服务器之前，请求与响应都需要经过反向代理。通过将数据缓存在反向代理，在用户请求反向代理时就可以直接使用缓存进行响应。</li>
+</ul>
+
+<h2 id="本地缓存">本地缓存</h2>
+
+<ul>
+  <li>使用 Guava Cache 将数据缓存在服务器本地内存中，服务器代码可以直接读取本地内存中的缓存，速度非常快</li>
+</ul>
+
+<h2 id="分布式缓存">分布式缓存</h2>
+
+<ul>
+  <li>
+    <p>使用 Redis、Memcache 等分布式缓存将数据缓存在分布式缓存系统中。</p>
+  </li>
+  <li>
+    <p>相对于本地缓存来说，<strong>分布式缓存单独部署</strong>，可以根据需求分配硬件资源。不仅如此，<strong>服务器集群都可以访问分布式缓存，而本地缓存需要在服务器集群之间进行同步，实现难度和性能开销上都非常大</strong>。</p>
+  </li>
+</ul>
+
+<h2 id="数据库缓存">数据库缓存</h2>
+
+<ul>
+  <li>MySQL 等数据库管理系统具有自己的查询缓存机制来提高查询效率。</li>
+</ul>
+
+<h2 id="java-内部的缓存">Java 内部的缓存</h2>
+
+<ul>
+  <li>Java 为了优化空间，提高字符串、基本数据类型包装类的创建效率，设计了字符串常量池及 Byte、Short、Character、Integer、Long、Boolean 这六种包装类缓冲池</li>
+</ul>
+
+<h2 id="cpu-多级缓存">CPU 多级缓存</h2>
+
+<ul>
+  <li>CPU 为了解决运算速度与主存 IO 速度不匹配的问题，引入了多级缓存结构，同时使用 MESI 等缓存一致性协议来解决多核 CPU 缓存数据一致性的问题。</li>
+</ul>
+
+<h1 id="cdn">CDN</h1>
+
+<p>内容分发网络（Content distribution network，CDN）是一种互连的网络系统，它利用更靠近用户的服务器从而更快更可靠地将 HTML、CSS、JavaScript、音乐、图片、视频等静态资源分发给用户。</p>
+
+<p>CDN 主要有以下优点：</p>
+
+<ul>
+  <li>更快地将数据分发给用户</li>
+  <li>通过部署多台服务器，从而提高系统整体的带宽性能</li>
+  <li>多台服务器可以看成是一种冗余机制，从而具有高可用性</li>
+</ul>
+
+<p><img src="imgs/cache/cache.jpg" alt="cache" style="zoom:80%;" /></p>
+
+<h1 id="缓存问题">缓存问题</h1>
+
+<h2 id="缓存穿透">缓存穿透</h2>
+
+<p><strong>指的是对某个一定不存在的数据进行请求，该请求将会穿透缓存到达数据库</strong></p>
+
+<p>解决方案：</p>
+
+<ul>
+  <li>对这些不存在的数据缓存一个空数据；</li>
+  <li>对这类请求进行过滤。</li>
+</ul>
+
+<h2 id="缓存雪崩">缓存雪崩</h2>
+
+<p>指的是由于<strong>存在的数据没有被加载到缓存中</strong>，或者<strong>缓存数据在同一时间大面积失效</strong>（过期），又或者<strong>缓存服务器宕机</strong>，导致<strong>大量的请求都到达数据库</strong>。</p>
+
+<p>在有缓存的系统中，系统非常依赖于缓存，缓存分担了很大一部分的数据请求。当发生缓存雪崩时，数据库无法处理这么大的请求，导致数据库崩溃。</p>
+
+<p>解决方案：</p>
+
+<ul>
+  <li>为了防止缓存在同一时间大面积过期导致的缓存雪崩，可以通过观察用户行为，合理设置缓存过期时间来实现；</li>
+  <li>为了防止缓存服务器宕机出现的缓存雪崩，可以使用分布式缓存，分布式缓存中每一个节点只缓存部分的数据，当某个节点宕机时可以保证其它节点的缓存仍然可用。</li>
+  <li>也可以进行缓存预热，避免在系统刚启动不久由于还未将大量数据进行缓存而导致缓存雪崩。</li>
+</ul>
+
+<h2 id="缓存一致性">缓存一致性</h2>
+
+<p>缓存一致性要求<strong>数据更新的同时缓存数据也能够实时更新</strong>。</p>
+
+<p>解决方案：</p>
+
+<ul>
+  <li>在数据更新的同时立即去更新缓存；</li>
+  <li>在读缓存之前先判断缓存是否是最新的，如果不是最新的先进行更新。</li>
+</ul>
+
+<p>要保证缓存一致性需要付出很大的代价，缓存数据最好是那些对一致性要求不高的数据，允许缓存数据存在一些脏数据。</p>
+
+<h2 id="缓存-无底洞-现象">缓存 “无底洞” 现象</h2>
+
+<p>指的是为了满足业务要求添加了大量缓存节点，但是性能不但没有好转反而下降了的现象。</p>
+
+<p>产生原因：缓存系统通常采用 hash 函数将 key 映射到对应的缓存节点，随着缓存节点数目的增加，键值分布到更多的节点上，导致客户端一次批量操作会涉及多次网络操作，这意味着批量操作的耗时会随着节点数目的增加而不断增大。此外，网络连接数变多，对节点的性能也有一定影响。</p>
+
+<p>解决方案：</p>
+
+<ul>
+  <li>优化批量数据操作命令；</li>
+  <li>减少网络通信次数；</li>
+  <li>降低接入成本，使用长连接 / 连接池，NIO 等。</li>
+</ul>
+
+<h1 id="数据分布">数据分布</h1>
+
+<h2 id="哈希分布">哈希分布</h2>
+
+<p>哈希分布就是将数据计算哈希值之后，按照哈希值分配到不同的节点上。例如有 N 个节点，数据的主键为 key，则将该数据分配的节点序号为：<code class="language-plaintext highlighter-rouge">hash(key) % N</code>。</p>
+
+<p>传统的哈希分布算法存在一个问题：当节点数量变化时，也就是 N 值变化，那么几乎所有的数据都需要重新分布，将导致大量的数据迁移。</p>
+
+<h2 id="顺序分布">顺序分布</h2>
+
+<p>将数据划分为多个连续的部分，按数据的 ID 或者时间分布到不同节点上。例如 User 表的 ID 范围为 1 ~ 7000，使用顺序分布可以将其划分成多个子表，对应的主键范围为 1 ~ 1000，1001 ~ 2000，…，6001 ~ 7000。</p>
+
+<p>顺序分布相比于哈希分布的主要优点如下：</p>
+
+<ul>
+  <li>能保持数据原有的顺序；</li>
+  <li>并且能够准确控制每台服务器存储的数据量，从而使得存储空间的利用率最大。</li>
+</ul>
+
+<h1 id="一致性哈希">一致性哈希</h1>
+
+<p>Distributed Hash Table（DHT） 是一种哈希分布方式，其目的是为了<strong>克服传统哈希分布在服务器节点数量变化时大量数据迁移的问题</strong>。</p>
+
+<h2 id="基本原理">基本原理</h2>
+
+<p>将哈希空间 [0, 2n-1] 看成一个哈希环，每个服务器节点都配置到哈希环上。每个数据对象通过哈希取模得到哈希值之后，存放到哈希环中顺时针方向第一个大于等于该哈希值的节点上。</p>
+
+<p><img src="imgs/cache/dht1.jpg" alt="dht1" style="zoom:80%;" /></p>
+
+<p>一致性哈希在增加或者删除节点时只会影响到哈希环中相邻的节点，例如下图中新增节点 X，只需要将它前一个节点 C 上的数据重新进行分布即可，对于节点 A、B、D 都没有影响。</p>
+
+<p><img src="imgs/cache/dht2.jpg" alt="dht2" style="zoom:80%;" /></p>
+
+<h2 id="虚拟节点">虚拟节点</h2>
+
+<p>上面描述的一致性哈希存在数据分布不均匀的问题，节点存储的数据量有可能会存在很大的不同。</p>
+
+<p>数据不均匀主要是因为节点在哈希环上分布的不均匀，这种情况在节点数量很少的情况下尤其明显。</p>
+
+<p>解决方式是通过增加虚拟节点，然后将虚拟节点映射到真实节点上。虚拟节点的数量比真实节点来得多，那么虚拟节点在哈希环上分布的均匀性就会比原来的真实节点好，从而使得数据分布也更加均匀。</p>
+
+<h1 id="lru">LRU</h1>
+
+<p>以下是基于 双向链表 + HashMap 的 LRU 算法实现，对算法的解释如下：</p>
+
+<ul>
+  <li>访问某个节点时，将其从原来的位置删除，并重新插入到链表头部。这样就能保证链表尾部存储的就是最近最久未使用的节点，当节点数量大于缓存最大空间时就淘汰链表尾部的节点</li>
+  <li>为了使删除操作时间复杂度为 O(1)，就不能采用遍历的方式找到某个节点。HashMap 存储着 Key 到节点的映射，通过 Key 就能以 O(1) 的时间得到节点，然后再以 O(1) 的时间将其从双向队列中删除</li>
+</ul>
+
+    </div>
+
+    <div class="post__share">
+  <div class="share__head">
+    <div class="share__title">Share this Post</div>
+  </div>
+  <ul class="share__list list-reset">
+    <li class="share__item">
+      <a class="share__link share__twitter"
+        href="https://twitter.com/intent/tweet?text=%E5%91%BD%E4%B8%AD%E7%8E%87&url=/blog/6-%E5%91%BD%E4%B8%AD%E7%8E%87"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__facebook"
+        href="https://www.facebook.com/sharer/sharer.php?u=/blog/6-%E5%91%BD%E4%B8%AD%E7%8E%87"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__pinterest"
+        href="http://pinterest.com/pin/create/button/?url=/blog/6-%E5%91%BD%E4%B8%AD%E7%8E%87&amp;media=/images/post/post-48.jpg&amp;description=%E5%91%BD%E4%B8%AD%E7%8E%87"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Pinterest" rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&url=/blog/6-%E5%91%BD%E4%B8%AD%E7%8E%87&title=%E5%91%BD%E4%B8%AD%E7%8E%87&summary=&source=Vonge"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
+    </li>
+  </ul>
+</div>
+
+  </article>
+</div>
+<!-- end post -->
+
+<div class="container">
+  <div class="row">
+    <div class="col col-10 col-d-12 push-d-0 push-1">
+      <div class="post__navigation animate">
+  
+  <a class="post__prev" href="/blog/5-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E7%8E%B0%E8%B1%A1%E5%92%8C%E5%88%A4%E6%96%AD">
+    <div class="prev__image">
+      <img loading="lazy" src="/images/post/post-51.jpeg" alt="命中率">
+    </div>
+    <div class="prev__box">
+      <span class="post__nav post__nav__prev">Prev post</span>
+      <h2 class="post__nav__title">性能优化现象和判断</h2>
+    </div>
+  </a>
+  
+
+  
+  <a class="post__next" href="/blog/1-%E9%A1%B5%E9%9D%A2%E6%B8%B2%E6%9F%93">
+    <div class="next__box">
+      <span class="post__nav post__nav__next">Next post</span>
+      <h2 class="post__nav__title">页面渲染</h2>
+    </div>
+    <div class="next__image">
+      <img loading="lazy" src="/images/post/post-58.JPEG" alt="命中率">
+    </div>
+  </a>
+  
+</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- begin related posts -->
+<div class="container">
+  <section class="related-posts  animate">
+    <div class="row">
+      <div class="col col-12">
+        <div class="container__inner">
+          <div class="section__info">
+            <div class="section__head">
+              <h2 class="section__title">You may also like</h2>
+              <a class="section__link" href="/blog">
+                
+              </a>
+            </div>
+          </div>
+          <div class="row">
+
+          
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- end related posts -->
+
+
+
+
+
+
+    <!--
+        Bookshop components are accessed using the bookshop tag,
+        using the same syntax as the standard Jekyll include tag.
+    -->
+    <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
+
+<!--bookshop-live end-->
+
+    <div class="top" title="Top"><i class="ion ion-ios-arrow-up"></i></div>
+
+    <!-- begin footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+
+        <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+
+        <ul class="footer_nav list-reset">
+          
+          <li class="footer_nav__item">
+            <a href="/" class="footer_nav__link">Home</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/projects/" class="footer_nav__link">Projects</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/elements/" class="footer_nav__link">Elements</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/about/" class="footer_nav__link">About</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/blog/" class="footer_nav__link">Blog</a>
+          </li>
+          
+        </ul>
+
+        <div class="copyright"><p> 2021 &copy; <a href="/">Vonge</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
+
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- end footer -->
+
+    <script src="/js/scripts.js"></script>
+    <script src="/js/common.js"></script>
+</body>
+</html>

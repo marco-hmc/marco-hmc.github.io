@@ -151,8 +151,8 @@
 
     
     <div class="c-blog-card__image-wrap">
-      <a class="c-blog-card__image" href="/blog/10-%E6%B7%B1%E5%BA%A6%E6%8E%A2%E7%B4%A2c-%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B">
-        <img loading="lazy" src="/images/post/post-6.jpg" alt="深度探索C++对象模型">
+      <a class="c-blog-card__image" href="/blog/1-%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B%E4%B8%8E%E5%8E%9F%E7%90%86">
+        <img loading="lazy" src="/images/post/post-59.jpg" alt="编译过程与原理">
       </a>
     </div>
     
@@ -162,20 +162,15 @@
       
 
       <h2 class="c-blog-card__title">
-        <a href="/blog/10-%E6%B7%B1%E5%BA%A6%E6%8E%A2%E7%B4%A2c-%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B">深度探索C++对象模型</a>
+        <a href="/blog/1-%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B%E4%B8%8E%E5%8E%9F%E7%90%86">编译过程与原理</a>
       </h2>
 
       <p class="c-blog-card__excerpt">
-        深度探索C++对象模型
+        编译过程与原理
 
-[toc]
-1. 关于对象
+1. 编译过程 - 编译器在做什么？
 
-  C++对象模型的组成:
-    
-      所有的非静态数据成员存储在对象本身中.
-      所有的静态数据成员/成员函数(包括静态与非静态)都置于对象之外.
-     ...
+如果想要机器按照我们的设想执行我们的命令，我们需要一个能够跟机器沟通的方式，而这种方式也就是==机器语言(第一代计算机语言)==，一堆01构成的指令。我们需要事先设计好指令集到...
       </p>
 
       <div class="c-blog-card__meta">
@@ -184,7 +179,7 @@
         </div>
         <div class="c-blog-card__info">
           <div class="c-blog-card__author-name">Marco Hwong</div>
-          <span class="c-blog-card__date"><time datetime="2024-05-19T05:57:31+00:00">19 May 2024</time></span>
+          <span class="c-blog-card__date"><time datetime="2024-06-03T01:25:38+00:00">03 Jun 2024</time></span>
         </div>
       </div>
 
@@ -200,8 +195,8 @@
 
     
     <div class="c-blog-card__image-wrap">
-      <a class="c-blog-card__image" href="/blog/9-%E4%BB%80%E4%B9%88%E6%98%AFsoa%E5%92%8Caos">
-        <img loading="lazy" src="/images/post/post-9.jpg" alt="什么是soa和aos">
+      <a class="c-blog-card__image" href="/blog/0-%E6%B5%8F%E8%A7%88%E5%99%A8%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86">
+        <img loading="lazy" src="/images/post/post-57.jpeg" alt="浏览器工作原理">
       </a>
     </div>
     
@@ -211,14 +206,19 @@
       
 
       <h2 class="c-blog-card__title">
-        <a href="/blog/9-%E4%BB%80%E4%B9%88%E6%98%AFsoa%E5%92%8Caos">什么是soa和aos</a>
+        <a href="/blog/0-%E6%B5%8F%E8%A7%88%E5%99%A8%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86">浏览器工作原理</a>
       </h2>
 
       <p class="c-blog-card__excerpt">
-        什么是soa和aos
-好的，让我们通过一个具体的例子来解释 SOA（Structure of Arrays）和 AOS（Array of Structures）。
+        浏览器工作原理
 
-假设我们有一个粒子系统，每个粒子都有位置（x，y，z）和速度（vx，...
+浏览器内有哪些进程，这些进程都有些什么作用
+浏览器地址输入URL后，内部的进程、线程都做了哪些事
+我们与浏览器交互时，内部进程是怎么处理这些交互事件的
+
+1. 浏览器架构
+
+进程（process）是程序的一次执行过程...
       </p>
 
       <div class="c-blog-card__meta">
@@ -227,7 +227,7 @@
         </div>
         <div class="c-blog-card__info">
           <div class="c-blog-card__author-name">Marco Hwong</div>
-          <span class="c-blog-card__date"><time datetime="2024-05-19T05:57:24+00:00">19 May 2024</time></span>
+          <span class="c-blog-card__date"><time datetime="2024-06-02T15:17:49+00:00">02 Jun 2024</time></span>
         </div>
       </div>
 
@@ -243,196 +243,8 @@
 
     
     <div class="c-blog-card__image-wrap">
-      <a class="c-blog-card__image" href="/blog/8-c-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6-shared-ptr%E7%9A%84%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0%E5%87%BA%E7%8E%B0%E5%BE%AA%E7%8E%AF%E5%BC%95%E7%94%A8%E6%80%8E%E4%B9%88%E5%8A%9E">
-        <img loading="lazy" src="/images/post/post-3.jpg" alt="C++垃圾回收,shared_ptr的引用计数出现循环引用怎么办">
-      </a>
-    </div>
-    
-
-    <div class="c-blog-card__content">
-
-      
-
-      <h2 class="c-blog-card__title">
-        <a href="/blog/8-c-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6-shared-ptr%E7%9A%84%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0%E5%87%BA%E7%8E%B0%E5%BE%AA%E7%8E%AF%E5%BC%95%E7%94%A8%E6%80%8E%E4%B9%88%E5%8A%9E">C++垃圾回收,shared_ptr的引用计数出现循环引用怎么办</a>
-      </h2>
-
-      <p class="c-blog-card__excerpt">
-        std::weak_ptr 是一个不控制资源生命周期的智能指针,是对对象的一种弱引用,只是提供了对其管理的资源的一个访问手段,引入它的目的为协助 std::shared_ptr 工作.
-std::weak_ptr 可以从一个 std:...
-      </p>
-
-      <div class="c-blog-card__meta">
-        <div class="c-blog-card__author-image">
-          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
-        </div>
-        <div class="c-blog-card__info">
-          <div class="c-blog-card__author-name">Marco Hwong</div>
-          <span class="c-blog-card__date"><time datetime="2024-05-19T05:57:15+00:00">19 May 2024</time></span>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-<!--bookshop-live end-->
-    
-      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[3]) -->
-
-<div class="c-blog-card col col-4 col-d-6 col-t-12">
-  <div class="c-blog-card__inner">
-
-    
-    <div class="c-blog-card__image-wrap">
-      <a class="c-blog-card__image" href="/blog/7-%E9%94%99%E8%AF%AF%E7%A0%81">
-        <img loading="lazy" src="/images/post/post-10.jpg" alt="错误码">
-      </a>
-    </div>
-    
-
-    <div class="c-blog-card__content">
-
-      
-
-      <h2 class="c-blog-card__title">
-        <a href="/blog/7-%E9%94%99%E8%AF%AF%E7%A0%81">错误码</a>
-      </h2>
-
-      <p class="c-blog-card__excerpt">
-        错误码
-
-错误处理,一般而言有两种处理方法
-
-  错误码
-  异常机制
-
-
-目前C++提供了统一的异常机制机制,但是没有提供统一的错误码机制.
-
-
-  
-    而C++标准库没有提供统一的错误码,主要有以下几个原因:
-
-    
- ...
-      </p>
-
-      <div class="c-blog-card__meta">
-        <div class="c-blog-card__author-image">
-          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
-        </div>
-        <div class="c-blog-card__info">
-          <div class="c-blog-card__author-name">Marco Hwong</div>
-          <span class="c-blog-card__date"><time datetime="2024-05-19T05:57:03+00:00">19 May 2024</time></span>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-<!--bookshop-live end-->
-    
-      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[4]) -->
-
-<div class="c-blog-card col col-4 col-d-6 col-t-12">
-  <div class="c-blog-card__inner">
-
-    
-    <div class="c-blog-card__image-wrap">
-      <a class="c-blog-card__image" href="/blog/6-%E5%86%85%E5%AD%98%E5%BA%8F">
-        <img loading="lazy" src="/images/post/post-2.jpg" alt="内存序">
-      </a>
-    </div>
-    
-
-    <div class="c-blog-card__content">
-
-      
-
-      <h2 class="c-blog-card__title">
-        <a href="/blog/6-%E5%86%85%E5%AD%98%E5%BA%8F">内存序</a>
-      </h2>
-
-      <p class="c-blog-card__excerpt">
-        内存序
-
-1. 指令重排
-
-指令重排可以是编译器的行为,也可以是处理器的行为.
-
-
-  
-    编译器重排:为了优化程序性能,编译器在生成机器代码时可能会改变指令的顺序.例如,编译器可能会将两个没有数据依赖关系的指令交换顺序,或者将...
-      </p>
-
-      <div class="c-blog-card__meta">
-        <div class="c-blog-card__author-image">
-          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
-        </div>
-        <div class="c-blog-card__info">
-          <div class="c-blog-card__author-name">Marco Hwong</div>
-          <span class="c-blog-card__date"><time datetime="2024-05-19T05:57:00+00:00">19 May 2024</time></span>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-<!--bookshop-live end-->
-    
-      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[5]) -->
-
-<div class="c-blog-card col col-4 col-d-6 col-t-12">
-  <div class="c-blog-card__inner">
-
-    
-    <div class="c-blog-card__image-wrap">
-      <a class="c-blog-card__image" href="/blog/4-%E5%90%91%E9%87%8F%E5%8C%96%E6%98%AF%E4%BB%80%E4%B9%88%E6%84%8F%E6%80%9D">
-        <img loading="lazy" src="/images/post/post-1.jpg" alt="向量化是什么意思?">
-      </a>
-    </div>
-    
-
-    <div class="c-blog-card__content">
-
-      
-
-      <h2 class="c-blog-card__title">
-        <a href="/blog/4-%E5%90%91%E9%87%8F%E5%8C%96%E6%98%AF%E4%BB%80%E4%B9%88%E6%84%8F%E6%80%9D">向量化是什么意思?</a>
-      </h2>
-
-      <p class="c-blog-card__excerpt">
-        向量化是什么意思?
-
-向量化的特性需要编译器和CPU都支持,让我们先来简单的了解一下向量化是如何工作的.假设我们有一个非常大的vector.简单的实现可以写成如下的方式:
-
-std::vector&lt;int&gt; v {1, 2...
-      </p>
-
-      <div class="c-blog-card__meta">
-        <div class="c-blog-card__author-image">
-          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
-        </div>
-        <div class="c-blog-card__info">
-          <div class="c-blog-card__author-name">Marco Hwong</div>
-          <span class="c-blog-card__date"><time datetime="2024-05-19T05:56:53+00:00">19 May 2024</time></span>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-<!--bookshop-live end-->
-    
-      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[6]) -->
-
-<div class="c-blog-card col col-4 col-d-6 col-t-12">
-  <div class="c-blog-card__inner">
-
-    
-    <div class="c-blog-card__image-wrap">
       <a class="c-blog-card__image" href="/blog/0-cpp-quiz">
-        <img loading="lazy" src="/images/post/post-8.jpg" alt="cpp quiz">
+        <img loading="lazy" src="/images/post/post-1.jpg" alt="cpp quiz">
       </a>
     </div>
     
@@ -448,9 +260,16 @@ std::vector&lt;int&gt; v {1, 2...
       <p class="c-blog-card__excerpt">
         cpp quiz
 
-xzxcv
-zxcv
+1. grammar
 
+1.1 c++中NULL和nullptr的区别
+
+
+  
+    在C语言中，NULL通常被定义为：#define NULL ((void *)0)
+  
+  
+    所以NULL实际上是...
       </p>
 
       <div class="c-blog-card__meta">
@@ -459,7 +278,237 @@ zxcv
         </div>
         <div class="c-blog-card__info">
           <div class="c-blog-card__author-name">Marco Hwong</div>
-          <span class="c-blog-card__date"><time datetime="2024-05-19T05:45:18+00:00">19 May 2024</time></span>
+          <span class="c-blog-card__date"><time datetime="2024-06-02T09:19:16+00:00">02 Jun 2024</time></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[3]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/4-%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8">
+        <img loading="lazy" src="/images/post/post-14.jpg" alt="线程安全">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+      <div class="c-blog-card__tags-box">
+        
+        <a href="/tag/c++," class="c-blog-card__tag">c++,</a>
+        
+        <a href="/tag/grammar," class="c-blog-card__tag">grammar,</a>
+        
+        <a href="/tag/thread" class="c-blog-card__tag">thread</a>
+        
+      </div>
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/4-%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8">线程安全</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        _tags: c++, grammar, thread
+
+线程安全
+
+
+  线程安全的概念
+    
+      多个线程访问同一个对象时，如果不用考虑这些线程在运行时环境下的调度和交替执行，也不需要进行额外的同步，或者在调用方进行任...
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2024-06-02T08:35:57+00:00">02 Jun 2024</time></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[4]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/3-c-%E4%B8%AD%E7%9A%84%E7%9C%81%E7%95%A5%E5%8F%B7">
+        <img loading="lazy" src="/images/post/post-13.jpeg" alt="c++ 中的省略号">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+      <div class="c-blog-card__tags-box">
+        
+        <a href="/tag/c++," class="c-blog-card__tag">c++,</a>
+        
+        <a href="/tag/grammar" class="c-blog-card__tag">grammar</a>
+        
+      </div>
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/3-c-%E4%B8%AD%E7%9A%84%E7%9C%81%E7%95%A5%E5%8F%B7">c++ 中的省略号</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        _tags: c++, grammar
+
+c++ 中的省略号
+
+1. c++ 中的省略号怎么用？
+在C++中，省略号（…）有两种主要的用途：
+
+
+  可变参数模板（Variadic Templates）：在模板编程中，省略号用于表示一...
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2024-06-02T08:35:56+00:00">02 Jun 2024</time></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[5]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/2-%E5%87%BD%E6%95%B0%E5%AF%B9%E8%B1%A1-%E4%BB%BF%E5%87%BD%E6%95%B0">
+        <img loading="lazy" src="/images/post/post-12.jpg" alt="函数对象（仿函数）">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+      <div class="c-blog-card__tags-box">
+        
+        <a href="/tag/c++," class="c-blog-card__tag">c++,</a>
+        
+        <a href="/tag/functor," class="c-blog-card__tag">functor,</a>
+        
+        <a href="/tag/grammar" class="c-blog-card__tag">grammar</a>
+        
+      </div>
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/2-%E5%87%BD%E6%95%B0%E5%AF%B9%E8%B1%A1-%E4%BB%BF%E5%87%BD%E6%95%B0">函数对象（仿函数）</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        _tags: c++, functor, grammar
+
+函数对象（仿函数）
+
+1. 什么是函数对象，什么是仿函数
+在 C++ 中，函数对象（也称为仿函数）是一个行为类似函数的对象。任何类如果重载了 operator()，那么该类的...
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2024-06-02T08:35:54+00:00">02 Jun 2024</time></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[6]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/2-my-effective-c">
+        <img loading="lazy" src="/images/post/post-9.jpg" alt="My effective C++">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+      <div class="c-blog-card__tags-box">
+        
+        <a href="/tag/c++," class="c-blog-card__tag">c++,</a>
+        
+        <a href="/tag/constructing," class="c-blog-card__tag">constructing,</a>
+        
+        <a href="/tag/reading" class="c-blog-card__tag">reading</a>
+        
+        <a href="/tag/notes" class="c-blog-card__tag">notes</a>
+        
+      </div>
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/2-my-effective-c">My effective C++</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        _tags: c++, constructing, reading notes
+
+My effective C++
+
+1. effective C++
+1.1 视C++ 为一个语言联邦
+
+  C
+  面向对象编程
+  泛型编程
+  S...
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2024-06-02T08:35:48+00:00">02 Jun 2024</time></span>
         </div>
       </div>
 
@@ -475,8 +524,8 @@ zxcv
 
     
     <div class="c-blog-card__image-wrap">
-      <a class="c-blog-card__image" href="/blog/3-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">
-        <img loading="lazy" src="/images/post/post-5.jpg" alt="性能优化">
+      <a class="c-blog-card__image" href="/blog/6-%E9%94%99%E8%AF%AF%E7%A0%81">
+        <img loading="lazy" src="/images/post/post-3.jpg" alt="错误码">
       </a>
     </div>
     
@@ -484,21 +533,37 @@ zxcv
     <div class="c-blog-card__content">
 
       
+      <div class="c-blog-card__tags-box">
+        
+        <a href="/tag/c++," class="c-blog-card__tag">c++,</a>
+        
+        <a href="/tag/constructing," class="c-blog-card__tag">constructing,</a>
+        
+        <a href="/tag/error," class="c-blog-card__tag">error,</a>
+        
+        <a href="/tag/exception" class="c-blog-card__tag">exception</a>
+        
+      </div>
+      
 
       <h2 class="c-blog-card__title">
-        <a href="/blog/3-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">性能优化</a>
+        <a href="/blog/6-%E9%94%99%E8%AF%AF%E7%A0%81">错误码</a>
       </h2>
 
       <p class="c-blog-card__excerpt">
-        性能优化
+        _tags: c++, constructing, error, exception
 
-1. 这些是一些常见操作的成本的数量级的概念:
+错误码
 
-这些操作的精确耗时取决于许多因素,包括硬件/操作系统/网络条件等.以下是一些大致的估计:
+错误处理,一般而言有两种处理方法
+
+  错误码
+  异常机制
 
 
-  
-    一次内存访问:大约在100纳秒级别.这是从CPU访问主内存的时间...
+目前C++提供了统一的异常机制机制,但是没有提供统一的错误码机制.
+
+...
       </p>
 
       <div class="c-blog-card__meta">
@@ -507,7 +572,7 @@ zxcv
         </div>
         <div class="c-blog-card__info">
           <div class="c-blog-card__author-name">Marco Hwong</div>
-          <span class="c-blog-card__date"><time datetime="2024-05-18T06:19:58+00:00">18 May 2024</time></span>
+          <span class="c-blog-card__date"><time datetime="2024-06-02T07:36:01+00:00">02 Jun 2024</time></span>
         </div>
       </div>
 
@@ -523,8 +588,8 @@ zxcv
 
     
     <div class="c-blog-card__image-wrap">
-      <a class="c-blog-card__image" href="/blog/2-%E5%AD%97%E7%AC%A6%E5%92%8Cunicode%E6%A0%87%E5%87%86">
-        <img loading="lazy" src="/images/post/post-7.jpg" alt="字符和unicode标准">
+      <a class="c-blog-card__image" href="/blog/6-%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8">
+        <img loading="lazy" src="/images/post/post-39.jpg" alt="网络安全">
       </a>
     </div>
     
@@ -532,23 +597,33 @@ zxcv
     <div class="c-blog-card__content">
 
       
+      <div class="c-blog-card__tags-box">
+        
+        <a href="/tag/计算机网络," class="c-blog-card__tag">计算机网络,</a>
+        
+        <a href="/tag/constructing" class="c-blog-card__tag">constructing</a>
+        
+      </div>
+      
 
       <h2 class="c-blog-card__title">
-        <a href="/blog/2-%E5%AD%97%E7%AC%A6%E5%92%8Cunicode%E6%A0%87%E5%87%86">字符和unicode标准</a>
+        <a href="/blog/6-%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8">网络安全</a>
       </h2>
 
       <p class="c-blog-card__excerpt">
-        字符和unicode标准
+        _tags: 计算机网络, constructing
 
-1. 数据类型
-在编程语言中，字符的数据类型决定了可以存储哪些字符以及如何存储这些字符。
-在 C 和 C++ 中，有两种主要字符类型
+网络安全
 
-  char
-    
-      主要用于ASCII
-    
-  ...
+1. DNS
+
+1. 针对DNS服务器的攻击
+
+
+  
+    是什么？
+
+    ​	通过随机生成一些域名，向DNS服务器发起解析，由于DNS本地一般不会有随机生成...
       </p>
 
       <div class="c-blog-card__meta">
@@ -557,7 +632,7 @@ zxcv
         </div>
         <div class="c-blog-card__info">
           <div class="c-blog-card__author-name">Marco Hwong</div>
-          <span class="c-blog-card__date"><time datetime="2024-05-18T06:19:56+00:00">18 May 2024</time></span>
+          <span class="c-blog-card__date"><time datetime="2024-06-02T07:36:01+00:00">02 Jun 2024</time></span>
         </div>
       </div>
 
@@ -573,8 +648,8 @@ zxcv
 
     
     <div class="c-blog-card__image-wrap">
-      <a class="c-blog-card__image" href="/blog/1-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%85%BC%E5%AE%B9">
-        <img loading="lazy" src="/images/post/post-4.jpg" alt="二进制兼容">
+      <a class="c-blog-card__image" href="/blog/5-%E5%BA%94%E7%94%A8%E5%B1%82">
+        <img loading="lazy" src="/images/post/post-44.jpg" alt="应用层">
       </a>
     </div>
     
@@ -582,21 +657,31 @@ zxcv
     <div class="c-blog-card__content">
 
       
+      <div class="c-blog-card__tags-box">
+        
+        <a href="/tag/计算机网络" class="c-blog-card__tag">计算机网络</a>
+        
+      </div>
+      
 
       <h2 class="c-blog-card__title">
-        <a href="/blog/1-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%85%BC%E5%AE%B9">二进制兼容</a>
+        <a href="/blog/5-%E5%BA%94%E7%94%A8%E5%B1%82">应用层</a>
       </h2>
 
       <p class="c-blog-card__excerpt">
-        二进制兼容
+        _tags: 计算机网络
 
-1. 什么是二进制兼容问题?
+应用层
 
-在升级库文件的时候,不必重新编译使用此库的可执行文件或其他库文件,并且程序的功能不被破坏.
 
-2. 二进制兼容有什么好处?
+  
+    应用层有哪些?
 
-保持二进制兼容性是为了确保软件的更新和升级过程更加平滑和无缝,...
+    计算机网络的应用层有许多协议,常见的包括:
+
+    
+      HTTP(超文本传输协议):用于在Web浏览器和Web服务器之间传输超文本文档.
+  ...
       </p>
 
       <div class="c-blog-card__meta">
@@ -605,7 +690,7 @@ zxcv
         </div>
         <div class="c-blog-card__info">
           <div class="c-blog-card__author-name">Marco Hwong</div>
-          <span class="c-blog-card__date"><time datetime="2024-05-18T05:58:17+00:00">18 May 2024</time></span>
+          <span class="c-blog-card__date"><time datetime="2024-06-02T07:36:01+00:00">02 Jun 2024</time></span>
         </div>
       </div>
 
@@ -621,8 +706,8 @@ zxcv
 
     
     <div class="c-blog-card__image-wrap">
-      <a class="c-blog-card__image" href="/blog/the-way-i-see-it-every-life-is-a-pile-of-good-things">
-        <img loading="lazy" src="/images/post/post-3.jpg" alt="The way I see it, every life is a pile of good things">
+      <a class="c-blog-card__image" href="/blog/4-%E5%86%85%E5%AD%98%E5%BA%8F">
+        <img loading="lazy" src="/images/post/post-8.jpg" alt="内存序">
       </a>
     </div>
     
@@ -632,21 +717,29 @@ zxcv
       
       <div class="c-blog-card__tags-box">
         
-        <a href="/tag/notes" class="c-blog-card__tag">notes</a>
+        <a href="/tag/c++," class="c-blog-card__tag">c++,</a>
         
-        <a href="/tag/story" class="c-blog-card__tag">story</a>
-        
-        <a href="/tag/rest" class="c-blog-card__tag">rest</a>
+        <a href="/tag/constructing" class="c-blog-card__tag">constructing</a>
         
       </div>
       
 
       <h2 class="c-blog-card__title">
-        <a href="/blog/the-way-i-see-it-every-life-is-a-pile-of-good-things">The way I see it, every life is a pile of good things</a>
+        <a href="/blog/4-%E5%86%85%E5%AD%98%E5%BA%8F">内存序</a>
       </h2>
 
       <p class="c-blog-card__excerpt">
-        In qua quid est boni praeter summam voluptatem, et eam sempiternam. Cur post Tarentum ad Archytam. Qua ex cognitione ...
+        _tags: c++, constructing
+
+内存序
+
+1. 指令重排
+
+指令重排可以是编译器的行为,也可以是处理器的行为.
+
+
+  
+    编译器重排:为了优化程序性能,编译器在生成机器代码时可能会改变指令的顺序.例如,编译...
       </p>
 
       <div class="c-blog-card__meta">
@@ -655,7 +748,7 @@ zxcv
         </div>
         <div class="c-blog-card__info">
           <div class="c-blog-card__author-name">Marco Hwong</div>
-          <span class="c-blog-card__date"><time datetime="2018-10-31T12:01:35+00:00">31 Oct 2018</time></span>
+          <span class="c-blog-card__date"><time datetime="2024-06-02T07:36:01+00:00">02 Jun 2024</time></span>
         </div>
       </div>
 
@@ -671,8 +764,8 @@ zxcv
 
     
     <div class="c-blog-card__image-wrap">
-      <a class="c-blog-card__image" href="/blog/everything-has-beauty-but-not-everyone-can-see">
-        <img loading="lazy" src="/images/post/post-2.jpg" alt="Everything has beauty, but not everyone can see">
+      <a class="c-blog-card__image" href="/blog/4-%E4%BC%A0%E8%BE%93%E5%B1%82">
+        <img loading="lazy" src="/images/post/post-40.jpg" alt="传输层">
       </a>
     </div>
     
@@ -682,20 +775,29 @@ zxcv
       
       <div class="c-blog-card__tags-box">
         
-        <a href="/tag/travel" class="c-blog-card__tag">travel</a>
-        
-        <a href="/tag/rest" class="c-blog-card__tag">rest</a>
+        <a href="/tag/计算机网络" class="c-blog-card__tag">计算机网络</a>
         
       </div>
       
 
       <h2 class="c-blog-card__title">
-        <a href="/blog/everything-has-beauty-but-not-everyone-can-see">Everything has beauty, but not everyone can see</a>
+        <a href="/blog/4-%E4%BC%A0%E8%BE%93%E5%B1%82">传输层</a>
       </h2>
 
       <p class="c-blog-card__excerpt">
-        
+        _tags: 计算机网络
 
+传输层
+1. 基本概念
+
+2. 其他
+
+2.1 TCP和UDP的区别
+TCP(传输控制协议)和UDP(用户数据报协议)是两种常见的传输层协议,它们有以下主要的区别:
+
+
+  
+    连接性:TCP是一种面...
       </p>
 
       <div class="c-blog-card__meta">
@@ -704,7 +806,7 @@ zxcv
         </div>
         <div class="c-blog-card__info">
           <div class="c-blog-card__author-name">Marco Hwong</div>
-          <span class="c-blog-card__date"><time datetime="2018-05-29T15:05:55+00:00">29 May 2018</time></span>
+          <span class="c-blog-card__date"><time datetime="2024-06-02T07:36:01+00:00">02 Jun 2024</time></span>
         </div>
       </div>
 
@@ -720,8 +822,8 @@ zxcv
 
     
     <div class="c-blog-card__image-wrap">
-      <a class="c-blog-card__image" href="/blog/it-is-never-too-late-to-be-what-you-might-have-been">
-        <img loading="lazy" src="/images/post/post-1.jpg" alt="It is never too late to be what you might have been">
+      <a class="c-blog-card__image" href="/blog/3-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E5%92%8Ccdn">
+        <img loading="lazy" src="/images/post/post-46.jpg" alt="负载均衡和CDN">
       </a>
     </div>
     
@@ -731,20 +833,29 @@ zxcv
       
       <div class="c-blog-card__tags-box">
         
-        <a href="/tag/travel" class="c-blog-card__tag">travel</a>
+        <a href="/tag/计算机网络," class="c-blog-card__tag">计算机网络,</a>
         
-        <a href="/tag/notes" class="c-blog-card__tag">notes</a>
+        <a href="/tag/constructing" class="c-blog-card__tag">constructing</a>
         
       </div>
       
 
       <h2 class="c-blog-card__title">
-        <a href="/blog/it-is-never-too-late-to-be-what-you-might-have-been">It is never too late to be what you might have been</a>
+        <a href="/blog/3-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E5%92%8Ccdn">负载均衡和CDN</a>
       </h2>
 
       <p class="c-blog-card__excerpt">
-        
+        _tags: 计算机网络, constructing
 
+负载均衡和CDN
+
+1. 基本概念
+
+
+  
+    什么是负载均衡？
+
+    ​	负载均衡是由多台服务器以对称的方式组成一个服务器集合，每台服务器都具有等价的地位，都可以单独...
       </p>
 
       <div class="c-blog-card__meta">
@@ -753,7 +864,1166 @@ zxcv
         </div>
         <div class="c-blog-card__info">
           <div class="c-blog-card__author-name">Marco Hwong</div>
-          <span class="c-blog-card__date"><time datetime="2018-04-24T12:01:35+00:00">24 Apr 2018</time></span>
+          <span class="c-blog-card__date"><time datetime="2024-06-02T07:36:01+00:00">02 Jun 2024</time></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[13]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/3-%E7%BD%91%E7%BB%9C%E5%B1%82">
+        <img loading="lazy" src="/images/post/post-41.jpg" alt="网络层">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+      <div class="c-blog-card__tags-box">
+        
+        <a href="/tag/计算机网络" class="c-blog-card__tag">计算机网络</a>
+        
+      </div>
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/3-%E7%BD%91%E7%BB%9C%E5%B1%82">网络层</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        _tags: 计算机网络
+
+网络层
+
+1. 基本概念
+
+
+  
+    IP协议(Internet Protocol):IP协议是网络层的核心协议,它定义了IP地址和数据包的格式,并负责将数据包从源主机发送到目标主机.IP协议包括IP...
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2024-06-02T07:36:01+00:00">02 Jun 2024</time></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[14]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/3-%E5%90%91%E9%87%8F%E5%8C%96%E6%98%AF%E4%BB%80%E4%B9%88%E6%84%8F%E6%80%9D">
+        <img loading="lazy" src="/images/post/post-7.jpeg" alt="向量化是什么意思?">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+      <div class="c-blog-card__tags-box">
+        
+        <a href="/tag/c++," class="c-blog-card__tag">c++,</a>
+        
+        <a href="/tag/performance," class="c-blog-card__tag">performance,</a>
+        
+        <a href="/tag/constructing" class="c-blog-card__tag">constructing</a>
+        
+      </div>
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/3-%E5%90%91%E9%87%8F%E5%8C%96%E6%98%AF%E4%BB%80%E4%B9%88%E6%84%8F%E6%80%9D">向量化是什么意思?</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        _tags: c++, performance, constructing
+
+向量化是什么意思?
+
+向量化的特性需要编译器和CPU都支持,让我们先来简单的了解一下向量化是如何工作的.假设我们有一个非常大的vector.简单的实现可以写...
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2024-06-02T07:36:01+00:00">02 Jun 2024</time></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[15]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/2-%E9%93%BE%E8%B7%AF%E5%B1%82">
+        <img loading="lazy" src="/images/post/post-38.jpg" alt="链路层">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+      <div class="c-blog-card__tags-box">
+        
+        <a href="/tag/计算机网络" class="c-blog-card__tag">计算机网络</a>
+        
+      </div>
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/2-%E9%93%BE%E8%B7%AF%E5%B1%82">链路层</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        _tags: 计算机网络
+
+链路层
+
+1. 基本概念
+
+链路层(Link Layer)是计算机网络的四层模型中的第二层,它负责在网络节点之间传输数据.以下是一些关于链路层的基本知识:
+对于开发者来说,以下是一些在链路层需要了解的关键概...
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2024-06-02T07:36:01+00:00">02 Jun 2024</time></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[16]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/2-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">
+        <img loading="lazy" src="/images/post/post-4.jpg" alt="性能优化">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+      <div class="c-blog-card__tags-box">
+        
+        <a href="/tag/c++," class="c-blog-card__tag">c++,</a>
+        
+        <a href="/tag/performance" class="c-blog-card__tag">performance</a>
+        
+      </div>
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/2-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">性能优化</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        _tags: c++, performance
+
+性能优化
+
+1. 这些是一些常见操作的成本的数量级的概念:
+
+这些操作的精确耗时取决于许多因素,包括硬件/操作系统/网络条件等.以下是一些大致的估计:
+
+
+  
+    一次内存访问:...
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2024-06-02T07:36:01+00:00">02 Jun 2024</time></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[17]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/2-%E4%BB%8Edns%E5%88%B0httpdns-%E4%B8%80%E6%AD%A5%E4%B8%80%E6%AD%A5%E4%BC%98%E5%8C%96">
+        <img loading="lazy" src="/images/post/post-37.jpg" alt="从DNS到HTTPDNS 一步一步优化">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+      <div class="c-blog-card__tags-box">
+        
+        <a href="/tag/计算机网络," class="c-blog-card__tag">计算机网络,</a>
+        
+        <a href="/tag/constructing" class="c-blog-card__tag">constructing</a>
+        
+      </div>
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/2-%E4%BB%8Edns%E5%88%B0httpdns-%E4%B8%80%E6%AD%A5%E4%B8%80%E6%AD%A5%E4%BC%98%E5%8C%96">从DNS到HTTPDNS 一步一步优化</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        _tags: 计算机网络, constructing
+
+从DNS到HTTPDNS 一步一步优化
+DNS到HTTPDNS，从静态的缓存策略，到动态缓存策略。
+
+DNS解析有两种方式:递归查询和迭代查询
+
+  递归查询 用户先向本地域名服...
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2024-06-02T07:36:01+00:00">02 Jun 2024</time></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[18]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/2-udp">
+        <img loading="lazy" src="/images/post/post-42.jpeg" alt="UDP">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+      <div class="c-blog-card__tags-box">
+        
+        <a href="/tag/计算机网络" class="c-blog-card__tag">计算机网络</a>
+        
+      </div>
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/2-udp">UDP</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        _tags: 计算机网络
+
+UDP
+
+3.2 UDP
+
+
+  
+    UDP是什么？
+
+    ​	UDP 在传送数据之前不需要先建立连接，远地主机在收到 UDP 报文后，不需要给出任何确认。虽然 UDP 不提供可靠交付，但在某些情...
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2024-06-02T07:36:01+00:00">02 Jun 2024</time></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[19]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/1-%E7%89%A9%E7%90%86%E5%B1%82">
+        <img loading="lazy" src="/images/post/post-36.jpg" alt="物理层">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+      <div class="c-blog-card__tags-box">
+        
+        <a href="/tag/计算机网络" class="c-blog-card__tag">计算机网络</a>
+        
+      </div>
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/1-%E7%89%A9%E7%90%86%E5%B1%82">物理层</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        _tags: 计算机网络
+
+物理层
+1. 基本概念
+
+
+  编码与调制
+    
+      编码:将数字数据转换为信号的过程.常见的编码方式有非归零编码/曼彻斯特编码等.
+      调制:将数字信号转换为模拟信号的过程.常见的调制...
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2024-06-02T07:36:01+00:00">02 Jun 2024</time></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[20]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/1-%E5%AD%97%E7%AC%A6%E5%92%8Cunicode%E6%A0%87%E5%87%86">
+        <img loading="lazy" src="/images/post/post-11.jpg" alt="字符和unicode标准">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+      <div class="c-blog-card__tags-box">
+        
+        <a href="/tag/c++," class="c-blog-card__tag">c++,</a>
+        
+        <a href="/tag/string," class="c-blog-card__tag">string,</a>
+        
+        <a href="/tag/unicode," class="c-blog-card__tag">unicode,</a>
+        
+        <a href="/tag/grammar" class="c-blog-card__tag">grammar</a>
+        
+      </div>
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/1-%E5%AD%97%E7%AC%A6%E5%92%8Cunicode%E6%A0%87%E5%87%86">字符和unicode标准</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        _tags: c++, string, unicode, grammar
+
+字符和unicode标准
+
+1. 数据类型
+在编程语言中，字符的数据类型决定了可以存储哪些字符以及如何存储这些字符。
+在 C 和 C++ 中，有两种主要字符类...
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2024-06-02T07:36:01+00:00">02 Jun 2024</time></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[21]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/1-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%85%BC%E5%AE%B9">
+        <img loading="lazy" src="/images/post/post-2.jpg" alt="二进制兼容">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+      <div class="c-blog-card__tags-box">
+        
+        <a href="/tag/constructing," class="c-blog-card__tag">constructing,</a>
+        
+        <a href="/tag/c++" class="c-blog-card__tag">c++</a>
+        
+      </div>
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/1-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%85%BC%E5%AE%B9">二进制兼容</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        _tags: constructing, c++
+
+二进制兼容
+
+1. 什么是二进制兼容问题?
+
+在升级库文件的时候,不必重新编译使用此库的可执行文件或其他库文件,并且程序的功能不被破坏.
+
+2. 二进制兼容有什么好处?
+
+保持二进制...
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2024-06-02T07:36:01+00:00">02 Jun 2024</time></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[22]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/1-http">
+        <img loading="lazy" src="/images/post/post-47.jpg" alt="http">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+      <div class="c-blog-card__tags-box">
+        
+        <a href="/tag/计算机网络," class="c-blog-card__tag">计算机网络,</a>
+        
+        <a href="/tag/constructing" class="c-blog-card__tag">constructing</a>
+        
+      </div>
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/1-http">http</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        _tags: 计算机网络, constructing
+
+http
+1. concepts
+HTTP协议是一种应用层协议,主要用于在Web浏览器和Web服务器之间传输数据.在你的文件中,HTTP协议的内容主要包括以下几个部分:
+
+
+  ...
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2024-06-02T07:36:01+00:00">02 Jun 2024</time></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[23]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/1-c-%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F">
+        <img loading="lazy" src="/images/post/post-10.jpeg" alt="c++编程范式">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+      <div class="c-blog-card__tags-box">
+        
+        <a href="/tag/c++," class="c-blog-card__tag">c++,</a>
+        
+        <a href="/tag/constructing" class="c-blog-card__tag">constructing</a>
+        
+      </div>
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/1-c-%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F">c++编程范式</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        _tags: c++, constructing
+
+c++编程范式
+
+1. RAII
+RAII，全称 Resource Acquisition Is Initialization（资源获取即初始化），是一种在 C++ 中常用的编程技巧...
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2024-06-02T07:36:01+00:00">02 Jun 2024</time></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[24]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/1-tcp">
+        <img loading="lazy" src="/images/post/post-43.jpeg" alt="TCP">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+      <div class="c-blog-card__tags-box">
+        
+        <a href="/tag/计算机网络" class="c-blog-card__tag">计算机网络</a>
+        
+      </div>
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/1-tcp">TCP</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        _tags: 计算机网络
+
+TCP
+
+1. concepts
+
+1.1 三次握手四次挥手
+三次握手和四次挥手是TCP协议中建立连接和断开连接的过程。
+
+
+1.1.1 三次握手
+
+  然后客户端主动发起连接SYN,之后处于SYN-SEN...
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2024-06-02T07:36:01+00:00">02 Jun 2024</time></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[25]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/1-socket">
+        <img loading="lazy" src="/images/post/post-49.jpeg" alt="Socket">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+      <div class="c-blog-card__tags-box">
+        
+        <a href="/tag/计算机网络" class="c-blog-card__tag">计算机网络</a>
+        
+      </div>
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/1-socket">Socket</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        _tags: 计算机网络
+
+Socket
+
+1. Socket基础知识
+Socket（套接字）是计算机网络中用于实现不同主机之间的通信的一种技术。它提供了一种在网络上发送和接收数据的方式。在TCP/IP网络模型中，Socket是应用层...
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2024-06-02T07:36:01+00:00">02 Jun 2024</time></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[26]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/0-%E8%AE%A1%E7%BD%91%E8%AE%BE%E5%A4%87">
+        <img loading="lazy" src="/images/post/post-45.png" alt="计网设备">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+      <div class="c-blog-card__tags-box">
+        
+        <a href="/tag/计算机网络" class="c-blog-card__tag">计算机网络</a>
+        
+      </div>
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/0-%E8%AE%A1%E7%BD%91%E8%AE%BE%E5%A4%87">计网设备</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        _tags: 计算机网络
+
+计网设备
+
+1. 光猫(modem)
+光猫是光纤网络的接入设备,它将光信号转换为电信号,或者将电信号转换为光信号,使得家庭或企业用户可以通过光纤接入互联网.
+
+2. 路由器(router)
+路由器是网络中的...
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2024-06-02T07:36:01+00:00">02 Jun 2024</time></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[27]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/7-c-%E5%92%8C%E6%B1%87%E7%BC%96">
+        <img loading="lazy" src="/images/post/post-6.jpeg" alt="c++和汇编">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/7-c-%E5%92%8C%E6%B1%87%E7%BC%96">c++和汇编</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        c++和汇编
+
+编译器会将c++转成汇编语言，学会和明白汇编语言的一些特性，有助于理解C++的设计。
+
+1. 基本概念
+
+1.1 汇编有哪些寄存器？
+在 x86 架构的汇编语言中，有一些常用的寄存器，它们各自有不同的用途：
+
+
+  E...
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2024-06-02T06:23:25+00:00">02 Jun 2024</time></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[28]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/5-%E5%A4%9A%E6%80%81">
+        <img loading="lazy" src="/images/post/post-5.jpeg" alt="多态">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/5-%E5%A4%9A%E6%80%81">多态</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        多态
+
+1.
+这段代码的主要目标是防止不同类型的动物之间进行赋值操作，同时允许同类型的动物之间进行赋值。为了实现这个目标，它引入了一个抽象基类AbstractAnimal，并将赋值操作符operator=设为protected，这样只...
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2024-06-02T06:23:18+00:00">02 Jun 2024</time></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[29]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/1-%E9%A1%B5%E9%9D%A2%E6%B8%B2%E6%9F%93">
+        <img loading="lazy" src="/images/post/post-58.JPEG" alt="页面渲染">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/1-%E9%A1%B5%E9%9D%A2%E6%B8%B2%E6%9F%93">页面渲染</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        页面渲染
+
+1. 基本概念
+什么是服务端渲染，与客户端渲染的区别是什么？
+为什么需要服务端渲染，服务端渲染的利弊是什么？
+如何对VUE项目进行同构？
+
+2. 渲染
+2.1 页面的渲染流程
+
+页面的渲染流程通常包括以下步骤：
+
+
+  
+...
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2024-06-01T18:41:16+00:00">01 Jun 2024</time></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[30]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/6-%E5%91%BD%E4%B8%AD%E7%8E%87">
+        <img loading="lazy" src="/images/post/post-48.jpg" alt="命中率">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/6-%E5%91%BD%E4%B8%AD%E7%8E%87">命中率</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        分布式系统中常用缓存方案
+
+
+  客户端缓存：页面和浏览器缓存，app缓存，h5缓存，localStorage，sessionStorage
+  CDN缓存：内容存储：数据缓存，内容分发：负载均衡
+  nginx缓存：静态资源
+  服...
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2024-06-01T07:40:39+00:00">01 Jun 2024</time></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[31]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/5-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E7%8E%B0%E8%B1%A1%E5%92%8C%E5%88%A4%E6%96%AD">
+        <img loading="lazy" src="/images/post/post-51.jpeg" alt="性能优化现象和判断">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/5-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E7%8E%B0%E8%B1%A1%E5%92%8C%E5%88%A4%E6%96%AD">性能优化现象和判断</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        系统性能优化
+
+性能优化现象和判断
+
+
+  提出性能优化现象
+    
+      前台访问很慢，请帮忙分析优化
+      用户对性能很不满意，再不解决就要投诉
+      数据库负载很重，请帮忙分析一下
+      xxx功能打开...
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2024-06-01T07:40:39+00:00">01 Jun 2024</time></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[32]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/3-%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86%E6%A8%A1%E5%BC%8F">
+        <img loading="lazy" src="/images/post/post-55.jpeg" alt="事件处理模式">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/3-%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86%E6%A8%A1%E5%BC%8F">事件处理模式</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        事件处理模式
+
+Reactor
+
+
+  
+    Reactor是非阻塞同步网络模式
+  
+  
+    Reactor的组成
+
+    
+      
+        Handle(句柄或描述符)：本质上表示一种资源，是由操作系统提...
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2024-06-01T07:40:39+00:00">01 Jun 2024</time></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[33]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/2-io%E5%A4%8D%E7%94%A8">
+        <img loading="lazy" src="/images/post/post-54.jpg" alt="io复用">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/2-io%E5%A4%8D%E7%94%A8">io复用</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        io复用
+
+1. 基本概念
+
+1.1 什么是io复用
+IO复用（Input/Output Multiplexing，也做io多路复用）是一种可以让单个线程处理多个IO操作的技术。在IO复用模型中，线程可以同时等待多个IO操作（例如，多...
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2024-06-01T07:40:39+00:00">01 Jun 2024</time></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--bookshop-live end-->
+    
+      <!--bookshop-live name(blog-card/blog-card.jekyll.html) params(post=post) context(post=site.posts[34]) -->
+
+<div class="c-blog-card col col-4 col-d-6 col-t-12">
+  <div class="c-blog-card__inner">
+
+    
+    <div class="c-blog-card__image-wrap">
+      <a class="c-blog-card__image" href="/blog/1-select">
+        <img loading="lazy" src="/images/post/post-56.jpeg" alt="select">
+      </a>
+    </div>
+    
+
+    <div class="c-blog-card__content">
+
+      
+
+      <h2 class="c-blog-card__title">
+        <a href="/blog/1-select">select</a>
+      </h2>
+
+      <p class="c-blog-card__excerpt">
+        select
+
+1. 代码
+#include &lt;sys/types.h&gt;
+#include &lt;sys/socket.h&gt;
+#include &lt;netinet/in.h&gt;
+#include &lt;a...
+      </p>
+
+      <div class="c-blog-card__meta">
+        <div class="c-blog-card__author-image">
+          <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+        </div>
+        <div class="c-blog-card__info">
+          <div class="c-blog-card__author-name">Marco Hwong</div>
+          <span class="c-blog-card__date"><time datetime="2024-06-01T07:40:39+00:00">01 Jun 2024</time></span>
         </div>
       </div>
 

@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>字符和unicode标准</title>
+  <meta name='description' content='Marco’s Blog'>
+
+  <link rel="canonical" href="/blog/1-%E5%AD%97%E7%AC%A6%E5%92%8Cunicode%E6%A0%87%E5%87%86">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="字符和unicode标准 – Marco’s Blog">
+  <meta name="twitter:description" content="_tags: c++, string, unicode, grammar
+">
+  <meta name="twitter:image:src" content="/images/post/post-11.jpg">
+
+  <!-- Facebook OpenGraph -->
+  <meta property="og:title" content="字符和unicode标准 – Marco’s Blog">
+  <meta property="og:description" content="_tags: c++, string, unicode, grammar
+">
+  <meta property="og:image" content="/images/post/post-11.jpg">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Ionicons -->
+  <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/main.css">
+</head>
+
+<body>
+
+    
+
+    <!-- begin header -->
+<header class="c-header">
+  <div class="container">
+    <div class="row">
+      <div class="c-header__inner">
+
+        <div class="logo">
+          <a class="logo__link" href="/">
+          
+            <img class="logo__image" src="/images/mc_logo1.ico" alt="Marco’s Blog">
+          
+          </a>
+        </div>
+
+        <nav class="main-nav">
+          <div class="main-nav__box">
+
+            <div class="nav__icon-close">
+              <i class="ion ion-md-close"></i>
+            </div>
+
+            <div class="nav__title">Menu</div>
+
+              <ul class="nav__list list-reset">
+
+              
+                
+                <li class="nav__item">
+                  <a href="/" class="nav__link">Home</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/projects/" class="nav__link">Projects</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/blog/" class="nav__link">Blog</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/about/" class="nav__link">About</a>
+                </li>
+                
+              
+
+            </ul>
+          </div>
+
+          <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+        </nav>
+
+        <div class="nav-button">
+          <i class="nav__icon nav__icon-menu ion ion-md-menu"></i>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+<!-- end header -->
+
+    <div class="post-top">
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="col col-6 col-d-12">
+        <div class="post-image">
+          <img loading="lazy" src="/images/post/post-11.jpg" alt="字符和unicode标准">
+        </div>
+      </div>
+      
+
+      <div class="col col-6 col-d-12">
+        <div class="post__info">
+
+          
+          <div class="post-tags">
+            
+              <a href="/tag/c++," class="post-tags__tag">c++,</a>
+            
+              <a href="/tag/string," class="post-tags__tag">string,</a>
+            
+              <a href="/tag/unicode," class="post-tags__tag">unicode,</a>
+            
+              <a href="/tag/grammar" class="post-tags__tag">grammar</a>
+            
+          </div>
+          
+
+
+          <h1 class="post__title">字符和unicode标准</h1>
+
+          <div class="post__meta">
+            <div class="post__author-image">
+              <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+            </div>
+
+            <div class="post__meta-bottom">
+              <div class="post__author">Marco Hwong</div>
+              <time class="post__date" datetime="2024-06-02T07:36:01+00:00">02 Jun 2024</time>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- begin post -->
+<div class="container animate">
+
+  <article class="post">
+
+    <div class="post__content">
+      <p>_tags: c++, string, unicode, grammar</p>
+
+<h2 id="字符和unicode标准">字符和unicode标准</h2>
+
+<h3 id="1-数据类型">1. 数据类型</h3>
+<p>在编程语言中，字符的数据类型决定了可以存储哪些字符以及如何存储这些字符。
+在 C 和 C++ 中，有两种主要字符类型</p>
+<ul>
+  <li>char
+    <ul>
+      <li>主要用于ASCII</li>
+    </ul>
+  </li>
+  <li>wchar_t
+    <ul>
+      <li>主要用于Unicode</li>
+      <li>在Windows平台上,<code class="language-plaintext highlighter-rouge">wchar_t</code>通常是2字节,使用UTF-16编码.当你在代码中写<code class="language-plaintext highlighter-rouge">wchar_t hello_w[] = L"你好你好你好";</code>时,<code class="language-plaintext highlighter-rouge">L</code>前缀告诉编译器这是一个宽字符字符串字面量.编译器会将这个字符串转换为UTF-16编码的宽字符序列,每个宽字符都是一个<code class="language-plaintext highlighter-rouge">wchar_t</code>.这个转换过程是在编译时完成的,所以它不受运行时环境的影响.</li>
+      <li>需要注意的是,这个行为是特定于Windows平台的.在其他平台上,<code class="language-plaintext highlighter-rouge">wchar_t</code>可能是4字节,使用UTF-32编码.在这种情况下,”你”和”好”这两个字符也都会被编码为一个4字节的<code class="language-plaintext highlighter-rouge">wchar_t</code>.</li>
+      <li>总的来说,<code class="language-plaintext highlighter-rouge">wchar_t</code>的大小和编码方式取决于具体的编译器和平台,而不是字符本身.在Windows平台上,<code class="language-plaintext highlighter-rouge">wchar_t</code>通常是2字节,使用UTF-16编码.当你在代码中写<code class="language-plaintext highlighter-rouge">wchar_t hello_w[] = L"你好你好你好";</code>时,<code class="language-plaintext highlighter-rouge">L</code>前缀告诉编译器这是一个宽字符字符串字面量.编译器会将这个字符串转换为UTF-16编码的宽字符序列,每个宽字符都是一个<code class="language-plaintext highlighter-rouge">wchar_t</code>.这个转换过程是在编译时完成的,所以它不受运行时环境的影响.</li>
+      <li>需要注意的是,这个行为是特定于Windows平台的.在其他平台上,<code class="language-plaintext highlighter-rouge">wchar_t</code>可能是4字节,使用UTF-32编码.在这种情况下,”你”和”好”这两个字符也都会被编码为一个4字节的<code class="language-plaintext highlighter-rouge">wchar_t</code>.</li>
+      <li>总的来说,<code class="language-plaintext highlighter-rouge">wchar_t</code>的大小和编码方式取决于具体的编译器和平台,而不是字符本身.</li>
+      <li>在Windows平台上,当你在代码中使用<code class="language-plaintext highlighter-rouge">wchar_t</code>和<code class="language-plaintext highlighter-rouge">L</code>前缀定义一个宽字符字符串时,编译器会将这个字符串转换为UTF-16编码的宽字符序列.</li>
+    </ul>
+
+    <p>这个转换过程是在编译时完成的,所以它不受你的输入编码格式的影响.无论你的源代码文件是使用什么编码格式保存的(例如ASCII/UTF-8/GBK等),编译器都会正确地解析这个文件,并将宽字符字符串转换为UTF-16编码.
+  需要注意的是,这个行为是特定于Windows平台的.在其他平台上,<code class="language-plaintext highlighter-rouge">wchar_t</code>可能使用其他的编码方式,例如UTF-32.因此,如果你的代码需要在多个平台上运行,你应该避免依赖于特定的<code class="language-plaintext highlighter-rouge">wchar_t</code>编码方式.
+  在Windows平台上,当你在代码中使用<code class="language-plaintext highlighter-rouge">wchar_t</code>和<code class="language-plaintext highlighter-rouge">L</code>前缀定义一个宽字符字符串时,编译器会将这个字符串转换为UTF-16编码的宽字符序列.
+  这个转换过程是在编译时完成的,所以它不受你的输入编码格式的影响.无论你的源代码文件是使用什么编码格式保存的(例如ASCII/UTF-8/GBK等),编译器都会正确地解析这个文件,并将宽字符字符串转换为UTF-16编码.
+  需要注意的是,这个行为是特定于Windows平台的.在其他平台上,<code class="language-plaintext highlighter-rouge">wchar_t</code>可能使用其他的编码方式,例如UTF-32.因此,如果你的代码需要在多个平台上运行,你应该避免依赖于特定的<code class="language-plaintext highlighter-rouge">wchar_t</code>编码方式.</p>
+  </li>
+  <li>char16_t
+    <ul>
+      <li>c11引入，用于存储utf16</li>
+    </ul>
+  </li>
+  <li>char32_t
+    <ul>
+      <li>c11引入，用于存储utf32</li>
+    </ul>
+  </li>
+  <li>总结
+<code class="language-plaintext highlighter-rouge">char</code>和<code class="language-plaintext highlighter-rouge">wchar_t</code>的主要区别在于它们的长度和编译器对它们的处理方式.</li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">char</code>通常用于存储ASCII字符和其他8位编码的字符,如UTF-8.当你在代码中使用<code class="language-plaintext highlighter-rouge">char</code>定义一个字符串时,编译器通常不会改变字符串的编码.也就是说,如果你的源代码文件是UTF-8编码的,那么<code class="language-plaintext highlighter-rouge">char</code>字符串也会是UTF-8编码的.</p>
+
+<p><code class="language-plaintext highlighter-rouge">wchar_t</code>则是一个宽字符类型,用于存储需要更多位数的字符,如UTF-16或UTF-32字符.当你在代码中使用<code class="language-plaintext highlighter-rouge">wchar_t</code>和<code class="language-plaintext highlighter-rouge">L</code>前缀定义一个宽字符字符串时,编译器会将这个字符串转换为特定的宽字符编码.在Windows平台上,这个编码通常是UTF-16.</p>
+
+<h3 id="2-unicode标准">2. unicode标准</h3>
+<blockquote>
+  <p>简单来说，就是世界上所有主流字符的集合。
+Unicode 是一个国际标准，用于为世界上所有的字符、符号和表情符号分配一个唯一的数字。这个数字被称为字符的 Unicode 码点。Unicode 的目标是能够表示所有的写作系统，包括拉丁字母、希腊字母、阿拉伯字母、汉字、象形文字等。</p>
+</blockquote>
+
+<p>Unicode 标准定义了一系列的字符集，每个字符集包含一组字符和它们对应的码点。例如，基本多语言平面（Basic Multilingual Plane，BMP）是最常用的字符集，它包含了大多数现代语言的字符，以及许多符号和标点符号。</p>
+
+<p>Unicode 标准还定义了一些编码方案，如 UTF-8、UTF-16 和 UTF-32，这些编码方案定义了如何将字符的码点转换为字节序列。这使得 Unicode 字符可以被存储在文件中，或者在网络上进行传输。</p>
+
+<p>总的来说，Unicode 标准是一个全球通用的字符编码系统，它使得我们可以在电脑上使用任何语言进行写作和阅读。</p>
+
+<h3 id="3-编码方案">3. 编码方案</h3>
+<h4 id="31-ascii">3.1 ascii</h4>
+<ul>
+  <li>控制字符：ASCII 的前 32 个字符（0-31）被定义为控制字符，如换行符（ASCII 10，表示为 \n）、回车符（ASCII 13，表示为 \r）等。这些字符主要用于控制设备，而不是表示可视的字符。</li>
+  <li>可打印字符：ASCII 的后 95 个字符（32-126）被定义为可打印字符，包括英文大小写字母、数字、标点符号和一些特殊字符。</li>
+  <li>ASCII 标准本身只定义了 0 到 127 的字符集，这些字符占用 7 位。然而，许多系统和编码标准会使用 8 位（一个字节）来存储字符，这就留下了 128 到 255 的空间可以用于其他字符。</li>
+  <li>这个 128 到 255 的范围通常被用于存储特殊字符，例如各种符号、非英语字母等。具体的字符集取决于使用的编码标准。例如，在 ISO 8859-1（也被称为 Latin-1）编码中，这个范围被用于存储西欧语言中的特殊字符，如 á, ñ, ô 等。</li>
+  <li>然而，需要注意的是，这个 128 到 255 的范围并不是 ASCII 标准的一部分，而是由其他编码标准定义的。在不同的编码标准中，这个范围可能代表不同的字符集。</li>
+</ul>
+
+<h4 id="32-utf8">3.2 utf8</h4>
+<ul>
+  <li>在UTF-8编码中，一个字符可能由1到4个字节组成。对于多字节的字符（即2、3、4字节），除了第一个字节外，其余字节的开头都是10。这是UTF-8编码的特性，用于区分多字节字符中的首字节和后续字节。</li>
+  <li>如果第一个字节的最高位是 1，那么你可以通过计算这个字节开头的连续 1 的个数来确定这个字符的字节长度。例如，如果第一个字节是 110xxxxx，那么这个字符就是两个字节长；如果第一个字节是 1110xxxx，那么这个字符就是三个字节长；如果第一个字节是 11110xxx，那么这个字符就是四个字节长。</li>
+  <li>所以UTF-8可以兼容ascii，同时可以支持unicode标准。</li>
+  <li>对于英文字符为大多数的时候，utf8大部分时候都是一个字节的，省空间；因为浪费了比较多的bit去做状态位，而非数据位。在非英文字符为主要内容的时候，经常都是三字节或者四字节的。</li>
+</ul>
+
+<h4 id="33-utf16">3.3 utf16</h4>
+<ul>
+  <li>可以用两个字节或者四个字节表示一个字符。</li>
+  <li>具体的编码规则不研究了，应该就是针对utf-8的弱点设计的。即utf8中控制位太多，中文字符等其他语言字符基本都是三四字节。而utf16可以使得中文字符都是两个字节表示，一些不常用的才是四字节。</li>
+</ul>
+
+<h4 id="34-utf32">3.4 utf32</h4>
+<ul>
+  <li>统一四个字节表示每一个字符。</li>
+  <li>字符处理：由于 UTF-32 对每个字符使用固定的 4 个字节，所以在处理字符时，可以直接通过索引来访问字符串中的任何字符，而不需要像处理 UTF-8 或 UTF-16 字符串那样进行复杂的计算。这使得 UTF-32 在需要频繁访问或修改字符串中的字符时非常有用。</li>
+  <li>内存空间不是问题：UTF-32 使用的存储空间比 UTF-8 和 UTF-16 多，所以如果内存空间不是问题，而且需要进行大量的字符处理，那么 UTF-32 可能是一个好的选择。</li>
+  <li>兼容性：有些系统或应用可能需要使用 UTF-32 来确保与某些特定的软件或硬件的兼容性。</li>
+  <li>简单来说就是不用解析了。</li>
+</ul>
+
+<h3 id="4-stdstring和stdwstring">4. std::string和std::wstring</h3>
+
+<h4 id="41-stdstring和stdwstring有什么不同">4.1 std::string和std::wstring有什么不同</h4>
+<p><code class="language-plaintext highlighter-rouge">std::string</code> 和 <code class="language-plaintext highlighter-rouge">std::wstring</code> 都是 C++ 标准库中的字符串类型,但它们用于处理不同的字符集和编码.</p>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">std::string</code> 是用于处理常规字符的字符串类,它通常用于处理 ASCII 和扩展 ASCII 字符.在 <code class="language-plaintext highlighter-rouge">std::string</code> 中,每个字符通常由一个字节(8位)表示,这取决于 <code class="language-plaintext highlighter-rouge">char</code> 类型在特定平台上的大小.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">std::wstring</code> 是宽字符串类,用于处理宽字符集,如 Unicode.在 <code class="language-plaintext highlighter-rouge">std::wstring</code> 中,每个字符通常由一个 <code class="language-plaintext highlighter-rouge">wchar_t</code> 类型的值表示,这个值的大小取决于特定平台上 <code class="language-plaintext highlighter-rouge">wchar_t</code> 类型的大小.在 Windows 平台上,<code class="language-plaintext highlighter-rouge">wchar_t</code> 通常是 16 位的,可以用于表示 Unicode 中的基本多语言平面(BMP)中的字符.在一些其他平台上,<code class="language-plaintext highlighter-rouge">wchar_t</code> 可能是 32 位的,可以用于表示 Unicode 中的所有字符.</p>
+  </li>
+</ul>
+
+<p>选择使用 <code class="language-plaintext highlighter-rouge">std::string</code> 还是 <code class="language-plaintext highlighter-rouge">std::wstring</code> 取决于你需要处理的字符数据的类型和编码.如果你只需要处理 ASCII 或扩展 ASCII 字符,那么 <code class="language-plaintext highlighter-rouge">std::string</code> 可能就足够了.如果你需要处理 Unicode 字符,那么你可能需要使用 <code class="language-plaintext highlighter-rouge">std::wstring</code>.</p>
+
+<h3 id="99-quiz">99. quiz</h3>
+<h4 id="1-char是有符号的还是无符号的">1. char是有符号的还是无符号的</h4>
+<p>在主流的编程平台上,<code class="language-plaintext highlighter-rouge">char</code> 的表现可能会有所不同.具体来说,<code class="language-plaintext highlighter-rouge">char</code> 是有符号的还是无符号的,取决于编译器和平台.</p>
+
+<ul>
+  <li>
+    <p><strong>在大多数平台上,包括 Windows 和大多数 Unix-like 系统(如 Linux,macOS)上,<code class="language-plaintext highlighter-rouge">char</code> 默认是有符号的(signed).</strong> 这意味着它可以表示从 -128 到 127 的整数.</p>
+  </li>
+  <li>
+    <p><strong>然而,在某些平台上,如一些嵌入式系统和某些 Unix-like 系统(如 ARM,PowerPC),<code class="language-plaintext highlighter-rouge">char</code> 默认是无符号的(unsigned).</strong> 这意味着它可以表示从 0 到 255 的整数.</p>
+  </li>
+</ul>
+
+<p>这种差异可能会导致一些微妙的问题.例如,如果你的代码假设 <code class="language-plaintext highlighter-rouge">char</code> 是有符号的,然后在一个 <code class="language-plaintext highlighter-rouge">char</code> 是无符号的平台上运行,那么可能会出现意外的行为.因此,如果你的代码依赖于 <code class="language-plaintext highlighter-rouge">char</code> 的符号性,那么最好明确地使用 <code class="language-plaintext highlighter-rouge">signed char</code> 或 <code class="language-plaintext highlighter-rouge">unsigned char</code>.</p>
+
+<h4 id="2-为什么char是在windows平台是有符号的">2. 为什么char是在windows平台是有符号的?</h4>
+<p><code class="language-plaintext highlighter-rouge">char</code>在Windows平台上是有符号的,这主要是由于历史原因和兼容性考虑.
+<code class="language-plaintext highlighter-rouge">char</code>为什么是有符号的,已经无从考究了.
+只能现在推测一下.</p>
+
+<ul>
+  <li>
+    <ol>
+      <li>ascii只要求了0-127,所以满足使用要求了.</li>
+    </ol>
+  </li>
+  <li>
+    <ol>
+      <li>signed char可能是C语言历史包袱带下来的,有符号的目的是为了做字符类型的数值运算. 例如,’b’-‘a’表示距离为1,而’a’-‘b’等于-1.也许在某个古老版本依赖这种性质,因此设置为是有符号的.而linux的嵌入式设备受历史包袱影响较小,所以就是unsigned char了</li>
+    </ol>
+  </li>
+</ul>
+
+<h4 id="3-网络传输数据的时候为什么byte类型都是unsigned-char的signed-char可以吗">3. 网络传输数据的时候,为什么byte类型都是unsigned char的,signed char可以吗?</h4>
+<p>在网络传输数据时,通常使用 <code class="language-plaintext highlighter-rouge">unsigned char</code> 来表示字节,主要有以下几个原因:</p>
+
+<ol>
+  <li>
+    <p><strong>统一性</strong>:<code class="language-plaintext highlighter-rouge">unsigned char</code> 在所有平台上都表示 0 到 255 的整数,这样可以保证在不同的系统和平台之间传输数据时,数据的解释是一致的.</p>
+  </li>
+  <li>
+    <p><strong>无符号性</strong>:网络传输的数据通常是二进制数据,而不是数值,所以没有正负之分.使用 <code class="language-plaintext highlighter-rouge">unsigned char</code> 可以避免由于符号位引起的混淆.</p>
+  </li>
+  <li>
+    <p><strong>兼容性</strong>:许多网络协议和函数库都假定数据是由 <code class="language-plaintext highlighter-rouge">unsigned char</code> 类型的字节组成的.如果使用 <code class="language-plaintext highlighter-rouge">signed char</code>,可能会导致兼容性问题.</p>
+  </li>
+</ol>
+
+<p>虽然理论上 <code class="language-plaintext highlighter-rouge">signed char</code> 也可以用于网络传输,但由于上述原因,实际上几乎所有的网络协议和函数库都使用 <code class="language-plaintext highlighter-rouge">unsigned char</code> 来表示字节.</p>
+
+<h5 id="31-什么是无符号的兼容性">3.1 什么是无符号的兼容性?</h5>
+<p>这个问题要先关注符号扩展和零扩展.</p>
+
+<p>符号扩展和零扩展是计算机科学中的两种位扩展技术,通常用于将较小的整数类型转换为较大的整数类型.</p>
+
+<ol>
+  <li>
+    <p>符号扩展:当我们将一个有符号整数从较小的类型转换为较大的类型时,我们需要保持这个数的符号(正或负).为了做到这一点,我们将较小类型的最高位(也就是符号位)复制到较大类型的所有额外位中.例如,如果我们将一个8位的有符号整数-1(二进制表示为11111111)转换为16位,那么结果将是-1(二进制表示为1111111111111111).</p>
+  </li>
+  <li>
+    <p>零扩展:当我们将一个无符号整数从较小的类型转换为较大的类型时,我们不需要保持符号,因为无符号整数总是正的.因此,我们可以简单地将较大类型的所有额外位设置为0.例如,如果我们将一个8位的无符号整数255(二进制表示为11111111)转换为16位,那么结果将是255(二进制表示为0000000011111111).</p>
+  </li>
+</ol>
+
+<p>这两种扩展方式都是为了保持数值的正确性.在C++中,这些扩展通常会自动发生,例如当你将一个<code class="language-plaintext highlighter-rouge">char</code>赋值给一个<code class="language-plaintext highlighter-rouge">int</code>时.</p>
+
+<p>即使传输的数据是有符号的,但是无符号也不会修改数据,不影响读.</p>
+
+<h4 id="4-byte类型用unsigned-char好还是u8int_t好">4. byte类型用unsigned char好,还是u8int_t好?</h4>
+<p><code class="language-plaintext highlighter-rouge">unsigned char</code> 和 <code class="language-plaintext highlighter-rouge">uint8_t</code> 都是无符号的整数类型,但是它们之间存在一些差异:</p>
+
+<ol>
+  <li>
+    <p><strong>大小</strong>:<code class="language-plaintext highlighter-rouge">unsigned char</code> 的大小在不同的平台和编译器上可能会有所不同,但是它至少能够表示 0 到 255 的整数.而 <code class="language-plaintext highlighter-rouge">uint8_t</code> 是一个精确的 8 位无符号整数类型,它总是能够表示 0 到 255 的整数.</p>
+  </li>
+  <li>
+    <p><strong>可移植性</strong>:<code class="language-plaintext highlighter-rouge">unsigned char</code> 是 C++ 标准的一部分,因此它在所有的 C++ 平台和编译器上都是可用的.而 <code class="language-plaintext highlighter-rouge">uint8_t</code> 是 C99 和 C++11 标准的一部分,因此它在一些较旧的 C++ 平台和编译器上可能不可用.</p>
+  </li>
+  <li>
+    <p><strong>用途</strong>:<code class="language-plaintext highlighter-rouge">unsigned char</code> 通常用于表示字符或字节.而 <code class="language-plaintext highlighter-rouge">uint8_t</code> 通常用于表示精确大小的无符号整数,例如在处理二进制数据或硬件接口时.</p>
+  </li>
+</ol>
+
+<p>总的来说,如果你需要一个精确的 8 位无符号整数,并且你的代码需要在 C++11 或更高版本的平台上运行,那么你应该使用 <code class="language-plaintext highlighter-rouge">uint8_t</code>.否则,你应该使用 <code class="language-plaintext highlighter-rouge">unsigned char</code>.
+简单来说,unsigned char在c/c++标准其实没有严格限制是8bit的,只是要求是大于等于8bit的.
+但是uint8_t又不是c98标准的,因此部分考虑到老代码兼容性的可能会用unsigned char,而新的其实只需要用uint8_t就好了</p>
+
+<h3 id="100-练习">100. 练习</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kt">char</span> <span class="n">hello</span><span class="p">[]</span> <span class="o">=</span> <span class="s">"你好你好你好"</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">hello</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> 
+  <span class="c1">// 如果你好是通过utf8输入，输出19。</span>
+  <span class="c1">// 如果你好是通过gbk输入的,输出13</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">hello</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+  <span class="kt">wchar_t</span> <span class="n">hello_w</span><span class="p">[]</span> <span class="o">=</span> <span class="s">L"你好你好你好"</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">hello_w</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> 
+  <span class="c1">// 输出14, 编译器转成了utf16编码。</span>
+  <span class="c1">// 不管管"你好"输入是以utf8输入，还是其他编码方案输入。</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+
+    </div>
+
+    <div class="post__share">
+  <div class="share__head">
+    <div class="share__title">Share this Post</div>
+  </div>
+  <ul class="share__list list-reset">
+    <li class="share__item">
+      <a class="share__link share__twitter"
+        href="https://twitter.com/intent/tweet?text=%E5%AD%97%E7%AC%A6%E5%92%8Cunicode%E6%A0%87%E5%87%86&url=/blog/1-%E5%AD%97%E7%AC%A6%E5%92%8Cunicode%E6%A0%87%E5%87%86"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__facebook"
+        href="https://www.facebook.com/sharer/sharer.php?u=/blog/1-%E5%AD%97%E7%AC%A6%E5%92%8Cunicode%E6%A0%87%E5%87%86"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__pinterest"
+        href="http://pinterest.com/pin/create/button/?url=/blog/1-%E5%AD%97%E7%AC%A6%E5%92%8Cunicode%E6%A0%87%E5%87%86&amp;media=/images/post/post-11.jpg&amp;description=%E5%AD%97%E7%AC%A6%E5%92%8Cunicode%E6%A0%87%E5%87%86"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Pinterest" rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&url=/blog/1-%E5%AD%97%E7%AC%A6%E5%92%8Cunicode%E6%A0%87%E5%87%86&title=%E5%AD%97%E7%AC%A6%E5%92%8Cunicode%E6%A0%87%E5%87%86&summary=&source=Vonge"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
+    </li>
+  </ul>
+</div>
+
+  </article>
+</div>
+<!-- end post -->
+
+<div class="container">
+  <div class="row">
+    <div class="col col-10 col-d-12 push-d-0 push-1">
+      <div class="post__navigation animate">
+  
+  <a class="post__prev" href="/blog/1-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%85%BC%E5%AE%B9">
+    <div class="prev__image">
+      <img loading="lazy" src="/images/post/post-2.jpg" alt="字符和unicode标准">
+    </div>
+    <div class="prev__box">
+      <span class="post__nav post__nav__prev">Prev post</span>
+      <h2 class="post__nav__title">二进制兼容</h2>
+    </div>
+  </a>
+  
+
+  
+  <a class="post__next" href="/blog/1-%E7%89%A9%E7%90%86%E5%B1%82">
+    <div class="next__box">
+      <span class="post__nav post__nav__next">Next post</span>
+      <h2 class="post__nav__title">物理层</h2>
+    </div>
+    <div class="next__image">
+      <img loading="lazy" src="/images/post/post-36.jpg" alt="字符和unicode标准">
+    </div>
+  </a>
+  
+</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- begin related posts -->
+<div class="container">
+  <section class="related-posts is-related animate">
+    <div class="row">
+      <div class="col col-12">
+        <div class="container__inner">
+          <div class="section__info">
+            <div class="section__head">
+              <h2 class="section__title">You may also like</h2>
+              <a class="section__link" href="/blog">
+                
+                
+                  
+                    <a href="/tags#c++," class="section__link related-tag">See all<span> c++,</span> <i class="ion ion-md-arrow-forward"></i></a>
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+              
+              </a>
+            </div>
+          </div>
+          <div class="row">
+
+          
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/4-%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8">
+                      <img loading="lazy" src="/images/post/post-14.jpg" alt="线程安全">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/c++," class="article__tag">c++,</a>
+                      
+                      <a href="/tag/grammar," class="article__tag">grammar,</a>
+                      
+                      <a href="/tag/thread" class="article__tag">thread</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/4-%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8">线程安全</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                       _tags: c++, grammar, thread
+
+
+## 线程安全
+
+* 线程安全的概念
+  * 多个线程访问同一个对象时，如果不用考虑这些线程在运行时环境下的调度和交替执行，也不需要进行额外的同步，或者在调用方进行任何其他...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-02T08:35:57+00:00">02 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/3-c-%E4%B8%AD%E7%9A%84%E7%9C%81%E7%95%A5%E5%8F%B7">
+                      <img loading="lazy" src="/images/post/post-13.jpeg" alt="c++ 中的省略号">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/c++," class="article__tag">c++,</a>
+                      
+                      <a href="/tag/grammar" class="article__tag">grammar</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/3-c-%E4%B8%AD%E7%9A%84%E7%9C%81%E7%95%A5%E5%8F%B7">c++ 中的省略号</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                       _tags: c++, grammar
+
+
+## c++ 中的省略号
+
+### 1. c++ 中的省略号怎么用？
+在C++中，省略号（...）有两种主要的用途：
+
+1. 可变参数模板（Variadic Templates）：在模板编...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-02T08:35:56+00:00">02 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/2-%E5%87%BD%E6%95%B0%E5%AF%B9%E8%B1%A1-%E4%BB%BF%E5%87%BD%E6%95%B0">
+                      <img loading="lazy" src="/images/post/post-12.jpg" alt="函数对象（仿函数）">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/c++," class="article__tag">c++,</a>
+                      
+                      <a href="/tag/functor," class="article__tag">functor,</a>
+                      
+                      <a href="/tag/grammar" class="article__tag">grammar</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/2-%E5%87%BD%E6%95%B0%E5%AF%B9%E8%B1%A1-%E4%BB%BF%E5%87%BD%E6%95%B0">函数对象（仿函数）</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                       _tags: c++, functor, grammar
+
+
+## 函数对象（仿函数）
+
+### 1. 什么是函数对象，什么是仿函数
+在 C++ 中，函数对象（也称为仿函数）是一个行为类似函数的对象。任何类如果重载了 `operat...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-02T08:35:54+00:00">02 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+                  
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- end related posts -->
+
+
+
+
+
+
+    <!--
+        Bookshop components are accessed using the bookshop tag,
+        using the same syntax as the standard Jekyll include tag.
+    -->
+    <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
+
+<!--bookshop-live end-->
+
+    <div class="top" title="Top"><i class="ion ion-ios-arrow-up"></i></div>
+
+    <!-- begin footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+
+        <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+
+        <ul class="footer_nav list-reset">
+          
+          <li class="footer_nav__item">
+            <a href="/" class="footer_nav__link">Home</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/projects/" class="footer_nav__link">Projects</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/elements/" class="footer_nav__link">Elements</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/about/" class="footer_nav__link">About</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/blog/" class="footer_nav__link">Blog</a>
+          </li>
+          
+        </ul>
+
+        <div class="copyright"><p> 2021 &copy; <a href="/">Vonge</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
+
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- end footer -->
+
+    <script src="/js/scripts.js"></script>
+    <script src="/js/common.js"></script>
+</body>
+</html>

@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>io复用</title>
+  <meta name='description' content='Marco’s Blog'>
+
+  <link rel="canonical" href="/blog/2-io%E5%A4%8D%E7%94%A8">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="io复用 – Marco’s Blog">
+  <meta name="twitter:description" content="io复用
+">
+  <meta name="twitter:image:src" content="/images/post/post-54.jpg">
+
+  <!-- Facebook OpenGraph -->
+  <meta property="og:title" content="io复用 – Marco’s Blog">
+  <meta property="og:description" content="io复用
+">
+  <meta property="og:image" content="/images/post/post-54.jpg">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Ionicons -->
+  <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/main.css">
+</head>
+
+<body>
+
+    
+
+    <!-- begin header -->
+<header class="c-header">
+  <div class="container">
+    <div class="row">
+      <div class="c-header__inner">
+
+        <div class="logo">
+          <a class="logo__link" href="/">
+          
+            <img class="logo__image" src="/images/mc_logo1.ico" alt="Marco’s Blog">
+          
+          </a>
+        </div>
+
+        <nav class="main-nav">
+          <div class="main-nav__box">
+
+            <div class="nav__icon-close">
+              <i class="ion ion-md-close"></i>
+            </div>
+
+            <div class="nav__title">Menu</div>
+
+              <ul class="nav__list list-reset">
+
+              
+                
+                <li class="nav__item">
+                  <a href="/" class="nav__link">Home</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/projects/" class="nav__link">Projects</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/blog/" class="nav__link">Blog</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/about/" class="nav__link">About</a>
+                </li>
+                
+              
+
+            </ul>
+          </div>
+
+          <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+        </nav>
+
+        <div class="nav-button">
+          <i class="nav__icon nav__icon-menu ion ion-md-menu"></i>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+<!-- end header -->
+
+    <div class="post-top">
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="col col-6 col-d-12">
+        <div class="post-image">
+          <img loading="lazy" src="/images/post/post-54.jpg" alt="io复用">
+        </div>
+      </div>
+      
+
+      <div class="col col-6 col-d-12">
+        <div class="post__info">
+
+          
+
+
+          <h1 class="post__title">io复用</h1>
+
+          <div class="post__meta">
+            <div class="post__author-image">
+              <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+            </div>
+
+            <div class="post__meta-bottom">
+              <div class="post__author">Marco Hwong</div>
+              <time class="post__date" datetime="2024-06-01T07:40:39+00:00">01 Jun 2024</time>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- begin post -->
+<div class="container animate">
+
+  <article class="post">
+
+    <div class="post__content">
+      <h2 id="io复用">io复用</h2>
+
+<h3 id="1-基本概念">1. 基本概念</h3>
+
+<h4 id="11-什么是io复用">1.1 什么是io复用</h4>
+<p>IO复用（Input/Output Multiplexing，也做io多路复用）是一种可以让单个线程处理多个IO操作的技术。在IO复用模型中，线程可以同时等待多个IO操作（例如，多个socket连接），当任何一个IO操作完成时，线程就可以处理这个操作。</p>
+
+<p>IO复用的主要优点是可以提高线程的利用率，因为线程不需要为每个IO操作单独等待，而是可以在等待一个IO操作的同时，处理其他的IO操作。这对于需要处理大量并发连接的网络服务器来说，是非常重要的。</p>
+
+<p>在Linux中，常见的IO复用技术有select、poll和epoll。在Windows中，常见的IO复用技术有select和IOCP（Input/Output Completion Port）。在Java中，NIO（Non-blocking IO）库提供了IO复用的支持。</p>
+
+<h4 id="12-io操作是什么">1.2 io操作是什么？</h4>
+<p>IO操作，全称为输入/输出操作，是计算机系统中数据在内部（如CPU、内存）和外部设备（如硬盘、网络接口、打印机）之间传输的过程。</p>
+
+<p>linux一个突出的设计理念在于，将一切外部设备看成一个文件来操作。任何东西都挂在文件系统之上，即使它们不是文件，也以文件的形式来呈现。这些一切外部设部都享有与内部文件一样的接口。</p>
+
+<p>所以<code class="language-plaintext highlighter-rouge">串口</code>，<code class="language-plaintext highlighter-rouge">内存</code>，<code class="language-plaintext highlighter-rouge">usb</code>，<code class="language-plaintext highlighter-rouge">进程信息</code>，<code class="language-plaintext highlighter-rouge">网卡</code>，<code class="language-plaintext highlighter-rouge">网络通讯socket</code>等等一切外部设备的数据输入输入就是io的过程。</p>
+
+<p>一般来说，在网络编程的语境下，io多路复用是指单个线程中同时处理多个socket连接的技术。这种技术可以提高线程的利用率，因为线程在等待一个IO操作完成的同时，可以处理其他的IO操作。</p>
+
+<h4 id="13-linux下如何实现io复用">1.3 linux下如何实现io复用？</h4>
+
+<p>在Linux系统中，实现IO复用主要有以下几种方式：</p>
+
+<p>select：select是最早的IO复用解决方案，它可以同时监控多个文件描述符（例如socket）。当其中任何一个文件描述符准备好读、写或异常时，select就会返回。select的主要缺点是它支持的文件描述符数量有限（通常最多1024个），并且效率随着文件描述符数量的增加而降低。</p>
+
+<p>poll：poll和select类似，但它没有最大文件描述符数量的限制。然而，poll的效率仍然随着文件描述符数量的增加而降低。</p>
+
+<p>epoll：epoll是Linux特有的IO复用解决方案，它没有最大文件描述符数量的限制，而且效率不会随着文件描述符数量的增加而降低。epoll使用一种称为事件驱动的方式，只关注活跃的文件描述符，因此比select和poll更高效。</p>
+
+<h4 id="14-linux下的五种io模型">1.4 linux下的五种IO模型</h4>
+<p>？？？
+IO模型是描述输入/输出操作如何进行的一种模型。在网络编程中，常见的IO模型有以下四种：</p>
+
+<p>阻塞IO模型：在这种模型中，IO操作会阻塞调用线程，直到操作完成。例如，当线程执行一个读操作时，它会被阻塞，直到数据可用并已读入内存。</p>
+
+<p>非阻塞IO模型：在这种模型中，IO操作不会阻塞调用线程。如果数据不可用，操作会立即返回一个错误。</p>
+
+<p>IO复用模型：在这种模型中，线程可以同时等待多个IO操作。当任何一个IO操作完成时，线程就可以处理这个操作。这种模型可以让线程在等待一个IO操作的同时，处理其他的IO操作。</p>
+
+<p>信号驱动IO模型：在这种模型中，线程可以请求在IO操作完成时接收一个信号。当收到这个信号时，线程就可以处理IO操作。</p>
+
+<p>异步IO模型：在这种模型中，线程启动一个IO操作，然后继续执行其他任务。当IO操作完成时，线程会收到一个通知。</p>
+
+<h3 id="2-io复用技术">2. io复用技术</h3>
+
+<h4 id="21-select">2.1 select</h4>
+
+<h4 id="22-poll">2.2 poll</h4>
+
+<h4 id="23-epoll">2.3 epoll</h4>
+
+<h4 id="21-阻塞io---bio">2.1 阻塞I/O - BIO</h4>
+
+<ul>
+  <li>
+    <p><strong><em>流程图：</em></strong></p>
+
+    <p><img src="https://s2.loli.net/2022/05/09/q8FhicmZMf4oCBT.png" alt="在这里插入图片描述" /></p>
+
+    <blockquote>
+      <p>PS: <code class="language-plaintext highlighter-rouge">read()</code>一般是指本地读取数据，通过硬盘文件；<code class="language-plaintext highlighter-rouge">recvfrom()</code>一般是指从<code class="language-plaintext highlighter-rouge">socket</code>接收数据，通过网络中的<code class="language-plaintext highlighter-rouge">socket</code>文件；</p>
+    </blockquote>
+  </li>
+  <li>
+    <p><strong><em>文字说明</em></strong></p>
+
+    <ol>
+      <li><code class="language-plaintext highlighter-rouge">application</code>向<code class="language-plaintext highlighter-rouge">kernel</code>发起<code class="language-plaintext highlighter-rouge">system call</code>的<code class="language-plaintext highlighter-rouge">read()/recvfrom()</code>请求</li>
+      <li><code class="language-plaintext highlighter-rouge">kernel</code>如果准备好了，就从<code class="language-plaintext highlighter-rouge">kernel space</code>拷贝数据到<code class="language-plaintext highlighter-rouge">user space</code></li>
+      <li>拷贝完成时，则返回ok。</li>
+      <li>此时<code class="language-plaintext highlighter-rouge">application</code>继续。</li>
+    </ol>
+  </li>
+  <li>
+    <p><strong><em>适用情况</em></strong></p>
+
+    <ul>
+      <li>简单易用，是本地IO的首选</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong><em>不足</em></strong></p>
+
+    <ul>
+      <li>如果是网络IO的话，要么就是空等，要么就是每一个线程开一个<code class="language-plaintext highlighter-rouge">socket()</code>。前者耗费时间，后者耗费资源</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="22-非阻塞io---nio">2.2 非阻塞I/O - NIO</h4>
+
+<ul>
+  <li>
+    <p><strong><em>流程图</em></strong></p>
+
+    <p><img src="https://s2.loli.net/2022/02/18/YJpWBrs53A4vFuS.gif" alt="~replace~/assets/images/io-model/nio.png" /></p>
+  </li>
+  <li>
+    <p><strong><em>文字说明</em></strong></p>
+
+    <ol>
+      <li><code class="language-plaintext highlighter-rouge">application</code>向<code class="language-plaintext highlighter-rouge">kernel</code>发起<code class="language-plaintext highlighter-rouge">system call</code>的<code class="language-plaintext highlighter-rouge">read()/recvfrom()</code>请求</li>
+      <li><code class="language-plaintext highlighter-rouge">kernel</code>如果没有准备好，就返回<code class="language-plaintext highlighter-rouge">EWOULDBLOCK</code>这个错误码。</li>
+      <li>继续回到<code class="language-plaintext highlighter-rouge">application</code>，该干嘛干嘛，然后再次发起<code class="language-plaintext highlighter-rouge">read()/recvfrom()</code>请求</li>
+      <li><code class="language-plaintext highlighter-rouge">kernel</code>如果准备好了，就从<code class="language-plaintext highlighter-rouge">kernel space</code>拷贝数据到<code class="language-plaintext highlighter-rouge">user space</code></li>
+      <li>拷贝完成时，则返回ok</li>
+      <li>此时<code class="language-plaintext highlighter-rouge">application</code>继续。</li>
+    </ol>
+  </li>
+  <li>
+    <p><strong><em>适用情况</em></strong></p>
+
+    <ul>
+      <li>网络IO情况。通过反复发起<code class="language-plaintext highlighter-rouge">system call</code>，如果没准备好，我就继续该干嘛干嘛，但是在数据拷贝的过程中，进程还是阻塞的。</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong><em>不足</em></strong></p>
+
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">system call</code>是比较耗费<code class="language-plaintext highlighter-rouge">cpu</code>的操作，如果频繁地发起<code class="language-plaintext highlighter-rouge">system call</code>也不是一个明智之举。</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="23-io复用---selectpollepoll">2.3 I/O复用 - (select/poll/epoll)</h4>
+
+<ul>
+  <li>
+    <p><strong><em>流程图</em></strong></p>
+
+    <p><img src="https://s2.loli.net/2022/02/18/14kRnPlX5HEU9dr.gif" alt="~replace~/assets/images/io-model/io_select.png" /></p>
+  </li>
+  <li>
+    <p><strong><em>文字说明</em></strong></p>
+
+    <ol>
+      <li><code class="language-plaintext highlighter-rouge">application</code>向<code class="language-plaintext highlighter-rouge">kernel</code>发起<code class="language-plaintext highlighter-rouge">system call</code>的<code class="language-plaintext highlighter-rouge">select()</code>请求，向<code class="language-plaintext highlighter-rouge">kernel</code>传入若干个<code class="language-plaintext highlighter-rouge">file descriptor</code>和操作目的(read, write)，这些一般被打包为<code class="language-plaintext highlighter-rouge">fd_set</code>数据。</li>
+      <li><code class="language-plaintext highlighter-rouge">kernel</code>同时检测若干个文件，当其中一个或多个<code class="language-plaintext highlighter-rouge">file descriptor</code>就绪，返回可执行的。</li>
+      <li><code class="language-plaintext highlighter-rouge">application</code>收到准备就绪的<code class="language-plaintext highlighter-rouge">file descriptor</code>后，对他们发起发起<code class="language-plaintext highlighter-rouge">system call</code>的<code class="language-plaintext highlighter-rouge">read()/recvfrom()</code>请求</li>
+      <li><code class="language-plaintext highlighter-rouge">kernel</code>这时候准备好了，就从<code class="language-plaintext highlighter-rouge">kernel space</code>拷贝数据到<code class="language-plaintext highlighter-rouge">user space</code></li>
+      <li>拷贝完成时，则返回ok</li>
+      <li>此时<code class="language-plaintext highlighter-rouge">application</code>继续。</li>
+    </ol>
+  </li>
+  <li>
+    <p><strong><em>适用情况</em></strong></p>
+
+    <ul>
+      <li>优化了非阻塞IO大量发起<code class="language-plaintext highlighter-rouge">system call</code>的问题，其核心思想在于通过一次发起大量IO请求，优先处理已经准备好的。</li>
+      <li>IO复用还是阻塞的</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong><em>不足</em></strong></p>
+
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">fd_set</code>受限于系统设定的<code class="language-plaintext highlighter-rouge">FD_SETSIZE</code>大小</li>
+      <li>如果<code class="language-plaintext highlighter-rouge">fd_set</code>数目很大，需要轮询所有fd找出就绪的fd,这里的性能也很大。</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="24-异步io---aio">2.4 异步I/O - (AIO)</h4>
+
+<ul>
+  <li><strong><em>流程图</em></strong></li>
+</ul>
+
+<p><img src="https://s2.loli.net/2022/02/18/E6dwWuM3Sljhiga.gif" alt="~replace~/assets/images/io-model/aio.png" /></p>
+
+<ul>
+  <li><strong><em>文字说明</em></strong>
+    <ol>
+      <li><code class="language-plaintext highlighter-rouge">application</code>向<code class="language-plaintext highlighter-rouge">kernel</code>发起<code class="language-plaintext highlighter-rouge">system call</code>的<code class="language-plaintext highlighter-rouge">aio_read()</code>请求，<code class="language-plaintext highlighter-rouge">kernel</code>立马返回。</li>
+      <li><code class="language-plaintext highlighter-rouge">application</code>继续运行，而<code class="language-plaintext highlighter-rouge">kernel</code>则会一直等待数据准备。</li>
+      <li><code class="language-plaintext highlighter-rouge">kernel</code>准备好数据时，<code class="language-plaintext highlighter-rouge">kernel</code>不需要让<code class="language-plaintext highlighter-rouge">application</code>再次发次请求，直接将数据从<code class="language-plaintext highlighter-rouge">kernel space</code>拷贝到<code class="language-plaintext highlighter-rouge">user space</code></li>
+      <li>当拷贝完成时，<code class="language-plaintext highlighter-rouge">kernel</code>向<code class="language-plaintext highlighter-rouge">application</code>发送完成信号。</li>
+    </ol>
+  </li>
+  <li><strong><em>适用情况</em></strong>
+    <ul>
+      <li>理论上，性能比之前的都要好。<code class="language-plaintext highlighter-rouge">application</code>可以完全不用</li>
+    </ul>
+  </li>
+  <li><strong><em>不足</em></strong>
+    <ul>
+      <li>太复杂了，比如网络框架<code class="language-plaintext highlighter-rouge">netty 5.0</code>被废弃的原因就在于引入AIO提高效率，但变得非常复杂，而性能没有得到太明显优化。</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="25-信号驱动io---sigio">2.5 信号驱动I/O - SIGIO</h4>
+
+<ul>
+  <li><strong><em>流程图</em></strong></li>
+</ul>
+
+<p><img src="https://s2.loli.net/2022/02/18/1v8xMSHKazQGfTi.gif" alt="~replace~/assets/images/io-model/sio.png" /></p>
+
+<ul>
+  <li>
+    <p><strong><em>特别说明</em></strong></p>
+
+    <p>​	这种IO模型相对复杂，一般不使用，相关的资料也比较少。如果有感兴趣的可以点击这里查看<a href="http://www.masterraghu.com/subjects/np/introduction/unix_network_programming_v1.3/ch25lev1sec2.html#ch25lev1sec2">Signal-Driven I/O for Sockets</a></p>
+  </li>
+</ul>
+
+<h4 id="26-总结">2.6 总结</h4>
+
+<p><img src="https://s2.loli.net/2022/02/18/xYu6VHtAJRP2QNl.png" alt="image-20220218222819682" /></p>
+
+<ul>
+  <li>
+    <p><strong><em>阻塞与非阻塞的区分</em></strong></p>
+
+    <p>​	两者区别在于，非阻塞IO会不断发生system call。</p>
+  </li>
+  <li>
+    <p><strong><em>同步和异步的区分</em></strong></p>
+
+    <p>​	两者区别在于，从<code class="language-plaintext highlighter-rouge">kernel space</code>拷贝到<code class="language-plaintext highlighter-rouge">user space</code>时，进程是否还在执行。哪怕是NIO，知道数据就绪后，也是等待数据拷贝完成后，再执行下一步；而AIO则是不管<code class="language-plaintext highlighter-rouge">kernel space</code>拷贝完成没都继续进行，<code class="language-plaintext highlighter-rouge">kernel space</code>拷贝完成才告诉<code class="language-plaintext highlighter-rouge">application</code></p>
+  </li>
+  <li>
+    <p><strong><em>IO复用也可以设置为非阻塞模式的</em></strong></p>
+  </li>
+</ul>
+
+<h3 id="3-selectpollepoll">3. select/poll/epoll</h3>
+
+<p>​	IO复用模型中又可进一步分为select、poll和epoll方法。前面出于排版的原因，反正这下面来进一步讲解</p>
+
+<h4 id="31-select">3.1 select</h4>
+
+<ul>
+  <li>
+    <p><strong><em>代码</em></strong></p>
+
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">select</span> <span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="n">fd_set</span> <span class="o">*</span><span class="n">readfds</span><span class="p">,</span> <span class="n">fd_set</span> <span class="o">*</span><span class="n">writefds</span><span class="p">,</span> <span class="n">fd_set</span> <span class="o">*</span><span class="n">exceptfds</span><span class="p">,</span> <span class="k">struct</span> <span class="nc">timeval</span> <span class="o">*</span><span class="n">timeout</span><span class="p">);</span>
+</code></pre></div>    </div>
+
+    <p>​	<code class="language-plaintext highlighter-rouge">select</code>函数监视的文件描述符分3类，分别是<code class="language-plaintext highlighter-rouge">writefds</code>、<code class="language-plaintext highlighter-rouge">readfds</code>、和<code class="language-plaintext highlighter-rouge">exceptfds</code>。调用后<code class="language-plaintext highlighter-rouge">select</code>函数会阻塞，直到有描述副就绪（有数据 可读、可写、或者有<code class="language-plaintext highlighter-rouge">except</code>），或者超时（<code class="language-plaintext highlighter-rouge">timeout</code>指定等待时间，如果立即返回设为<code class="language-plaintext highlighter-rouge">null</code>即可），函数返回。当<code class="language-plaintext highlighter-rouge">select</code>函数返回后，可以 通过遍历<code class="language-plaintext highlighter-rouge">fd_set</code>，来找到就绪的描述符。</p>
+  </li>
+  <li>
+    <p><strong><em>特点</em></strong></p>
+
+    <p>​	<code class="language-plaintext highlighter-rouge">select</code>目前几乎在所有的平台上支持，其良好跨平台支持也是它的一个优点。select的一 个缺点在于单个进程能够监视的文件描述符的数量存在最大限制，在<code class="language-plaintext highlighter-rouge">Linux</code>上一般为1024，可以通过修改宏定义甚至重新编译内核的方式提升这一限制，但 是这样也会造成效率的降低。</p>
+  </li>
+  <li>
+    <p><strong><em>不足</em></strong></p>
+    <ul>
+      <li>每次调用<code class="language-plaintext highlighter-rouge">select</code>，都需要把<code class="language-plaintext highlighter-rouge">fd</code>集合从用户态拷贝到内核态，这个开销在fd很多时会很大</li>
+      <li>同时每次调用<code class="language-plaintext highlighter-rouge">select</code>都需要在内核遍历传递进来的所有<code class="language-plaintext highlighter-rouge">fd</code>，这个开销在fd很多时也很大</li>
+      <li><code class="language-plaintext highlighter-rouge">select</code>支持的文件描述符数量太小了，默认是1024</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="32-poll">3.2 poll</h4>
+
+<ul>
+  <li>
+    <p><strong><em>代码</em></strong></p>
+
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">poll</span> <span class="p">(</span><span class="k">struct</span> <span class="nc">pollfd</span> <span class="o">*</span><span class="n">fds</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">nfds</span><span class="p">,</span> <span class="kt">int</span> <span class="n">timeout</span><span class="p">);</span>
+</code></pre></div>    </div>
+
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">pollfd</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">fd</span><span class="p">;</span> <span class="cm">/* file descriptor */</span>
+    <span class="kt">short</span> <span class="n">events</span><span class="p">;</span> <span class="cm">/* requested events to watch */</span>
+    <span class="kt">short</span> <span class="n">revents</span><span class="p">;</span> <span class="cm">/* returned events witnessed */</span>
+<span class="p">};</span>
+</code></pre></div>    </div>
+
+    <p>​	不同于<code class="language-plaintext highlighter-rouge">select</code>使用三个<code class="language-plaintext highlighter-rouge">fd_set</code>，<code class="language-plaintext highlighter-rouge">poll</code>使用一个<code class="language-plaintext highlighter-rouge">pollfd</code>的指针实现。而<code class="language-plaintext highlighter-rouge">pollfd</code>结构包含了要监视的<code class="language-plaintext highlighter-rouge">event</code>和发生的<code class="language-plaintext highlighter-rouge">event</code>，不再使用<code class="language-plaintext highlighter-rouge">select</code>“参数-值”传递的方式。同时，pollfd并没有最大数量限制。</p>
+  </li>
+  <li>
+    <p><strong><em>特点</em></strong></p>
+
+    <p>​	<code class="language-plaintext highlighter-rouge">poll</code>和<code class="language-plaintext highlighter-rouge">select</code>类似，但是没有最大链接数的限制，因为是基于==链表存储==的。</p>
+  </li>
+  <li>
+    <p><strong><em>不足</em></strong></p>
+
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">poll</code>没有本质上改变<code class="language-plaintext highlighter-rouge">select</code>的方法，只是没有<code class="language-plaintext highlighter-rouge">fd_maxsize</code>的限制。<code class="language-plaintext highlighter-rouge">select</code>和<code class="language-plaintext highlighter-rouge">epoll</code>的不足之处还是类似的</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="33-epoll">3.3 epoll</h4>
+
+<ul>
+  <li>
+    <p><strong><em>代码</em></strong></p>
+
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">epoll_create</span><span class="p">(</span><span class="kt">int</span> <span class="n">size</span><span class="p">)</span><span class="err">；</span><span class="c1">//创建一个epoll的句柄，size用来告诉内核这个监听的数目一共有多大</span>
+<span class="kt">int</span> <span class="n">epoll_ctl</span><span class="p">(</span><span class="kt">int</span> <span class="n">epfd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">op</span><span class="p">,</span> <span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="k">struct</span> <span class="nc">epoll_event</span> <span class="o">*</span><span class="n">event</span><span class="p">)</span><span class="err">；</span>
+<span class="kt">int</span> <span class="n">epoll_wait</span><span class="p">(</span><span class="kt">int</span> <span class="n">epfd</span><span class="p">,</span> <span class="k">struct</span> <span class="nc">epoll_event</span> <span class="o">*</span> <span class="n">events</span><span class="p">,</span> <span class="kt">int</span> <span class="n">maxevents</span><span class="p">,</span> <span class="kt">int</span> <span class="n">timeout</span><span class="p">);</span>
+</code></pre></div>    </div>
+
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">epoll_event</span> <span class="p">{</span>
+  <span class="n">__uint32_t</span> <span class="n">events</span><span class="p">;</span>  <span class="cm">/* Epoll events */</span>
+  <span class="n">epoll_data_t</span> <span class="n">data</span><span class="p">;</span>  <span class="cm">/* User data variable */</span>
+<span class="p">};</span>
+  
+<span class="cm">/*
+	events可以是以下几个宏的集合：
+	EPOLLIN ：表示对应的文件描述符可以读（包括对端SOCKET正常关闭）；
+	EPOLLOUT：表示对应的文件描述符可以写；
+	EPOLLPRI：表示对应的文件描述符有紧急的数据可读（这里应该表示有带外数据到来）；
+	EPOLLERR：表示对应的文件描述符发生错误；
+	EPOLLHUP：表示对应的文件描述符被挂断；
+	EPOLLET： 将EPOLL设为边缘触发(Edge Triggered)模式，这是相对于水平触发(Level Triggered)来说的。
+	EPOLLONESHOT：只监听一次事件，当监听完这次事件之后，如果还需要继续监听这个socket的话，需要再次把这个socket加入到EPOLL队列里
+*/</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong><em>特点</em></strong></p>
+
+    <p>​	<code class="language-plaintext highlighter-rouge">epoll</code>较<code class="language-plaintext highlighter-rouge">select/poll</code>，主要改进两个缺点。一个是性能开销，一个是文件描述符少。</p>
+
+    <ul>
+      <li>性能优化
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">epoll</code>从<code class="language-plaintext highlighter-rouge">select/poll</code>中的主动轮询变为变动通知，当有事件发生的时候，被动接收通知。所以<code class="language-plaintext highlighter-rouge">epoll</code>模型注册套接字后，主程序可以继续执行。</li>
+          <li><code class="language-plaintext highlighter-rouge">epoll</code>通过内核和用户空间共享一块内存来实现。</li>
+        </ul>
+      </li>
+      <li>监视的描述符不受限制
+        <ul>
+          <li>采用红黑树存储文件描述符集合</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><strong><em>不足</em></strong></p>
+    <ul>
+      <li>代码比较复杂</li>
+      <li>如果没有大量的idle -connection或者dead-connection，epoll的效率并不会比select/poll高很多，但是当遇到大量的idle- connection，就会发现epoll的效率大大高于select/poll。</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="34-总结">3.4 总结</h4>
+
+<p><img src="https://s2.loli.net/2022/02/19/ApTbgqxUoIzhOPv.png" alt="image-20220219001249601" /></p>
+
+<blockquote>
+  <p>图片来自<a href="https://juejin.cn/post/6931543528971436046">这里</a></p>
+</blockquote>
+
+<h3 id="参考">参考</h3>
+
+<p><a href="https://zhuanlan.zhihu.com/p/272891398">一文搞懂select、poll和epoll区别</a></p>
+
+<p><a href="https://segmentfault.com/a/1190000003063859">Linux IO模式及 select、poll、epoll详解</a></p>
+
+<p><a href="https://www.cnblogs.com/aspirant/p/9166944.html">select/poll/epoll的区别</a></p>
+
+<p>###</p>
+<h1 id="io多路复用">IO多路复用</h1>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">select</code>什么时候返回0？
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">select</code>成功时返回就绪fd的总数；如果在超时时间内没有任何fd就绪，返回0；失败返回-1，并设置errno；如果在<code class="language-plaintext highlighter-rouge">select</code>等待期间，程序接收到信号，则返回-1，并设置errno为EINTR</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="selectpoll和epoll的区别及应用场景">select，poll和epoll的区别及应用场景</h2>
+
+<ul>
+  <li>对于select和poll来说，所有文件描述符都是在用户态被加入其文件描述符集合的，每次调用都需要将整个集合拷贝到内核态；epoll则将整个文件描述符集合维护在内核态，<strong>每次添加文件描述符的时候都需要执行一个系统调用</strong>。系统调用的开销是很大的，而且在有<strong>很多短期活跃连接</strong>的情况下，epoll可能会慢于select和poll由于这些大量的系统调用开销</li>
+  <li><code class="language-plaintext highlighter-rouge">select</code>使用线性表描述文件描述符集合，文件描述符有上限；<code class="language-plaintext highlighter-rouge">poll</code>使用链表来描述；<code class="language-plaintext highlighter-rouge">epoll</code>底层通过红黑树来描述，并且维护一个ready list，将事件表中已经就绪的事件添加到这里，在使用<code class="language-plaintext highlighter-rouge">epoll_wait</code>调用时，仅观察这个list中有没有数据即可。</li>
+  <li><code class="language-plaintext highlighter-rouge">select</code>和<code class="language-plaintext highlighter-rouge">poll</code>的<strong>最大开销来自内核判断是否有文件描述符就绪这一过程：每次执行select或poll调用时，它们会采用遍历的方式，遍历整个文件描述符集合去判断各个文件描述符是否有活动</strong>；epoll则不需要去以这种方式检查，当有活动产生时，会自动触发epoll回调函数通知epoll文件描述符，然后内核将这些就绪的文件描述符放到之前提到的ready list中等待<code class="language-plaintext highlighter-rouge">epoll_wait</code>调用后被处理</li>
+  <li><code class="language-plaintext highlighter-rouge">select</code>和<code class="language-plaintext highlighter-rouge">poll</code>都只能工作在相对低效的LT模式下，而<code class="language-plaintext highlighter-rouge">epoll</code>同时支持LT和ET模式</li>
+  <li><strong>综上，当监测的fd数量较小，且各个fd都很活跃的情况下，建议使用<code class="language-plaintext highlighter-rouge">select</code>和<code class="language-plaintext highlighter-rouge">poll</code>；当监听的fd数量较多，且单位时间仅部分fd活跃的情况下，使用epoll会明显提升性能。要求实时性的场景也可以使用<code class="language-plaintext highlighter-rouge">select</code>，因为<code class="language-plaintext highlighter-rouge">select</code>的<code class="language-plaintext highlighter-rouge">timeout</code>参数精度是微妙级，而其他两个是毫秒</strong></li>
+  <li><strong>需要监控的描述符状态变化多，而且都是非常短暂的，也没有必要使用 <code class="language-plaintext highlighter-rouge">epoll</code></strong>。因为 <code class="language-plaintext highlighter-rouge">epoll</code> 中的所有描述符都存储在内核中，造成每次需要对描述符的状态改变都需要通过 <code class="language-plaintext highlighter-rouge">epoll_ctl</code>进行系统调用，<strong>频繁系统调用降低效率</strong>。并且 <code class="language-plaintext highlighter-rouge">epoll</code> 的描述符存储在内核，不容易调试</li>
+</ul>
+
+<h2 id="lt电平触发和et边缘触发的差别">LT（电平触发）和ET（边缘触发）的差别</h2>
+
+<ul>
+  <li>LT（电平触发）：类似<code class="language-plaintext highlighter-rouge">select</code>，LT会去遍历在epoll事件表中每个文件描述符，来观察是否有我们感兴趣的事件发生，如果有（触发了该文件描述符上的回调函数），<code class="language-plaintext highlighter-rouge">epoll_wait</code>就会以非阻塞的方式返回。<strong>若该epoll事件没有被处理完</strong>（没有返回<code class="language-plaintext highlighter-rouge">EWOULDBLOCK</code>），该事件还会被后续的<code class="language-plaintext highlighter-rouge">epoll_wait</code>再次触发</li>
+  <li>ET（边缘触发）：ET在发现有我们感兴趣的事件发生后，立即返回，并且<code class="language-plaintext highlighter-rouge">sleep</code>这一事件的<code class="language-plaintext highlighter-rouge">epoll_wait</code>，不管该事件有没有结束</li>
+  <li><strong>在使用ET模式时，必须要保证该文件描述符是非阻塞的</strong>（确保在没有数据可读时，该文件描述符不会一直阻塞，以避免由于一个文件句柄的阻塞读/阻塞写操作把处理多个文件描述符的任务饿死）；<strong>并且每次调用<code class="language-plaintext highlighter-rouge">read</code>和<code class="language-plaintext highlighter-rouge">write</code>的时候都必须等到它们返回<code class="language-plaintext highlighter-rouge">EWOULDBLOCK</code></strong>（<strong>确保所有数据都已读完或写完，因为若没有新事件到来，将不再通知</strong>）</li>
+</ul>
+
+<h2 id="epoll读写事件触发的条件">epoll读写事件触发的条件</h2>
+
+<ul>
+  <li>LT模式，EPOLLIN触发条件
+    <ul>
+      <li>处于可读状态：1. socket内核接收缓冲区中字节数大于或等于其低水位标记SO_RCVLOWAT；2. 监听socket上有新的连接请求；3. 通信对方关闭连接，读操作返回0；4. socket异常/错误未处理</li>
+      <li>从不可读状态变为可读状态</li>
+    </ul>
+  </li>
+  <li>LT模式，EPOLLOUT触发条件
+    <ul>
+      <li>处于可写状态：1. socket内核发送缓冲区中字节数大于等于其低水位标记SO_SNDLOWAT；2. socket写操作被关闭，写操作触发SIGPIPE；3. socket上有未处理错误；4. socket使用非阻塞connect连接成功或失败之后</li>
+      <li>从不可写状态变为可写状态</li>
+    </ul>
+  </li>
+  <li>ET模式，EPOLLIN触发条件
+    <ul>
+      <li>从不可读状态变为可读状态</li>
+      <li>内核接收到新发来的数据</li>
+    </ul>
+  </li>
+  <li>ET模式，EPOLLOUT触发条件
+    <ul>
+      <li>从不可写状态变为可写状态</li>
+      <li>只要同时注册了EPOLLIN和EPOLLOUT事件，当对端发数据来的时候，如果此时是可写状态，epoll会同时触发EPOLLIN和EPOLLOUT事件</li>
+      <li>接受连接后，只要注册了EPOLLOUT事件，那么就会马上触发EPOLLOUT事件</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="epoll重要事件类型说明">epoll重要事件类型说明</h2>
+
+<ul>
+  <li>
+    <p><strong>EPOLLPRI：带外数据</strong></p>
+  </li>
+  <li><strong>EPOLLRDHUP</strong>
+    <ul>
+      <li>发生场景
+        <ul>
+          <li>对端发送 FIN (对端调用close 或者 shutdown(SHUT_WR))</li>
+          <li>本端调用 shutdown(SHUT_RD)。 当然，关闭 SHUT_RD 的场景很少</li>
+        </ul>
+      </li>
+      <li>可以作为一种<strong>读关闭</strong>的标志，注意<strong>不能读的意思内核不能再往内核缓冲区中增加新的内容。已经在内核缓冲区中的内容，用户态依然能够读取到</strong></li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>EPOLLHUP</strong></p>
+
+    <ul>
+      <li>
+        <p>发生场景</p>
+
+        <ul>
+          <li>
+            <p>本端调用shutdown(SHUT_RDWR)。 不能是close，<strong>close 之后，文件描述符已经失效</strong></p>
+          </li>
+          <li>
+            <p>本端调用 shutdown(SHUT_WR)，对端调用 shutdown(SHUT_WR)</p>
+          </li>
+          <li>
+            <p>对端发送 RST。发送 RST 的常见场景：</p>
+
+            <ol>
+              <li>系统崩溃重启(进程崩溃，只要内核是正常工作都还能兜底，发送的是FIN，不是这里讨论的RST)，四元组消失。此时收到任何数据，都会响应 RST</li>
+              <li>设置 linger 参数，l_onoff 为 1 开启，但是 l_linger = 0 超时参数为0。此时close() 将直接发送 RST</li>
+              <li>接收缓冲区中还有数据，直接 close()， 接收缓冲区中的内容丢弃，直接发送 RST</li>
+              <li>已经调用 close ，close 会立马发送一个 FIN。注意：仅仅从 FIN 数据包上，无法断定对端是 close 还是仅仅 shutdown(SHUT_WR) 半关闭。<strong>此时如果往对端发送数据，若对端已经 close()，对端会回复 RST</strong></li>
+            </ol>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>表示读写都关闭</strong></li>
+</ul>
+
+<h2 id="ltet深入">LT、ET深入</h2>
+
+<ul>
+  <li>使用Linux epoll模型的LT水平触发模式，当socket可写时，会不停的触发socket可写的事件，如何处理？
+    <ul>
+      <li>
+        <p>普通做法：</p>
+
+        <p>当需要向socket写数据时，将该socket加入到epoll等待可写事件。接收到socket可写事件后，调用write()或send()发送数据，当数据全部写完后， 将socket描述符移出epoll列表，这种做法需要反复添加和删除。</p>
+      </li>
+      <li>
+        <p>改进做法:</p>
+
+        <p>向socket写数据时直接调用send()发送，当send()返回错误码EAGAIN，才将socket加入到epoll，等待可写事件后再发送数据，全部数据发送完毕，再移出epoll模型，改进的做法相当于认为socket在大部分时候是可写的，不能写了再让epoll帮忙监控。</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>上面两种做法是对LT模式下write事件频繁通知的修复，本质上ET模式就可以直接搞定，并不需要用户层程序的补丁操作</p>
+  </li>
+  <li>
+    <p>ET模式的线程饥饿问题如果某个socket源源不断地收到非常多的数据，在试图读取完所有数据的过程中，有可能会造成其他的socket得不到处理，从而造成饥饿问题</p>
+  </li>
+  <li>socket饥饿解决办法：为每个<strong>已经准备好的描述符维护一个队列</strong>，这样程序就可以知道哪些描述符已经准备好了但是并没有被读取完，然后程序<strong>定时或定量的读取，如果读完则移除，直到队列为空</strong>，这样就保证了每个fd都被读到并且不会丢失数据</li>
+</ul>
+
+<h3 id="1-io模型">1. i/o模型</h3>
+
+<h3 id="2">2.</h3>
+
+<h2 id="io模型"><a href="https://github.com/CyC2018/CS-Notes/blob/master/notes/Socket.md">I/O模型</a></h2>
+
+<ul>
+  <li>
+    <p>Unix 有五种 I/O 模型：</p>
+
+    <ul>
+      <li>阻塞式 I/O</li>
+      <li>非阻塞式 I/O</li>
+      <li>I/O 复用（select 和 poll）</li>
+      <li>信号驱动式 I/O（SIGIO）</li>
+      <li>异步 I/O（AIO）</li>
+    </ul>
+  </li>
+  <li>
+    <p>五大 I/O 模型比较</p>
+
+    <ul>
+      <li>同步 I/O：将数据从内核缓冲区复制到应用进程缓冲区的阶段（第二阶段），应用进程会阻塞</li>
+      <li>异步 I/O：第二阶段应用进程不会阻塞</li>
+    </ul>
+
+    <p>同步 I/O 包括阻塞式 I/O、非阻塞式 I/O、I/O 复用和信号驱动 I/O ，它们的主要区别在第一个阶段。非阻塞式 I/O 、信号驱动 I/O 和异步 I/O 在第一阶段不会阻塞</p>
+  </li>
+</ul>
+
+<h2 id="线程池">线程池</h2>
+
+<ul>
+  <li>
+    <p>线程池，开多大，为什么运用线程池？</p>
+
+    <ul>
+      <li>多线程应用并非线程越多越好。需要根据系统运行的硬件环境以及应用本身的特点决定线程池的大小。一般来说，如果代码结构合理，线程数与cpu数量相适合即可。如果线程运行时可能出现阻塞现象，可相应增加池的大小、如果有必要可采用自适应算法来动态调整线程池的大小，以提高cpu的有效利用率和系统的整体性能
+        <ul>
+          <li>线程池大小简单估算公式，设N为CPU个数
+            <ul>
+              <li>对于CPU密集型的应用，线程池的大小设置为N+1</li>
+              <li>对于I/O密集型的应用，线程池的大小设置为2N+1</li>
+            </ul>
+          </li>
+          <li>最佳线程数量 = （（线程等待时间 + 线程CPU时间）／ 线程CPU时间 ）* CPU个数</li>
+        </ul>
+      </li>
+      <li>CPU密集型任务
+        <ul>
+          <li>尽量使用较小的线程池，一般为CPU核心数+1。 因为CPU密集型任务使得CPU使用率很高，若开过多的线程数，会造成<strong>CPU过度切换</strong></li>
+        </ul>
+      </li>
+      <li>IO密集型任务
+        <ul>
+          <li>可以使用稍大的线程池，一般为2*CPU核心数。 IO密集型任务CPU使用率并不高，因此可以<strong>让CPU在等待IO的时候有其他线程去处理别的任务</strong>，充分利用CPU时间</li>
+        </ul>
+      </li>
+      <li>混合型任务
+        <ul>
+          <li>可以将任务分成IO密集型和CPU密集型任务，然后分别用不同的线程池去处理。 只要分完之后两个任务的执行时间相差不大，那么就会比串行执行来的高效</li>
+          <li>因为如果划分之后两个任务执行时间有数据级的差距，那么拆分没有意义</li>
+          <li>因为先执行完的任务就要等后执行完的任务，最终的时间仍然取决于后执行完的任务，而且还要加上任务拆分与合并的开销，得不偿失</li>
+        </ul>
+      </li>
+      <li>使用线程池目的：<strong>提高服务器性能，以空间换时间。减少在创建和销毁线程上所花的时间以及申请系统资源的开销，分配系统资源的系统调用是很耗时的。程序运行时预先创建一个线程的集合，当用户请求到来时，可以直接从线程池取得一个执行实体，而无需动态调用pthread_create等函数来创建线程。执行实体用完后可以放回线程池，以供循环使用</strong></li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>C++11简单线程池实现代码</strong></p>
+
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;queue&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;mutex&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;condition_variable&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;functional&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;memory&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;cstddef&gt;</span><span class="cp">
+#inclued &lt;stdexcept&gt;
+</span>  
+<span class="k">class</span> <span class="nc">ThreadPool</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">ThreadPool</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">threadNum</span> <span class="o">=</span> <span class="mi">8</span><span class="p">)</span><span class="o">:</span> <span class="n">mPool</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">make_share</span><span class="o">&lt;</span><span class="n">Pool</span><span class="o">&gt;</span><span class="p">()){</span>
+        <span class="n">assert</span><span class="p">(</span><span class="n">threadNum</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">);</span>
+        <span class="k">try</span><span class="p">{</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">threadNum</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="p">(</span>
+                    <span class="p">[</span><span class="n">pool</span><span class="o">=</span><span class="n">mPool</span><span class="p">]{</span>
+                        <span class="n">std</span><span class="o">::</span><span class="n">unique_lock</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span> <span class="n">locker</span><span class="p">(</span><span class="n">pool</span><span class="o">-&gt;</span><span class="n">mtx</span><span class="p">);</span>
+                        <span class="n">locker</span><span class="p">.</span><span class="n">unlock</span><span class="p">();</span>
+                        <span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">pool</span><span class="o">-&gt;</span><span class="n">close</span><span class="p">)</span> <span class="p">{</span>
+                            <span class="n">locker</span><span class="p">.</span><span class="n">lock</span><span class="p">();</span>   <span class="c1">// 获得锁才能往下执行</span>
+                            <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">pool</span><span class="o">-&gt;</span><span class="n">tasks</span><span class="p">.</span><span class="n">empty</span><span class="p">()){</span>
+                                <span class="k">auto</span> <span class="n">task</span> <span class="o">=</span> <span class="n">pool</span><span class="o">-&gt;</span><span class="n">tasks</span><span class="p">.</span><span class="n">top</span><span class="p">();</span> 	<span class="c1">// 从任务队列取任务执行</span>
+                                <span class="n">pool</span><span class="o">-&gt;</span><span class="n">tasks</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>		
+                                <span class="n">locker</span><span class="p">.</span><span class="n">unlock</span><span class="p">();</span>	<span class="c1">// 取完解锁，让池接收新任务，或者让其他线程处理其他任务</span>
+                                <span class="n">task</span><span class="p">();</span>			<span class="c1">// 执行任务</span>
+                            <span class="p">}</span>
+                            <span class="k">else</span> <span class="p">{</span>
+                            	<span class="n">pool</span><span class="o">-&gt;</span><span class="n">cond</span><span class="p">.</span><span class="n">wait</span><span class="p">(</span><span class="n">locker</span><span class="p">);</span>  <span class="c1">// 无任务，等待，通过竞争锁被唤醒   </span>
+                            <span class="p">}</span>
+                        <span class="p">}</span><span class="mi">1</span>
+                    <span class="p">}</span>
+                <span class="p">).</span><span class="n">detach</span><span class="p">();</span>   
+        	<span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">catch</span><span class="p">(...){</span>
+                <span class="p">{</span>
+                    <span class="n">std</span><span class="o">::</span><span class="n">lock_guard</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span> <span class="n">locker</span><span class="p">(</span><span class="n">mPool</span><span class="o">-&gt;</span><span class="n">mtx</span><span class="p">);</span>  
+                    <span class="n">mPool</span><span class="o">-&gt;</span><span class="n">close</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>         <span class="c1">// closed = true，关闭所有线程</span>
+                <span class="p">}</span>
+                <span class="n">mPool</span><span class="o">-&gt;</span><span class="n">cond</span><span class="p">.</span><span class="n">notify_all</span><span class="p">();</span>    <span class="c1">// 唤醒所有线程，执行关闭</span>
+                <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">"ThreadPool Init Failed!"</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+      
+    <span class="c1">// 往线程池任务队列添加任务</span>
+    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">Func</span><span class="p">&gt;</span>
+    <span class="kt">void</span> <span class="nf">addTask</span><span class="p">(</span><span class="n">Func</span> <span class="o">&amp;&amp;</span> <span class="n">task</span><span class="p">){</span>
+        <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">lock_guard</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span> <span class="n">lg</span><span class="p">(</span><span class="n">mPool</span><span class="o">-&gt;</span><span class="n">mtx</span><span class="p">);</span>
+            <span class="n">mPool</span><span class="o">-&gt;</span><span class="n">tasks</span><span class="p">.</span><span class="n">emplace</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">forward</span><span class="o">&lt;</span><span class="n">Func</span><span class="o">&gt;</span><span class="p">(</span><span class="n">task</span><span class="p">));</span>  <span class="c1">// forward完美转发右值引用</span>
+        <span class="p">}</span>
+        <span class="n">mPool</span><span class="o">-&gt;</span><span class="n">cond</span><span class="p">.</span><span class="n">notify_one</span><span class="p">();</span>
+    <span class="p">}</span>
+      
+    <span class="o">~</span><span class="n">ThreadPool</span><span class="p">(){</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">mPool</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">){</span>
+            <span class="p">{</span>
+                <span class="n">std</span><span class="o">::</span><span class="n">lock_guard</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span> <span class="n">lg</span><span class="p">(</span><span class="n">mPool</span><span class="o">-&gt;</span><span class="n">mtx</span><span class="p">);</span>
+        		<span class="n">mPool</span><span class="o">-&gt;</span><span class="n">close</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="n">mPool</span><span class="o">-&gt;</span><span class="n">cond</span><span class="p">.</span><span class="n">notify_all</span><span class="p">();</span>
+        <span class="p">}</span>
+          
+    <span class="p">}</span>
+      
+    <span class="n">ThreadPool</span><span class="p">(</span><span class="k">const</span> <span class="n">ThreadPool</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+    <span class="n">ThreadPool</span><span class="o">&amp;</span> <span class="k">operator</span> <span class="o">=</span> <span class="p">(</span><span class="k">const</span> <span class="n">ThreadPool</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+<span class="k">private</span><span class="o">:</span>
+  <span class="k">struct</span> <span class="nc">Pool</span><span class="p">{</span>
+		<span class="n">std</span><span class="o">::</span><span class="n">queue</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="p">(</span><span class="kt">void</span><span class="p">())</span><span class="o">&gt;</span> <span class="n">tasks</span><span class="p">;</span>  <span class="c1">// 任务队列</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">mutex</span> <span class="n">mtx</span><span class="p">;</span>
+    	<span class="n">std</span><span class="o">::</span><span class="n">condition_variable</span> <span class="n">cond</span><span class="p">;</span>
+        <span class="kt">bool</span> <span class="n">close</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">};</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">share_ptr</span><span class="o">&lt;</span><span class="n">Pool</span><span class="o">&gt;</span> <span class="n">mPool</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h4 id="1-建立tcp服务器的各个系统调用">(1) 建立TCP服务器的各个系统调用</h4>
+<p>建立TCP服务器连接的过程中主要通过以下系统调用序列来获取某些函数,这些系统调用主要包括:socket(),bind(),listen(),accept(),send()和recv().
+详见:<a href="https://blog.csdn.net/qq_37964547/article/details/81429627">建立TCP 服务器的系统调用</a></p>
+
+<h4 id="2-继上一题说明socket网络编程有哪些系统调用其中close是一次就能直接关闭的吗半关闭状态是怎么产生的">(2) 继上一题,说明socket网络编程有哪些系统调用?其中close是一次就能直接关闭的吗,半关闭状态是怎么产生的?</h4>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>socket()    创建套接字   
+bind()      绑定本机端口    
+connect()   建立连接     (TCP三次握手在调用这个函数时进行)
+listen()    监听端口
+accept()    接受连接
+recv(), read(), recvfrom()  数据接收
+send(), write(), sendto()   数据发送
+close(), shutdown() 关闭套接字
+</code></pre></div></div>
+
+<p>使用close()时,只有当套接字的引用计数为0的时候才会终止连接,而用shutdown()就可以直接关闭连接</p>
+
+<p>详见:<a href="https://blog.csdn.net/junjun150013652/article/details/37994907">网络编程Socket之TCP之close/shutdown详解</a></p>
+
+<p>TCP连接与断开详解: https://www.cnblogs.com/felixzh/p/8359066.html</p>
+
+<h3 id="附录">附录</h3>
+<h4 id="1-socket的c-api">1. socket的c++ api</h4>
+<p>Socket API是一组函数，用于创建和管理网络通信。以下是一些常用的Socket API的使用方法：</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp">
+</span><span class="c1">// 1. **创建Socket**：使用`socket()`函数创建一个新的Socket。</span>
+<span class="kt">int</span> <span class="n">sockfd</span> <span class="o">=</span> <span class="n">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">SOCK_STREAM</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+<span class="c1">// 2. **绑定Socket到地址**：使用`bind()`函数将Socket绑定到一个特定的地址和端口。</span>
+<span class="cp">#include</span> <span class="cpf">&lt;netinet/in.h&gt;</span><span class="cp">
+</span><span class="c1">//...</span>
+<span class="k">struct</span> <span class="nc">sockaddr_in</span> <span class="n">servaddr</span><span class="p">;</span>
+<span class="n">servaddr</span><span class="p">.</span><span class="n">sin_family</span> <span class="o">=</span> <span class="n">AF_INET</span><span class="p">;</span>
+<span class="n">servaddr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">.</span><span class="n">s_addr</span> <span class="o">=</span> <span class="n">htonl</span><span class="p">(</span><span class="n">INADDR_ANY</span><span class="p">);</span>
+<span class="n">servaddr</span><span class="p">.</span><span class="n">sin_port</span> <span class="o">=</span> <span class="n">htons</span><span class="p">(</span><span class="mi">8080</span><span class="p">);</span>
+<span class="n">bind</span><span class="p">(</span><span class="n">sockfd</span><span class="p">,</span> <span class="p">(</span><span class="k">struct</span> <span class="nc">sockaddr</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">servaddr</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">servaddr</span><span class="p">));</span>
+
+<span class="c1">// 3. **监听连接**：使用`listen()`函数让Socket开始监听连接请求。</span>
+<span class="n">listen</span><span class="p">(</span><span class="n">sockfd</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+
+<span class="c1">// 4. **接受连接**：使用`accept()`函数接受一个连接请求。</span>
+<span class="k">struct</span> <span class="nc">sockaddr_in</span> <span class="n">cliaddr</span><span class="p">;</span>
+<span class="n">socklen_t</span> <span class="n">len</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">cliaddr</span><span class="p">);</span>
+<span class="kt">int</span> <span class="n">connfd</span> <span class="o">=</span> <span class="n">accept</span><span class="p">(</span><span class="n">sockfd</span><span class="p">,</span> <span class="p">(</span><span class="k">struct</span> <span class="nc">sockaddr</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">cliaddr</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">len</span><span class="p">);</span>
+
+<span class="c1">// 5. **发送数据**：使用`send()`函数发送数据。</span>
+<span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">message</span> <span class="o">=</span> <span class="s">"Hello, World!"</span><span class="p">;</span>
+<span class="n">send</span><span class="p">(</span><span class="n">connfd</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">message</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+
+<span class="c1">// 6. **接收数据**：使用`recv()`函数接收数据。</span>
+<span class="kt">char</span> <span class="n">buffer</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
+<span class="n">recv</span><span class="p">(</span><span class="n">connfd</span><span class="p">,</span> <span class="n">buffer</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buffer</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+
+<span class="c1">// 7. **关闭Socket**：使用`close()`函数关闭Socket。</span>
+<span class="n">close</span><span class="p">(</span><span class="n">sockfd</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h4 id="1-linux的io模型介绍以及同步异步阻塞非阻塞的区别超级重要">(1) Linux的I/O模型介绍以及同步异步阻塞非阻塞的区别(超级重要)</h4>
+<p>https://blog.csdn.net/sqsltr/article/details/92762279</p>
+
+<p>https://www.cnblogs.com/euphie/p/6376508.html</p>
+
+<p>(IO过程包括两个阶段:(1)内核从IO设备读写数据和(2)进程从内核复制数据)</p>
+
+<ul>
+  <li>阻塞:调用IO操作的时候,如果缓冲区空或者满了,调用的进程或者线程就会处于阻塞状态直到IO可用并完成数据拷贝.</li>
+  <li>非阻塞:调用IO操作的时候,内核会马上返回结果,如果IO不可用,会返回错误,这种方式下进程需要不断轮询直到IO可用为止,但是当进程从内核拷贝数据时是阻塞的.</li>
+  <li>
+    <p>IO多路复用就是同时监听多个描述符,一旦某个描述符IO就绪(读就绪或者写就绪),就能够通知进程进行相应的IO操作,否则就将进程阻塞在select或者epoll语句上.</p>
+  </li>
+  <li>同步IO:同步IO模型包括阻塞IO,非阻塞IO和IO多路复用.特点就是当进程从内核复制数据的时候都是阻塞的.</li>
+  <li>异步IO:在检测IO是否可用和进程拷贝数据的两个阶段都是不阻塞的,进程可以做其他事情,当IO完成后内核会给进程发送一个信号.</li>
+</ul>
+
+<h4 id="3-epoll的介绍和了解">(3) EPOLL的介绍和了解</h4>
+<p>https://zhuanlan.zhihu.com/p/56486633</p>
+
+<p>https://www.jianshu.com/p/397449cadc9a</p>
+
+<p>https://blog.csdn.net/davidsguo008/article/details/73556811</p>
+
+<p>Epoll是Linux进行IO多路复用的一种方式,用于在一个线程里监听多个IO源,在IO源可用的时候返回并进行操作.它的特点是基于事件驱动,性能很高.</p>
+
+<p>epoll将文件描述符拷贝到内核空间后使用红黑树进行维护,同时向内核注册每个文件描述符的回调函数,当某个文件描述符可读可写的时候,将这个文件描述符加入到就绪链表里,并唤起进程,返回就绪链表到用户空间,由用户程序进行处理.</p>
+
+<p>Epoll有三个系统调用:epoll_create(),epoll_ctl()和epoll_wait().</p>
+
+<ul>
+  <li>
+    <p>eoll_create()函数在内核中初始化一个eventpoll对象,同时初始化红黑树和就绪链表.</p>
+  </li>
+  <li>
+    <p>epoll_ctl()用来对监听的文件描述符进行管理.将文件描述符插入红黑树,或者从红黑树中删除,这个过程的时间复杂度是log(N).同时向内核注册文件描述符的回调函数.</p>
+  </li>
+  <li>
+    <p>epoll_wait()会将进程放到eventpoll的等待队列中,将进程阻塞,当某个文件描述符IO可用时,内核通过回调函数将该文件描述符放到就绪链表里,epoll_wait()会将就绪链表里的文件描述符返回到用户空间.</p>
+    <h4 id="4-io复用的三种方法selectpollepoll深入理解包括三者区别内部原理实现">(4) IO复用的三种方法(select,poll,epoll)深入理解,包括三者区别,内部原理实现?</h4>
+    <p>(1)select的方法介绍:select把所有监听的文件描述符拷贝到内核中,挂起进程.当某个文件描述符可读或可写的时候,中断程序唤起进程,select将监听的文件描述符再次拷贝到用户空间,然select后遍历这些文件描述符找到IO可用的文件.下次监控的时候需要再次拷贝这些文件描述符到内核空间.select支持监听的描述符最大数量是1024.
+<img src="fig/select.png" alt="select" />
+(2)poll使用链表保存文件描述符,其他的跟select没有什么不同.</p>
+  </li>
+</ul>
+
+<p>(3)epoll将文件描述符拷贝到内核空间后使用红黑树进行维护,同时向内核注册每个文件描述符的回调函数,当某个文件描述符可读可写的时候,将这个文件描述符加入到就绪链表里,并唤起进程,返回就绪链表到用户空间.
+<img src="fig/epoll.png" alt="epoll" />
+详见 https://www.cnblogs.com/Anker/p/3265058.html</p>
+<h4 id="5-epoll的et模式和lt模式et的非阻塞">(5) Epoll的ET模式和LT模式(ET的非阻塞)</h4>
+<ul>
+  <li>ET是边缘触发模式,在这种模式下,只有当描述符从未就绪变成就绪时,内核才会通过epoll进行通知.然后直到下一次变成就绪之前,不会再次重复通知.也就是说,如果一次就绪通知之后不对这个描述符进行IO操作导致它变成未就绪,内核也不会再次发送就绪通知.优点就是只通知一次,减少内核资源浪费,效率高.缺点就是不能保证数据的完整,有些数据来不及读可能就会无法取出.</li>
+  <li>LT是水平触发模式,在这个模式下,如果文件描述符IO就绪,内核就会进行通知,如果不对它进行IO操作,只要还有未操作的数据,内核都会一直进行通知.优点就是可以确保数据可以完整输出.缺点就是由于内核会一直通知,会不停从内核空间切换到用户空间,资源浪费严重.
+    <h4 id="6-查询进程占用cpu的命令注意要了解到usedbuf代表意义">(6) 查询进程占用CPU的命令(注意要了解到used,buf,代表意义)</h4>
+    <p>详见:https://blog.csdn.net/qq_36357820/article/details/76606113</p>
+    <ol>
+      <li>top命令查看linux负载:</li>
+      <li>uptime查看linux负载</li>
+      <li>w查看linux负载:</li>
+      <li>vmstat查看linux负载</li>
+    </ol>
+  </li>
+</ul>
+
+<h4 id="poll和epoll的区别">poll和epoll的区别</h4>
+<p>epoll是poll的升级版.其实poll和epoll都是用于同时监视多个文件描述符的.poll需要自己管理一组文件描述符的集合,而epoll就使得内核为我们管理这个结构体的数组,通过epoll_create.epoll不是一个函数,他是一组函数的实现.<br /></p>
+<ul>
+  <li>poll布置完监视任务就需要取得监视的结果,而epoll就是用epoll_wait函数进行阻塞监视并返回监视结果.
+epoll更成熟.<br /></li>
+  <li>
+    <p>nginx和apache对比</p>
+  </li>
+  <li>同步/异步/阻塞/非阻塞的理解</li>
+  <li>
+    <ul>
+      <li>同步互斥</li>
+    </ul>
+  </li>
+  <li>
+    <p>1/linux IO模型(5种) 记不太清,说了几种,应该没说完.(应该是:同步阻塞/同步非阻塞/多路复用/信号驱动/异步IO)应该还要说细节</p>
+  </li>
+  <li>什么是缓冲区溢出</li>
+</ul>
+
+<p>23/epoll和select的区别?
+答:select能支持的文件描述符数是有限的,最大1024个,并且每次调用前都需要将其监听的读集/写集/错误集从用户态向内核态拷贝,返回后又拷贝回去,而且,select返回的时候是将所有的文件描述符返回,也就意味着一旦有个事件触发,只能通过遍历的方式才能找到具体是哪一个事件,效率比较低/开销也比较大,但是也有好处,就是他的超时的单位是微秒级别;
+epoll能支持的文件描述符数很大,可以上万,他的高效由3个部分组成:红黑树/双向链表/回调函数,每次将监听事件拷贝到内核后就存放在红黑树种,以EventPoll的结构体存在,如果有相应的事件发生,对应的回调函数就会触发,进而就会将该事件拷贝至双向链表中返回,而且,epoll每次返回的都是有事件发生的事件,不是所有时间,所以比较高效,总的来说epoll适用于连接数较多,活跃数较少的场景/而select适用于连接数不多,但大多都活跃的场景.</p>
+
+<p>24/同一个IP同一个端口可以同时建立tcp和udp的连接吗
+答可以,同一个端口虽然udp和tcp的端口数字是一样的,但实质他们是不同的端口,所以是没有影响的,从底层实质分析,对于每一个连接内核维护了一个五元组,包含了源ip,目的ip/源端口目的端口/以及传输协议,在这里尽管前4项都一样,但是传输协议是不一样的,所以内核会认为是2个不同的连接,在ip层就会进行开始分流,tcp的走tcp,udp走udp.</p>
+
+    </div>
+
+    <div class="post__share">
+  <div class="share__head">
+    <div class="share__title">Share this Post</div>
+  </div>
+  <ul class="share__list list-reset">
+    <li class="share__item">
+      <a class="share__link share__twitter"
+        href="https://twitter.com/intent/tweet?text=io%E5%A4%8D%E7%94%A8&url=/blog/2-io%E5%A4%8D%E7%94%A8"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__facebook"
+        href="https://www.facebook.com/sharer/sharer.php?u=/blog/2-io%E5%A4%8D%E7%94%A8"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__pinterest"
+        href="http://pinterest.com/pin/create/button/?url=/blog/2-io%E5%A4%8D%E7%94%A8&amp;media=/images/post/post-54.jpg&amp;description=io%E5%A4%8D%E7%94%A8"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Pinterest" rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&url=/blog/2-io%E5%A4%8D%E7%94%A8&title=io%E5%A4%8D%E7%94%A8&summary=&source=Vonge"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
+    </li>
+  </ul>
+</div>
+
+  </article>
+</div>
+<!-- end post -->
+
+<div class="container">
+  <div class="row">
+    <div class="col col-10 col-d-12 push-d-0 push-1">
+      <div class="post__navigation animate">
+  
+  <a class="post__prev" href="/blog/1-select">
+    <div class="prev__image">
+      <img loading="lazy" src="/images/post/post-56.jpeg" alt="io复用">
+    </div>
+    <div class="prev__box">
+      <span class="post__nav post__nav__prev">Prev post</span>
+      <h2 class="post__nav__title">select</h2>
+    </div>
+  </a>
+  
+
+  
+  <a class="post__next" href="/blog/3-%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86%E6%A8%A1%E5%BC%8F">
+    <div class="next__box">
+      <span class="post__nav post__nav__next">Next post</span>
+      <h2 class="post__nav__title">事件处理模式</h2>
+    </div>
+    <div class="next__image">
+      <img loading="lazy" src="/images/post/post-55.jpeg" alt="io复用">
+    </div>
+  </a>
+  
+</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- begin related posts -->
+<div class="container">
+  <section class="related-posts  animate">
+    <div class="row">
+      <div class="col col-12">
+        <div class="container__inner">
+          <div class="section__info">
+            <div class="section__head">
+              <h2 class="section__title">You may also like</h2>
+              <a class="section__link" href="/blog">
+                
+              </a>
+            </div>
+          </div>
+          <div class="row">
+
+          
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- end related posts -->
+
+
+
+
+
+
+    <!--
+        Bookshop components are accessed using the bookshop tag,
+        using the same syntax as the standard Jekyll include tag.
+    -->
+    <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
+
+<!--bookshop-live end-->
+
+    <div class="top" title="Top"><i class="ion ion-ios-arrow-up"></i></div>
+
+    <!-- begin footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+
+        <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+
+        <ul class="footer_nav list-reset">
+          
+          <li class="footer_nav__item">
+            <a href="/" class="footer_nav__link">Home</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/projects/" class="footer_nav__link">Projects</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/elements/" class="footer_nav__link">Elements</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/about/" class="footer_nav__link">About</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/blog/" class="footer_nav__link">Blog</a>
+          </li>
+          
+        </ul>
+
+        <div class="copyright"><p> 2021 &copy; <a href="/">Vonge</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
+
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- end footer -->
+
+    <script src="/js/scripts.js"></script>
+    <script src="/js/common.js"></script>
+</body>
+</html>

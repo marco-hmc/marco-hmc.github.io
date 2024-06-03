@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>编译过程与原理</title>
+  <meta name='description' content='Marco’s Blog'>
+
+  <link rel="canonical" href="/blog/1-%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B%E4%B8%8E%E5%8E%9F%E7%90%86">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="编译过程与原理 – Marco’s Blog">
+  <meta name="twitter:description" content="编译过程与原理
+">
+  <meta name="twitter:image:src" content="/images/post/post-59.jpg">
+
+  <!-- Facebook OpenGraph -->
+  <meta property="og:title" content="编译过程与原理 – Marco’s Blog">
+  <meta property="og:description" content="编译过程与原理
+">
+  <meta property="og:image" content="/images/post/post-59.jpg">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Ionicons -->
+  <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/main.css">
+</head>
+
+<body>
+
+    
+
+    <!-- begin header -->
+<header class="c-header">
+  <div class="container">
+    <div class="row">
+      <div class="c-header__inner">
+
+        <div class="logo">
+          <a class="logo__link" href="/">
+          
+            <img class="logo__image" src="/images/mc_logo1.ico" alt="Marco’s Blog">
+          
+          </a>
+        </div>
+
+        <nav class="main-nav">
+          <div class="main-nav__box">
+
+            <div class="nav__icon-close">
+              <i class="ion ion-md-close"></i>
+            </div>
+
+            <div class="nav__title">Menu</div>
+
+              <ul class="nav__list list-reset">
+
+              
+                
+                <li class="nav__item">
+                  <a href="/" class="nav__link">Home</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/projects/" class="nav__link">Projects</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/blog/" class="nav__link">Blog</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/about/" class="nav__link">About</a>
+                </li>
+                
+              
+
+            </ul>
+          </div>
+
+          <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+        </nav>
+
+        <div class="nav-button">
+          <i class="nav__icon nav__icon-menu ion ion-md-menu"></i>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+<!-- end header -->
+
+    <div class="post-top">
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="col col-6 col-d-12">
+        <div class="post-image">
+          <img loading="lazy" src="/images/post/post-59.jpg" alt="编译过程与原理">
+        </div>
+      </div>
+      
+
+      <div class="col col-6 col-d-12">
+        <div class="post__info">
+
+          
+
+
+          <h1 class="post__title">编译过程与原理</h1>
+
+          <div class="post__meta">
+            <div class="post__author-image">
+              <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+            </div>
+
+            <div class="post__meta-bottom">
+              <div class="post__author">Marco Hwong</div>
+              <time class="post__date" datetime="2024-06-03T01:25:38+00:00">03 Jun 2024</time>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- begin post -->
+<div class="container animate">
+
+  <article class="post">
+
+    <div class="post__content">
+      <h2 id="编译过程与原理">编译过程与原理</h2>
+
+<h3 id="1-编译过程---编译器在做什么">1. 编译过程 - 编译器在做什么？</h3>
+
+<p>如果想要机器按照我们的设想执行我们的命令，我们需要一个能够跟机器沟通的方式，而这种方式也就是==机器语言(第一代计算机语言)==，一堆<code class="language-plaintext highlighter-rouge">01</code>构成的指令。我们需要事先设计好指令集到机器上，比如说规定好从某寄存器阅读值的指令为什么。</p>
+
+<p>可这种方式面临的第一个问题就是，不同机器之间指令集不一致，比如说DSP和ARM在实现加法上，可能就会出现不同寄存器的调用方法。那很显然就会设想出一种统一的语言，即==汇编语言(第二代计算机语言)==。而汇编实现的只是将<code class="language-plaintext highlighter-rouge">01</code>等机器码指令使用一个统一的命名，如<code class="language-plaintext highlighter-rouge">ADD</code>而已。令所有机器指令集可与汇编语言转换即可。</p>
+
+<p>汇编语言仍存在很多问题，主要表现为阅读性极差、开发难度大、开发周期长、移植问题没有彻底解决。因此也就出现了==高级语言(第三代语言)==，在汇编语言的基础上实现了抽象，避免了繁琐寄存器的操作。</p>
+
+<p>那源代码(高级语言)是如何让计算机理解的呢？其步骤是？</p>
+
+<ul>
+  <li>如果源代码在操作系统上：源代码生成汇编代码，再通过汇编和链接方式形成可执行文件，然后通过加载器加载到操作系统执行。</li>
+  <li>如果源代码在虚拟机(解释器)上：源代码生成中间代码(人可以直接理解的，而汇编则认为人无法理解)，如字节码等。</li>
+</ul>
+
+<p>在Linux系统下，可用以下指令完成源程序到目标程序的转化：</p>
+
+<blockquote>
+  <p>gcc -o hello hello.c main.c</p>
+</blockquote>
+
+<p>gcc 编译器驱动程序读取源文件hello.c和main.c，经过预处理、编译、汇编、链接（分别使用预处理器、编译器、汇编器、链接器，这四个程序构成了编译系统）四个步骤，将其翻译成可执行目标程序hello。如下图所示：</p>
+
+<p><img src="https://s2.loli.net/2022/01/26/VGdicgwP6QvRBT8.png" alt="image-20200228004704609" /></p>
+
+<h4 id="11-预处理">1.1 预处理</h4>
+
+<p>预处理器(CPP)根据源程序中以字符”#”开头的命令，修改源程序，得到另一个源程序，常以.i作为文件扩展名。修改主要包括#include、#define和条件编译三个方面。</p>
+
+<blockquote>
+  <p>gcc -o main.i -E main.c</p>
+</blockquote>
+
+<p>预处理只是对源文件进行了扩展，得到的仍然是C语言源程序。</p>
+
+<h4 id="12-编译">1.2 编译</h4>
+
+<p>编译程序所要作得工作就是通过词法分析和语法分析，在确认所有的指令都符合语法规则之后，将其翻译成等价的中间代码表示或汇编代码。</p>
+
+<p>编译器(CCL)将经过预处理器处理得到的文本文件hello.i和main.i翻译成hello.s与main.s，其中包含了汇编语言程序，汇编语言程序以一种标准的文本格式确切描述一条低级机器语言指令。 
+ 运行以下命令进行编译：</p>
+
+<blockquote>
+  <p>gcc -S main.i hello.i</p>
+</blockquote>
+
+<h5 id="121-编译过程">1.2.1 编译过程</h5>
+
+<h4 id="13-汇编">1.3 汇编</h4>
+
+<p>汇编器(AS)将hello.s和main.s翻译成机器语言指令，并打包成可重定位目标程序，一般以.o为文件扩展名。可重定位目标程序是二进制文件，它的字节编码是机器语言指令而不是字符。 
+ 运行以下指令可得到重定位目标程序main.o和hello.o：</p>
+
+<blockquote>
+  <p>gcc -c main.s hello.s</p>
+</blockquote>
+
+<p>用文本编辑器打开main.o和hello.o发现文件是乱码，因为此时已经是二进制文件。</p>
+
+<h4 id="14-链接">1.4 链接</h4>
+
+<p>链接程序(LD）将main.o和hello.o以及一些其他必要的目标文件组合起来，创建可执行目标文件。</p>
+
+<blockquote>
+  <p>gcc -o hello main.o hello.o</p>
+</blockquote>
+
+<p>得到可执行程序hello. 
+ 在终端运行./hello，程序加载并运行.</p>
+
+<p>根据开发人员指定的同库函数的链接方式的不同，链接处理可分为两种：</p>
+
+<ul>
+  <li>静态链接 
+在这种链接方式下，函数的代码将从其所在的静态链接库中被拷贝到最终的可执行程序中。这样该程序在被执行时这些代码将被装入到该进程的虚拟地址空间中。静态链接库实际上是一个目标文件的集合，其中的每个文件含有库中的一个或者一组相关函数的代码。</li>
+  <li>动态链接 
+在此种方式下，函数的代码被放到称作是动态链接库或共享对象的某个目标文件中。链接程序此时所作的只是在最终的可执行程序中记录下共享对象的名字以及其它少量的登记信息。在此可执行文件被执行时，动态链接库的全部内容将被映射到运行时相应进程的虚地址空间。动态链接程序将根据可执行程序中记录的信息找到相应的函数代码。 
+ 对于可执行文件中的函数调用，可分别采用动态链接或静态链接的方法。使用动态链接能够使最终的可执行文件比较短小，并且当共享对象被多个进程使用时能节约一些内存，因为在内存中只需要保存一份此共享对象的代码。但并不是使用动态链接就一定比使用静态链接要优越。在某些情况下动态链接可能带来一些性能上损害。</li>
+</ul>
+
+<p><a href="https://kshttps0.wiz.cn/ks/note/view/2336be1c-7b66-490d-91e0-240081977c3d/e730f0ac-0a19-4994-8f7f-1355d3c86eec/#动态链接">动态链接</a>
+<a href="https://kshttps0.wiz.cn/ks/note/view/2336be1c-7b66-490d-91e0-240081977c3d/e730f0ac-0a19-4994-8f7f-1355d3c86eec/#动态库的编译">动态库的编译</a></p>
+
+<h3 id="2-编译原理---编译器是如何实现的">2. 编译原理 - 编译器是如何实现的？</h3>
+
+<table>
+  <tbody>
+    <tr>
+      <td>[编译原理入门篇</td>
+      <td>一篇文章理解编译全过程](https://www.cnblogs.com/fisherss/p/13905395.html)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><img src="https://s2.loli.net/2022/01/26/xVbeED8TKaYIG2w.png" alt="image-20220126215910369" /></p>
+
+<h3 id="4-conclusion">4. Conclusion</h3>
+
+<p>本文分为三部分，编译过程，编译原理和实战，其中前者是我们在生产环境中实际接触到的部分，后者更像是如何制作编译器。后者非笔者所熟悉的，因此附上我认为比较好的资料。最后一部分实战篇，鉴于已经有很多好的资料，我就一并附上了。本文初衷仅在于梳理。</p>
+
+<h2 id="参考">参考</h2>
+
+<p><a href="https://lotabout.me/2015/write-a-C-interpreter-0/">手把手教你构建C语言编译器</a></p>
+
+    </div>
+
+    <div class="post__share">
+  <div class="share__head">
+    <div class="share__title">Share this Post</div>
+  </div>
+  <ul class="share__list list-reset">
+    <li class="share__item">
+      <a class="share__link share__twitter"
+        href="https://twitter.com/intent/tweet?text=%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B%E4%B8%8E%E5%8E%9F%E7%90%86&url=/blog/1-%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B%E4%B8%8E%E5%8E%9F%E7%90%86"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__facebook"
+        href="https://www.facebook.com/sharer/sharer.php?u=/blog/1-%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B%E4%B8%8E%E5%8E%9F%E7%90%86"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__pinterest"
+        href="http://pinterest.com/pin/create/button/?url=/blog/1-%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B%E4%B8%8E%E5%8E%9F%E7%90%86&amp;media=/images/post/post-59.jpg&amp;description=%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B%E4%B8%8E%E5%8E%9F%E7%90%86"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Pinterest" rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&url=/blog/1-%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B%E4%B8%8E%E5%8E%9F%E7%90%86&title=%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B%E4%B8%8E%E5%8E%9F%E7%90%86&summary=&source=Vonge"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
+    </li>
+  </ul>
+</div>
+
+  </article>
+</div>
+<!-- end post -->
+
+<div class="container">
+  <div class="row">
+    <div class="col col-10 col-d-12 push-d-0 push-1">
+      <div class="post__navigation animate">
+  
+  <a class="post__prev" href="/blog/0-%E6%B5%8F%E8%A7%88%E5%99%A8%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86">
+    <div class="prev__image">
+      <img loading="lazy" src="/images/post/post-57.jpeg" alt="编译过程与原理">
+    </div>
+    <div class="prev__box">
+      <span class="post__nav post__nav__prev">Prev post</span>
+      <h2 class="post__nav__title">浏览器工作原理</h2>
+    </div>
+  </a>
+  
+
+  
+</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- begin related posts -->
+<div class="container">
+  <section class="related-posts  animate">
+    <div class="row">
+      <div class="col col-12">
+        <div class="container__inner">
+          <div class="section__info">
+            <div class="section__head">
+              <h2 class="section__title">You may also like</h2>
+              <a class="section__link" href="/blog">
+                
+              </a>
+            </div>
+          </div>
+          <div class="row">
+
+          
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- end related posts -->
+
+
+
+
+
+
+    <!--
+        Bookshop components are accessed using the bookshop tag,
+        using the same syntax as the standard Jekyll include tag.
+    -->
+    <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
+
+<!--bookshop-live end-->
+
+    <div class="top" title="Top"><i class="ion ion-ios-arrow-up"></i></div>
+
+    <!-- begin footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+
+        <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+
+        <ul class="footer_nav list-reset">
+          
+          <li class="footer_nav__item">
+            <a href="/" class="footer_nav__link">Home</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/projects/" class="footer_nav__link">Projects</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/elements/" class="footer_nav__link">Elements</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/about/" class="footer_nav__link">About</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/blog/" class="footer_nav__link">Blog</a>
+          </li>
+          
+        </ul>
+
+        <div class="copyright"><p> 2021 &copy; <a href="/">Vonge</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
+
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- end footer -->
+
+    <script src="/js/scripts.js"></script>
+    <script src="/js/common.js"></script>
+</body>
+</html>

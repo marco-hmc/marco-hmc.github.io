@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>物理层</title>
+  <meta name='description' content='Marco’s Blog'>
+
+  <link rel="canonical" href="/blog/1-%E7%89%A9%E7%90%86%E5%B1%82">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="物理层 – Marco’s Blog">
+  <meta name="twitter:description" content="_tags: 计算机网络
+">
+  <meta name="twitter:image:src" content="/images/post/post-36.jpg">
+
+  <!-- Facebook OpenGraph -->
+  <meta property="og:title" content="物理层 – Marco’s Blog">
+  <meta property="og:description" content="_tags: 计算机网络
+">
+  <meta property="og:image" content="/images/post/post-36.jpg">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Ionicons -->
+  <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/main.css">
+</head>
+
+<body>
+
+    
+
+    <!-- begin header -->
+<header class="c-header">
+  <div class="container">
+    <div class="row">
+      <div class="c-header__inner">
+
+        <div class="logo">
+          <a class="logo__link" href="/">
+          
+            <img class="logo__image" src="/images/mc_logo1.ico" alt="Marco’s Blog">
+          
+          </a>
+        </div>
+
+        <nav class="main-nav">
+          <div class="main-nav__box">
+
+            <div class="nav__icon-close">
+              <i class="ion ion-md-close"></i>
+            </div>
+
+            <div class="nav__title">Menu</div>
+
+              <ul class="nav__list list-reset">
+
+              
+                
+                <li class="nav__item">
+                  <a href="/" class="nav__link">Home</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/projects/" class="nav__link">Projects</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/blog/" class="nav__link">Blog</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/about/" class="nav__link">About</a>
+                </li>
+                
+              
+
+            </ul>
+          </div>
+
+          <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+        </nav>
+
+        <div class="nav-button">
+          <i class="nav__icon nav__icon-menu ion ion-md-menu"></i>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+<!-- end header -->
+
+    <div class="post-top">
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="col col-6 col-d-12">
+        <div class="post-image">
+          <img loading="lazy" src="/images/post/post-36.jpg" alt="物理层">
+        </div>
+      </div>
+      
+
+      <div class="col col-6 col-d-12">
+        <div class="post__info">
+
+          
+          <div class="post-tags">
+            
+              <a href="/tag/计算机网络" class="post-tags__tag">计算机网络</a>
+            
+          </div>
+          
+
+
+          <h1 class="post__title">物理层</h1>
+
+          <div class="post__meta">
+            <div class="post__author-image">
+              <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+            </div>
+
+            <div class="post__meta-bottom">
+              <div class="post__author">Marco Hwong</div>
+              <time class="post__date" datetime="2024-06-02T07:36:01+00:00">02 Jun 2024</time>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- begin post -->
+<div class="container animate">
+
+  <article class="post">
+
+    <div class="post__content">
+      <p>_tags: 计算机网络</p>
+
+<h2 id="物理层">物理层</h2>
+<h3 id="1-基本概念">1. 基本概念</h3>
+
+<ol>
+  <li>编码与调制
+    <ul>
+      <li>编码:将数字数据转换为信号的过程.常见的编码方式有非归零编码/曼彻斯特编码等.</li>
+      <li>调制:将数字信号转换为模拟信号的过程.常见的调制方式有调幅/调频/调相等.</li>
+    </ul>
+  </li>
+  <li>传输介质
+    <ul>
+      <li>传输介质:物理层使用的传输媒介,可以是有线传输介质(如双绞线/同轴电缆/光纤)或无线传输介质(如无线电波).</li>
+    </ul>
+  </li>
+  <li>传输速率与带宽
+    <ul>
+      <li>传输速率:物理层传输数据的速度,通常以比特每秒(bps)为单位表示.</li>
+      <li>带宽:传输介质所能传输的最高频率范围,通常以赫兹(Hz)为单位表示.</li>
+    </ul>
+  </li>
+  <li>信道复用技术
+    <ul>
+      <li>信道复用:将多个信号通过同一个信道传输的技术.常见的信道复用技术有频分复用/时分复用/码分复用等.</li>
+    </ul>
+  </li>
+  <li>物理层设备
+    <ul>
+      <li>物理层设备:用于实现物理层功能的硬件设备,如中继器/集线器/网卡等.</li>
+    </ul>
+  </li>
+  <li>网络拓扑结构
+    <ul>
+      <li>网络拓扑结构:如总线型/星型/环型/网状等.这影响了网络的构建和扩展.</li>
+    </ul>
+  </li>
+</ol>
+
+<p>以上是在计算机网络中理解物理层所需的一些概念.深入理解这些概念将有助于更好地理解计算机网络的工作原理和设计.</p>
+
+<h3 id="2-编码与调制">2. 编码与调制</h3>
+<p>在计算机网络的物理层中,编码与调制是两个重要的概念,它们的主要任务是将数据转换为可以在网络上传输的信号.</p>
+
+<ol>
+  <li>
+    <p>编码:编码是将数字数据转换为信号的过程.在这个过程中,数据(通常是二进制数据)被转换为可以在物理介质(如电线或光纤)上传输的电信号或光信号.常见的编码方式有非归零编码/曼彻斯特编码等.</p>
+  </li>
+  <li>
+    <p>调制:调制是将数字信号转换为模拟信号的过程.在这个过程中,数字信号的特性(如幅度/频率或相位)被改变以生成模拟信号.这个过程通常在发送端进行,以便信号可以在模拟网络(如电话线或无线电波)上传输.常见的调制方式有调幅(AM)/调频(FM)和调相(PM).</p>
+  </li>
+</ol>
+
+<p>总的来说,编码与调制的主要任务是将计算机内部的数字数据转换为可以在网络上传输的信号,以便数据可以在网络中传输和接收.</p>
+
+<h3 id="3-信道复用">3. 信道复用</h3>
+<p>信道复用是一种技术,它允许在同一物理信道上同时传输多个信号或数据流.这种技术可以有效地利用信道资源,提高信道的使用效率.在计算机网络的物理层中,常见的信道复用技术有以下几种:</p>
+
+<ol>
+  <li>
+    <p>频分复用(FDM,Frequency Division Multiplexing):将信道的总带宽分割成多个子带宽,每个子带宽对应一个子信道,每个子信道可以独立传输信号.这种方式常用于无线通信和有线电视系统.</p>
+  </li>
+  <li>
+    <p>时分复用(TDM,Time Division Multiplexing):将时间分割成多个时隙,每个时隙对应一个子信道,每个子信道在其对应的时隙内可以独立传输信号.这种方式常用于电话系统和数字电视系统.</p>
+  </li>
+  <li>
+    <p>波分复用(WDM,Wavelength Division Multiplexing):在光纤通信中使用,将光信道的总波长范围分割成多个子波长,每个子波长对应一个子信道,每个子信道可以独立传输信号.</p>
+  </li>
+  <li>
+    <p>码分复用(CDM,Code Division Multiplexing):每个信号使用一个唯一的码,所有的信号同时在同一信道上传输,接收端通过识别每个信号的唯一码来分离信号.这种方式常用于无线通信,如3G和4G网络.</p>
+  </li>
+</ol>
+
+<p>总的来说,信道复用的主要任务是在同一物理信道上同时传输多个信号,以提高信道的使用效率.</p>
+
+<p>简单来说,光纤传输的是光信号,光信号是通过信道复用技术传播的.所以一条光纤可以同时存在多个信道,提升信息传播的效率,提升网速.</p>
+
+<h3 id="4-网络设备">4. 网络设备</h3>
+
+<h4 id="41-网线">4.1 网线</h4>
+
+<ul>
+  <li><strong><a href="https://link.jianshu.com/?t=http://www.enri-link.cn/Cable.html">屏蔽网线</a></strong>就是在有干扰的环境下使用的.</li>
+  <li><strong><a href="https://link.jianshu.com/?t=http://www.enri-link.cn/Cable.html">非屏蔽网线</a></strong>主要是应用在没有干扰的环境的网线
+    <ul>
+      <li>非屏蔽的网线没有屏蔽层,它的直径是比较小,也比较节省空间.</li>
+      <li>在室内,干扰源不严重的地方,会比屏蔽网线快.
+        <ul>
+          <li>网线为什么是彼此缠绕的
+            <ul>
+              <li>网线传输的是电磁信号,是不断变化的磁场.我们平常用的双绞线是8芯,8根线之间的电磁场就会互相干扰,影响电压,使得数据失真,所以把它们绞在一起就可以有效的抵消掉这种线之间的互相电磁干扰.</li>
+            </ul>
+          </li>
+          <li>干扰源
+            <ul>
+              <li>网线经过的地方,经常遇到一些高压电或者其他音响设备,这类地段强大的电流会产生电磁波.电磁波对网络信号进行干扰,导致网线在传输过程中,信号不稳定,导致网络经常中断. <strong>简单来说网线和电线会干扰.一般情况影响不大</strong></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="42-集线器">4.2 集线器</h4>
+
+<p><a href="https://blog.csdn.net/GoGleTech/article/details/80519510">通俗解释-集线器/交换机/路由器</a></p>
+
+<ul>
+  <li>用来集中所有局域网内网络设备(电脑和其他集线器等),并且将网络带宽平均分给各个网络设备.跟usb集线器,即usb-hub类似.</li>
+  <li>主要功能是对接收到的信号进行再生整形放大,以扩大网络的传输距离,同时把所有节点集中在以它为中心的节点上.</li>
+  <li>现在已经很少用了.已经彻底被交换机淘汰了.</li>
+</ul>
+
+<h4 id="43-网桥">4.3 网桥</h4>
+
+<ul>
+  <li>工作在数据链路层.以太网中,数据链路层地址就是mac地址.</li>
+  <li>网桥与hub的区别在于,网桥会过滤mac,只有目的mac地址匹配的数据才会发送到出口.</li>
+  <li>网桥也已经被集成到交换机当中了.</li>
+</ul>
+
+<h4 id="44-中继器">4.4 中继器</h4>
+
+<ul>
+  <li>信号传输衰竭时,用于放大信号.</li>
+</ul>
+
+<h4 id="45-调制解调器">4.5 调制解调器</h4>
+
+<ul>
+  <li>俗称猫,即Modem.</li>
+  <li>在发送端,将计算机串行口产生的数字信号调制成可以通过电话线传输的模拟信号;</li>
+  <li>在接收端,调制解调器把输入计算机的模拟信号转换成相应的数字信号,送入计算机接口.</li>
+</ul>
+
+<h3 id="5-网络拓扑结构">5. 网络拓扑结构</h3>
+
+<h3 id="99-quiz">99. quiz</h3>
+
+<h4 id="991-公司组网需要做什么">99.1 公司组网需要做什么?</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>假设一个中型公司需要设计一个网络,以支持100个员工的工作.以下是一个可能的网络设计示例:
+
+1. **网络拓扑结构**:选择星型拓扑结构,因为它提供了较高的性能和可靠性,同时也便于管理和扩展.
+
+2. **网络设备**:在公司的网络中心设置一个高性能的交换机,作为中心节点.每个员工的工作站都通过以太网线直接连接到交换机.
+
+3. **IP地址分配**:设置一个DHCP服务器,动态为每个工作站分配IP地址.IP地址范围可以设置为私有地址范围,如192.168.1.1到192.168.1.100.
+
+4. **网络服务**:设置一个内部的DNS服务器,为公司内部的网络服务提供域名解析.同时,也可以设置一个内部的Web服务器,用于托管公司内部的网站和应用.
+
+5. **网络安全**:设置一个防火墙,保护公司网络不受外部攻击.同时,也可以设置VPN服务,让员工可以安全地从家中远程访问公司网络.
+
+以上只是一个基本的例子,实际的网络设计可能会根据公司的具体需求和条件进行调整.例如,如果公司有多个部门或办公室,可能需要设置多个子网或VLAN.如果公司有大量的网络流量,可能需要设置负载均衡器.如果公司有高度的安全需求,可能需要设置入侵检测系统等.
+</code></pre></div></div>
+
+<h4 id="992-交换机的工作原理是什么">99.2 交换机的工作原理是什么?</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>交换机是一种网络设备,主要用于连接和管理局域网中的设备.交换机的工作原理主要包括以下几个步骤:
+
+1. **学习**:当一个设备首次通过交换机发送数据时,交换机会记录该设备的MAC地址和连接的端口号.这些信息被存储在交换机的MAC地址表中.
+
+2. **转发**:当交换机收到一个数据帧时,它会查看数据帧的目标MAC地址,并在MAC地址表中查找该地址.如果找到了对应的端口,交换机就会将数据帧转发到该端口.如果没有找到,交换机会将数据帧广播到所有端口.
+
+3. **过滤**:交换机可以根据MAC地址表过滤数据帧,只将数据帧发送到目标设备所在的端口,而不是所有端口.这可以减少网络流量,提高网络的效率.
+
+4. **循环避免**:在一些复杂的网络中,可能存在多条路径可以到达同一个设备,这可能会导致数据帧的循环传输.交换机可以通过运行生成树协议(STP)来避免这种情况.
+
+以上就是交换机的基本工作原理.需要注意的是,不同型号和品牌的交换机可能会有一些额外的功能和特性,如VLAN/QoS等.
+</code></pre></div></div>
+
+<h4 id="993-网关的作用是什么">99.3 网关的作用是什么?</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>网关是一个网络设备,它在网络层(OSI模型的第三层)工作,主要用于连接不同的网络并在它们之间转发数据包.网关的主要作用包括:
+
+1. **连接不同的网络**:网关可以连接使用不同协议或技术的网络,如连接一个以太网和一个无线网络,或连接一个IPv4网络和一个IPv6网络.
+
+2. **路由**:网关可以根据其路由表决定如何将数据包从源网络转发到目标网络.路由表包含了到达各个网络的路径信息.
+
+3. **协议转换**:如果源网络和目标网络使用不同的协议,网关可以进行协议转换,使数据包能够在不同的网络中传输.
+
+4. **网络安全**:一些网关设备还包含防火墙功能,可以提供网络安全保护,防止恶意流量进入网络.
+
+在家庭或小型办公室网络中,路由器通常也充当网关的角色,连接内部网络(如家庭网络或办公室网络)和外部网络(如互联网).
+</code></pre></div></div>
+
+
+    </div>
+
+    <div class="post__share">
+  <div class="share__head">
+    <div class="share__title">Share this Post</div>
+  </div>
+  <ul class="share__list list-reset">
+    <li class="share__item">
+      <a class="share__link share__twitter"
+        href="https://twitter.com/intent/tweet?text=%E7%89%A9%E7%90%86%E5%B1%82&url=/blog/1-%E7%89%A9%E7%90%86%E5%B1%82"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__facebook"
+        href="https://www.facebook.com/sharer/sharer.php?u=/blog/1-%E7%89%A9%E7%90%86%E5%B1%82"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__pinterest"
+        href="http://pinterest.com/pin/create/button/?url=/blog/1-%E7%89%A9%E7%90%86%E5%B1%82&amp;media=/images/post/post-36.jpg&amp;description=%E7%89%A9%E7%90%86%E5%B1%82"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Pinterest" rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&url=/blog/1-%E7%89%A9%E7%90%86%E5%B1%82&title=%E7%89%A9%E7%90%86%E5%B1%82&summary=&source=Vonge"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
+    </li>
+  </ul>
+</div>
+
+  </article>
+</div>
+<!-- end post -->
+
+<div class="container">
+  <div class="row">
+    <div class="col col-10 col-d-12 push-d-0 push-1">
+      <div class="post__navigation animate">
+  
+  <a class="post__prev" href="/blog/1-%E5%AD%97%E7%AC%A6%E5%92%8Cunicode%E6%A0%87%E5%87%86">
+    <div class="prev__image">
+      <img loading="lazy" src="/images/post/post-11.jpg" alt="物理层">
+    </div>
+    <div class="prev__box">
+      <span class="post__nav post__nav__prev">Prev post</span>
+      <h2 class="post__nav__title">字符和unicode标准</h2>
+    </div>
+  </a>
+  
+
+  
+  <a class="post__next" href="/blog/2-udp">
+    <div class="next__box">
+      <span class="post__nav post__nav__next">Next post</span>
+      <h2 class="post__nav__title">UDP</h2>
+    </div>
+    <div class="next__image">
+      <img loading="lazy" src="/images/post/post-42.jpeg" alt="物理层">
+    </div>
+  </a>
+  
+</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- begin related posts -->
+<div class="container">
+  <section class="related-posts is-related animate">
+    <div class="row">
+      <div class="col col-12">
+        <div class="container__inner">
+          <div class="section__info">
+            <div class="section__head">
+              <h2 class="section__title">You may also like</h2>
+              <a class="section__link" href="/blog">
+                
+                
+                  
+                    <a href="/tags#计算机网络" class="section__link related-tag">See all<span> 计算机网络</span> <i class="ion ion-md-arrow-forward"></i></a>
+                  
+                
+              
+              </a>
+            </div>
+          </div>
+          <div class="row">
+
+          
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/5-%E5%BA%94%E7%94%A8%E5%B1%82">
+                      <img loading="lazy" src="/images/post/post-44.jpg" alt="应用层">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/计算机网络" class="article__tag">计算机网络</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/5-%E5%BA%94%E7%94%A8%E5%B1%82">应用层</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                       _tags: 计算机网络
+
+
+## 应用层
+
+- ***应用层有哪些?***
+
+  计算机网络的应用层有许多协议,常见的包括:
+
+  - HTTP(超文本传输协议):用于在Web浏览器和Web服务器之间传输超文本文档.
+  - FT...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-02T07:36:01+00:00">02 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/4-%E4%BC%A0%E8%BE%93%E5%B1%82">
+                      <img loading="lazy" src="/images/post/post-40.jpg" alt="传输层">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/计算机网络" class="article__tag">计算机网络</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/4-%E4%BC%A0%E8%BE%93%E5%B1%82">传输层</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                       _tags: 计算机网络
+
+
+## 传输层
+### 1. 基本概念
+
+### 2. 其他
+
+#### 2.1 TCP和UDP的区别
+TCP(传输控制协议)和UDP(用户数据报协议)是两种常见的传输层协议,它们有以下主要的区别:
+
+1...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-02T07:36:01+00:00">02 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/3-%E7%BD%91%E7%BB%9C%E5%B1%82">
+                      <img loading="lazy" src="/images/post/post-41.jpg" alt="网络层">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/计算机网络" class="article__tag">计算机网络</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/3-%E7%BD%91%E7%BB%9C%E5%B1%82">网络层</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                       _tags: 计算机网络
+
+
+## 网络层
+
+### 1. 基本概念
+
+1. **IP协议(Internet Protocol)**:IP协议是网络层的核心协议,它定义了IP地址和数据包的格式,并负责将数据包从源主机发送到目标主机....
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-02T07:36:01+00:00">02 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+                  
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- end related posts -->
+
+
+
+
+
+
+    <!--
+        Bookshop components are accessed using the bookshop tag,
+        using the same syntax as the standard Jekyll include tag.
+    -->
+    <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
+
+<!--bookshop-live end-->
+
+    <div class="top" title="Top"><i class="ion ion-ios-arrow-up"></i></div>
+
+    <!-- begin footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+
+        <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+
+        <ul class="footer_nav list-reset">
+          
+          <li class="footer_nav__item">
+            <a href="/" class="footer_nav__link">Home</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/projects/" class="footer_nav__link">Projects</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/elements/" class="footer_nav__link">Elements</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/about/" class="footer_nav__link">About</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/blog/" class="footer_nav__link">Blog</a>
+          </li>
+          
+        </ul>
+
+        <div class="copyright"><p> 2021 &copy; <a href="/">Vonge</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
+
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- end footer -->
+
+    <script src="/js/scripts.js"></script>
+    <script src="/js/common.js"></script>
+</body>
+</html>

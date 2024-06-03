@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Socket</title>
+  <meta name='description' content='Marco’s Blog'>
+
+  <link rel="canonical" href="/blog/1-socket">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Socket – Marco’s Blog">
+  <meta name="twitter:description" content="_tags: 计算机网络
+">
+  <meta name="twitter:image:src" content="/images/post/post-49.jpeg">
+
+  <!-- Facebook OpenGraph -->
+  <meta property="og:title" content="Socket – Marco’s Blog">
+  <meta property="og:description" content="_tags: 计算机网络
+">
+  <meta property="og:image" content="/images/post/post-49.jpeg">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Ionicons -->
+  <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/main.css">
+</head>
+
+<body>
+
+    
+
+    <!-- begin header -->
+<header class="c-header">
+  <div class="container">
+    <div class="row">
+      <div class="c-header__inner">
+
+        <div class="logo">
+          <a class="logo__link" href="/">
+          
+            <img class="logo__image" src="/images/mc_logo1.ico" alt="Marco’s Blog">
+          
+          </a>
+        </div>
+
+        <nav class="main-nav">
+          <div class="main-nav__box">
+
+            <div class="nav__icon-close">
+              <i class="ion ion-md-close"></i>
+            </div>
+
+            <div class="nav__title">Menu</div>
+
+              <ul class="nav__list list-reset">
+
+              
+                
+                <li class="nav__item">
+                  <a href="/" class="nav__link">Home</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/projects/" class="nav__link">Projects</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/blog/" class="nav__link">Blog</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/about/" class="nav__link">About</a>
+                </li>
+                
+              
+
+            </ul>
+          </div>
+
+          <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+        </nav>
+
+        <div class="nav-button">
+          <i class="nav__icon nav__icon-menu ion ion-md-menu"></i>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+<!-- end header -->
+
+    <div class="post-top">
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="col col-6 col-d-12">
+        <div class="post-image">
+          <img loading="lazy" src="/images/post/post-49.jpeg" alt="Socket">
+        </div>
+      </div>
+      
+
+      <div class="col col-6 col-d-12">
+        <div class="post__info">
+
+          
+          <div class="post-tags">
+            
+              <a href="/tag/计算机网络" class="post-tags__tag">计算机网络</a>
+            
+          </div>
+          
+
+
+          <h1 class="post__title">Socket</h1>
+
+          <div class="post__meta">
+            <div class="post__author-image">
+              <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+            </div>
+
+            <div class="post__meta-bottom">
+              <div class="post__author">Marco Hwong</div>
+              <time class="post__date" datetime="2024-06-02T07:36:01+00:00">02 Jun 2024</time>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- begin post -->
+<div class="container animate">
+
+  <article class="post">
+
+    <div class="post__content">
+      <p>_tags: 计算机网络</p>
+
+<h2 id="socket">Socket</h2>
+
+<h3 id="1-socket基础知识">1. Socket基础知识</h3>
+<p>Socket（套接字）是计算机网络中用于实现不同主机之间的通信的一种技术。它提供了一种在网络上发送和接收数据的方式。在TCP/IP网络模型中，Socket是应用层和传输层之间的接口。</p>
+
+<p>Socket的基础知识包括以下几个部分：</p>
+
+<ol>
+  <li>
+    <p><strong>Socket类型</strong>：主要有两种类型的Socket，分别是流式Socket（SOCK_STREAM）和数据报Socket（SOCK_DGRAM）。流式Socket基于TCP，提供了一种可靠的、面向连接的通信方式。数据报Socket基于UDP，提供了一种不可靠的、无连接的通信方式。</p>
+  </li>
+  <li>
+    <p><strong>Socket地址</strong>：每个Socket都有一个相关联的地址，包括IP地址和端口号。IP地址标识了网络上的一个主机，端口号标识了主机上的一个应用程序。</p>
+  </li>
+  <li>
+    <p><strong>Socket API</strong>：Socket API是一组函数，它们提供了创建Socket、发送和接收数据、关闭Socket等操作。常见的Socket API包括socket()、bind()、listen()、accept()、connect()、send()、receive()等。</p>
+  </li>
+  <li>
+    <p><strong>Socket的状态</strong>：Socket在其生命周期中会经历多种状态，如CLOSED、LISTEN、SYN_SENT、SYN_RECEIVED、ESTABLISHED等。了解这些状态对于理解网络通信的过程非常重要。</p>
+  </li>
+</ol>
+
+<h4 id="11-socket类型有哪些">1.1 socket类型有哪些</h4>
+<p>Socket主要有两种类型：</p>
+
+<ol>
+  <li>
+    <p><strong>流式Socket（Stream Sockets）</strong>：也被称为SOCK_STREAM，它基于TCP（Transmission Control Protocol，传输控制协议）。这种类型的Socket提供了一种可靠的、双向的、基于连接的字节流。如果数据在传输过程中丢失或损坏，TCP会自动进行错误检查和恢复。</p>
+  </li>
+  <li>
+    <p><strong>数据报Socket（Datagram Sockets）</strong>：也被称为SOCK_DGRAM，它基于UDP（User Datagram Protocol，用户数据报协议）。这种类型的Socket提供了一种无连接的、不可靠的消息传递服务。数据报可能会丢失或乱序，但UDP协议本身不提供任何错误检查和恢复机制，因此传输速度通常比TCP快。</p>
+  </li>
+</ol>
+
+<p>这两种Socket类型各有用途，选择哪种类型取决于你的应用程序需要什么样的服务。如果需要可靠的数据传输，通常选择流式Socket；如果需要快速的数据传输，而且不介意数据的丢失或乱序，通常选择数据报Socket。</p>
+
+<h4 id="12-socket地址是什么">1.2 socket地址是什么？</h4>
+<p>Socket地址是用于标识网络上的一个端点的。在Internet协议（IP）网络中，一个Socket地址由一个IP地址和一个端口号组成。</p>
+
+<ol>
+  <li>
+    <p><strong>IP地址</strong>：IP地址是网络上的一个主机的唯一标识。它是一个32位（IPv4）或128位（IPv6）的数字，通常以点分十进制或冒号分十六进制的形式表示。</p>
+  </li>
+  <li>
+    <p><strong>端口号</strong>：端口号是主机上的一个应用程序的唯一标识。它是一个16位的数字，范围从0到65535。其中，0到1023的端口号被保留用于知名的服务，如HTTP（端口80）、FTP（端口21）等。</p>
+  </li>
+</ol>
+
+<p>例如，一个完整的Socket地址可能是<code class="language-plaintext highlighter-rouge">192.168.1.1:8080</code>，其中<code class="language-plaintext highlighter-rouge">192.168.1.1</code>是IP地址，<code class="language-plaintext highlighter-rouge">8080</code>是端口号。这个地址标识了网络上的一个主机（IP地址为<code class="language-plaintext highlighter-rouge">192.168.1.1</code>）上的一个应用程序（端口号为<code class="language-plaintext highlighter-rouge">8080</code>）。</p>
+
+<h4 id="13-socket的c-api怎么用">1.3 socket的C++ api怎么用？</h4>
+<p>放在附录</p>
+
+<h4 id="14-socket相关的状态位有哪些">1.4 socket相关的状态位有哪些？</h4>
+
+<ul>
+  <li>
+    <p>客户端调用connect发送SYN包，客户端协议栈收到 ACK 之后，使得应用程序从 connect 调用返回，表示客户端到服务器端的单
+向连接建立成功</p>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">accept</code>发生在什么阶段
+    <ul>
+      <li>三次握手之后，tcp连接会加入到accept队列。accept()会从队列中取一个连接返回，若队列为空，则阻塞</li>
+    </ul>
+  </li>
+  <li>send/recv(read/write)返回值大于0、等于0、小于0的区别
+    <ul>
+      <li>recv
+        <ul>
+          <li>阻塞与非阻塞recv返回值没有区分，都是 &lt;0：出错，=0：连接关闭，&gt;0接收到数据大小</li>
+          <li>
+            <table>
+              <tbody>
+                <tr>
+                  <td>特别：非阻塞模式下返回 值 &lt;0时并且(errno == EINTR</td>
+                  <td> </td>
+                  <td>errno == EWOULDBLOCK</td>
+                  <td> </td>
+                  <td>errno == EAGAIN)的情况 下认为连接是正常的，继续接收。</td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+          <li>只是阻塞模式下recv会阻塞着接收数据，非阻塞模式下如果没有数据会返回，不会阻塞着读，因此需要 循环读取</li>
+        </ul>
+      </li>
+      <li>write：
+        <ul>
+          <li>阻塞与非阻塞write返回值没有区分，都是 &lt;0出错，=0连接关闭，&gt;0发送数据大小</li>
+          <li>
+            <table>
+              <tbody>
+                <tr>
+                  <td>特别：非阻塞模式下返回值 &lt;0时并且 (errno == EINTR</td>
+                  <td> </td>
+                  <td>errno == EWOULDBLOCK</td>
+                  <td> </td>
+                  <td>errno == EAGAIN)的情况下认为连接是正常的， 继续发送</td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+          <li>只是阻塞模式下write会阻塞着发送数据，非阻塞模式下如果暂时无法发送数据会返回，不会阻塞着 write，因此需要循环发送。</li>
+        </ul>
+      </li>
+      <li>read：
+        <ul>
+          <li>阻塞与非阻塞read返回值没有区分，都是 &lt;0：出错，=0：连接关闭，&gt;0接收到数据大小</li>
+          <li>
+            <table>
+              <tbody>
+                <tr>
+                  <td>特别：非阻塞模式下返回 值 &lt;0时并且(errno == EINTR</td>
+                  <td> </td>
+                  <td>errno == EWOULDBLOCK</td>
+                  <td> </td>
+                  <td>errno == EAGAIN)的情况 下认为连接是正常的，继续接收。</td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+          <li>只是阻塞模式下read会阻塞着接收数据，非阻塞模式下如果没有数据会返回，不会阻塞着读，因此需要 循环读取</li>
+        </ul>
+      </li>
+      <li>send：
+        <ul>
+          <li>阻塞与非阻塞send返回值没有区分，都是 &lt;0：出错，<strong>=0：连接关闭</strong>，&gt;0发送数据大小。 还没发出去，连接就断开了，有可能返回0</li>
+          <li>
+            <table>
+              <tbody>
+                <tr>
+                  <td>特别：非阻塞模式下返回值 &lt;0时并且 (errno == EINTR</td>
+                  <td> </td>
+                  <td>errno == EWOULDBLOCK</td>
+                  <td> </td>
+                  <td>errno == EAGAIN)的情况下认为连接是正常的， 继续发送</td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+          <li>只是阻塞模式下send会阻塞着发送数据，非阻塞模式下如果暂时无法发送数据会返回，不会阻塞着 send，因此需要循环发送</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Socket的四元组、五元组、七元组</strong>
+    <ul>
+      <li>四元组：源IP地址、目的IP地址、源端口、目的端口</li>
+      <li>五元组：源IP地址、目的IP地址、<strong>协议号</strong>、源端口、目的端口</li>
+      <li>七元组：源IP地址、目的IP地址、<strong>协议号</strong>、源端口、目的端口，<strong>服务类型以及接口索引</strong></li>
+    </ul>
+  </li>
+  <li>信号SIGPIPE与EPIPE错误码
+    <ul>
+      <li>在linux下写socket的程序的时候，<strong>如果服务器尝试send到一个disconnected socket上，就会让底层抛出一个SIGPIPE信号</strong>。 这个信号的缺省处理方法是退出进程，大多数时候这都不是我们期望的。也就是说，<strong>当服务器繁忙，没有及时处理客户端断开连接的事件，就有可能出现在连接断开之后继续发送数据的情况，如果对方断开而本地继续写入的话，就会造成服务器进程意外退出</strong></li>
+      <li>根据信号的默认处理规则SIGPIPE信号的默认执行动作是terminate(终止、退出)，所以client会退出。若不想客户端退出可以把 SIGPIPE设为SIG_IGN 如：signal(SIGPIPE, SIG_IGN); 这时SIGPIPE交给了系统处理。 服务器采用了fork的话，要收集垃圾进程，防止僵尸进程的产生，可以这样处理： signal(SIGCHLD,SIG_IGN); 交给系统init去回收。 这里子进程就不会产生僵尸进程了</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>如何检测对端已经关闭socket</strong></p>
+
+    <ul>
+      <li>根据errno和recv结果进行判断
+        <ul>
+          <li>在UNIX/LINUX下，<strong>非阻塞模式SOCKET可以采用recv+MSG_PEEK的方式进行判断</strong>，其中MSG_PEEK保证了仅仅进行状态判断，而不影响数据接收</li>
+          <li>对于主动关闭的SOCKET, recv返回-1，而且errno被置为9（#define EBADF  9  // Bad file number ）或104 (#define ECONNRESET 104 // Connection reset by peer)</li>
+          <li>对于被动关闭的SOCKET，recv返回0，而且errno被置为11（#define EWOULDBLOCK EAGAIN // Operation would block ）<strong>对正常的SOCKET, 如果有接收数据，则返回&gt;0, 否则返回-1，而且errno被置为11</strong>（#define EWOULDBLOCK EAGAIN // Operation would block ）因此对于简单的状态判断(不过多考虑异常情况)：recv返回&gt;0，  正常</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>udp调用connect有什么作用？
+    <ul>
+      <li>因为UDP可以是一对一，多对一，一对多，或者多对多的通信，所以每次调用sendto()/recvfrom()时都必须指定目标IP和端口号。通过调用connect()建立一个端到端的连接，就可以和TCP一样使用send()/recv()传递数据，而不需要每次都指定目标IP和端口号。但是它和TCP不同的是它没有三次握手的过程</li>
+      <li>可以通过在已建立连接的UDP套接字上，调用connect()实现指定新的IP地址和端口号以及断开连接</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>处理非阻塞connect的步骤</strong>（重点）：</p>
+
+    <ol>
+      <li>创建socket，返回套接口描述符；</li>
+      <li>调用fcntl 把套接口描述符设置成非阻塞；</li>
+      <li>调用connect 开始建立连接；</li>
+      <li>
+        <p>判断连接是否成功建立</p>
+
+        <ol>
+          <li>如果connect 返回0，表示连接成功（服务器和客户端在同一台机器上时就有可能发生这种情况）</li>
+          <li>否则，需要通过io多路复用(select/poll/epoll)来监听该socket的可写事件来判断连接是否建立成功：当select/poll/epoll检测出该socket可写，还需要通过调用getsockopt来得到套接口上待处理的错误（SO_ERROR）。<strong>如果连接建立成功，这个错误值将是0</strong>；<strong>如果建立连接时遇到错误，则这个值是连接错误所对应的errno值</strong>（比如：ECONNREFUSED，ETIMEDOUT等）</li>
+        </ol>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>accept返回EMFILE的处理方法</p>
+
+    <p><img src="imgs/socket/emfile.png" alt="emfile" style="zoom: 50%;" /></p>
+  </li>
+  <li>
+    <p>SO_ERROR选项</p>
+
+    <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp">
+</span>   
+<span class="kt">int</span> <span class="nf">getsockopt</span><span class="p">(</span><span class="kt">int</span> <span class="n">sockfd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">level</span><span class="p">,</span> <span class="kt">int</span> <span class="n">option</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">optval</span><span class="p">,</span> <span class="n">socklen_t</span> <span class="n">optlen</span><span class="p">);</span>
+</code></pre></div>    </div>
+
+    <ul>
+      <li>当一个socket发生错误的时候，将使用一个名为SO_ERROR的变量记录对应的错误代码，这又叫做pending error，SO_ERROR为0时表示没有错误发生。一般来说，有2种方式通知进程有socket错误发生：
+        <ol>
+          <li>进程阻塞在select中，有错误发生时，select将返回，并将发生错误的socket标记为可读写</li>
+          <li>如果进程使用信号驱动的I/O，将会有一个SIGIO产生并发往对应进程</li>
+        </ol>
+      </li>
+      <li>
+        <p>此时，进程可以通过SO_ERROR取得具体的错误代码。getsockopt返回后，*optval指向的区域将存储错误代码，而so_error被设置为0</p>
+      </li>
+      <li>当SO_ERROR不为0时，如果进程对socket进行read操作，若此时接收缓存中没有数据可读，则read返回-1，且errno设置为SO_ERROR，SO_ERROR置为0，否则将返回缓存中的数据而不是返回错误；如果进行write操作，将返回-1，errno置为SO_ERROR，SO_ERROR清0</li>
+    </ul>
+
+    <p>注意，这是一个只可以获取，不可以设置的选项。</p>
+  </li>
+</ul>
+
+
+    </div>
+
+    <div class="post__share">
+  <div class="share__head">
+    <div class="share__title">Share this Post</div>
+  </div>
+  <ul class="share__list list-reset">
+    <li class="share__item">
+      <a class="share__link share__twitter"
+        href="https://twitter.com/intent/tweet?text=Socket&url=/blog/1-socket"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__facebook"
+        href="https://www.facebook.com/sharer/sharer.php?u=/blog/1-socket"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__pinterest"
+        href="http://pinterest.com/pin/create/button/?url=/blog/1-socket&amp;media=/images/post/post-49.jpeg&amp;description=Socket"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Pinterest" rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&url=/blog/1-socket&title=Socket&summary=&source=Vonge"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
+    </li>
+  </ul>
+</div>
+
+  </article>
+</div>
+<!-- end post -->
+
+<div class="container">
+  <div class="row">
+    <div class="col col-10 col-d-12 push-d-0 push-1">
+      <div class="post__navigation animate">
+  
+  <a class="post__prev" href="/blog/0-%E8%AE%A1%E7%BD%91%E8%AE%BE%E5%A4%87">
+    <div class="prev__image">
+      <img loading="lazy" src="/images/post/post-45.png" alt="Socket">
+    </div>
+    <div class="prev__box">
+      <span class="post__nav post__nav__prev">Prev post</span>
+      <h2 class="post__nav__title">计网设备</h2>
+    </div>
+  </a>
+  
+
+  
+  <a class="post__next" href="/blog/1-tcp">
+    <div class="next__box">
+      <span class="post__nav post__nav__next">Next post</span>
+      <h2 class="post__nav__title">TCP</h2>
+    </div>
+    <div class="next__image">
+      <img loading="lazy" src="/images/post/post-43.jpeg" alt="Socket">
+    </div>
+  </a>
+  
+</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- begin related posts -->
+<div class="container">
+  <section class="related-posts is-related animate">
+    <div class="row">
+      <div class="col col-12">
+        <div class="container__inner">
+          <div class="section__info">
+            <div class="section__head">
+              <h2 class="section__title">You may also like</h2>
+              <a class="section__link" href="/blog">
+                
+                
+                  
+                    <a href="/tags#计算机网络" class="section__link related-tag">See all<span> 计算机网络</span> <i class="ion ion-md-arrow-forward"></i></a>
+                  
+                
+              
+              </a>
+            </div>
+          </div>
+          <div class="row">
+
+          
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/5-%E5%BA%94%E7%94%A8%E5%B1%82">
+                      <img loading="lazy" src="/images/post/post-44.jpg" alt="应用层">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/计算机网络" class="article__tag">计算机网络</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/5-%E5%BA%94%E7%94%A8%E5%B1%82">应用层</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                       _tags: 计算机网络
+
+
+## 应用层
+
+- ***应用层有哪些?***
+
+  计算机网络的应用层有许多协议,常见的包括:
+
+  - HTTP(超文本传输协议):用于在Web浏览器和Web服务器之间传输超文本文档.
+  - FT...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-02T07:36:01+00:00">02 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/4-%E4%BC%A0%E8%BE%93%E5%B1%82">
+                      <img loading="lazy" src="/images/post/post-40.jpg" alt="传输层">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/计算机网络" class="article__tag">计算机网络</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/4-%E4%BC%A0%E8%BE%93%E5%B1%82">传输层</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                       _tags: 计算机网络
+
+
+## 传输层
+### 1. 基本概念
+
+### 2. 其他
+
+#### 2.1 TCP和UDP的区别
+TCP(传输控制协议)和UDP(用户数据报协议)是两种常见的传输层协议,它们有以下主要的区别:
+
+1...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-02T07:36:01+00:00">02 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/3-%E7%BD%91%E7%BB%9C%E5%B1%82">
+                      <img loading="lazy" src="/images/post/post-41.jpg" alt="网络层">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/计算机网络" class="article__tag">计算机网络</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/3-%E7%BD%91%E7%BB%9C%E5%B1%82">网络层</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                       _tags: 计算机网络
+
+
+## 网络层
+
+### 1. 基本概念
+
+1. **IP协议(Internet Protocol)**:IP协议是网络层的核心协议,它定义了IP地址和数据包的格式,并负责将数据包从源主机发送到目标主机....
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-02T07:36:01+00:00">02 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+                  
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- end related posts -->
+
+
+
+
+
+
+    <!--
+        Bookshop components are accessed using the bookshop tag,
+        using the same syntax as the standard Jekyll include tag.
+    -->
+    <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
+
+<!--bookshop-live end-->
+
+    <div class="top" title="Top"><i class="ion ion-ios-arrow-up"></i></div>
+
+    <!-- begin footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+
+        <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+
+        <ul class="footer_nav list-reset">
+          
+          <li class="footer_nav__item">
+            <a href="/" class="footer_nav__link">Home</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/projects/" class="footer_nav__link">Projects</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/elements/" class="footer_nav__link">Elements</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/about/" class="footer_nav__link">About</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/blog/" class="footer_nav__link">Blog</a>
+          </li>
+          
+        </ul>
+
+        <div class="copyright"><p> 2021 &copy; <a href="/">Vonge</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
+
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- end footer -->
+
+    <script src="/js/scripts.js"></script>
+    <script src="/js/common.js"></script>
+</body>
+</html>
