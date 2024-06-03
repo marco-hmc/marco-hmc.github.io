@@ -1,7 +1,0 @@
----
-date: 2021-01-11 07:40:35 +0300
-title: 数据结构与算法
-subtitle: Data Structure and Algorithm
-image: '/images/project/project-4.jpg'
-project: project_data
----
