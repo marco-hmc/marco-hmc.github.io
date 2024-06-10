@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>渲染管线</title>
+  <meta name='description' content='Marco’s Blog'>
+
+  <link rel="canonical" href="/blog/2-%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="渲染管线 – Marco’s Blog">
+  <meta name="twitter:description" content="渲染管线
+">
+  <meta name="twitter:image:src" content="/images/post/post-52.jpg">
+
+  <!-- Facebook OpenGraph -->
+  <meta property="og:title" content="渲染管线 – Marco’s Blog">
+  <meta property="og:description" content="渲染管线
+">
+  <meta property="og:image" content="/images/post/post-52.jpg">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Ionicons -->
+  <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/main.css">
+</head>
+
+<body>
+
+    
+
+    <!-- begin header -->
+<header class="c-header">
+  <div class="container">
+    <div class="row">
+      <div class="c-header__inner">
+
+        <div class="logo">
+          <a class="logo__link" href="/">
+          
+            <img class="logo__image" src="/images/mc_logo1.ico" alt="Marco’s Blog">
+          
+          </a>
+        </div>
+
+        <nav class="main-nav">
+          <div class="main-nav__box">
+
+            <div class="nav__icon-close">
+              <i class="ion ion-md-close"></i>
+            </div>
+
+            <div class="nav__title">Menu</div>
+
+              <ul class="nav__list list-reset">
+
+              
+                
+                <li class="nav__item">
+                  <a href="/" class="nav__link">Home</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/projects/" class="nav__link">Projects</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/blog/" class="nav__link">Blog</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/about/" class="nav__link">About</a>
+                </li>
+                
+              
+
+            </ul>
+          </div>
+
+          <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+        </nav>
+
+        <div class="nav-button">
+          <i class="nav__icon nav__icon-menu ion ion-md-menu"></i>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+<!-- end header -->
+
+    <div class="post-top">
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="col col-6 col-d-12">
+        <div class="post-image">
+          <img loading="lazy" src="/images/post/post-52.jpg" alt="渲染管线">
+        </div>
+      </div>
+      
+
+      <div class="col col-6 col-d-12">
+        <div class="post__info">
+
+          
+          <div class="post-tags">
+            
+              <a href="/tag/计算机网络" class="post-tags__tag">计算机网络</a>
+            
+          </div>
+          
+
+
+          <h1 class="post__title">渲染管线</h1>
+
+          <div class="post__meta">
+            <div class="post__author-image">
+              <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+            </div>
+
+            <div class="post__meta-bottom">
+              <div class="post__author">Marco Hwong</div>
+              <time class="post__date" datetime="2024-06-09T09:10:51+00:00">09 Jun 2024</time>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- begin post -->
+<div class="container animate">
+
+  <article class="post">
+
+    <ul><li><a href="#渲染管线">渲染管线</a><ul><li><a href="#1-什么是渲染管线">1. 什么是渲染管线？</a><ul><li><a href="#11-渲染流程的三个阶段是什么">1.1 渲染流程的三个阶段是什么</a></li><li><a href="#21-渲染中cpu和gpu是如何并行工作的">2.1 渲染中，cpu和gpu是如何并行工作的</a></li></ul></li><li><a href="#2-cpu处理应用阶段">2. CPU处理–应用阶段</a><ul><li><a href="#21-如果从偏硬件层次一点的角度来理解可以分为三个阶段">2.1 如果从偏硬件层次一点的角度来理解，可以分为三个阶段</a></li></ul></li><li><a href="#3-gpu处理几何阶段">3. GPU处理–几何阶段</a><ul><li><a href="#31-顶点着色">3.1 顶点着色</a></li><li><a href="#32-图元装配">3.2 图元装配</a></li><li><a href="#33-几何着色">3.3 几何着色</a></li><li><a href="#34-裁剪">3.4 裁剪</a></li><li><a href="#35-屏幕映射">3.5 屏幕映射</a></li></ul></li><li><a href="#4-gpu处理光栅阶段">4. GPU处理–光栅阶段</a><ul><li><a href="#41">4.1</a></li></ul></li><li><a href="#quiz">quiz</a><ul><li><a href="#1-为什么gpu要有自己的内存即显存">1. 为什么gpu要有自己的内存，即显存？</a></li><li><a href="#2-cpu和gpu的区别是什么">2. cpu和gpu的区别是什么？</a></li><li><a href="#3-顶点数据是什么">3. 顶点数据是什么？</a><ul><li><a href="#31-怎么理解纹理坐标">3.1 怎么理解纹理坐标</a></li><li><a href="#32-怎么理解法线">3.2 怎么理解法线</a></li></ul></li><li><a href="#4-图元数据是什么">4. 图元数据是什么？</a></li></ul></li></ul></li></ul>
+    <div class="post__content">
+      <h2 id="渲染管线">渲染管线</h2>
+
+<h3 id="1-什么是渲染管线">1. 什么是渲染管线？</h3>
+<p>渲染管线，也被称为图形管线，是一个用于生成2D图像（如屏幕上的图像）的硬件或软件实现的概念模型。这个过程通常基于3D场景的数据，包括但不限于几何、视点、纹理、光照信息等。</p>
+
+<p>渲染管线通常可以分为几个阶段，每个阶段都有特定的任务。以下是一个典型的3D渲染管线的阶段：</p>
+
+<ol>
+  <li>
+    <p><strong>模型变换</strong>：在这个阶段，原始的3D模型坐标会被转换到世界坐标系中。</p>
+  </li>
+  <li>
+    <p><strong>视图变换</strong>：在这个阶段，世界坐标系中的模型会被转换到相机视图坐标系中。</p>
+  </li>
+  <li>
+    <p><strong>投影变换</strong>：在这个阶段，视图坐标系中的模型会被投影到一个2D的裁剪空间中。</p>
+  </li>
+  <li>
+    <p><strong>裁剪</strong>：在这个阶段，裁剪空间中的模型会被裁剪，以移除那些不在视野内的部分。</p>
+  </li>
+  <li>
+    <p><strong>光栅化</strong>：在这个阶段，裁剪后的模型会被转换成像素的形式，以便在屏幕上显示。</p>
+  </li>
+  <li>
+    <p><strong>片元处理</strong>：在这个阶段，每个像素会被赋予颜色和深度。这通常涉及到纹理映射、光照计算等操作。</p>
+  </li>
+  <li>
+    <p><strong>混合和测试</strong>：在这个阶段，会进行深度测试、模板测试和颜色混合等操作，以确定最终的像素颜色。</p>
+  </li>
+</ol>
+
+<p>这个过程可以在CPU上通过软件实现，也可以在GPU上通过硬件实现。在现代的图形API（如OpenGL和DirectX）中，这个过程通常是在GPU上实现的，以利用GPU的并行处理能力。</p>
+
+<p>而之所以叫管线，其实是流水线的意思。</p>
+
+<p>即每一个上述的任务都是同步进行的，像流水线一样，每个步骤都是一直在进行，上游任务准备好就给下游任务，分放任务到下游的同时，不代表完成，而是又有了新的任务进来。</p>
+
+<h4 id="11-渲染流程的三个阶段是什么">1.1 渲染流程的三个阶段是什么</h4>
+<p>如果按照CPU和GPU的配合来看，渲染流程又可以看成是三个阶段。</p>
+
+<p>在3D图形渲染流程中，通常可以将整个过程分为三个主要阶段：应用阶段、几何阶段和光栅化阶段。</p>
+
+<ol>
+  <li>
+    <p><strong>应用阶段</strong>：这个阶段主要在CPU上执行，包括场景管理、动画、物理模拟、AI计算等任务。这个阶段的目标是准备好所有需要渲染的数据，并将这些数据以渲染命令的形式发送给GPU。</p>
+  </li>
+  <li>
+    <p><strong>几何阶段</strong>：这个阶段主要在GPU上执行，包括模型变换、视图变换、投影变换和裁剪等任务。这个阶段的目标是将3D模型转换为2D图像，并进行裁剪以移除不在视野内的部分。</p>
+  </li>
+  <li>
+    <p><strong>光栅化阶段</strong>：这个阶段也在GPU上执行，包括光栅化、片元处理和混合测试等任务。这个阶段的目标是将2D图像转换为像素，并赋予每个像素颜色和深度。</p>
+  </li>
+</ol>
+
+<p>这三个阶段是串行的，每个阶段的输出都是下一个阶段的输入。但在每个阶段内部，许多任务可以并行执行，以提高渲染效率。</p>
+
+<h4 id="21-渲染中cpu和gpu是如何并行工作的">2.1 渲染中，cpu和gpu是如何并行工作的</h4>
+
+<p>在渲染过程中，CPU和GPU的并行工作主要体现在以下几个方面：</p>
+
+<ol>
+  <li>
+    <p><strong>场景准备</strong>：CPU负责准备渲染所需的数据，包括3D模型、纹理、光照信息等。这些数据被组织成一种称为渲染命令的形式，然后发送给GPU。</p>
+  </li>
+  <li>
+    <p><strong>渲染命令处理</strong>：GPU接收到渲染命令后，开始执行渲染管线中的各个阶段。这包括模型变换、视图变换、投影变换、裁剪、光栅化、片元处理和混合测试等。</p>
+  </li>
+  <li>
+    <p><strong>异步执行</strong>：在现代的图形API（如DirectX 12和Vulkan）中，CPU可以在GPU还在处理一个渲染命令的同时，继续准备下一个渲染命令。这样，CPU和GPU可以并行工作，提高整体的渲染效率。</p>
+  </li>
+  <li>
+    <p><strong>缓冲区交换</strong>：当GPU完成一帧的渲染后，它会将结果写入一个叫做后缓冲区的内存区域。然后，CPU会指示显示器从后缓冲区读取数据，并将其显示在屏幕上。同时，CPU会开始准备下一帧的渲染命令。</p>
+  </li>
+</ol>
+
+<p>总的来说，CPU和GPU在渲染过程中的并行工作，主要是通过异步执行和缓冲区交换来实现的。这样可以充分利用CPU和GPU的计算能力，提高渲染的效率。</p>
+
+<h3 id="2-cpu处理应用阶段">2. CPU处理–应用阶段</h3>
+
+<p>在3D图形渲染流程中，CPU处理的应用阶段主要负责以下任务：</p>
+
+<ol>
+  <li>
+    <p><strong>场景管理</strong>：确定哪些对象需要被渲染，哪些对象可以被剔除（例如，不在摄像机视野内的对象）。</p>
+  </li>
+  <li>
+    <p><strong>动画处理</strong>：计算动画对象的新位置和方向。</p>
+  </li>
+  <li>
+    <p><strong>物理模拟</strong>：计算物理效果，如碰撞、重力和流体动力学。</p>
+  </li>
+  <li>
+    <p><strong>AI计算</strong>：计算AI的决策，如角色的移动和行为。</p>
+  </li>
+  <li>
+    <p><strong>设置渲染状态</strong>：设置渲染参数，如光照参数、纹理参数等。</p>
+  </li>
+  <li>
+    <p><strong>提交渲染命令</strong>：将渲染命令和数据发送给GPU。</p>
+  </li>
+</ol>
+
+<p>这个阶段的任务通常在CPU上进行，因为它们涉及到大量的逻辑判断和复杂的计算，这些是CPU擅长的任务。然后，CPU会将渲染命令和数据发送给GPU，GPU会执行实际的渲染任务。</p>
+
+<h4 id="21-如果从偏硬件层次一点的角度来理解可以分为三个阶段">2.1 如果从偏硬件层次一点的角度来理解，可以分为三个阶段</h4>
+
+<p>这段文本描述的是3D图形渲染流程中的一部分，从硬件层面来看，可以进一步解释如下：</p>
+
+<ol>
+  <li>
+    <p><strong>把数据加载到显存（GPU的内存）</strong>：这个阶段主要是将需要渲染的数据，如顶点数据、纹理数据等，从CPU的内存复制到GPU的内存（显存）。这是因为GPU直接从显存中读取数据，这样可以大大提高数据读取的速度。</p>
+  </li>
+  <li>
+    <p><strong>设置渲染状态</strong>：渲染状态定义了如何进行渲染，包括混合模式、深度测试、模板测试、光栅化模式等。这些状态会影响到渲染的结果。在这个阶段，CPU会设置这些状态，并将它们发送给GPU。</p>
+  </li>
+  <li>
+    <p><strong>提交渲染命令（调用Draw Call）</strong>：Draw Call是CPU告诉GPU开始渲染的命令。在这个阶段，CPU会发送Draw Call给GPU，GPU会根据前两个阶段准备的数据和状态，开始执行渲染管线，生成最终的图像。</p>
+  </li>
+</ol>
+
+<p>这三个阶段是3D图形渲染流程中的一部分，它们主要涉及到CPU和GPU之间的交互。在这三个阶段之后，GPU会开始执行渲染管线，包括几何阶段和光栅化阶段，生成最终的图像。</p>
+
+<h3 id="3-gpu处理几何阶段">3. GPU处理–几何阶段</h3>
+<p><img src="/images/imgs/2_渲染管线_image.png" alt="alt text" />
+在GPU的渲染管线中，几何阶段是一个非常重要的阶段。在这个阶段，GPU会对输入的顶点数据进行一系列的处理，包括以下几个步骤：</p>
+
+<ol>
+  <li>
+    <p><strong>顶点着色（Vertex Shading）</strong>：在这个步骤中，GPU会执行顶点着色器，对每个顶点进行处理。顶点着色器是一个可以编程的函数，它可以对顶点数据进行各种操作，如变换顶点的位置、计算顶点的颜色等。</p>
+  </li>
+  <li>
+    <p><strong>图元装配（Primitive Assembly）</strong>：在这个步骤中，GPU会把处理过的顶点组装成图元，如点、线、三角形等。这些图元是渲染的基本单位。</p>
+  </li>
+  <li>
+    <p><strong>几何着色（Geometry Shading）</strong>：这是一个可选的步骤，如果启用了几何着色器，GPU会在这个步骤中执行几何着色器。几何着色器可以对图元进行处理，如生成新的图元、改变图元的形状等。</p>
+  </li>
+  <li>
+    <p><strong>裁剪（Clipping）</strong>：在这个步骤中，GPU会裁剪掉不在视野范围内的图元，只保留在视野范围内的图元。这可以减少后续步骤的计算量。</p>
+  </li>
+  <li>
+    <p><strong>屏幕映射（Screen Mapping）</strong>：在这个步骤中，GPU会把裁剪后的图元映射到屏幕空间。这是一个从3D空间到2D空间的转换过程。</p>
+  </li>
+</ol>
+
+<p>完成这些步骤后，几何阶段的输出会被送入下一个阶段，即光栅化阶段。在光栅化阶段，GPU会把图元转换成像素，然后执行像素着色器，计算每个像素的颜色。</p>
+
+<h4 id="31-顶点着色">3.1 顶点着色</h4>
+<p>顶点着色是GPU渲染管线中的一个步骤，它发生在几何阶段的开始。在这个步骤中，GPU会执行一个叫做顶点着色器的程序，对每个输入的顶点进行处理。</p>
+
+<p>顶点着色器是一个可以编程的函数，它接收一个顶点作为输入，输出一个处理过的顶点。顶点着色器可以对顶点数据进行各种操作，例如：</p>
+
+<ol>
+  <li>
+    <p><strong>变换顶点的位置</strong>：这通常涉及到将顶点的位置从模型空间变换到世界空间、视图空间或投影空间。这些变换通常通过矩阵乘法来实现。</p>
+  </li>
+  <li>
+    <p><strong>计算顶点的颜色</strong>：顶点着色器可以根据顶点的属性（如位置、法线等）和光照条件来计算顶点的颜色。</p>
+  </li>
+  <li>
+    <p><strong>计算纹理坐标</strong>：如果模型使用了纹理映射，顶点着色器可以计算出每个顶点在纹理图像上的位置。</p>
+  </li>
+  <li>
+    <p><strong>计算其他顶点属性</strong>：除了位置、颜色和纹理坐标，顶点着色器还可以计算其他的顶点属性，如法线、切线等。</p>
+  </li>
+</ol>
+
+<p>顶点着色器的输出会被送入下一个步骤，即图元装配。在图元装配步骤中，GPU会把处理过的顶点组装成图元，如点、线、三角形等。这些图元是渲染的基本单位，它们会被送入后续的渲染步骤，如几何着色、裁剪、光栅化等。</p>
+
+<h4 id="32-图元装配">3.2 图元装配</h4>
+
+<p>图元装配（Primitive Assembly）是GPU渲染管线中的一个步骤，它发生在顶点着色之后，几何着色之前。</p>
+
+<p>在图元装配阶段，GPU会将处理过的顶点组装成图元。图元是构成3D模型的基本元素，常见的图元包括点（Point）、线（Line）和三角形（Triangle）。</p>
+
+<p>例如，如果我们正在渲染一个三角形，那么在图元装配阶段，GPU会把这个三角形的三个顶点组装成一个三角形图元。这个三角形图元会被送入后续的渲染步骤，如几何着色、裁剪、光栅化等。</p>
+
+<p>图元装配是3D图形渲染的一个重要步骤，它决定了我们看到的3D模型的形状。通过改变图元的大小和排列，我们可以创建出各种复杂的3D形状。</p>
+
+<h4 id="33-几何着色">3.3 几何着色</h4>
+
+<h4 id="34-裁剪">3.4 裁剪</h4>
+<p>裁剪（Clipping）是GPU渲染管线中的一个步骤，它发生在几何阶段的结束。在这个步骤中，GPU会裁剪掉不在视野范围内的图元，只保留在视野范围内的图元。这可以减少后续步骤的计算量，提高渲染效率。裁剪通常是在投影空间进行的，它会保证只有在视野范围内的图元会被渲染。</p>
+
+<h4 id="35-屏幕映射">3.5 屏幕映射</h4>
+<p>屏幕映射（Screen Mapping）是GPU渲染管线中的一个步骤，它发生在裁剪之后，光栅化之前。在这个步骤中，GPU会把裁剪后的图元映射到屏幕空间。这是一个从3D空间到2D空间的转换过程，它会将图元的坐标从投影空间变换到屏幕空间。这个步骤决定了图元在屏幕上的位置和大小。</p>
+
+<h3 id="4-gpu处理光栅阶段">4. GPU处理–光栅阶段</h3>
+
+<p>在GPU的渲染管线中，光栅化阶段是一个非常重要的步骤。在这个阶段，GPU会把图元（如点、线、三角形等）转换成像素。这个过程也被称为扫描转换（Scan Conversion）。</p>
+
+<p>光栅化阶段的主要任务包括：</p>
+
+<ol>
+  <li>
+    <p><strong>生成片元</strong>：片元（Fragment）是像素的一个候选者，每个片元包含一个像素的所有信息，如位置、颜色、深度等。在光栅化阶段，GPU会为每个像素生成一个或多个片元。</p>
+  </li>
+  <li>
+    <p><strong>插值</strong>：在生成片元的过程中，GPU会对图元的属性进行插值。例如，如果我们正在渲染一个三角形，那么GPU会根据三角形的三个顶点的颜色，计算出每个像素的颜色。</p>
+  </li>
+  <li>
+    <p><strong>深度测试</strong>：在生成片元后，GPU会进行深度测试，决定哪些片元应该被绘制到屏幕上。深度测试可以防止被遮挡的图元覆盖前面的图元。</p>
+  </li>
+</ol>
+
+<p>完成光栅化阶段后，生成的片元会被送入下一个阶段，即片元着色阶段。在片元着色阶段，GPU会执行片元着色器，计算每个片元的最终颜色。</p>
+
+<h4 id="41">4.1</h4>
+
+<h3 id="quiz">quiz</h3>
+
+<h4 id="1-为什么gpu要有自己的内存即显存">1. 为什么gpu要有自己的内存，即显存？</h4>
+<p>GPU需要有自己的内存，即显存，主要有以下几个原因：</p>
+
+<ol>
+  <li>
+    <p><strong>高带宽</strong>：显存通常使用高带宽的内存技术，如GDDR或HBM，这些内存技术提供的带宽远高于常规的DDR内存。当我们说显存（GPU的内存）具有”高带宽”，我们是指显存能够在单位时间内传输大量的数据。这对于GPU来说非常重要，因为GPU在渲染过程中需要处理大量的数据，如顶点数据、纹理数据等。</p>
+  </li>
+  <li>
+    <p><strong>并行处理</strong>：GPU是一个高度并行的处理器，它可以同时处理大量的数据。为了支持这种并行处理，GPU需要能够同时访问大量的数据，这就需要有足够大的内存。</p>
+  </li>
+  <li>
+    <p><strong>减少CPU和GPU之间的数据传输</strong>：如果GPU没有自己的内存，那么它需要从CPU的内存中读取数据。这会增加CPU和GPU之间的数据传输，降低渲染效率。有了自己的内存，GPU可以直接从显存中读取数据，无需通过CPU，从而提高渲染效率。</p>
+  </li>
+  <li>
+    <p><strong>独立运行</strong>：有了自己的内存，GPU可以在执行渲染任务时独立于CPU运行，不受CPU的内存使用情况的影响。</p>
+  </li>
+</ol>
+
+<p>因此，为了提高渲染效率和支持并行处理，GPU需要有自己的内存，即显存。</p>
+
+<h4 id="2-cpu和gpu的区别是什么">2. cpu和gpu的区别是什么？</h4>
+<p>CPU（中央处理器）和GPU（图形处理器）都是计算机的重要组成部分，但它们在设计和功能上有一些重要的区别：</p>
+
+<ol>
+  <li>
+    <p><strong>设计目标</strong>：CPU设计用于处理各种类型的计算任务，包括运行操作系统、执行应用程序代码等。它是一个通用的处理器，可以处理各种类型的数据和指令。而GPU最初是为了加速图形渲染而设计的，它是一个专用的处理器，擅长处理大量的并行数据。</p>
+  </li>
+  <li>
+    <p><strong>架构</strong>：CPU通常只有几个核心，但每个核心都非常强大，可以处理复杂的指令和逻辑。而GPU有成百上千个小核心，每个核心都不如CPU核心强大，但由于数量众多，所以在处理大量并行数据时，GPU的性能远超CPU。</p>
+  </li>
+  <li>
+    <p><strong>内存</strong>：CPU使用系统内存（RAM），而GPU使用自己的内存（显存）。显存通常使用高带宽的内存技术，如GDDR或HBM，这些内存技术提供的带宽远高于常规的DDR内存。</p>
+  </li>
+  <li>
+    <p><strong>用途</strong>：CPU用于运行大部分的应用程序，包括操作系统、办公软件、浏览器等。而GPU主要用于图形渲染，如3D游戏、专业图形应用等。但现在，GPU也越来越多地用于非图形的计算任务，如科学计算、机器学习等，这被称为GPGPU（通用图形处理器计算）。</p>
+  </li>
+</ol>
+
+<p>总的来说，CPU和GPU在设计和功能上有各自的优势，它们在计算机系统中共同工作，提供强大的计算能力。</p>
+
+<p>简单来说，cpu适合处理串行任务，而gpu适合处理并行任务。</p>
+
+<p>例如，显示的时候，每个像素点都是独立计算的，不是说像素点之间彼此依赖的，所以显示任务是更适合通过gpu去运算的。</p>
+
+<h4 id="3-顶点数据是什么">3. 顶点数据是什么？</h4>
+<p>顶点数据是3D图形渲染中的基本元素，它描述了3D物体的形状和其他属性。一个顶点通常包含以下信息：</p>
+
+<ol>
+  <li>
+    <p><strong>位置</strong>：顶点在3D空间中的坐标，通常用一个三维向量（x, y, z）来表示。</p>
+  </li>
+  <li>
+    <p><strong>颜色</strong>：顶点的颜色，通常用一个四维向量（r, g, b, a）来表示，其中r、g、b分别代表红、绿、蓝三种颜色的强度，a代表透明度。</p>
+  </li>
+  <li>
+    <p><strong>纹理坐标</strong>：顶点在纹理图像上的位置，通常用一个二维向量（u, v）来表示。</p>
+  </li>
+  <li>
+    <p><strong>法线</strong>：顶点的法线，用于光照计算。法线是一个三维向量，表示顶点表面的方向。</p>
+  </li>
+</ol>
+
+<p>在3D图形渲染中，我们通常使用一组顶点数据来定义一个3D物体。例如，一个三角形需要三个顶点，一个立方体需要八个顶点。这些顶点数据会被发送到GPU，GPU会根据这些数据进行渲染，生成最终的图像。</p>
+
+<h5 id="31-怎么理解纹理坐标">3.1 怎么理解纹理坐标</h5>
+<p>纹理坐标，也被称为UV坐标，是用来定义3D模型表面上每个顶点如何映射到2D纹理图像的。它是一个二维坐标，通常用(u, v)来表示。</p>
+
+<p>在3D模型的每个顶点上，都会定义一个对应的纹理坐标。当我们把2D纹理应用到3D模型上时，纹理坐标就决定了每个顶点对应到纹理图像上的哪个位置。</p>
+
+<p>例如，纹理坐标(0, 0)通常对应到纹理图像的左下角，(1, 1)对应到纹理图像的右上角。如果一个顶点的纹理坐标是(0.5, 0.5)，那么它就对应到纹理图像的中心位置。</p>
+
+<p>通过这种方式，我们可以把2D纹理图像映射到3D模型的表面，从而给模型添加详细的表面纹理，如皮肤、毛发、布料等。这是3D图形渲染中的一个重要步骤，可以大大提高渲染的真实感。</p>
+
+<h5 id="32-怎么理解法线">3.2 怎么理解法线</h5>
+<p>在3D图形中，”法线”是一个向量，它表示3D模型表面在某一点的方向。法线通常用于光照计算，以确定模型表面如何反射或吸收光线。</p>
+
+<p>法线通常是垂直于模型表面的。例如，如果你有一个平面，那么这个平面的法线就是垂直于这个平面的向量。在一个曲面上，每一点的法线都可能不同，因为曲面在不同的地方有不同的方向。</p>
+
+<p>在3D模型的每个顶点上，都会定义一个法线。当我们进行光照计算时，会使用这些法线来确定光线如何影响模型的颜色。例如，如果法线与光线的方向相同，那么这个地方就会被照亮；如果法线与光线的方向相反，那么这个地方就会在阴影中。</p>
+
+<p>通过使用法线，我们可以在3D模型上创建出复杂的光照和阴影效果，从而提高渲染的真实感。</p>
+
+<h4 id="4-图元数据是什么">4. 图元数据是什么？</h4>
+<p>在计算机图形学中，图元（Primitive）是构成3D模型的基本元素。常见的图元包括点（Point）、线（Line）和三角形（Triangle）。图元数据就是描述这些基本元素的数据。</p>
+
+<p>例如，一个三角形图元的数据通常包括三个顶点的数据，每个顶点的数据包括位置、颜色、纹理坐标和法线等信息。这些数据会被送入图形渲染管线，经过一系列的处理（如顶点处理、光栅化、片元处理等），最终生成图像。</p>
+
+<p>在实际的3D图形渲染中，三角形是最常用的图元，因为任何3D模型都可以由三角形组成。通过改变三角形的大小和排列，我们可以创建出各种复杂的3D形状。</p>
+
+    </div>
+
+    <div class="post__share">
+  <div class="share__head">
+    <div class="share__title">Share this Post</div>
+  </div>
+  <ul class="share__list list-reset">
+    <li class="share__item">
+      <a class="share__link share__twitter"
+        href="https://twitter.com/intent/tweet?text=%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF&url=/blog/2-%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__facebook"
+        href="https://www.facebook.com/sharer/sharer.php?u=/blog/2-%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__pinterest"
+        href="http://pinterest.com/pin/create/button/?url=/blog/2-%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF&amp;media=/images/post/post-52.jpg&amp;description=%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Pinterest" rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&url=/blog/2-%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF&title=%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF&summary=&source=Vonge"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
+    </li>
+  </ul>
+</div>
+
+  </article>
+</div>
+<!-- end post -->
+
+<div class="container">
+  <div class="row">
+    <div class="col col-10 col-d-12 push-d-0 push-1">
+      <div class="post__navigation animate">
+  
+  <a class="post__prev" href="/blog/1-%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B%E4%B8%8E%E5%8E%9F%E7%90%86">
+    <div class="prev__image">
+      <img loading="lazy" src="/images/post/post-39.jpg" alt="渲染管线">
+    </div>
+    <div class="prev__box">
+      <span class="post__nav post__nav__prev">Prev post</span>
+      <h2 class="post__nav__title">编译过程与原理</h2>
+    </div>
+  </a>
+  
+
+  
+  <a class="post__next" href="/blog/4-%E8%BF%AD%E4%BB%A3%E5%99%A8">
+    <div class="next__box">
+      <span class="post__nav post__nav__next">Next post</span>
+      <h2 class="post__nav__title">迭代器</h2>
+    </div>
+    <div class="next__image">
+      <img loading="lazy" src="/images/post/post-10.jpeg" alt="渲染管线">
+    </div>
+  </a>
+  
+</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- begin related posts -->
+<div class="container">
+  <section class="related-posts is-related animate">
+    <div class="row">
+      <div class="col col-12">
+        <div class="container__inner">
+          <div class="section__info">
+            <div class="section__head">
+              <h2 class="section__title">You may also like</h2>
+              <a class="section__link" href="/blog">
+                
+                
+                  
+                    <a href="/tags#计算机网络" class="section__link related-tag">See all<span> 计算机网络</span> <i class="ion ion-md-arrow-forward"></i></a>
+                  
+                
+              
+              </a>
+            </div>
+          </div>
+          <div class="row">
+
+          
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/1-%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B%E4%B8%8E%E5%8E%9F%E7%90%86">
+                      <img loading="lazy" src="/images/post/post-39.jpg" alt="编译过程与原理">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/计算机网络" class="article__tag">计算机网络</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/1-%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B%E4%B8%8E%E5%8E%9F%E7%90%86">编译过程与原理</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      编译过程与原理
+
+1. 编译过程 - 编译器在做什么？
+
+如果想要机器按照我们的设想执行我们的命令，我们需要一个能够跟机器沟通的方式，而这种方式也就是==机器语言(第一代计算机语言)==，一堆01构成的指令。我们需要事先设计好指令集到...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-09T09:09:14+00:00">09 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/99-99-%E5%85%B3%E4%BA%8E%E7%BD%91%E7%BB%9C%E7%9A%84%E4%B8%80%E4%BA%9Bquiz">
+                      <img loading="lazy" src="/images/post/post-26.jpg" alt="（99）关于网络的一些quiz">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/计算机网络" class="article__tag">计算机网络</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/99-99-%E5%85%B3%E4%BA%8E%E7%BD%91%E7%BB%9C%E7%9A%84%E4%B8%80%E4%BA%9Bquiz">（99）关于网络的一些quiz</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      （99）关于网络的一些quiz
+
+1. 画出tcp头部的协议格式
+
+2.udp头部/ip头部/http头部
+
+3. 滑动窗口的作用
+答:主要就是为了实现流量控制,控制了发送包的速率,每次发送方只能发送滑动窗口内部的数据包,才能保证接收...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-09T09:01:42+00:00">09 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/6-1-dns">
+                      <img loading="lazy" src="/images/post/post-20.jpg" alt="1. DNS">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/计算机网络" class="article__tag">计算机网络</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/6-1-dns">1. DNS</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      # （6）网络安全
+
+1. DNS
+
+1. 针对DNS服务器的攻击
+
+
+  
+    是什么？
+
+    ​	通过随机生成一些域名，向DNS服务器发起解析，由于DNS本地一般不会有随机生成的域名结果，就会递归往上查询。如果有很多域名解...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-09T09:00:20+00:00">09 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+                  
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- end related posts -->
+
+
+
+
+
+
+    <!--
+        Bookshop components are accessed using the bookshop tag,
+        using the same syntax as the standard Jekyll include tag.
+    -->
+    <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
+
+<!--bookshop-live end-->
+
+    <div class="top" title="Top"><i class="ion ion-ios-arrow-up"></i></div>
+
+    <!-- begin footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+
+        <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+
+        <ul class="footer_nav list-reset">
+          
+          <li class="footer_nav__item">
+            <a href="/" class="footer_nav__link">Home</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/projects/" class="footer_nav__link">Projects</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/elements/" class="footer_nav__link">Elements</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/about/" class="footer_nav__link">About</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/blog/" class="footer_nav__link">Blog</a>
+          </li>
+          
+        </ul>
+
+        <div class="copyright"><p> 2021 &copy; <a href="/">Vonge</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
+
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- end footer -->
+
+    <script src="/js/scripts.js"></script>
+    <script src="/js/common.js"></script>
+</body>
+</html>

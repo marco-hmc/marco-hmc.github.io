@@ -135,13 +135,7 @@
           
           <div class="post-tags">
             
-              <a href="/tag/c++," class="post-tags__tag">c++,</a>
-            
-              <a href="/tag/constructing," class="post-tags__tag">constructing,</a>
-            
               <a href="/tag/reading" class="post-tags__tag">reading</a>
-            
-              <a href="/tag/notes" class="post-tags__tag">notes</a>
             
           </div>
           
@@ -171,6 +165,7 @@
 
   <article class="post">
 
+    <ul><li><a href="#my-effective-c">My effective C++</a><ul><li><a href="#1-effective-c">1. effective C++</a><ul><li><a href="#11-视c-为一个语言联邦">1.1 视C++ 为一个语言联邦</a></li><li><a href="#12-enum-hack">1.2 enum hack</a></li><li><a href="#13-多用const">1.3 多用const</a></li><li><a href="#14-如何在c中正确处理非局部静态对象的初始化顺序问题">1.4 如何在C++中正确处理非局部静态对象的初始化顺序问题？</a></li><li><a href="#15-初始化比赋值快">1.5 初始化比赋值快</a></li><li><a href="#16-了解c-那些自动生成和调用的函数">1.6 了解C++ 那些自动生成和调用的函数</a></li><li><a href="#17-绝不在构造和析构过程中调用virtual函数">1.7 绝不在构造和析构过程中调用virtual函数</a></li><li><a href="#18-return-this和return-this的区别是什么">1.8 return this和return *this的区别是什么</a></li><li><a href="#19-复制对象时勿忘其每一个成分">1.9 复制对象时勿忘其每一个成分</a></li><li><a href="#110-设计class犹如设计type">1.10 设计class犹如设计type</a></li><li><a href="#111-为多态基类声明virtual析构函数">1.11 为多态基类声明virtual析构函数</a></li><li><a href="#三资源管理-resource-management">三、资源管理 (Resource Management)</a></li><li><a href="#112-若所有参数皆需类型转换请为此采用non-member函数">1.12 若所有参数皆需类型转换，请为此采用non-member函数</a></li><li><a href="#112-考虑写出一个不抛异常的swap函数">1.12 考虑写出一个不抛异常的swap函数</a></li><li><a href="#五实现-implementations">五、实现 (Implementations)</a></li><li><a href="#六继承与面向对象设计-inheritance-and-object-oriented-design">六、继承与面向对象设计 (Inheritance and Object-Oriented Design)</a></li><li><a href="#七模板与泛型编程-templates-and-generic-programming">七、模板与泛型编程 (Templates and Generic Programming)</a></li><li><a href="#八定制new和delete-customizing-new-and-delete">八、定制new和delete (Customizing new and delete)</a></li></ul></li></ul></li><li><a href="#more-effective-c">More Effective C++</a><ul><li><a href="#区分指针和引用">区分指针和引用</a></li><li><a href="#决不要把多态用于数组">??决不要把多态用于数组</a></li><li><a href="#二运算符">二、运算符</a></li><li><a href="#三异常">三、异常</a></li><li><a href="#21-记住80-20准则">2.1 记住80-20准则**</a></li><li><a href="#五技巧">五、技巧</a></li><li><a href="#六杂项">六、杂项</a></li></ul></li></ul></li><li><a href="#effective-modern-c">Effective Modern C++</a><ul><li><a href="#一类型推导">一、类型推导</a></li><li><a href="#二auto">二、auto</a></li><li><a href="#三移步现代c">三、移步现代C++</a></li><li><a href="#四智能指针">四、智能指针</a></li><li><a href="#五右值引用移动语意完美转发">五、右值引用，移动语意，完美转发</a></li><li><a href="#优先考虑基于任务的编程而非基于线程的编程">优先考虑基于任务的编程而非基于线程的编程</a></li><li><a href="#volatile和线程安全无关">volatile和线程安全无关</a></li><li><a href="#什么时候push_back比emplcae_back好">什么时候push_back比emplcae_back好?</a></li><li><a href="#考虑对于单次事件通信使用">??考虑对于单次事件通信使用</a></li></ul></li></ul></li></ul>
     <div class="post__content">
       <p>_tags: c++, constructing, reading notes</p>
 
@@ -2784,25 +2779,25 @@ void detect(){  //检测任务
     <div class="col col-10 col-d-12 push-d-0 push-1">
       <div class="post__navigation animate">
   
-  <a class="post__prev" href="/blog/6-%E9%94%99%E8%AF%AF%E7%A0%81">
+  <a class="post__prev" href="/blog/1-socket">
     <div class="prev__image">
-      <img loading="lazy" src="/images/post/post-3.jpg" alt="My effective C++">
+      <img loading="lazy" src="/images/post/post-30.jpg" alt="My effective C++">
     </div>
     <div class="prev__box">
       <span class="post__nav post__nav__prev">Prev post</span>
-      <h2 class="post__nav__title">错误码</h2>
+      <h2 class="post__nav__title">Socket</h2>
     </div>
   </a>
   
 
   
-  <a class="post__next" href="/blog/2-%E5%87%BD%E6%95%B0%E5%AF%B9%E8%B1%A1-%E4%BB%BF%E5%87%BD%E6%95%B0">
+  <a class="post__next" href="/blog/1-mvp%E7%9F%A9%E9%98%B5%E4%B8%8E%E7%9F%A9%E9%98%B5%E5%8F%98%E6%8D%A2">
     <div class="next__box">
       <span class="post__nav post__nav__next">Next post</span>
-      <h2 class="post__nav__title">函数对象（仿函数）</h2>
+      <h2 class="post__nav__title">mvp矩阵与矩阵变换</h2>
     </div>
     <div class="next__image">
-      <img loading="lazy" src="/images/post/post-12.jpg" alt="My effective C++">
+      <img loading="lazy" src="/images/post/post-51.jpeg" alt="My effective C++">
     </div>
   </a>
   
@@ -2819,7 +2814,7 @@ void detect(){  //检测任务
 
 <!-- begin related posts -->
 <div class="container">
-  <section class="related-posts is-related animate">
+  <section class="related-posts  animate">
     <div class="row">
       <div class="col col-12">
         <div class="container__inner">
@@ -2830,13 +2825,7 @@ void detect(){  //检测任务
                 
                 
                   
-                    <a href="/tags#c++," class="section__link related-tag">See all<span> c++,</span> <i class="ion ion-md-arrow-forward"></i></a>
-                  
-                
-                  
-                
-                  
-                
+                    <a href="/tags#reading" class="section__link related-tag">See all<span> reading</span> <i class="ion ion-md-arrow-forward"></i></a>
                   
                 
               
@@ -2873,63 +2862,6 @@ void detect(){  //检测任务
             
       
             
-
-              <div class="article col col-4 col-d-6 col-t-12">
-                <div class="article__inner">
-              
-                  
-                  <div class="image-wrap">
-                    <a class="article__image" href="/blog/4-%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8">
-                      <img loading="lazy" src="/images/post/post-14.jpg" alt="线程安全">
-                    </a>
-                  </div>
-                  
-              
-                  <div class="article__content">
-              
-                    
-                    <div class="article-tags__box">
-                      
-                      <a href="/tag/c++," class="article__tag">c++,</a>
-                      
-                      <a href="/tag/grammar," class="article__tag">grammar,</a>
-                      
-                      <a href="/tag/thread" class="article__tag">thread</a>
-                      
-                    </div>
-                    
-              
-                    <h2 class="article__title">
-                      <a href="/blog/4-%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8">线程安全</a>
-                    </h2>
-              
-                    <p class="article__excerpt">
-                       _tags: c++, grammar, thread
-
-
-## 线程安全
-
-* 线程安全的概念
-  * 多个线程访问同一个对象时，如果不用考虑这些线程在运行时环境下的调度和交替执行，也不需要进行额外的同步，或者在调用方进行任何其他...
-                    </p>
-              
-                    <div class="article__meta">
-                      <div class="article__author-image">
-                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
-                      </div>
-                      <div class="article-info">
-                        <div class="article__author-name">Marco Hwong</div>
-                        <span class="article__date"><time datetime="2024-06-02T08:35:57+00:00">02 Jun 2024</time></span>
-                      </div>
-                    </div>
-              
-                  </div>
-                </div>
-              </div>
-
-            
-                
-              
             
             
             
@@ -2937,63 +2869,6 @@ void detect(){  //检测任务
             
       
             
-
-              <div class="article col col-4 col-d-6 col-t-12">
-                <div class="article__inner">
-              
-                  
-                  <div class="image-wrap">
-                    <a class="article__image" href="/blog/3-c-%E4%B8%AD%E7%9A%84%E7%9C%81%E7%95%A5%E5%8F%B7">
-                      <img loading="lazy" src="/images/post/post-13.jpeg" alt="c++ 中的省略号">
-                    </a>
-                  </div>
-                  
-              
-                  <div class="article__content">
-              
-                    
-                    <div class="article-tags__box">
-                      
-                      <a href="/tag/c++," class="article__tag">c++,</a>
-                      
-                      <a href="/tag/grammar" class="article__tag">grammar</a>
-                      
-                    </div>
-                    
-              
-                    <h2 class="article__title">
-                      <a href="/blog/3-c-%E4%B8%AD%E7%9A%84%E7%9C%81%E7%95%A5%E5%8F%B7">c++ 中的省略号</a>
-                    </h2>
-              
-                    <p class="article__excerpt">
-                       _tags: c++, grammar
-
-
-## c++ 中的省略号
-
-### 1. c++ 中的省略号怎么用？
-在C++中，省略号（...）有两种主要的用途：
-
-1. 可变参数模板（Variadic Templates）：在模板编...
-                    </p>
-              
-                    <div class="article__meta">
-                      <div class="article__author-image">
-                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
-                      </div>
-                      <div class="article-info">
-                        <div class="article__author-name">Marco Hwong</div>
-                        <span class="article__date"><time datetime="2024-06-02T08:35:56+00:00">02 Jun 2024</time></span>
-                      </div>
-                    </div>
-              
-                  </div>
-                </div>
-              </div>
-
-            
-                
-              
             
             
             
@@ -3001,63 +2876,294 @@ void detect(){  //检测任务
             
       
             
-
-              <div class="article col col-4 col-d-6 col-t-12">
-                <div class="article__inner">
-              
-                  
-                  <div class="image-wrap">
-                    <a class="article__image" href="/blog/2-%E5%87%BD%E6%95%B0%E5%AF%B9%E8%B1%A1-%E4%BB%BF%E5%87%BD%E6%95%B0">
-                      <img loading="lazy" src="/images/post/post-12.jpg" alt="函数对象（仿函数）">
-                    </a>
-                  </div>
-                  
-              
-                  <div class="article__content">
-              
-                    
-                    <div class="article-tags__box">
-                      
-                      <a href="/tag/c++," class="article__tag">c++,</a>
-                      
-                      <a href="/tag/functor," class="article__tag">functor,</a>
-                      
-                      <a href="/tag/grammar" class="article__tag">grammar</a>
-                      
-                    </div>
-                    
-              
-                    <h2 class="article__title">
-                      <a href="/blog/2-%E5%87%BD%E6%95%B0%E5%AF%B9%E8%B1%A1-%E4%BB%BF%E5%87%BD%E6%95%B0">函数对象（仿函数）</a>
-                    </h2>
-              
-                    <p class="article__excerpt">
-                       _tags: c++, functor, grammar
-
-
-## 函数对象（仿函数）
-
-### 1. 什么是函数对象，什么是仿函数
-在 C++ 中，函数对象（也称为仿函数）是一个行为类似函数的对象。任何类如果重载了 `operat...
-                    </p>
-              
-                    <div class="article__meta">
-                      <div class="article__author-image">
-                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
-                      </div>
-                      <div class="article-info">
-                        <div class="article__author-name">Marco Hwong</div>
-                        <span class="article__date"><time datetime="2024-06-02T08:35:54+00:00">02 Jun 2024</time></span>
-                      </div>
-                    </div>
-              
-                  </div>
-                </div>
-              </div>
-
             
-                
-                  
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
           </div>
         </div>
       </div>

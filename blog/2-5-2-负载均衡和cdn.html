@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>（5.2）负载均衡和CDN</title>
+  <meta name='description' content='Marco’s Blog'>
+
+  <link rel="canonical" href="/blog/2-5-2-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E5%92%8Ccdn">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="（5.2）负载均衡和CDN – Marco’s Blog">
+  <meta name="twitter:description" content="（5.2）负载均衡和CDN
+">
+  <meta name="twitter:image:src" content="/images/post/post-18.jpeg">
+
+  <!-- Facebook OpenGraph -->
+  <meta property="og:title" content="（5.2）负载均衡和CDN – Marco’s Blog">
+  <meta property="og:description" content="（5.2）负载均衡和CDN
+">
+  <meta property="og:image" content="/images/post/post-18.jpeg">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Ionicons -->
+  <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/main.css">
+</head>
+
+<body>
+
+    
+
+    <!-- begin header -->
+<header class="c-header">
+  <div class="container">
+    <div class="row">
+      <div class="c-header__inner">
+
+        <div class="logo">
+          <a class="logo__link" href="/">
+          
+            <img class="logo__image" src="/images/mc_logo1.ico" alt="Marco’s Blog">
+          
+          </a>
+        </div>
+
+        <nav class="main-nav">
+          <div class="main-nav__box">
+
+            <div class="nav__icon-close">
+              <i class="ion ion-md-close"></i>
+            </div>
+
+            <div class="nav__title">Menu</div>
+
+              <ul class="nav__list list-reset">
+
+              
+                
+                <li class="nav__item">
+                  <a href="/" class="nav__link">Home</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/projects/" class="nav__link">Projects</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/blog/" class="nav__link">Blog</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/about/" class="nav__link">About</a>
+                </li>
+                
+              
+
+            </ul>
+          </div>
+
+          <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+        </nav>
+
+        <div class="nav-button">
+          <i class="nav__icon nav__icon-menu ion ion-md-menu"></i>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+<!-- end header -->
+
+    <div class="post-top">
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="col col-6 col-d-12">
+        <div class="post-image">
+          <img loading="lazy" src="/images/post/post-18.jpeg" alt="（5.2）负载均衡和CDN">
+        </div>
+      </div>
+      
+
+      <div class="col col-6 col-d-12">
+        <div class="post__info">
+
+          
+          <div class="post-tags">
+            
+              <a href="/tag/计算机网络" class="post-tags__tag">计算机网络</a>
+            
+          </div>
+          
+
+
+          <h1 class="post__title">（5.2）负载均衡和CDN</h1>
+
+          <div class="post__meta">
+            <div class="post__author-image">
+              <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+            </div>
+
+            <div class="post__meta-bottom">
+              <div class="post__author">Marco Hwong</div>
+              <time class="post__date" datetime="2024-06-09T08:59:52+00:00">09 Jun 2024</time>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- begin post -->
+<div class="container animate">
+
+  <article class="post">
+
+    <ul><li><a href="#52负载均衡和cdn">（5.2）负载均衡和CDN</a><ul><li><a href="#1-基本概念">1. 基本概念</a></li><li><a href="#2-负载均衡">2. 负载均衡</a></li><li><a href="#3-cdn">3. CDN</a></li><li><a href="#cdn-京东建仓策略就近配送">CDN 京东建仓策略，就近配送</a><ul><li><a href="#基于dns的全局负载均衡">基于DNS的全局负载均衡</a></li><li><a href="#cdn可以进行多种内容缓存">CDN可以进行多种内容缓存</a><ul><li><a href="#动态cdn-对应动态数据">动态CDN 对应动态数据</a></li></ul></li></ul></li></ul></li></ul>
+    <div class="post__content">
+      <h2 id="52负载均衡和cdn">（5.2）负载均衡和CDN</h2>
+
+<h3 id="1-基本概念">1. 基本概念</h3>
+
+<ul>
+  <li>
+    <p><strong><em>什么是负载均衡？</em></strong></p>
+
+    <p>​	<strong>负载均衡</strong>是由多台服务器以对称的方式组成一个服务器集合，每台服务器都具有等价的地位，都可以单独对外提供服务而无须其他服务器的辅助。
+​	通过某种负载分担技术，将外部发送来的请求均匀分配到对称结构中的某一台服务器上，而接收到请求的服务器独立地回应客户的请求。</p>
+
+    <blockquote>
+      <p>跟打饭是一个道理，靠近门口的打饭窗口可能有100个人，边上的可能只有10个人。因为人可能会不知道，或者喜欢近等某种因素等更偏向一个窗口，负载均衡就是一个机制，使得所有窗口排队人数尽可能相等，达到总体的效率最优。</p>
+    </blockquote>
+  </li>
+  <li>
+    <p><strong><em>什么是CDN？</em></strong></p>
+
+    <p>​	引用百度百科的解释就是，CDN 是构建在数据网络上的一种分布式的内容分发网。 <a href="https://baike.baidu.com/item/CDN">CDN</a> 的作用是采用<a href="https://baike.baidu.com/item/流媒体服务器/9711212">流媒体服务器</a>集群技术，克服单机系统输出带宽及并发能力不足的缺点，可极大提升<a href="https://baike.baidu.com/item/系统/479832">系统</a>支持的<a href="https://baike.baidu.com/item/并发流/7395601">并发流</a>数目，减少或避免单点失效带来的不良影响。</p>
+
+    <p>​	CDN的全称是<strong>Content Delivery Network</strong>，即内容分发网络。CDN是构建在网络之上的内容分发网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。CDN的关键技术主要有<strong>内容存储</strong>和<strong>分发技术</strong>。</p>
+
+    <blockquote>
+      <p><a href="https://juejin.cn/post/6844903807206473735">其他出处的解释</a></p>
+    </blockquote>
+  </li>
+  <li>
+    <p><strong><em>CDN的目的是什么？</em></strong></p>
+
+    <p>​	CDN应该说是负载均衡技术的一种，CDN是通过设置边缘镜像服务器，使得用户可以就近访问服务器，而不是一窝蜂访问源服务器。因为有可能源服务器离你所在的网络区很远，省内快递永远是要把海外快递要快。</p>
+  </li>
+</ul>
+
+<h3 id="2-负载均衡">2. 负载均衡</h3>
+
+<ul>
+  <li>基于DNS的链路负载均衡
+    <ul>
+      <li>是什么：即DNS解析为不同IP，用户通过IP访问不同服务器，负载均衡由DNS解析控制</li>
+      <li>优点：用户会直接访问目标服务器，不经过代理服务器，访问速度会更快</li>
+      <li>缺点：DNS在用户本地和LDNS均有缓存，一旦某台Web Server挂掉，将很难及时更新用户域名解析结构，导致用户无法访问域名（配置修改后，生效不及时）</li>
+    </ul>
+  </li>
+  <li>基于IP的负载均衡
+    <ul>
+      <li>在传输层的时候，对数据包中的IP地址和端口进行修改，从而达到转发的目的，称为四层负载均衡。NAT服务器（前端服务器）必须作为实际服务器（后端服务器）的网关，否则数据包被转发后将一去不返。</li>
+    </ul>
+  </li>
+  <li>基于硬件的负载均衡
+    <ul>
+      <li>在一个集群内，在硬件层次方面实现负载均衡，自动转发到不繁忙的服务器</li>
+    </ul>
+  </li>
+  <li>基于软件的负载均衡
+    <ul>
+      <li>在第七层，通过nginx，使用轮询等其他查看服务器繁忙程度的方法，实现负载均衡</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="3-cdn">3. CDN</h3>
+
+<blockquote>
+  <p><a href="https://www.zhihu.com/question/36514327/answer/1604554133">CDN是什么</a></p>
+</blockquote>
+
+<p>假设通过CDN加速的域名为<code class="language-plaintext highlighter-rouge">www.a.com</code>，接入CDN网络，开始使用加速服务后，当终端用户（北京）发起HTTP请求时，处理流程如下：</p>
+
+<ol>
+  <li>当终端用户（北京）向<code class="language-plaintext highlighter-rouge">www.a.com</code>下的指定资源发起请求时，首先向LDNS（本地DNS）发起域名解析请求。</li>
+  <li>LDNS检查缓存中是否有<code class="language-plaintext highlighter-rouge">www.a.com</code>的IP地址记录。如果有，则直接返回给终端用户；如果没有，则向授权DNS查询。</li>
+  <li>当授权DNS解析<code class="language-plaintext highlighter-rouge">www.a.com</code>时，返回域名CNAME <code class="language-plaintext highlighter-rouge">www.a.tbcdn.com</code>对应IP地址。</li>
+  <li>域名解析请求发送至阿里云DNS调度系统，并为请求分配最佳节点IP地址。</li>
+  <li>LDNS获取DNS返回的解析IP地址。</li>
+  <li>用户获取解析IP地址。</li>
+  <li>用户向获取的IP地址发起对该资源的访问请求。</li>
+</ol>
+
+<ul>
+  <li>如果该IP地址对应的节点已缓存该资源，则会将数据直接返回给用户，例如，图中步骤7和8，请求结束。</li>
+  <li>如果该IP地址对应的节点未缓存该资源，则节点向源站发起对该资源的请求。获取资源后，结合用户自定义配置的缓存策略，将资源缓存至节点，例如，图中的北京节点，并返回给用户，请求结束。</li>
+</ul>
+
+<hr />
+
+<h3 id="cdn-京东建仓策略就近配送">CDN 京东建仓策略，就近配送</h3>
+<p>上一次讲到DNS服务器负责负载均衡以及IP定位，HTTPDNS服务器，各家自扫门前雪，自己搞自己的DNS策略，不用根的DNS服务器。但是每次访问可以找到最近的地方访问吗？要是HTTPDNS服务器也是指向很远的IP，那么也是让网络延迟很久呀。所以，这时候就需要CDN策略。什么意思呢？全球很多数据中心，无论在什么地方上网，临近不远的地方基本上都有数据中心。数据中心部署几台机器，形成一个缓存的集群来缓存部分数据，用户访问数据的时候，就可以就近访问。而这些数据中心，统称 <strong>边缘节点</strong><br />
+而边缘节点数目较多，但是每个集群规模较小，不可能缓存下来所有东西，因而可能无法命中，这样就会在边缘节点之上，有区域节点，规模更大，缓存数据更多，命中的概率也就更大。区域节点之上就是中心节点，规模更大，缓存数据更多，命中概率更大。如果还不命中，就只好回源网站访问了。<br />
+<img src="./img/cdn_enode.jpg" alt="cdn_enode" title="CDN边缘节点分布系统架构" /></p>
+
+<p><strong>CDN的分布系统架构</strong>。CDN系统的缓存，一层一层的，能不访问后段真正的源节点，就不访问。<br />
+所以， <strong>客户端如何找到相应的边缘节点进行访问呢？</strong></p>
+<h4 id="基于dns的全局负载均衡">基于DNS的全局负载均衡</h4>
+<p>选择一个就近的同样的运营商服务器进行访问。CDN分发网络也是一个分布在多个区域、多个运营商的分布式系统，可以用相同的思路选择最适合的边缘节点。<br />
+<img src="./img/cdn_dns.jpg" alt="cdn_dns负载均衡" title="cdn—dns负载均衡" /></p>
+
+<p>与DNS访问不同，有了CDN之后，在访问一个域名，在访问权威DNS服务器上，会设置一个CNAME别名，指向另一个域名cdn.com，返回给本地的DNS服务器。</p>
+<ul>
+  <li>➡️当本地DNS服务器拿到新的域名，继续解析这个新的域名。再访问cdn.com这个权威的DNS服务器，这是CDN自己的权威DNS服务器。在这个服务器上，还会设置一个CNAME，指向另一个域名，也就是CDN网络的全局负载均衡器。</li>
+  <li>➡️本地DNS服务器去请求CDN的负载均衡器解析域名，全局负载均衡器会为用户选择一台合适的缓存服务器提供服务</li>
+</ul>
+
+<ol>
+  <li>根据用户IP地址，判断那一台服务器最近</li>
+  <li>用户所处运营商</li>
+  <li>根据用户所请求的URL中携带的额内容名称判断哪一台服务器上有用户所需要的内通</li>
+  <li>查询各个服务器当前的负载情况，判断哪一台服务器有服务能力</li>
+</ol>
+
+<p>综合分析以上条件，全局负载均衡器会返回一台缓存服务器的IP地址。<br />
+本地DDNS服务器缓存这个IP地址，返回给客户端，客户端访问这个边缘节点下载⏬资源。缓存服务器响应用户请求，将用户所需要的内容传送到用户终端。如果这台缓存服务器上并没有用户想要的内容，那么这台服务器就要向它的上一级缓存服务器请求内通，直至追溯到网站的源服务器将内容拉回本地。<br /></p>
+
+<h4 id="cdn可以进行多种内容缓存">CDN可以进行多种内容缓存</h4>
+<p><img src="./img/cache_manage.jpg" alt="缓存管理" title="接入层缓存架构" /></p>
+
+<p>CDN将静态资源缓存到离用户最近的数据中心外。越接近客户，访问性能越好，时延越低。<br />
+CDN支持流媒体协议，拉流在边缘节点，推流也在边缘节点。<br />
+静态页面，内容的分发往往采取拉取的方式，未命中🎯就再去上一级继续拉。流媒体则主动推流到边缘节点。<br />
+流媒体，CDN提供预处理服务，也即文件在分发之前，经过一定的处理，例如将视频转换为不同的码流，以适应不同的网络带宽的用户需求；再如对视频进行分片，降低存储压力，也使得客户端可以选择使用不同的码率加载不同的分片。(这就是高清，标清，流畅的区别)<br />
+流媒体需要 <strong>防盗链</strong>(常用http头的refer字段)<br /></p>
+
+<h5 id="动态cdn-对应动态数据">动态CDN 对应动态数据</h5>
+<ul>
+  <li>生鲜超市模式(边缘计算的模式)，数据动态生成，数据的逻辑计算和存储，放在相应的边缘节点。定时从源数据同步存储数据，然后在边缘进行计算得到结果。</li>
+  <li>冷链运输模式(路径优化模式)。数据不在边缘计算生成，而是源站生成，但是数据的下发可通过CDN网络进行路径优化。图的最短路径规划。</li>
+</ul>
+
+
+    </div>
+
+    <div class="post__share">
+  <div class="share__head">
+    <div class="share__title">Share this Post</div>
+  </div>
+  <ul class="share__list list-reset">
+    <li class="share__item">
+      <a class="share__link share__twitter"
+        href="https://twitter.com/intent/tweet?text=%EF%BC%885.2%EF%BC%89%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E5%92%8CCDN&url=/blog/2-5-2-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E5%92%8Ccdn"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__facebook"
+        href="https://www.facebook.com/sharer/sharer.php?u=/blog/2-5-2-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E5%92%8Ccdn"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__pinterest"
+        href="http://pinterest.com/pin/create/button/?url=/blog/2-5-2-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E5%92%8Ccdn&amp;media=/images/post/post-18.jpeg&amp;description=%EF%BC%885.2%EF%BC%89%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E5%92%8CCDN"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Pinterest" rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&url=/blog/2-5-2-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E5%92%8Ccdn&title=%EF%BC%885.2%EF%BC%89%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E5%92%8CCDN&summary=&source=Vonge"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
+    </li>
+  </ul>
+</div>
+
+  </article>
+</div>
+<!-- end post -->
+
+<div class="container">
+  <div class="row">
+    <div class="col col-10 col-d-12 push-d-0 push-1">
+      <div class="post__navigation animate">
+  
+  <a class="post__prev" href="/blog/1-5-1-http">
+    <div class="prev__image">
+      <img loading="lazy" src="/images/post/post-28.jpg" alt="（5.2）负载均衡和CDN">
+    </div>
+    <div class="prev__box">
+      <span class="post__nav post__nav__prev">Prev post</span>
+      <h2 class="post__nav__title">（5.1）http</h2>
+    </div>
+  </a>
+  
+
+  
+  <a class="post__next" href="/blog/6-1-dns">
+    <div class="next__box">
+      <span class="post__nav post__nav__next">Next post</span>
+      <h2 class="post__nav__title">1. DNS</h2>
+    </div>
+    <div class="next__image">
+      <img loading="lazy" src="/images/post/post-20.jpg" alt="（5.2）负载均衡和CDN">
+    </div>
+  </a>
+  
+</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- begin related posts -->
+<div class="container">
+  <section class="related-posts is-related animate">
+    <div class="row">
+      <div class="col col-12">
+        <div class="container__inner">
+          <div class="section__info">
+            <div class="section__head">
+              <h2 class="section__title">You may also like</h2>
+              <a class="section__link" href="/blog">
+                
+                
+                  
+                    <a href="/tags#计算机网络" class="section__link related-tag">See all<span> 计算机网络</span> <i class="ion ion-md-arrow-forward"></i></a>
+                  
+                
+              
+              </a>
+            </div>
+          </div>
+          <div class="row">
+
+          
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/2-%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF">
+                      <img loading="lazy" src="/images/post/post-52.jpg" alt="渲染管线">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/计算机网络" class="article__tag">计算机网络</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/2-%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF">渲染管线</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      ## 渲染管线
+
+### 1. 什么是渲染管线？
+渲染管线，也被称为图形管线，是一个用于生成2D图像（如屏幕上的图像）的硬件或软件实现的概念模型。这个过程通常基于3D场景的数据，包括但不限于几何、视点、纹理、光照信息等。
+
+渲染管线通...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-09T09:10:51+00:00">09 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/1-%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B%E4%B8%8E%E5%8E%9F%E7%90%86">
+                      <img loading="lazy" src="/images/post/post-39.jpg" alt="编译过程与原理">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/计算机网络" class="article__tag">计算机网络</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/1-%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B%E4%B8%8E%E5%8E%9F%E7%90%86">编译过程与原理</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      ## 编译过程与原理
+
+### 1. 编译过程 - 编译器在做什么？
+
+如果想要机器按照我们的设想执行我们的命令，我们需要一个能够跟机器沟通的方式，而这种方式也就是==机器语言(第一代计算机语言)==，一堆`01`构成的指令。我们需要...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-09T09:09:14+00:00">09 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/99-99-%E5%85%B3%E4%BA%8E%E7%BD%91%E7%BB%9C%E7%9A%84%E4%B8%80%E4%BA%9Bquiz">
+                      <img loading="lazy" src="/images/post/post-26.jpg" alt="（99）关于网络的一些quiz">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/计算机网络" class="article__tag">计算机网络</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/99-99-%E5%85%B3%E4%BA%8E%E7%BD%91%E7%BB%9C%E7%9A%84%E4%B8%80%E4%BA%9Bquiz">（99）关于网络的一些quiz</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      ## （99）关于网络的一些quiz
+
+#### 1. 画出tcp头部的协议格式
+
+#### 2.udp头部/ip头部/http头部
+
+#### 3. 滑动窗口的作用
+答:主要就是为了实现流量控制,控制了发送包的速率,每次发送方只能发...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-09T09:01:42+00:00">09 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+                  
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- end related posts -->
+
+
+
+
+
+
+    <!--
+        Bookshop components are accessed using the bookshop tag,
+        using the same syntax as the standard Jekyll include tag.
+    -->
+    <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
+
+<!--bookshop-live end-->
+
+    <div class="top" title="Top"><i class="ion ion-ios-arrow-up"></i></div>
+
+    <!-- begin footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+
+        <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+
+        <ul class="footer_nav list-reset">
+          
+          <li class="footer_nav__item">
+            <a href="/" class="footer_nav__link">Home</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/projects/" class="footer_nav__link">Projects</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/elements/" class="footer_nav__link">Elements</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/about/" class="footer_nav__link">About</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/blog/" class="footer_nav__link">Blog</a>
+          </li>
+          
+        </ul>
+
+        <div class="copyright"><p> 2021 &copy; <a href="/">Vonge</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
+
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- end footer -->
+
+    <script src="/js/scripts.js"></script>
+    <script src="/js/common.js"></script>
+</body>
+</html>

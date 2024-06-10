@@ -16,13 +16,13 @@
   <meta name="twitter:title" content="页面渲染 – Marco’s Blog">
   <meta name="twitter:description" content="页面渲染
 ">
-  <meta name="twitter:image:src" content="/images/post/post-58.JPEG">
+  <meta name="twitter:image:src" content="/images/post/post-50.jpeg">
 
   <!-- Facebook OpenGraph -->
   <meta property="og:title" content="页面渲染 – Marco’s Blog">
   <meta property="og:description" content="页面渲染
 ">
-  <meta property="og:image" content="/images/post/post-58.JPEG">
+  <meta property="og:image" content="/images/post/post-50.jpeg">
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
@@ -124,7 +124,7 @@
       
       <div class="col col-6 col-d-12">
         <div class="post-image">
-          <img loading="lazy" src="/images/post/post-58.JPEG" alt="页面渲染">
+          <img loading="lazy" src="/images/post/post-50.jpeg" alt="页面渲染">
         </div>
       </div>
       
@@ -132,6 +132,12 @@
       <div class="col col-6 col-d-12">
         <div class="post__info">
 
+          
+          <div class="post-tags">
+            
+              <a href="/tag/渲染进程" class="post-tags__tag">渲染进程</a>
+            
+          </div>
           
 
 
@@ -144,7 +150,7 @@
 
             <div class="post__meta-bottom">
               <div class="post__author">Marco Hwong</div>
-              <time class="post__date" datetime="2024-06-01T18:41:16+00:00">01 Jun 2024</time>
+              <time class="post__date" datetime="2024-06-10T15:35:45+00:00">10 Jun 2024</time>
             </div>
           </div>
 
@@ -159,6 +165,7 @@
 
   <article class="post">
 
+    <ul><li><a href="#页面渲染">页面渲染</a><ul><li><a href="#1-基本概念">1. 基本概念</a></li><li><a href="#2-渲染">2. 渲染</a><ul><li><a href="#21-页面的渲染流程">2.1 页面的渲染流程</a></li><li><a href="#22-客户端渲染-csr">2.2 客户端渲染-CSR</a></li><li><a href="#23-服务端渲染-ssr">2.3 服务端渲染-SSR</a></li><li><a href="#24-服务端渲染的由来">2.4 服务端渲染的由来</a></li><li><a href="#25-服务端渲染的利弊">2.5 服务端渲染的利弊</a></li></ul></li><li><a href="#quiz">quiz</a><ul><li><a href="#1-为什么客户端渲染不利于seo">1. 为什么客户端渲染不利于SEO</a></li></ul></li></ul></li></ul>
     <div class="post__content">
       <h2 id="页面渲染">页面渲染</h2>
 
@@ -207,7 +214,7 @@
 </ol>
 
 <p>以上就是一个基本的页面渲染流程。实际的流程可能会更复杂，因为还需要考虑到缓存、网络延迟、错误处理等因素。
-<img src="_imgs/1_服务端渲染_image.png" alt="alt text" /></p>
+<img src="/images/imgs/1_服务端渲染_image.png" alt="alt text" /></p>
 
 <p>可以看到，页面的渲染其实就是浏览器将HTML文本转化为页面帧的过程。而如今我们大部分WEB应用都是使用 JavaScript 框架（Vue、React、Angular）进行页面渲染的，也就是说，在执行 JavaScript 脚本的时候，HTML页面已经开始解析并且构建DOM树了，JavaScript 脚本只是动态的改变 DOM 树的结构，使得页面成为希望成为的样子，这种渲染方式叫动态渲染，也可以叫客户端渲染（client side rende）。</p>
 
@@ -217,7 +224,7 @@
 <h4 id="23-服务端渲染-ssr">2.3 服务端渲染-SSR</h4>
 <p>那么什么是服务端渲染（server side render）？顾名思义，服务端渲染就是在浏览器请求页面URL的时候，服务端将我们需要的HTML文本组装好，并返回给浏览器，这个HTML文本被浏览器解析之后，不需要经过 JavaScript 脚本的执行，即可直接构建出希望的 DOM 树并展示到页面中。这个服务端组装HTML的过程，叫做服务端渲染。</p>
 
-<p><img src="_imgs/1_服务端渲染_image-1.png" alt="alt text" />
+<p><img src="/images/imgs/1_服务端渲染_image-1.png" alt="alt text" />
 在服务器端，所有需要的 HTML 文本都被组装好，并返回给浏览器。浏览器解析这个 HTML 文本后，不需要执行 JavaScript 脚本，就可以直接构建出 DOM 树并展示到页面中。这种方式的优点是首屏加载速度快，对 SEO 友好。但是，服务器压力大，用户交互需要请求服务器。</p>
 
 <h4 id="24-服务端渲染的由来">2.4 服务端渲染的由来</h4>
@@ -226,7 +233,7 @@
     <p>Web1.0
   在没有AJAX的时候，也就是web1.0时代，几乎所有应用都是服务端渲染（此时服务器渲染非现在的服务器渲染），那个时候的页面渲染大概是这样的，浏览器请求页面URL，然后服务器接收到请求之后，到数据库查询数据，将数据丢到后端的组件模板（php、asp、jsp等）中，并渲染成HTML片段，接着服务器在组装这些HTML片段，组成一个完整的HTML，最后返回给浏览器，这个时候，浏览器已经拿到了一个完整的被服务器动态组装出来的HTML文本，然后将HTML渲染到页面中，过程没有任何JavaScript代码的参与。</p>
 
-    <p><img src="_imgs/1_服务端渲染_image-2.png" alt="alt text" /></p>
+    <p><img src="/images/imgs/1_服务端渲染_image-2.png" alt="alt text" /></p>
   </li>
   <li>
     <p>客户端渲染
@@ -243,7 +250,7 @@
 
     <p>前后端分离之后，网页开始被当成了独立的应用程序（SPA，Single Page Application），前端团队接管了所有页面渲染的事，后端团队只负责提供所有数据查询与处理的API，大体流程是这样的：首先浏览器请求URL，前端服务器直接返回一个空的静态HTML文件（不需要任何查数据库和模板组装），这个HTML文件中加载了很多渲染页面需要的 JavaScript 脚本和 CSS 样式表，浏览器拿到 HTML 文件后开始加载脚本和样式表，并且执行脚本，这个时候脚本请求后端服务提供的API，获取数据，获取完成后将数据通过JavaScript脚本动态的将数据渲染到页面中，完成页面显示。</p>
 
-    <p><img src="_imgs/1_服务端渲染_image-3.png" alt="alt text" /></p>
+    <p><img src="/images/imgs/1_服务端渲染_image-3.png" alt="alt text" /></p>
 
     <p>这一个前后端分离的渲染模式，也就是客户端渲染（CSR）。</p>
   </li>
@@ -253,7 +260,7 @@
 
     <p>自己选的路，跪着也要走下去。于是前端团队选择了使用 nodejs 在服务器进行页面的渲染，进而再次出现了服务端渲染。大体流程与客户端渲染有些相似，首先是浏览器请求URL，前端服务器接收到URL请求之后，根据不同的URL，前端服务器向后端服务器请求数据，请求完成后，前端服务器会组装一个携带了具体数据的HTML文本，并且返回给浏览器，浏览器得到HTML之后开始渲染页面，同时，浏览器加载并执行 JavaScript 脚本，给页面上的元素绑定事件，让页面变得可交互，当用户与浏览器页面进行交互，如跳转到下一个页面时，浏览器会执行 JavaScript 脚本，向后端服务器请求数据，获取完数据之后再次执行 JavaScript 代码动态渲染页面。</p>
 
-    <p><img src="_imgs/1_服务端渲染_image-4.png" alt="alt text" /></p>
+    <p><img src="/images/imgs/1_服务端渲染_image-4.png" alt="alt text" /></p>
   </li>
 </ul>
 
@@ -275,7 +282,7 @@
   <li>
     <p>白屏时间更短
   相对于客户端渲染，服务端渲染在浏览器请求URL之后已经得到了一个带有数据的HTML文本，浏览器只需要解析HTML，直接构建DOM树就可以。而客户端渲染，需要先得到一个空的HTML页面，这个时候页面已经进入白屏，之后还需要经过加载并执行 JavaScript、请求后端服务器获取数据、JavaScript 渲染页面几个过程才可以看到最后的页面。特别是在复杂应用中，由于需要加载 JavaScript 脚本，越是复杂的应用，需要加载的 JavaScript 脚本就越多、越大，这会导致应用的首屏加载时间非常长，进而降低了体验感。
-  <img src="_imgs/1_服务端渲染_image-5.png" alt="alt text" /></p>
+  <img src="/images/imgs/1_服务端渲染_image-5.png" alt="alt text" /></p>
   </li>
   <li>
     <p>服务端渲染缺点
@@ -320,7 +327,7 @@
     </li>
     <li class="share__item">
       <a class="share__link share__pinterest"
-        href="http://pinterest.com/pin/create/button/?url=/blog/1-%E9%A1%B5%E9%9D%A2%E6%B8%B2%E6%9F%93&amp;media=/images/post/post-58.JPEG&amp;description=%E9%A1%B5%E9%9D%A2%E6%B8%B2%E6%9F%93"
+        href="http://pinterest.com/pin/create/button/?url=/blog/1-%E9%A1%B5%E9%9D%A2%E6%B8%B2%E6%9F%93&amp;media=/images/post/post-50.jpeg&amp;description=%E9%A1%B5%E9%9D%A2%E6%B8%B2%E6%9F%93"
         onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
         title="Share on Pinterest" rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
     </li>
@@ -342,25 +349,25 @@
     <div class="col col-10 col-d-12 push-d-0 push-1">
       <div class="post__navigation animate">
   
-  <a class="post__prev" href="/blog/6-%E5%91%BD%E4%B8%AD%E7%8E%87">
+  <a class="post__prev" href="/blog/0-%E6%B8%B2%E6%9F%93%E6%B5%81%E6%B0%B4%E7%BA%BF">
     <div class="prev__image">
-      <img loading="lazy" src="/images/post/post-48.jpg" alt="页面渲染">
+      <img loading="lazy" src="/images/post/post-49.jpeg" alt="页面渲染">
     </div>
     <div class="prev__box">
       <span class="post__nav post__nav__prev">Prev post</span>
-      <h2 class="post__nav__title">命中率</h2>
+      <h2 class="post__nav__title">渲染流水线</h2>
     </div>
   </a>
   
 
   
-  <a class="post__next" href="/blog/5-%E5%A4%9A%E6%80%81">
+  <a class="post__next" href="/blog/1-dom%E6%A0%91-javascript%E6%98%AF%E5%A6%82%E4%BD%95%E5%BD%B1%E5%93%8Ddom%E6%A0%91%E6%9E%84%E5%BB%BA%E7%9A%84">
     <div class="next__box">
       <span class="post__nav post__nav__next">Next post</span>
-      <h2 class="post__nav__title">多态</h2>
+      <h2 class="post__nav__title">DOM树：JavaScript是如何影响DOM树构建的</h2>
     </div>
     <div class="next__image">
-      <img loading="lazy" src="/images/post/post-5.jpeg" alt="页面渲染">
+      <img loading="lazy" src="/images/post/post-47.jpg" alt="页面渲染">
     </div>
   </a>
   
@@ -377,7 +384,7 @@
 
 <!-- begin related posts -->
 <div class="container">
-  <section class="related-posts  animate">
+  <section class="related-posts is-related animate">
     <div class="row">
       <div class="col col-12">
         <div class="container__inner">
@@ -386,12 +393,155 @@
               <h2 class="section__title">You may also like</h2>
               <a class="section__link" href="/blog">
                 
+                
+                  
+                    <a href="/tags#渲染进程" class="section__link related-tag">See all<span> 渲染进程</span> <i class="ion ion-md-arrow-forward"></i></a>
+                  
+                
+              
               </a>
             </div>
           </div>
           <div class="row">
 
           
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/0-%E6%B8%B2%E6%9F%93%E6%B5%81%E6%B0%B4%E7%BA%BF">
+                      <img loading="lazy" src="/images/post/post-49.jpeg" alt="渲染流水线">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/渲染进程" class="article__tag">渲染进程</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/0-%E6%B8%B2%E6%9F%93%E6%B5%81%E6%B0%B4%E7%BA%BF">渲染流水线</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      渲染流水线
+
+0. concepts
+
+从服务器得到响应体之后，如果这是一个content-type为text/html的，那就需要将这些文本处理成我们能看到的页面。这个过程，叫做渲染。
+
+渲染流水线，说白了就是如何将响应体得到的HT...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-10T15:34:29+00:00">10 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
             
             
       

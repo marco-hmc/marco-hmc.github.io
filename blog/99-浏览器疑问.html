@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>浏览器疑问</title>
+  <meta name='description' content='Marco’s Blog'>
+
+  <link rel="canonical" href="/blog/99-%E6%B5%8F%E8%A7%88%E5%99%A8%E7%96%91%E9%97%AE">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="浏览器疑问 – Marco’s Blog">
+  <meta name="twitter:description" content="浏览器疑问
+">
+  <meta name="twitter:image:src" content="/images/post/post-44.jpg">
+
+  <!-- Facebook OpenGraph -->
+  <meta property="og:title" content="浏览器疑问 – Marco’s Blog">
+  <meta property="og:description" content="浏览器疑问
+">
+  <meta property="og:image" content="/images/post/post-44.jpg">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Ionicons -->
+  <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/main.css">
+</head>
+
+<body>
+
+    
+
+    <!-- begin header -->
+<header class="c-header">
+  <div class="container">
+    <div class="row">
+      <div class="c-header__inner">
+
+        <div class="logo">
+          <a class="logo__link" href="/">
+          
+            <img class="logo__image" src="/images/mc_logo1.ico" alt="Marco’s Blog">
+          
+          </a>
+        </div>
+
+        <nav class="main-nav">
+          <div class="main-nav__box">
+
+            <div class="nav__icon-close">
+              <i class="ion ion-md-close"></i>
+            </div>
+
+            <div class="nav__title">Menu</div>
+
+              <ul class="nav__list list-reset">
+
+              
+                
+                <li class="nav__item">
+                  <a href="/" class="nav__link">Home</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/projects/" class="nav__link">Projects</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/blog/" class="nav__link">Blog</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/about/" class="nav__link">About</a>
+                </li>
+                
+              
+
+            </ul>
+          </div>
+
+          <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+        </nav>
+
+        <div class="nav-button">
+          <i class="nav__icon nav__icon-menu ion ion-md-menu"></i>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+<!-- end header -->
+
+    <div class="post-top">
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="col col-6 col-d-12">
+        <div class="post-image">
+          <img loading="lazy" src="/images/post/post-44.jpg" alt="浏览器疑问">
+        </div>
+      </div>
+      
+
+      <div class="col col-6 col-d-12">
+        <div class="post__info">
+
+          
+          <div class="post-tags">
+            
+              <a href="/tag/浏览器基本概念" class="post-tags__tag">浏览器基本概念</a>
+            
+          </div>
+          
+
+
+          <h1 class="post__title">浏览器疑问</h1>
+
+          <div class="post__meta">
+            <div class="post__author-image">
+              <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+            </div>
+
+            <div class="post__meta-bottom">
+              <div class="post__author">Marco Hwong</div>
+              <time class="post__date" datetime="2024-06-10T15:42:39+00:00">10 Jun 2024</time>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- begin post -->
+<div class="container animate">
+
+  <article class="post">
+
+    <ul><li><a href="#浏览器疑问">浏览器疑问</a><ul><li><a href="#1-javascript">1. javaScript</a><ul><li><a href="#11-怎么理解变量提升为什么要有变量提升">1.1 怎么理解变量提升？为什么要有变量提升？</a></li><li><a href="#12-怎么js的编译过程">1.2 怎么js的编译过程？</a></li><li><a href="#13-为什么-javascript-代码会出现栈溢出">1.3 为什么 JavaScript 代码会出现栈溢出</a></li><li><a href="#14-代码中出现相同的变量或者函数怎么办">1.4 代码中出现相同的变量或者函数怎么办？</a></li></ul></li><li><a href="#1-页面部分">1. 页面部分</a><ul><li><a href="#11-什么是dom">1.1 什么是dom?</a></li><li><a href="#12-如何将html转为dom树">1.2 如何将html转为dom树?</a></li><li><a href="#13-js是如何操作dom树的">1.3 js是如何操作dom树的</a></li><li><a href="#14-js和html是如何一起工作的">1.4 js和html是如何一起工作的</a></li><li><a href="#15-什么是首次绘制资源和非首次绘制资源">1.5 什么是首次绘制资源和非首次绘制资源</a></li><li><a href="#16-浏览器架构">1.6 浏览器架构</a></li></ul></li><li><a href="#附录">附录</a><ul><li><a href="#1-terms">1. terms</a></li></ul></li></ul></li></ul>
+    <div class="post__content">
+      <h2 id="浏览器疑问">浏览器疑问</h2>
+
+<h3 id="1-javascript">1. javaScript</h3>
+
+<h4 id="11-怎么理解变量提升为什么要有变量提升">1.1 怎么理解变量提升？为什么要有变量提升？</h4>
+
+<p>变量提升（Hoisting）是 JavaScript 中的一个特性，它意味着无论变量在哪里声明，都会被提升到当前作用域的顶部。这个特性只适用于 var 声明的变量，let 和 const 声明的变量不会被提升。</p>
+
+<p>这是一个例子：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">myVar</span><span class="p">);</span> <span class="c1">// 输出：undefined</span>
+<span class="kd">var</span> <span class="nx">myVar</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">myVar</span><span class="p">);</span> <span class="c1">// 输出：5</span>
+</code></pre></div></div>
+
+<p>在这个例子中，虽然 <code class="language-plaintext highlighter-rouge">myVar</code> 是在 <code class="language-plaintext highlighter-rouge">console.log(myVar);</code> 之后声明的，但是由于变量提升，<code class="language-plaintext highlighter-rouge">myVar</code> 在声明之前就已经存在了，只是它的值是 <code class="language-plaintext highlighter-rouge">undefined</code>。</p>
+
+<p>变量提升的存在，主要是为了解决变量在声明之前就被引用的问题。但是，这也可能导致一些意想不到的问题，因为开发者可能会忘记或者不清楚变量提升的存在。因此，现代的 JavaScript 开发中，通常推荐使用 let 和 const 来声明变量，因为它们不会被提升，可以避免这种问题。</p>
+
+<h4 id="12-怎么js的编译过程">1.2 怎么js的编译过程？</h4>
+<ul>
+  <li>编译过程做了什么？</li>
+  <li>执行上下文，可执行代码是什么？</li>
+  <li>执行上下文包含哪些内容（变量环境，词法环境）
+    <ul>
+      <li>执行上下文是 JavaScript 执行一段代码时的运行环境，比如调用一个函数，就会进入这个函数的执行上下文，确定该函数在执行期间用到的诸如 this、变量、对象以及函数等。</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="13-为什么-javascript-代码会出现栈溢出">1.3 为什么 JavaScript 代码会出现栈溢出</h4>
+
+<h4 id="14-代码中出现相同的变量或者函数怎么办">1.4 代码中出现相同的变量或者函数怎么办？</h4>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">showName</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">极客邦</span><span class="dl">'</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nf">showName</span><span class="p">()</span>
+<span class="kd">function</span> <span class="nf">showName</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">极客时间</span><span class="dl">'</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nf">showName</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><strong>一段代码如果定义了两个相同名字的函数，那么最终生效的是最后一个函数</strong>。</p>
+
+<h3 id="1-页面部分">1. 页面部分</h3>
+
+<h4 id="11-什么是dom">1.1 什么是dom?</h4>
+<p>DOM(Document Object Model)是一种编程接口,它允许 JavaScript 和其他脚本语言操作 HTML 和 XML 文档的内容/结构和样式.DOM 将文档解析为一个由节点和对象(包括属性和方法)组成的结构,使得编程语言可以操作文档的内容和结构.</p>
+
+<p>在 JavaScript 中,DOM 是由以下几种类型的节点组成的:</p>
+
+<ul>
+  <li>
+    <p><strong>文档节点</strong>:代表整个文档,是 DOM 树的根节点.</p>
+  </li>
+  <li>
+    <p><strong>元素节点</strong>:代表 HTML 或 XML 文档中的元素,如 <code class="language-plaintext highlighter-rouge">&lt;p&gt;</code>/<code class="language-plaintext highlighter-rouge">&lt;div&gt;</code> 等.</p>
+  </li>
+  <li>
+    <p><strong>属性节点</strong>:代表元素的属性.</p>
+  </li>
+  <li>
+    <p><strong>文本节点</strong>:代表元素或属性中的文本内容.</p>
+  </li>
+</ul>
+
+<p>这些节点都是对象,具有各自的属性和方法.通过这些属性和方法,我们可以读取和修改节点的内容,创建和删除节点,添加和删除节点的属性,等等.</p>
+
+<p>例如,我们可以使用 <code class="language-plaintext highlighter-rouge">getElementById</code> 方法获取一个元素节点,然后使用 <code class="language-plaintext highlighter-rouge">innerHTML</code> 属性修改其内容,或者使用 <code class="language-plaintext highlighter-rouge">style</code> 属性修改其样式.</p>
+
+<p>总的来说,DOM 是 JavaScript 操作网页内容的一种方式,它将网页转化为一个对象模型,使得我们可以像操作对象一样操作网页.</p>
+
+<h4 id="12-如何将html转为dom树">1.2 如何将html转为dom树?</h4>
+<p>DOM(Document Object Model)将整个网页转化为一个对象模型的过程通常被称为”解析”,这是浏览器的渲染引擎在加载网页时自动进行的.</p>
+
+<p>当浏览器加载 HTML 文档时,它会从上到下逐行读取文档内容.对于每一个遇到的 HTML 标签,浏览器会创建一个对应的 DOM 对象(节点).这些对象包含了该标签的所有信息,如标签名/属性/父节点/子节点等.</p>
+
+<p>这些 DOM 对象按照它们在 HTML 文档中的嵌套关系组织成一个树状结构,称为 DOM 树.在 DOM 树中,整个文档是一个”文档节点”,HTML 标签是”元素节点”,标签的属性是”属性节点”,标签中的文本内容是”文本节点”.</p>
+
+<p>例如,对于以下的 HTML 文档:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;title&gt;</span>My Title<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;h1&gt;</span>My Heading<span class="nt">&lt;/h1&gt;</span>
+    <span class="nt">&lt;p&gt;</span>My paragraph.<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>浏览器会解析成如下的 DOM 树:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Document
+└── HTML
+    ├── HEAD
+    │   └── TITLE
+    │       └── "My Title"
+    └── BODY
+        ├── H1
+        │   └── "My Heading"
+        └── P
+            └── "My paragraph."
+</code></pre></div></div>
+
+<p>通过这种方式,DOM 将网页转化为一个对象模型,使得 JavaScript 可以通过操作这些对象来操作网页的内容和结构.</p>
+
+<h4 id="13-js是如何操作dom树的">1.3 js是如何操作dom树的</h4>
+
+<p>JavaScript 操作 DOM 树主要通过以下几个步骤:</p>
+
+<ol>
+  <li>
+    <p><strong>获取节点</strong>:首先,我们需要获取到我们想要操作的 DOM 节点.JavaScript 提供了多种方法来获取节点,如 <code class="language-plaintext highlighter-rouge">getElementById</code>/<code class="language-plaintext highlighter-rouge">getElementsByClassName</code>/<code class="language-plaintext highlighter-rouge">getElementsByTagName</code>/<code class="language-plaintext highlighter-rouge">querySelector</code> 和 <code class="language-plaintext highlighter-rouge">querySelectorAll</code> 等.</p>
+
+    <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">element</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">myElement</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong>修改节点</strong>:获取到节点后,我们可以使用节点的属性和方法来修改它.例如,我们可以修改元素节点的 <code class="language-plaintext highlighter-rouge">innerHTML</code> 属性来改变它的内容,或者修改 <code class="language-plaintext highlighter-rouge">style</code> 属性来改变它的样式.</p>
+
+    <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">element</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">New content</span><span class="dl">'</span><span class="p">;</span>
+<span class="nx">element</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">color</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">red</span><span class="dl">'</span><span class="p">;</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong>添加和删除节点</strong>:我们还可以使用 <code class="language-plaintext highlighter-rouge">appendChild</code>/<code class="language-plaintext highlighter-rouge">insertBefore</code>/<code class="language-plaintext highlighter-rouge">removeChild</code> 等方法来添加/移动或删除节点.</p>
+
+    <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">newElement</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">createElement</span><span class="p">(</span><span class="dl">'</span><span class="s1">div</span><span class="dl">'</span><span class="p">);</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nf">appendChild</span><span class="p">(</span><span class="nx">newElement</span><span class="p">);</span>
+   
+<span class="kd">var</span> <span class="nx">oldElement</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">oldElement</span><span class="dl">'</span><span class="p">);</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nf">removeChild</span><span class="p">(</span><span class="nx">oldElement</span><span class="p">);</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong>添加和删除事件监听器</strong>:我们可以使用 <code class="language-plaintext highlighter-rouge">addEventListener</code> 和 <code class="language-plaintext highlighter-rouge">removeEventListener</code> 方法来添加或删除事件监听器,使得我们可以在用户与网页交互时执行特定的代码.</p>
+
+    <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">element</span><span class="p">.</span><span class="nf">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">click</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nf">alert</span><span class="p">(</span><span class="dl">'</span><span class="s1">Element was clicked!</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>以上就是 JavaScript 操作 DOM 树的基本步骤.通过这些步骤,我们可以动态地修改网页的内容/结构和样式,以及响应用户的交互.</p>
+
+<h4 id="14-js和html是如何一起工作的">1.4 js和html是如何一起工作的</h4>
+<p>实际上,当浏览器加载 HTML 文档时,它会读取 HTML 文档的文本内容,然后根据这些文本内容创建 DOM 树.这个过程被称为”解析”.</p>
+
+<p>在解析过程中,浏览器会逐行读取 HTML 文档的文本内容.对于每一个遇到的 HTML 标签,浏览器会创建一个对应的 DOM 对象(节点).这些对象包含了该标签的所有信息,如标签名/属性/父节点/子节点等.</p>
+
+<p>然后,这些 DOM 对象按照它们在 HTML 文档中的嵌套关系组织成一个树状结构,称为 DOM 树.在 DOM 树中,整个文档是一个”文档节点”,HTML 标签是”元素节点”,标签的属性是”属性节点”,标签中的文本内容是”文本节点”.</p>
+
+<p>这个 DOM 树就是一个 JavaScript 对象,JavaScript 可以通过操作这个对象来操作网页的内容和结构.所以,我们可以说,浏览器是将 HTML 文档的文本内容解析成一个 JavaScript 对象,然后 JavaScript 通过操作这个对象来操作 DOM 树.</p>
+
+<h4 id="15-什么是首次绘制资源和非首次绘制资源">1.5 什么是首次绘制资源和非首次绘制资源</h4>
+
+<p>首次绘制资源和非首次绘制资源是指在网页加载过程中，对页面首次渲染有影响的资源和没有影响的资源。</p>
+
+<p>首次绘制资源：这些资源在加载和处理过程中会阻塞页面的首次渲染。这通常包括HTML文件、CSS文件和JavaScript文件。HTML文件用于构建DOM（文档对象模型），CSS文件用于构建CSSOM（CSS对象模型），而JavaScript文件可能会修改DOM和CSSOM。因此，浏览器需要等待这些文件加载和执行完成后，才能进行页面的首次渲染。</p>
+
+<p>非首次绘制资源：这些资源在加载和处理过程中不会阻塞页面的首次渲染。这通常包括图片、音频和视频等文件。这些文件的加载和处理可以在页面首次渲染之后进行，因此它们不会阻塞页面的首次渲染。</p>
+
+<h4 id="16-浏览器架构">1.6 浏览器架构</h4>
+
+<p><img src="http://img.smyhvae.com/20180124_1700.png" alt="" /></p>
+
+<p>1/User Interface  用户界面,我们所看到的浏览器</p>
+
+<p>2/Browser engine  浏览器引擎,用来查询和操作渲染引擎</p>
+
+<p>3/Rendering engine 用来显示请求的内容,负责解析HTML/CSS</p>
+
+<p>4/Networking   网络,负责发送网络请求</p>
+
+<p>5/JavaScript Interpreter(解析者)   JavaScript解析器,负责执行JavaScript的代码</p>
+
+<p>6/UI Backend   UI后端,用来绘制类似组合框和弹出窗口</p>
+
+<p>7/Data Persistence(持久化)  数据持久化,数据存储  cookie/HTML5中的sessionStorage</p>
+
+<h3 id="附录">附录</h3>
+<h4 id="1-terms">1. terms</h4>
+<ul>
+  <li>
+    <p>MDN</p>
+
+    <ul>
+      <li>MDN,全称Mozilla Developer Network,是一个开放的社区和资源库,为开发者提供了大量关于开放网络技术(包括CSS/HTML和JavaScript)的文档和学习资源.</li>
+      <li>MDN的JavaScript参考文档是一个非常重要的资源,它提供了关于JavaScript语言的深入信息,包括语言的函数/方法等详细解释和示例.这些信息对于理解和使用JavaScript非常有帮助.</li>
+    </ul>
+  </li>
+  <li>
+    <p>html/css/js</p>
+
+    <p>HTML,CSS和JavaScript是构建网页和网站的三大核心技术.</p>
+
+    <ol>
+      <li>
+        <p><strong>HTML</strong>:HTML(HyperText Markup Language,超文本标记语言)是用来描述网页内容的语言.它使用一系列元素(或称为标签)来标记和包裹网页的各个部分内容,如标题/段落/列表/链接/图片等.每个元素都有特定的含义和用途,告诉浏览器如何展示相关内容.</p>
+      </li>
+      <li>
+        <p><strong>CSS</strong>:CSS(Cascading Style Sheets,层叠样式表)是用来描述网页样式的语言.它可以定义网页中元素的布局/颜色/字体等视觉效果.CSS可以让你将样式信息与HTML内容分离,使得网页的结构和样式可以独立编辑和管理,提高了代码的可维护性.</p>
+      </li>
+      <li>
+        <p><strong>JavaScript</strong>:JavaScript是一种编程语言,用于实现网页的交互功能.通过JavaScript,你可以操作DOM(Document Object Model,文档对象模型)来动态修改网页的内容/结构和样式,可以处理用户的输入和操作,可以实现动画效果,可以与服务器进行通信等.</p>
+      </li>
+    </ol>
+
+    <p>这三种语言的关系是:HTML负责网页的结构,CSS负责网页的样式,JavaScript负责网页的行为.它们共同工作,构建出丰富/美观/交互的网页和网站.</p>
+  </li>
+  <li>
+    <p>nodeJs</p>
+
+    <p>Node.js是一个开源的/跨平台的JavaScript运行环境,它可以让JavaScript脱离浏览器环境,在服务器或其他计算机环境中运行.Node.js的设计目标是提供一种简单的构建可扩展网络应用的方法.
+  Node.js 的解释和运行是由 Google 的 V8 JavaScript 引擎来完成的.
+  Node.js 在 V8 的基础上,增加了一些 API 和功能,使得 JavaScript 可以进行文件操作/网络通信/操作系统交互等,这些在浏览器环境中无法做到的事情.这使得 JavaScript 可以用于服务器端编程,构建网络应用.</p>
+  </li>
+  <li>
+    <p>v8引擎
+  V8 引擎是 Google 开发的开源 JavaScript 引擎.它用于 Google Chrome 浏览器,也是 Node.js 的核心组成部分.</p>
+
+    <p>V8 引擎的主要特性包括:</p>
+
+    <ol>
+      <li>
+        <p><strong>即时编译(JIT)</strong>:V8 引擎将 JavaScript 代码直接编译成机器码来执行,而不是先编译成字节码或通过解释器解释执行.这使得 JavaScript 代码的运行效率非常高.</p>
+      </li>
+      <li>
+        <p><strong>垃圾回收</strong>:V8 引擎有一个高效的垃圾回收机制,可以自动回收不再使用的内存,防止内存泄漏.</p>
+      </li>
+      <li>
+        <p><strong>调用堆栈跟踪</strong>:V8 引擎可以提供详细的调用堆栈信息,帮助开发者调试代码.</p>
+      </li>
+      <li>
+        <p><strong>高性能的 JavaScript 执行</strong>:通过各种优化技术,如内联缓存(Inline Caching)/隐藏类(Hidden Classes)等,V8 引擎可以高效地执行 JavaScript 代码.</p>
+      </li>
+    </ol>
+
+    <p>V8 引擎的设计目标是提供高性能的 JavaScript 执行环境,同时保持代码的安全性和可移植性.因此,V8 引擎在浏览器和服务器端的 JavaScript 执行环境中都有广泛的应用.</p>
+  </li>
+  <li>Dom
+    <ul>
+      <li>文档对象模型（Document Object Model），是一种编程接口，它允许程序和脚本动态地访问和更新文档的内容、结构和样式。</li>
+    </ul>
+  </li>
+  <li>Vue和React
+    <ul>
+      <li>一个用于构建用户界面的JavaScript框架。</li>
+    </ul>
+  </li>
+</ul>
+
+    </div>
+
+    <div class="post__share">
+  <div class="share__head">
+    <div class="share__title">Share this Post</div>
+  </div>
+  <ul class="share__list list-reset">
+    <li class="share__item">
+      <a class="share__link share__twitter"
+        href="https://twitter.com/intent/tweet?text=%E6%B5%8F%E8%A7%88%E5%99%A8%E7%96%91%E9%97%AE&url=/blog/99-%E6%B5%8F%E8%A7%88%E5%99%A8%E7%96%91%E9%97%AE"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__facebook"
+        href="https://www.facebook.com/sharer/sharer.php?u=/blog/99-%E6%B5%8F%E8%A7%88%E5%99%A8%E7%96%91%E9%97%AE"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__pinterest"
+        href="http://pinterest.com/pin/create/button/?url=/blog/99-%E6%B5%8F%E8%A7%88%E5%99%A8%E7%96%91%E9%97%AE&amp;media=/images/post/post-44.jpg&amp;description=%E6%B5%8F%E8%A7%88%E5%99%A8%E7%96%91%E9%97%AE"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Pinterest" rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&url=/blog/99-%E6%B5%8F%E8%A7%88%E5%99%A8%E7%96%91%E9%97%AE&title=%E6%B5%8F%E8%A7%88%E5%99%A8%E7%96%91%E9%97%AE&summary=&source=Vonge"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
+    </li>
+  </ul>
+</div>
+
+  </article>
+</div>
+<!-- end post -->
+
+<div class="container">
+  <div class="row">
+    <div class="col col-10 col-d-12 push-d-0 push-1">
+      <div class="post__navigation animate">
+  
+  <a class="post__prev" href="/blog/3-%E5%88%86%E5%B1%82%E5%92%8C%E5%90%88%E6%88%90%E6%9C%BA%E5%88%B6-%E4%B8%BA%E4%BB%80%E4%B9%88css%E5%8A%A8%E7%94%BB%E6%AF%94javascript%E9%AB%98%E6%95%88">
+    <div class="prev__image">
+      <img loading="lazy" src="/images/post/post-45.png" alt="浏览器疑问">
+    </div>
+    <div class="prev__box">
+      <span class="post__nav post__nav__prev">Prev post</span>
+      <h2 class="post__nav__title">分层和合成机制：为什么CSS动画比JavaScript高效</h2>
+    </div>
+  </a>
+  
+
+  
+  <a class="post__next" href="/blog/3-%E7%B1%BB%E7%9A%84quiz">
+    <div class="next__box">
+      <span class="post__nav post__nav__next">Next post</span>
+      <h2 class="post__nav__title">类的quiz</h2>
+    </div>
+    <div class="next__image">
+      <img loading="lazy" src="/images/post/post-16.jpeg" alt="浏览器疑问">
+    </div>
+  </a>
+  
+</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- begin related posts -->
+<div class="container">
+  <section class="related-posts is-related animate">
+    <div class="row">
+      <div class="col col-12">
+        <div class="container__inner">
+          <div class="section__info">
+            <div class="section__head">
+              <h2 class="section__title">You may also like</h2>
+              <a class="section__link" href="/blog">
+                
+                
+                  
+                    <a href="/tags#浏览器基本概念" class="section__link related-tag">See all<span> 浏览器基本概念</span> <i class="ion ion-md-arrow-forward"></i></a>
+                  
+                
+              
+              </a>
+            </div>
+          </div>
+          <div class="row">
+
+          
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/0-%E6%B5%8F%E8%A7%88%E5%99%A8%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86">
+                      <img loading="lazy" src="/images/post/post-42.jpeg" alt="浏览器工作原理">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/浏览器基本概念" class="article__tag">浏览器基本概念</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/0-%E6%B5%8F%E8%A7%88%E5%99%A8%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86">浏览器工作原理</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      浏览器工作原理
+
+浏览器内有哪些进程，这些进程都有些什么作用
+浏览器地址输入URL后，内部的进程、线程都做了哪些事
+我们与浏览器交互时，内部进程是怎么处理这些交互事件的
+
+1. 浏览器架构
+
+进程（process）是程序的一次执行过程...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-10T08:30:27+00:00">10 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/1-%E4%BB%8E%E8%BE%93%E5%85%A5url%E5%88%B0%E9%A1%B5%E9%9D%A2%E5%B1%95%E7%A4%BA%E8%BF%99%E4%B8%AD%E9%97%B4%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88">
+                      <img loading="lazy" src="/images/post/post-43.jpeg" alt="从输入URL到页面展示这中间发生了什么">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/浏览器基本概念" class="article__tag">浏览器基本概念</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/1-%E4%BB%8E%E8%BE%93%E5%85%A5url%E5%88%B0%E9%A1%B5%E9%9D%A2%E5%B1%95%E7%A4%BA%E8%BF%99%E4%B8%AD%E9%97%B4%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88">从输入URL到页面展示这中间发生了什么</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      从输入URL到页面展示这中间发生了什么
+
+1. concepts
+
+从图中可以看出，整个过程需要各个进程之间的配合，所以在开始正式流程之前，我们还是先来快速回顾下浏览器进程、渲染进程和网络进程的主要职责。
+
+
+  
+    浏览器进程...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-10T08:19:42+00:00">10 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- end related posts -->
+
+
+
+
+
+
+    <!--
+        Bookshop components are accessed using the bookshop tag,
+        using the same syntax as the standard Jekyll include tag.
+    -->
+    <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
+
+<!--bookshop-live end-->
+
+    <div class="top" title="Top"><i class="ion ion-ios-arrow-up"></i></div>
+
+    <!-- begin footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+
+        <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+
+        <ul class="footer_nav list-reset">
+          
+          <li class="footer_nav__item">
+            <a href="/" class="footer_nav__link">Home</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/projects/" class="footer_nav__link">Projects</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/elements/" class="footer_nav__link">Elements</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/about/" class="footer_nav__link">About</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/blog/" class="footer_nav__link">Blog</a>
+          </li>
+          
+        </ul>
+
+        <div class="copyright"><p> 2021 &copy; <a href="/">Vonge</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
+
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- end footer -->
+
+    <script src="/js/scripts.js"></script>
+    <script src="/js/common.js"></script>
+</body>
+</html>

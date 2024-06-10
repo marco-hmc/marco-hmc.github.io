@@ -14,13 +14,13 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="二进制兼容 – Marco’s Blog">
-  <meta name="twitter:description" content="_tags: constructing, c++
+  <meta name="twitter:description" content="二进制兼容
 ">
   <meta name="twitter:image:src" content="/images/post/post-2.jpg">
 
   <!-- Facebook OpenGraph -->
   <meta property="og:title" content="二进制兼容 – Marco’s Blog">
-  <meta property="og:description" content="_tags: constructing, c++
+  <meta property="og:description" content="二进制兼容
 ">
   <meta property="og:image" content="/images/post/post-2.jpg">
 
@@ -135,9 +135,7 @@
           
           <div class="post-tags">
             
-              <a href="/tag/constructing," class="post-tags__tag">constructing,</a>
-            
-              <a href="/tag/c++" class="post-tags__tag">c++</a>
+              <a href="/tag/others" class="post-tags__tag">others</a>
             
           </div>
           
@@ -152,7 +150,7 @@
 
             <div class="post__meta-bottom">
               <div class="post__author">Marco Hwong</div>
-              <time class="post__date" datetime="2024-06-02T07:36:01+00:00">02 Jun 2024</time>
+              <time class="post__date" datetime="2024-06-09T04:24:06+00:00">09 Jun 2024</time>
             </div>
           </div>
 
@@ -167,10 +165,9 @@
 
   <article class="post">
 
+    <ul><li><a href="#二进制兼容">二进制兼容</a><ul><li><a href="#1-什么是二进制兼容问题">1. 什么是二进制兼容问题?</a></li><li><a href="#2-二进制兼容有什么好处">2. 二进制兼容有什么好处?</a></li><li><a href="#3-实现二进制兼容有什么方法">3. 实现二进制兼容有什么方法?</a><ul><li><a href="#31-什么是pimpl">3.1 什么是pimpl?</a></li><li><a href="#32-pimpl还有什么好处">3.2 pimpl还有什么好处？</a></li><li><a href="#33-pimpl怎么实现">3.3 pimpl怎么实现</a></li></ul></li><li><a href="#4-什么时候要求二进制">4. 什么时候要求二进制</a></li><li><a href="#99-quiz">99. quiz</a><ul><li><a href="#1-怎样才可以保证二进制兼容二进制兼容的关键是什么">1. 怎样才可以保证二进制兼容?二进制兼容的关键是什么?</a></li><li><a href="#2-一般什么情况下特别要求二进制兼容">2. 一般什么情况下特别要求二进制兼容?</a></li></ul></li></ul></li></ul>
     <div class="post__content">
-      <p>_tags: constructing, c++</p>
-
-<h2 id="二进制兼容">二进制兼容</h2>
+      <h2 id="二进制兼容">二进制兼容</h2>
 
 <h3 id="1-什么是二进制兼容问题">1. 什么是二进制兼容问题?</h3>
 
@@ -234,59 +231,50 @@
   </li>
 </ul>
 
-<h2 id="附录">附录</h2>
+<h3 id="99-quiz">99. quiz</h3>
 
-<ul>
+<h4 id="1-怎样才可以保证二进制兼容二进制兼容的关键是什么">1. 怎样才可以保证二进制兼容?二进制兼容的关键是什么?</h4>
+
+<p>二进制兼容性是指一个程序的新版本可以使用旧版本的二进制接口（如共享库或对象文件）而不需要重新编译。保证二进制兼容性的关键是保持ABI（Application Binary Interface）的稳定性。</p>
+
+<p>以下是一些保证二进制兼容性的方法：</p>
+
+<ol>
   <li>
-    <p><strong>怎样才可以保证二进制兼容?二进制兼容的关键是什么?</strong></p>
-
-    <p>假设有模块<code class="language-plaintext highlighter-rouge">A</code>和更新后的模块<code class="language-plaintext highlighter-rouge">A+</code>,以及使用模块<code class="language-plaintext highlighter-rouge">A</code>的模块<code class="language-plaintext highlighter-rouge">B</code>.那么如果模块<code class="language-plaintext highlighter-rouge">B</code>在调用<code class="language-plaintext highlighter-rouge">A</code>模块的dll的方法时,是根据原来链接时保存下来的内存偏移量,在A模块中寻找的.</p>
-
-    <p><strong>因此如果想要保证二进制兼容,就要使得对外被调用的方法保证内存偏移量</strong>.主要包括以下行为:</p>
-
-    <ul>
-      <li>不会破坏二进制兼容的方式:
-        <ul>
-          <li>添加新的虚函数</li>
-          <li>将一个导出类改成不导出</li>
-          <li>移除一个导出类</li>
-          <li>改变虚函数生命的顺序</li>
-          <li>添加新的非静态成员变量</li>
-          <li>改变非静态成员变量的顺序</li>
-        </ul>
-      </li>
-      <li>会破坏二进制兼容的方式:
-        <ul>
-          <li>添加非虚函数</li>
-          <li>添加新的类</li>
-          <li>在已有枚举类型加一个枚举值</li>
-          <li>添加新的静态成员变量</li>
-        </ul>
-      </li>
-    </ul>
+    <p><strong>不改变公共函数和方法的签名</strong>：如果你改变了函数或方法的参数类型、数量或顺序，那么二进制接口将会改变，导致二进制不兼容。</p>
   </li>
   <li>
-    <p><strong>一般什么情况下特别要求二进制兼容?</strong></p>
-
-    <ol>
-      <li>
-        <p><strong>操作系统:</strong> 操作系统的升级通常会涉及到底层的系统组件,保持二进制兼容性可以确保应用程序继续在新版本的操作系统上正常运行.</p>
-      </li>
-      <li>
-        <p><strong>大型应用软件:</strong> 大型应用软件通常会有许多用户,升级可能涉及到大量的用户数据和配置.保持二进制兼容性有助于减少升级的风险.</p>
-      </li>
-      <li>
-        <p><strong>软件库和框架:</strong> 开发人员在开发应用程序时可能会使用各种第三方库和框架,保持这些库和框架的二进制兼容性有助于减少对应用程序的影响.</p>
-      </li>
-      <li>
-        <p><strong>游戏客户端:</strong> 游戏客户端经常需要进行更新和修复,保持二进制兼容性可以确保玩家在更新后继续享受游戏体验.</p>
-        <blockquote>
-          <p>如果是二进制兼容的,弄一个更新包可能就好了,如果不是的话,可能整个软件都要重新安装.</p>
-        </blockquote>
-      </li>
-    </ol>
+    <p><strong>不改变数据结构的布局</strong>：如果你添加、删除或重新排序结构的成员，那么结构的布局将会改变，导致二进制不兼容。</p>
   </li>
-</ul>
+  <li>
+    <p><strong>不改变类的继承关系</strong>：如果你改变了类的基类或派生类，那么类的布局和虚函数表将会改变，导致二进制不兼容。</p>
+  </li>
+  <li>
+    <p><strong>保持虚函数表的稳定性</strong>：如果你添加、删除或重新排序虚函数，那么虚函数表将会改变，导致二进制不兼容。</p>
+  </li>
+</ol>
+
+<p>注意，以上的规则只适用于公共接口。你可以自由地改变私有函数、方法和数据成员，而不影响二进制兼容性。</p>
+
+<h4 id="2-一般什么情况下特别要求二进制兼容">2. 一般什么情况下特别要求二进制兼容?</h4>
+
+<ol>
+  <li>
+    <p><strong>操作系统:</strong> 操作系统的升级通常会涉及到底层的系统组件,保持二进制兼容性可以确保应用程序继续在新版本的操作系统上正常运行.</p>
+  </li>
+  <li>
+    <p><strong>大型应用软件:</strong> 大型应用软件通常会有许多用户,升级可能涉及到大量的用户数据和配置.保持二进制兼容性有助于减少升级的风险.</p>
+  </li>
+  <li>
+    <p><strong>软件库和框架:</strong> 开发人员在开发应用程序时可能会使用各种第三方库和框架,保持这些库和框架的二进制兼容性有助于减少对应用程序的影响.</p>
+  </li>
+  <li>
+    <p><strong>游戏客户端:</strong> 游戏客户端经常需要进行更新和修复,保持二进制兼容性可以确保玩家在更新后继续享受游戏体验.</p>
+    <blockquote>
+      <p>如果是二进制兼容的,弄一个更新包可能就好了,如果不是的话,可能整个软件都要重新安装.</p>
+    </blockquote>
+  </li>
+</ol>
 
     </div>
 
@@ -331,25 +319,25 @@
     <div class="col col-10 col-d-12 push-d-0 push-1">
       <div class="post__navigation animate">
   
-  <a class="post__prev" href="/blog/1-http">
+  <a class="post__prev" href="/blog/14-c-%E4%B8%AD%E7%9A%84%E7%9C%81%E7%95%A5%E5%8F%B7">
     <div class="prev__image">
-      <img loading="lazy" src="/images/post/post-47.jpg" alt="二进制兼容">
+      <img loading="lazy" src="/images/post/post-13.jpeg" alt="二进制兼容">
     </div>
     <div class="prev__box">
       <span class="post__nav post__nav__prev">Prev post</span>
-      <h2 class="post__nav__title">http</h2>
+      <h2 class="post__nav__title">c++ 中的省略号</h2>
     </div>
   </a>
   
 
   
-  <a class="post__next" href="/blog/1-%E5%AD%97%E7%AC%A6%E5%92%8Cunicode%E6%A0%87%E5%87%86">
+  <a class="post__next" href="/blog/2-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">
     <div class="next__box">
       <span class="post__nav post__nav__next">Next post</span>
-      <h2 class="post__nav__title">字符和unicode标准</h2>
+      <h2 class="post__nav__title">性能优化</h2>
     </div>
     <div class="next__image">
-      <img loading="lazy" src="/images/post/post-11.jpg" alt="二进制兼容">
+      <img loading="lazy" src="/images/post/post-5.jpeg" alt="二进制兼容">
     </div>
   </a>
   
@@ -377,9 +365,7 @@
                 
                 
                   
-                    <a href="/tags#constructing," class="section__link related-tag">See all<span> constructing,</span> <i class="ion ion-md-arrow-forward"></i></a>
-                  
-                
+                    <a href="/tags#others" class="section__link related-tag">See all<span> others</span> <i class="ion ion-md-arrow-forward"></i></a>
                   
                 
               
@@ -437,14 +423,147 @@
             
       
             
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
 
               <div class="article col col-4 col-d-6 col-t-12">
                 <div class="article__inner">
               
                   
                   <div class="image-wrap">
-                    <a class="article__image" href="/blog/2-my-effective-c">
-                      <img loading="lazy" src="/images/post/post-9.jpg" alt="My effective C++">
+                    <a class="article__image" href="/blog/6-%E9%94%99%E8%AF%AF%E7%A0%81%E5%92%8C%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86">
+                      <img loading="lazy" src="/images/post/post-3.jpg" alt="错误码和异常处理">
                     </a>
                   </div>
                   
@@ -454,31 +573,23 @@
                     
                     <div class="article-tags__box">
                       
-                      <a href="/tag/c++," class="article__tag">c++,</a>
-                      
-                      <a href="/tag/constructing," class="article__tag">constructing,</a>
-                      
-                      <a href="/tag/reading" class="article__tag">reading</a>
-                      
-                      <a href="/tag/notes" class="article__tag">notes</a>
+                      <a href="/tag/others" class="article__tag">others</a>
                       
                     </div>
                     
               
                     <h2 class="article__title">
-                      <a href="/blog/2-my-effective-c">My effective C++</a>
+                      <a href="/blog/6-%E9%94%99%E8%AF%AF%E7%A0%81%E5%92%8C%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86">错误码和异常处理</a>
                     </h2>
               
                     <p class="article__excerpt">
-                       _tags: c++, constructing, reading notes
+                      ## 错误码和异常处理
 
+程序出错几乎是必然事件，有可能是由于上游任务提供的数据就是错的。也有可能是程序内部实现，出现了bug。
 
-## My effective C++
+对于程序出错的这种情况，需要有一套机制能够帮忙定位是什么错误，以及出现了错误之后如何处理的。
 
-### 1. effective C++
-#### 1.1 视C++ 为一个语言联邦
-* C
-* 面向对象...
+一般而...
                     </p>
               
                     <div class="article__meta">
@@ -487,7 +598,73 @@
                       </div>
                       <div class="article-info">
                         <div class="article__author-name">Marco Hwong</div>
-                        <span class="article__date"><time datetime="2024-06-02T08:35:48+00:00">02 Jun 2024</time></span>
+                        <span class="article__date"><time datetime="2024-06-09T08:18:30+00:00">09 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/8-c-%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F">
+                      <img loading="lazy" src="/images/post/post-4.jpg" alt="c++编程范式">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/others" class="article__tag">others</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/8-c-%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F">c++编程范式</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      ## c++编程范式
+
+### 1. RAII
+RAII，全称 Resource Acquisition Is Initialization（资源获取即初始化），是一种在 C++ 中常用的编程技巧和设计原则。
+
+RAII 的主要思想是...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-09T04:25:39+00:00">09 Jun 2024</time></span>
                       </div>
                     </div>
               
@@ -511,8 +688,8 @@
               
                   
                   <div class="image-wrap">
-                    <a class="article__image" href="/blog/6-%E9%94%99%E8%AF%AF%E7%A0%81">
-                      <img loading="lazy" src="/images/post/post-3.jpg" alt="错误码">
+                    <a class="article__image" href="/blog/4-%E5%86%85%E5%AD%98%E5%BA%8F">
+                      <img loading="lazy" src="/images/post/post-8.jpg" alt="内存序">
                     </a>
                   </div>
                   
@@ -522,32 +699,23 @@
                     
                     <div class="article-tags__box">
                       
-                      <a href="/tag/c++," class="article__tag">c++,</a>
-                      
-                      <a href="/tag/constructing," class="article__tag">constructing,</a>
-                      
-                      <a href="/tag/error," class="article__tag">error,</a>
-                      
-                      <a href="/tag/exception" class="article__tag">exception</a>
+                      <a href="/tag/others" class="article__tag">others</a>
                       
                     </div>
                     
               
                     <h2 class="article__title">
-                      <a href="/blog/6-%E9%94%99%E8%AF%AF%E7%A0%81">错误码</a>
+                      <a href="/blog/4-%E5%86%85%E5%AD%98%E5%BA%8F">内存序</a>
                     </h2>
               
                     <p class="article__excerpt">
-                       _tags: c++, constructing, error, exception
+                      ## 内存序
 
+### 1. 指令重排
 
-## 错误码
+指令重排可以是编译器的行为,也可以是处理器的行为.
 
-错误处理,一般而言有两种处理方法
-* 错误码
-* 异常机制
-
-目前C++提供了统一的异常机制机制,但是没有提供统一的错误码机制...
+1. 编译器重排:为了优化程序性能,编译器在生成机器代码时可能会改变指令的顺序.例如,编译器可能会将两个没有数据依赖关系的指令交换顺序,或...
                     </p>
               
                     <div class="article__meta">
@@ -556,7 +724,7 @@
                       </div>
                       <div class="article-info">
                         <div class="article__author-name">Marco Hwong</div>
-                        <span class="article__date"><time datetime="2024-06-02T07:36:01+00:00">02 Jun 2024</time></span>
+                        <span class="article__date"><time datetime="2024-06-09T04:25:01+00:00">09 Jun 2024</time></span>
                       </div>
                     </div>
               
@@ -566,197 +734,7 @@
 
             
                 
-              
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
+                  
           </div>
         </div>
       </div>

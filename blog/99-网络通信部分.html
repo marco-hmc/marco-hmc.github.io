@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>99 # **网络通信部分**</title>
+  <meta name='description' content='Marco’s Blog'>
+
+  <link rel="canonical" href="/blog/99-%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E9%83%A8%E5%88%86">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="99 # **网络通信部分** – Marco’s Blog">
+  <meta name="twitter:description" content="1/socket和epoll的关系区别?(不太懂他意思,反正对epoll的底层进行了阐述)
+">
+  <meta name="twitter:image:src" content="/images/post/post-35.jpg">
+
+  <!-- Facebook OpenGraph -->
+  <meta property="og:title" content="99 # **网络通信部分** – Marco’s Blog">
+  <meta property="og:description" content="1/socket和epoll的关系区别?(不太懂他意思,反正对epoll的底层进行了阐述)
+">
+  <meta property="og:image" content="/images/post/post-35.jpg">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Ionicons -->
+  <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/main.css">
+</head>
+
+<body>
+
+    
+
+    <!-- begin header -->
+<header class="c-header">
+  <div class="container">
+    <div class="row">
+      <div class="c-header__inner">
+
+        <div class="logo">
+          <a class="logo__link" href="/">
+          
+            <img class="logo__image" src="/images/mc_logo1.ico" alt="Marco’s Blog">
+          
+          </a>
+        </div>
+
+        <nav class="main-nav">
+          <div class="main-nav__box">
+
+            <div class="nav__icon-close">
+              <i class="ion ion-md-close"></i>
+            </div>
+
+            <div class="nav__title">Menu</div>
+
+              <ul class="nav__list list-reset">
+
+              
+                
+                <li class="nav__item">
+                  <a href="/" class="nav__link">Home</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/projects/" class="nav__link">Projects</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/blog/" class="nav__link">Blog</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/about/" class="nav__link">About</a>
+                </li>
+                
+              
+
+            </ul>
+          </div>
+
+          <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+        </nav>
+
+        <div class="nav-button">
+          <i class="nav__icon nav__icon-menu ion ion-md-menu"></i>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+<!-- end header -->
+
+    <div class="post-top">
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="col col-6 col-d-12">
+        <div class="post-image">
+          <img loading="lazy" src="/images/post/post-35.jpg" alt="99 # **网络通信部分**">
+        </div>
+      </div>
+      
+
+      <div class="col col-6 col-d-12">
+        <div class="post__info">
+
+          
+          <div class="post-tags">
+            
+              <a href="/tag/网络编程" class="post-tags__tag">网络编程</a>
+            
+          </div>
+          
+
+
+          <h1 class="post__title">99 # **网络通信部分**</h1>
+
+          <div class="post__meta">
+            <div class="post__author-image">
+              <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+            </div>
+
+            <div class="post__meta-bottom">
+              <div class="post__author">Marco Hwong</div>
+              <time class="post__date" datetime="2024-06-04T14:04:45+00:00">04 Jun 2024</time>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- begin post -->
+<div class="container animate">
+
+  <article class="post">
+
+    <ul><li><a href="#网络通信部分"><strong>网络通信部分</strong></a></li></ul>
+    <div class="post__content">
+      <p>1/socket和epoll的关系区别?(不太懂他意思,反正对epoll的底层进行了阐述)</p>
+
+<h4 id="网络通信部分"><strong>网络通信部分</strong></h4>
+<ul>
+  <li>网络通信部分,主要有两大块,
+    <ol>
+      <li>第一个是程序启动时,与服务端的交互;</li>
+      <li>第二个就是文件下载与分享的 P2P 网络.</li>
+    </ol>
+  </li>
+</ul>
+
+<p>Prerequisites:</p>
+<ol>
+  <li>具体的就是 Socket 的各种 API 函数,以及基于这些 API 逻辑的组合</li>
+  <li>当然可能也会用到操作系统平台所特有的网络 API 函数,如 <strong>WSAAsyncSelect</strong> 网络模型.</li>
+</ol>
+
+<p>Design Points:</p>
+<ol>
+  <li>网络通信部分如何与 UI 部分进行数据交换:
+是使用队列?
+ 如果使用队列,多线程之间如何保持资源的一致性和解决资源竞态,使用 Event/CriticalSection/Mutex/Semaphore 等?
+全局变量?
+或者相应的 Windows 操作平台提供的特殊通信技术,如 PostMessage 函数/管道?</li>
+</ol>
+
+<p>2/epoll和select的区别
+3/epoll的高效,有几种工作模式( LT/ET)
+5/TIMEWAIT是什么,为什么要设置TIMEWAIT状态
+6/TCP的可靠性是如何实现的?(流量控制/拥塞控制/确认序号/校验???)</p>
+
+<p>2/交给sub 线程的文件描述符如何回收的?
+3/tcp粘包</p>
+
+<p>4/tcp三次握手 /2次/4次?
+5/tcp可靠性的实现原因
+6/滑动窗口的作用</p>
+
+<p>8/tcp是如何处理粘包?</p>
+
+<p>9/tcp是如何关闭的?就是说4次挥手过程</p>
+
+<p>10/如果tcp关闭的第四个分节没有被收到,那么怎么办?</p>
+
+<p>11/tcp的拥塞控制过程</p>
+
+<p>3/这个io复用模型跟普通多线程/多进程的区别
+答: io复用,多个链接复用一个线程,而普通多线程是一个链接一个线程,所以必然创建线程的数目就多,现成的创建是有开销的,所以io复用这种开销小.</p>
+
+<p>4/网络传输的数据协议
+主要有3个段,前8bit是数据type,中间是length,最后是具体的data.</p>
+
+<p>5/如果协议是这样.如果两个数据包连在一起,怎么分开?
+答:在首部再加几个bit,作为隔离位.</p>
+
+<p>6/如何实现你的fd是负载均衡的
+答:分类处理</p>
+
+<p>7/多个用户访问同一个资源,如何加锁
+答:不太明白他的意思,epoll内部处理事件是同步依次执行的,而且这里的锁是线程资源</p>
+
+    </div>
+
+    <div class="post__share">
+  <div class="share__head">
+    <div class="share__title">Share this Post</div>
+  </div>
+  <ul class="share__list list-reset">
+    <li class="share__item">
+      <a class="share__link share__twitter"
+        href="https://twitter.com/intent/tweet?text=99%20#%20**%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E9%83%A8%E5%88%86**&url=/blog/99-%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E9%83%A8%E5%88%86"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__facebook"
+        href="https://www.facebook.com/sharer/sharer.php?u=/blog/99-%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E9%83%A8%E5%88%86"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__pinterest"
+        href="http://pinterest.com/pin/create/button/?url=/blog/99-%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E9%83%A8%E5%88%86&amp;media=/images/post/post-35.jpg&amp;description=99%20#%20**%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E9%83%A8%E5%88%86**"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Pinterest" rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&url=/blog/99-%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E9%83%A8%E5%88%86&title=99%20#%20**%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E9%83%A8%E5%88%86**&summary=&source=Vonge"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
+    </li>
+  </ul>
+</div>
+
+  </article>
+</div>
+<!-- end post -->
+
+<div class="container">
+  <div class="row">
+    <div class="col col-10 col-d-12 push-d-0 push-1">
+      <div class="post__navigation animate">
+  
+  <a class="post__prev" href="/blog/1-mvp%E7%9F%A9%E9%98%B5%E4%B8%8E%E7%9F%A9%E9%98%B5%E5%8F%98%E6%8D%A2">
+    <div class="prev__image">
+      <img loading="lazy" src="/images/post/post-51.jpeg" alt="99 # **网络通信部分**">
+    </div>
+    <div class="prev__box">
+      <span class="post__nav post__nav__prev">Prev post</span>
+      <h2 class="post__nav__title">mvp矩阵与矩阵变换</h2>
+    </div>
+  </a>
+  
+
+  
+  <a class="post__next" href="/blog/0-trivial-grammar">
+    <div class="next__box">
+      <span class="post__nav post__nav__next">Next post</span>
+      <h2 class="post__nav__title">trivial grammar</h2>
+    </div>
+    <div class="next__image">
+      <img loading="lazy" src="/images/post/post-11.jpg" alt="99 # **网络通信部分**">
+    </div>
+  </a>
+  
+</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- begin related posts -->
+<div class="container">
+  <section class="related-posts is-related animate">
+    <div class="row">
+      <div class="col col-12">
+        <div class="container__inner">
+          <div class="section__info">
+            <div class="section__head">
+              <h2 class="section__title">You may also like</h2>
+              <a class="section__link" href="/blog">
+                
+                
+                  
+                    <a href="/tags#网络编程" class="section__link related-tag">See all<span> 网络编程</span> <i class="ion ion-md-arrow-forward"></i></a>
+                  
+                
+              
+              </a>
+            </div>
+          </div>
+          <div class="row">
+
+          
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/1-socket">
+                      <img loading="lazy" src="/images/post/post-30.jpg" alt="Socket">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/网络编程" class="article__tag">网络编程</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/1-socket">Socket</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      _tags: 计算机网络
+
+Socket
+
+1. Socket基础知识
+Socket（套接字）是计算机网络中用于实现不同主机之间的通信的一种技术。它提供了一种在网络上发送和接收数据的方式。在TCP/IP网络模型中，Socket是应用层...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-02T07:36:01+00:00">02 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/6-%E5%91%BD%E4%B8%AD%E7%8E%87">
+                      <img loading="lazy" src="/images/post/post-29.jpg" alt="命中率">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/网络编程" class="article__tag">网络编程</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/6-%E5%91%BD%E4%B8%AD%E7%8E%87">命中率</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      分布式系统中常用缓存方案
+
+
+  客户端缓存：页面和浏览器缓存，app缓存，h5缓存，localStorage，sessionStorage
+  CDN缓存：内容存储：数据缓存，内容分发：负载均衡
+  nginx缓存：静态资源
+  服...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-01T07:40:39+00:00">01 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/5-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E7%8E%B0%E8%B1%A1%E5%92%8C%E5%88%A4%E6%96%AD">
+                      <img loading="lazy" src="/images/post/post-32.jpg" alt="性能优化现象和判断">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/网络编程" class="article__tag">网络编程</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/5-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E7%8E%B0%E8%B1%A1%E5%92%8C%E5%88%A4%E6%96%AD">性能优化现象和判断</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      系统性能优化
+
+性能优化现象和判断
+
+
+  提出性能优化现象
+    
+      前台访问很慢，请帮忙分析优化
+      用户对性能很不满意，再不解决就要投诉
+      数据库负载很重，请帮忙分析一下
+      xxx功能打开...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-01T07:40:39+00:00">01 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+                  
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- end related posts -->
+
+
+
+
+
+
+    <!--
+        Bookshop components are accessed using the bookshop tag,
+        using the same syntax as the standard Jekyll include tag.
+    -->
+    <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
+
+<!--bookshop-live end-->
+
+    <div class="top" title="Top"><i class="ion ion-ios-arrow-up"></i></div>
+
+    <!-- begin footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+
+        <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+
+        <ul class="footer_nav list-reset">
+          
+          <li class="footer_nav__item">
+            <a href="/" class="footer_nav__link">Home</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/projects/" class="footer_nav__link">Projects</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/elements/" class="footer_nav__link">Elements</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/about/" class="footer_nav__link">About</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/blog/" class="footer_nav__link">Blog</a>
+          </li>
+          
+        </ul>
+
+        <div class="copyright"><p> 2021 &copy; <a href="/">Vonge</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
+
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- end footer -->
+
+    <script src="/js/scripts.js"></script>
+    <script src="/js/common.js"></script>
+</body>
+</html>

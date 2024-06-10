@@ -133,6 +133,12 @@
         <div class="post__info">
 
           
+          <div class="post-tags">
+            
+              <a href="/tag/计算机网络" class="post-tags__tag">计算机网络</a>
+            
+          </div>
+          
 
 
           <h1 class="post__title">cpp quiz</h1>
@@ -144,7 +150,7 @@
 
             <div class="post__meta-bottom">
               <div class="post__author">Marco Hwong</div>
-              <time class="post__date" datetime="2024-06-02T09:19:16+00:00">02 Jun 2024</time>
+              <time class="post__date" datetime="2024-06-09T04:33:14+00:00">09 Jun 2024</time>
             </div>
           </div>
 
@@ -159,6 +165,7 @@
 
   <article class="post">
 
+    <ul><li><a href="#cpp-quiz">cpp quiz</a><ul><li><a href="#1-grammar">1. grammar</a><ul><li><a href="#11-c中null和nullptr的区别">1.1 c++中NULL和nullptr的区别</a></li><li><a href="#12-右值引用">1.2 右值引用</a></li><li><a href="#13-const-t作为形参的时候可以输入右值吗">1.3 const T&amp;作为形参的时候，可以输入右值吗？</a></li><li><a href="#14-为什么stdthread传递引用的时候要用stdref">1.4 为什么std::thread传递引用的时候要用std::ref</a></li><li><a href="#15-通过指针访问和直接访问的区别是什么">1.5 通过指针访问和直接访问的区别是什么？</a></li><li><a href="#16-一般哪些函数可以使用noexcept">1.6 一般哪些函数可以使用noexcept?</a></li><li><a href="#17-c怎么定义隐式转换规则">1.7 c++怎么定义隐式转换规则</a></li><li><a href="#18-为什么delete之后都会设置nullptr">1.8 为什么delete之后,都会设置nullptr</a></li><li><a href="#19-既然如此为什么delete不内置delete完自动设置为nullptr的操作">1.9 既然如此,为什么delete不内置delete完自动设置为nullptr的操作</a></li><li><a href="#110-cc是转成汇编语言的-那汇编语言是如何处理自定义类型的">1.10 c/c++是转成汇编语言的. 那汇编语言是如何处理自定义类型的?</a></li><li><a href="#111-在全局构造函数中访问其他全局或者静态变量会发生什么事情">1.11 在全局构造函数中，访问其他全局或者静态变量，会发生什么事情？</a></li><li><a href="#112-为什么c的成员不可以既是template又是virtual的">1.12 为什么c++的成员不可以既是template又是virtual的</a></li><li><a href="#113-vector向量在堆上还是栈上-vector-中的数据在堆上还是栈上">1.13 “vector”（向量）在堆上还是栈上? “vector” 中的数据在堆上还是栈上?</a></li><li><a href="#114-什么时候需要使用stdmove">1.14 什么时候需要使用std::move()</a></li></ul></li><li><a href="#2-编译器">2. 编译器</a><ul><li><a href="#21-引用是怎么实现的">2.1 引用是怎么实现的?</a></li><li><a href="#22-c的内存空间">2.2 c++的内存空间</a><ul><li><a href="#221-c的对象内存空间">2.2.1 c++的对象内存空间</a></li><li><a href="#222-常量段和数据段为什么要分开">2.2.2 常量段和数据段为什么要分开?</a></li><li><a href="#223-bss段和数据段为什么要分开">2.2.3 bss段和数据段为什么要分开?</a></li><li><a href="#223-多线程的内存空间是如何管理的">2.2.3. 多线程的内存空间是如何管理的</a></li></ul></li><li><a href="#23-c多态的实现">2.3 C++多态的实现</a></li></ul></li><li><a href="#3-new-feature">3. new feature</a><ul><li><a href="#31-c的向量化是什么意思">3.1 c++的向量化是什么意思？</a></li></ul></li><li><a href="#99-exercise">99. Exercise</a></li></ul></li></ul>
     <div class="post__content">
       <h2 id="cpp-quiz">cpp quiz</h2>
 
@@ -192,26 +199,69 @@
   <span class="n">foo</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>  <span class="c1">// 调用哪个函数？</span>
 </code></pre></div>    </div>
   </li>
+  <li><strong>一个new出来的指针,被delete两次会怎么样</strong>
+如果一个指针被<code class="language-plaintext highlighter-rouge">delete</code>两次,会导致未定义行为(Undefined Behavior).这是因为在第一次<code class="language-plaintext highlighter-rouge">delete</code>后,该指针已经不再指向有效的内存区域,再次尝试<code class="language-plaintext highlighter-rouge">delete</code>就是对无效内存的操作,这是非法的.</li>
 </ul>
 
-<h4 id="12-为什么stdthread传递引用的时候要用stdref">1.2 为什么std::thread传递引用的时候要用std::ref</h4>
+<p>未定义行为可能会导致各种各样的问题,包括但不限于:</p>
 
-<h4 id="13-cc是转成汇编语言的-那汇编语言是如何处理自定义类型的">1.3 c/c++是转成汇编语言的. 那汇编语言是如何处理自定义类型的?</h4>
-<p>汇编语言本身并没有自定义类型的概念,它只知道字节和地址.当你在C++中定义一个类型(例如,一个结构体或类),编译器会根据你的定义来决定如何在内存中布局数据,以及如何生成对应的汇编代码来访问这些数据.</p>
+<ul>
+  <li>程序崩溃</li>
+  <li>数据损坏</li>
+  <li>难以预测和解释的行为</li>
+</ul>
 
-<p>例如,如果你定义了一个包含两个整数的结构体:</p>
+<p>为了避免这种情况,你应该确保每个<code class="language-plaintext highlighter-rouge">new</code>操作都有一个对应的<code class="language-plaintext highlighter-rouge">delete</code>操作,并且每个<code class="language-plaintext highlighter-rouge">delete</code>操作都只执行一次.在你的代码中,<code class="language-plaintext highlighter-rouge">UniquePtr</code>类就是通过封装<code class="language-plaintext highlighter-rouge">new</code>和<code class="language-plaintext highlighter-rouge">delete</code>操作来确保资源的正确管理,避免了这种问题.</p>
 
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">MyStruct</span> <span class="p">{</span>
-    <span class="kt">int</span> <span class="n">a</span><span class="p">;</span>
-    <span class="kt">int</span> <span class="n">b</span><span class="p">;</span>
-<span class="p">};</span>
+<ul>
+  <li><strong><em>为什么delete之后,都会设置nullptr</em></strong></li>
+</ul>
+
+<p>在C++中,<code class="language-plaintext highlighter-rouge">delete</code>一个指针后,通常会将其设置为<code class="language-plaintext highlighter-rouge">nullptr</code>,主要有以下几个原因:</p>
+
+<ol>
+  <li>
+    <p><strong>避免悬挂指针</strong>:<code class="language-plaintext highlighter-rouge">delete</code>一个指针后,该指针就变成了悬挂指针(Dangling Pointer),它不再指向有效的内存区域,但仍然保留了原来的地址值.如果你试图再次使用这个悬挂指针,就会导致未定义行为.将指针设置为<code class="language-plaintext highlighter-rouge">nullptr</code>可以避免这种情况,因为<code class="language-plaintext highlighter-rouge">nullptr</code>是一个特殊的指针值,表示该指针不指向任何对象.</p>
+  </li>
+  <li>
+    <p><strong>安全地重复<code class="language-plaintext highlighter-rouge">delete</code></strong>:在C++中,<code class="language-plaintext highlighter-rouge">delete</code>一个<code class="language-plaintext highlighter-rouge">nullptr</code>是安全的,不会有任何效果.所以,如果你将一个指针设置为<code class="language-plaintext highlighter-rouge">nullptr</code>,就可以安全地重复<code class="language-plaintext highlighter-rouge">delete</code>它,而不会导致未定义行为.</p>
+  </li>
+  <li>
+    <p><strong>检查指针是否已经被<code class="language-plaintext highlighter-rouge">delete</code></strong>:如果你将一个指针设置为<code class="language-plaintext highlighter-rouge">nullptr</code>,就可以通过检查该指针是否为<code class="language-plaintext highlighter-rouge">nullptr</code>来判断它是否已经被<code class="language-plaintext highlighter-rouge">delete</code>.</p>
+  </li>
+</ol>
+
+<p>所以,<code class="language-plaintext highlighter-rouge">delete</code>一个指针后,通常会将其设置为<code class="language-plaintext highlighter-rouge">nullptr</code>,以提高程序的安全性和稳定性.</p>
+
+<h4 id="12-右值引用">1.2 右值引用</h4>
+
+<h4 id="13-const-t作为形参的时候可以输入右值吗">1.3 const T&amp;作为形参的时候，可以输入右值吗？</h4>
+<p>是的，当函数的形参为 <code class="language-plaintext highlighter-rouge">const T&amp;</code> 类型时，你可以传入右值。</p>
+
+<p>在 C++ 中，右值引用（<code class="language-plaintext highlighter-rouge">T&amp;&amp;</code>）主要用于移动语义和完美转发，而 <code class="language-plaintext highlighter-rouge">const T&amp;</code> 可以绑定到几乎任何类型的表达式，包括临时对象（右值）。</p>
+
+<p>这使得 <code class="language-plaintext highlighter-rouge">const T&amp;</code> 成为一种非常灵活的形参类型，可以接受各种类型的实参。例如，你可以使用 <code class="language-plaintext highlighter-rouge">const std::string&amp;</code> 类型的形参来接受字符串字面量、<code class="language-plaintext highlighter-rouge">std::string</code> 对象，甚至是返回 <code class="language-plaintext highlighter-rouge">std::string</code> 的函数的结果。</p>
+
+<p>以下是一个例子：</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">print</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">str</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">print</span><span class="p">(</span><span class="s">"Hello, world!"</span><span class="p">);</span>  <span class="c1">// 传入字符串字面量（右值）</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">s</span> <span class="o">=</span> <span class="s">"Hello, world!"</span><span class="p">;</span>
+    <span class="n">print</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>  <span class="c1">// 传入 std::string 对象（左值）</span>
+    <span class="n">print</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="s">"Hello, world!"</span><span class="p">));</span>  <span class="c1">// 传入临时 std::string 对象（右值）</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div></div>
 
-<p>编译器会知道这个结构体需要8个字节的空间(在大多数现代系统上,一个<code class="language-plaintext highlighter-rouge">int</code>需要4个字节).当你创建一个<code class="language-plaintext highlighter-rouge">MyStruct</code>对象并访问它的成员时,编译器会生成对应的汇编代码来读取或写入这些地址.</p>
+<p>在这个例子中，<code class="language-plaintext highlighter-rouge">print</code> 函数的形参为 <code class="language-plaintext highlighter-rouge">const std::string&amp;</code> 类型，可以接受各种类型的实参。</p>
 
-<p>但是,这个过程是由编译器完成的,汇编语言本身并不知道<code class="language-plaintext highlighter-rouge">MyStruct</code>这个类型,它只知道如何处理字节和地址.这就是为什么在汇编语言中,你需要手动管理所有的内存布局和数据访问.</p>
+<h4 id="14-为什么stdthread传递引用的时候要用stdref">1.4 为什么std::thread传递引用的时候要用std::ref</h4>
 
-<h4 id="14-通过指针访问和直接访问的区别是什么">1.4 通过指针访问和直接访问的区别是什么？</h4>
+<h4 id="15-通过指针访问和直接访问的区别是什么">1.5 通过指针访问和直接访问的区别是什么？</h4>
 <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">struct</span> <span class="nc">Point3d</span><span class="p">{};</span>
     <span class="n">Point3d</span> <span class="n">origin</span><span class="p">;</span>
     <span class="o">*</span><span class="n">pt</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">origin</span><span class="p">;</span>
@@ -235,7 +285,7 @@
 
 <p>这就是为什么在运行期需要读取指针的值.这种机制使得指针可以动态地指向不同的对象,这在处理动态内存分配/数组和数据结构(如链表和树)时非常有用.</p>
 
-<h4 id="15-一般哪些函数可以使用noexcept">1.5 一般哪些函数可以使用noexcept?</h4>
+<h4 id="16-一般哪些函数可以使用noexcept">1.6 一般哪些函数可以使用noexcept?</h4>
 <p>在C++中,<code class="language-plaintext highlighter-rouge">noexcept</code>关键字用于指定一个函数不会抛出任何异常.这对于提高代码的性能和可靠性非常有用.以下是一些常见的可以使用<code class="language-plaintext highlighter-rouge">noexcept</code>的函数:</p>
 <ol>
   <li>析构函数:析构函数通常不应抛出任何异常,因为如果在析构函数中抛出异常,可能会导致程序的未定义行为.</li>
@@ -245,7 +295,7 @@
 在你提供的代码中,移动构造函数和移动赋值操作符被标记为<code class="language-plaintext highlighter-rouge">noexcept</code>,这是因为它们只涉及指针和基本类型的转移,不应抛出异常.</li>
 </ol>
 
-<h4 id="16-c怎么定义隐式转换规则">1.6 c++怎么定义隐式转换规则</h4>
+<h4 id="17-c怎么定义隐式转换规则">1.7 c++怎么定义隐式转换规则</h4>
 <p>在C++中,隐式转换(也称为自动类型转换)是由编译器自动进行的.这些转换规则是由C++语言规定的,例如从int到double的转换,或者从派生类到基类的转换.</p>
 
 <p>然而,你也可以为你的自定义类型定义隐式转换规则.这可以通过定义转换函数来实现.转换函数是一种特殊的成员函数,它可以将一个类的对象转换为其他类型的对象.</p>
@@ -268,30 +318,6 @@
 </code></pre></div></div>
 
 <p>需要注意的是,虽然隐式转换看起来很方便,但它也可能导致一些意想不到的问题,因为它可能在你不知情的情况下发生.因此,一般建议尽量避免使用隐式转换,或者至少要确保你清楚地知道它何时会发生以及它的效果是什么.</p>
-
-<h4 id="17-const-t作为形参的时候可以输入右值吗">1.7 const T&amp;作为形参的时候，可以输入右值吗？</h4>
-<p>是的，当函数的形参为 <code class="language-plaintext highlighter-rouge">const T&amp;</code> 类型时，你可以传入右值。</p>
-
-<p>在 C++ 中，右值引用（<code class="language-plaintext highlighter-rouge">T&amp;&amp;</code>）主要用于移动语义和完美转发，而 <code class="language-plaintext highlighter-rouge">const T&amp;</code> 可以绑定到几乎任何类型的表达式，包括临时对象（右值）。</p>
-
-<p>这使得 <code class="language-plaintext highlighter-rouge">const T&amp;</code> 成为一种非常灵活的形参类型，可以接受各种类型的实参。例如，你可以使用 <code class="language-plaintext highlighter-rouge">const std::string&amp;</code> 类型的形参来接受字符串字面量、<code class="language-plaintext highlighter-rouge">std::string</code> 对象，甚至是返回 <code class="language-plaintext highlighter-rouge">std::string</code> 的函数的结果。</p>
-
-<p>以下是一个例子：</p>
-
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">print</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">str</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="n">print</span><span class="p">(</span><span class="s">"Hello, world!"</span><span class="p">);</span>  <span class="c1">// 传入字符串字面量（右值）</span>
-    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">s</span> <span class="o">=</span> <span class="s">"Hello, world!"</span><span class="p">;</span>
-    <span class="n">print</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>  <span class="c1">// 传入 std::string 对象（左值）</span>
-    <span class="n">print</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="s">"Hello, world!"</span><span class="p">));</span>  <span class="c1">// 传入临时 std::string 对象（右值）</span>
-    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div></div>
-
-<p>在这个例子中，<code class="language-plaintext highlighter-rouge">print</code> 函数的形参为 <code class="language-plaintext highlighter-rouge">const std::string&amp;</code> 类型，可以接受各种类型的实参。</p>
 
 <h4 id="18-为什么delete之后都会设置nullptr">1.8 为什么delete之后,都会设置nullptr</h4>
 
@@ -327,6 +353,72 @@
 </ol>
 
 <p>因此,C++的设计者选择让<code class="language-plaintext highlighter-rouge">delete</code>操作符的行为更简单/更直接,不自动将指针设置为<code class="language-plaintext highlighter-rouge">nullptr</code>.这样,程序员可以根据需要自行决定是否将指针设置为<code class="language-plaintext highlighter-rouge">nullptr</code>.</p>
+
+<h4 id="110-cc是转成汇编语言的-那汇编语言是如何处理自定义类型的">1.10 c/c++是转成汇编语言的. 那汇编语言是如何处理自定义类型的?</h4>
+<p>汇编语言本身并没有自定义类型的概念,它只知道字节和地址.当你在C++中定义一个类型(例如,一个结构体或类),编译器会根据你的定义来决定如何在内存中布局数据,以及如何生成对应的汇编代码来访问这些数据.</p>
+
+<p>例如,如果你定义了一个包含两个整数的结构体:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">MyStruct</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">a</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">b</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>编译器会知道这个结构体需要8个字节的空间(在大多数现代系统上,一个<code class="language-plaintext highlighter-rouge">int</code>需要4个字节).当你创建一个<code class="language-plaintext highlighter-rouge">MyStruct</code>对象并访问它的成员时,编译器会生成对应的汇编代码来读取或写入这些地址.</p>
+
+<p>但是,这个过程是由编译器完成的,汇编语言本身并不知道<code class="language-plaintext highlighter-rouge">MyStruct</code>这个类型,它只知道如何处理字节和地址.这就是为什么在汇编语言中,你需要手动管理所有的内存布局和数据访问.</p>
+
+<h4 id="111-在全局构造函数中访问其他全局或者静态变量会发生什么事情">1.11 在全局构造函数中，访问其他全局或者静态变量，会发生什么事情？</h4>
+
+<p>在C++中，全局构造函数通常指的是全局对象或静态对象的构造函数。这些对象在程序开始执行main函数之前就已经被初始化。</p>
+
+<p>问题在于，C++标准并没有规定全局对象和静态对象的初始化顺序。也就是说，如果一个全局对象或静态对象的构造函数试图访问另一个全局对象或静态对象，那么这个对象可能还没有被初始化，这就会导致不可预知的结果。</p>
+
+<p>例如，假设你有两个全局对象A和B，A的构造函数试图访问B。如果B在A之前被初始化，那么一切都会正常工作。但是，如果A在B之前被初始化，那么A的构造函数就会访问一个未初始化的对象B，这可能会导致程序崩溃或其他错误。</p>
+
+<p>为了避免这种问题，一种常见的解决方案是使用函数内的静态对象，因为这些对象的初始化顺序是确定的：它们在第一次被访问时被初始化。另一种解决方案是避免在全局构造函数中访问其他全局对象或静态对象。</p>
+
+<h4 id="112-为什么c的成员不可以既是template又是virtual的">1.12 为什么c++的成员不可以既是template又是virtual的</h4>
+
+<p>在C++中，成员函数不能同时是模板（template）和虚函数（virtual）。这是因为这两种特性的工作方式在根本上是冲突的。</p>
+
+<ol>
+  <li>
+    <p><strong>模板函数</strong>：模板函数在编译时生成。当你使用一个特定的类型调用模板函数时，编译器会生成一个针对该类型的特化版本。因此，模板函数的所有可能版本必须在编译时已知。</p>
+  </li>
+  <li>
+    <p><strong>虚函数</strong>：虚函数在运行时解析。当你通过基类指针或引用调用虚函数时，程序会在运行时查找适当的函数版本。因此，虚函数的所有可能版本必须在运行时可用。</p>
+  </li>
+</ol>
+
+<p>如果一个函数既是模板函数又是虚函数，那么它在编译时和运行时都需要解析，这是不可能的。因此，C++不允许函数同时是模板函数和虚函数。</p>
+
+<h4 id="113-vector向量在堆上还是栈上-vector-中的数据在堆上还是栈上">1.13 “vector”（向量）在堆上还是栈上? “vector” 中的数据在堆上还是栈上?</h4>
+
+<p>在C++中，<code class="language-plaintext highlighter-rouge">std::vector</code>对象本身通常在栈上创建，但其管理的数据（即元素）实际上是在堆上分配的。</p>
+
+<p>当你创建一个<code class="language-plaintext highlighter-rouge">std::vector</code>对象时，它会在栈上分配一小块内存来存储元数据（如元素数量和容量），以及一个指向堆上数据的指针。当你向<code class="language-plaintext highlighter-rouge">std::vector</code>添加元素时，它会在堆上分配更多的内存来存储这些元素。</p>
+
+<p>因此，可以说<code class="language-plaintext highlighter-rouge">std::vector</code>的”结构”在栈上，而其”数据”在堆上。</p>
+
+<h4 id="114-什么时候需要使用stdmove">1.14 什么时候需要使用std::move()</h4>
+
+<p>在C++中，<code class="language-plaintext highlighter-rouge">std::move()</code>通常在以下情况下使用：</p>
+
+<ol>
+  <li>
+    <p><strong>当你想避免不必要的拷贝时</strong>：如果你有一个大对象，并且你想将它传递给另一个对象，但你不再需要原始对象，那么你可以使用<code class="language-plaintext highlighter-rouge">std::move()</code>来避免拷贝。这将触发移动构造函数或移动赋值操作符（如果已定义），这通常比拷贝构造函数或拷贝赋值操作符更有效率。</p>
+  </li>
+  <li>
+    <p><strong>当你想返回局部对象时</strong>：如果你的函数需要返回一个局部对象，并且你想避免返回值优化（RVO）或命名返回值优化（NRVO）未发生时的拷贝，那么你可以使用<code class="language-plaintext highlighter-rouge">std::move()</code>。</p>
+  </li>
+  <li>
+    <p><strong>当你需要将左值转换为右值时</strong>：有些函数或方法需要右值引用参数，以便它们可以获取对象的所有权。在这种情况下，你可以使用<code class="language-plaintext highlighter-rouge">std::move()</code>来将左值转换为右值。</p>
+  </li>
+</ol>
+
+<p>请注意，使用<code class="language-plaintext highlighter-rouge">std::move()</code>后，原始对象将处于有效但未定义的状态，你不能再使用它，除非你已经重新赋值或重新初始化它。</p>
 
 <h3 id="2-编译器">2. 编译器</h3>
 
@@ -426,55 +518,43 @@
 
 <p>需要注意的是，虽然向量化可以提高性能，但并不是所有的算法和数据都适合向量化。例如，如果数据量太小，或者算法需要大量的条件判断，那么向量化可能不会带来太大的性能提升。</p>
 
-<h3 id="5-test">5. test</h3>
+<h3 id="99-exercise">99. Exercise</h3>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>```c++
-int main() {
-int a[2][5] = { {1, 2, 3, 4, 5}, {1, 2, 3, 4, 5} };
-cout &lt;&lt; a &lt;&lt; endl;
-cout &lt;&lt; *a &lt;&lt; endl;
-cout &lt;&lt; *a[0] &lt;&lt; endl;
-return 0;
-}
-```
-
-```c++
-for (unsigned int i = 10; i &gt;= 0; --i) { ... }
-```
-
-```c++
-std::vector&lt;int&gt; vec;
-vec.push_back(1);
-for (auto idx = vec.size(); idx &gt;= 0; idx--) {
-    cout &lt;&lt; "===== \n";
-}
-```
-
-```c++
-void erase(std::vector&lt;int&gt; &amp;vec, int a) {
-    for (auto iter = vec.begin(); iter != vec.end();) { // 这个正确
-        if (*iter == a) {
-            iter = vec.erase(iter);
-        } else {
-            ++iter;
-        }
-    }
-
-    for (auto iter = vec.begin(); iter != vec.end(); ++iter) {  // error
-        if (*iter == a) {
-            vec.erase(iter); // error
-        }
-    }
-}
-```
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="kt">int</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">}</span> <span class="p">};</span>
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="o">*</span><span class="n">a</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="o">*</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div></div>
 
-<h3 id="99-trivial">99. trivial</h3>
-<ul>
-  <li>为什么c++的成员不可以既是template又是virtual的</li>
-  <li>“vector”（向量）在堆上还是栈上? “vector” 中的数据在堆上还是栈上?</li>
-  <li></li>
-</ul>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="o">--</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">vec</span><span class="p">;</span>
+<span class="n">vec</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">idx</span> <span class="o">=</span> <span class="n">vec</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">idx</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">idx</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"===== </span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">erase</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">vec</span><span class="p">,</span> <span class="kt">int</span> <span class="n">a</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">iter</span> <span class="o">=</span> <span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">iter</span> <span class="o">!=</span> <span class="n">vec</span><span class="p">.</span><span class="n">end</span><span class="p">();)</span> <span class="p">{</span> <span class="c1">// 这个正确</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="n">iter</span> <span class="o">==</span> <span class="n">a</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">iter</span> <span class="o">=</span> <span class="n">vec</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">iter</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="o">++</span><span class="n">iter</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">iter</span> <span class="o">=</span> <span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">iter</span> <span class="o">!=</span> <span class="n">vec</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">iter</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">// error</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="n">iter</span> <span class="o">==</span> <span class="n">a</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">vec</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">iter</span><span class="p">);</span> <span class="c1">// error</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 
     </div>
@@ -520,25 +600,25 @@ void erase(std::vector&lt;int&gt; &amp;vec, int a) {
     <div class="col col-10 col-d-12 push-d-0 push-1">
       <div class="post__navigation animate">
   
-  <a class="post__prev" href="/blog/4-%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8">
+  <a class="post__prev" href="/blog/8-c-%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F">
     <div class="prev__image">
-      <img loading="lazy" src="/images/post/post-14.jpg" alt="cpp quiz">
+      <img loading="lazy" src="/images/post/post-4.jpg" alt="cpp quiz">
     </div>
     <div class="prev__box">
       <span class="post__nav post__nav__prev">Prev post</span>
-      <h2 class="post__nav__title">线程安全</h2>
+      <h2 class="post__nav__title">c++编程范式</h2>
     </div>
   </a>
   
 
   
-  <a class="post__next" href="/blog/0-%E6%B5%8F%E8%A7%88%E5%99%A8%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86">
+  <a class="post__next" href="/blog/6-%E9%94%99%E8%AF%AF%E7%A0%81%E5%92%8C%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86">
     <div class="next__box">
       <span class="post__nav post__nav__next">Next post</span>
-      <h2 class="post__nav__title">浏览器工作原理</h2>
+      <h2 class="post__nav__title">错误码和异常处理</h2>
     </div>
     <div class="next__image">
-      <img loading="lazy" src="/images/post/post-57.jpeg" alt="cpp quiz">
+      <img loading="lazy" src="/images/post/post-3.jpg" alt="cpp quiz">
     </div>
   </a>
   
@@ -555,7 +635,7 @@ void erase(std::vector&lt;int&gt; &amp;vec, int a) {
 
 <!-- begin related posts -->
 <div class="container">
-  <section class="related-posts  animate">
+  <section class="related-posts is-related animate">
     <div class="row">
       <div class="col col-12">
         <div class="container__inner">
@@ -564,6 +644,12 @@ void erase(std::vector&lt;int&gt; &amp;vec, int a) {
               <h2 class="section__title">You may also like</h2>
               <a class="section__link" href="/blog">
                 
+                
+                  
+                    <a href="/tags#计算机网络" class="section__link related-tag">See all<span> 计算机网络</span> <i class="ion ion-md-arrow-forward"></i></a>
+                  
+                
+              
               </a>
             </div>
           </div>
@@ -653,6 +739,58 @@ void erase(std::vector&lt;int&gt; &amp;vec, int a) {
             
       
             
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/2-%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF">
+                      <img loading="lazy" src="/images/post/post-52.jpg" alt="渲染管线">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/计算机网络" class="article__tag">计算机网络</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/2-%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF">渲染管线</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      ## 渲染管线
+
+### 1. 什么是渲染管线？
+渲染管线，也被称为图形管线，是一个用于生成2D图像（如屏幕上的图像）的硬件或软件实现的概念模型。这个过程通常基于3D场景的数据，包括但不限于几何、视点、纹理、光照信息等。
+
+渲染管线通...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-09T09:10:51+00:00">09 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
             
             
             
@@ -660,6 +798,57 @@ void erase(std::vector&lt;int&gt; &amp;vec, int a) {
             
       
             
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/1-%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B%E4%B8%8E%E5%8E%9F%E7%90%86">
+                      <img loading="lazy" src="/images/post/post-39.jpg" alt="编译过程与原理">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/计算机网络" class="article__tag">计算机网络</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/1-%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B%E4%B8%8E%E5%8E%9F%E7%90%86">编译过程与原理</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      ## 编译过程与原理
+
+### 1. 编译过程 - 编译器在做什么？
+
+如果想要机器按照我们的设想执行我们的命令，我们需要一个能够跟机器沟通的方式，而这种方式也就是==机器语言(第一代计算机语言)==，一堆`01`构成的指令。我们需要...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-09T09:09:14+00:00">09 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
             
             
             
@@ -667,154 +856,60 @@ void erase(std::vector&lt;int&gt; &amp;vec, int a) {
             
       
             
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
-            
-            
-      
-            
-      
-            
-            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/99-99-%E5%85%B3%E4%BA%8E%E7%BD%91%E7%BB%9C%E7%9A%84%E4%B8%80%E4%BA%9Bquiz">
+                      <img loading="lazy" src="/images/post/post-26.jpg" alt="（99）关于网络的一些quiz">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/计算机网络" class="article__tag">计算机网络</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/99-99-%E5%85%B3%E4%BA%8E%E7%BD%91%E7%BB%9C%E7%9A%84%E4%B8%80%E4%BA%9Bquiz">（99）关于网络的一些quiz</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      ## （99）关于网络的一些quiz
+
+#### 1. 画出tcp头部的协议格式
+
+#### 2.udp头部/ip头部/http头部
+
+#### 3. 滑动窗口的作用
+答:主要就是为了实现流量控制,控制了发送包的速率,每次发送方只能发...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-09T09:01:42+00:00">09 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+                  
           </div>
         </div>
       </div>

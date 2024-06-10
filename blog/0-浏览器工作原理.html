@@ -16,13 +16,13 @@
   <meta name="twitter:title" content="浏览器工作原理 – Marco’s Blog">
   <meta name="twitter:description" content="浏览器工作原理
 ">
-  <meta name="twitter:image:src" content="/images/post/post-57.jpeg">
+  <meta name="twitter:image:src" content="/images/post/post-42.jpeg">
 
   <!-- Facebook OpenGraph -->
   <meta property="og:title" content="浏览器工作原理 – Marco’s Blog">
   <meta property="og:description" content="浏览器工作原理
 ">
-  <meta property="og:image" content="/images/post/post-57.jpeg">
+  <meta property="og:image" content="/images/post/post-42.jpeg">
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
@@ -124,7 +124,7 @@
       
       <div class="col col-6 col-d-12">
         <div class="post-image">
-          <img loading="lazy" src="/images/post/post-57.jpeg" alt="浏览器工作原理">
+          <img loading="lazy" src="/images/post/post-42.jpeg" alt="浏览器工作原理">
         </div>
       </div>
       
@@ -132,6 +132,12 @@
       <div class="col col-6 col-d-12">
         <div class="post__info">
 
+          
+          <div class="post-tags">
+            
+              <a href="/tag/浏览器基本概念" class="post-tags__tag">浏览器基本概念</a>
+            
+          </div>
           
 
 
@@ -144,7 +150,7 @@
 
             <div class="post__meta-bottom">
               <div class="post__author">Marco Hwong</div>
-              <time class="post__date" datetime="2024-06-02T15:17:49+00:00">02 Jun 2024</time>
+              <time class="post__date" datetime="2024-06-10T08:30:27+00:00">10 Jun 2024</time>
             </div>
           </div>
 
@@ -159,6 +165,7 @@
 
   <article class="post">
 
+    <ul><li><a href="#浏览器工作原理">浏览器工作原理</a><ul><li><a href="#1-浏览器架构">1. 浏览器架构</a><ul><li><a href="#11-chrome浏览器的多进程架构">1.1 chrome浏览器的多进程架构</a></li><li><a href="#12-进程之间的关系">1.2 进程之间的关系</a></li><li><a href="#13-为什么要使用多进程架构">1.3 为什么要使用多进程架构？</a></li><li><a href="#14-多进程架构优化">1.4 多进程架构优化</a><ul><li><a href="#141-浏览器的进程模式">1.4.1 浏览器的进程模式</a></li><li><a href="#142-那么为什么浏览器使用process-per-site-instance作为默认的进程模式呢">1.4.2 那么为什么浏览器使用Process-per-site-instance作为默认的进程模式呢？</a></li></ul></li></ul></li><li><a href="#2-浏览网页时浏览器背后的工作">2. 浏览网页时，浏览器背后的工作</a><ul><li><a href="#21-网页加载过程">2.1 网页加载过程</a></li><li><a href="#22-网页渲染过程以及原理">2.2 网页渲染过程以及原理</a></li><li><a href="#23-浏览器对事件的处理">2.3 浏览器对事件的处理</a><ul><li><a href="#231-渲染进程中合成器线程接收事件">2.3.1 渲染进程中合成器线程接收事件</a></li><li><a href="#232-查找事件的目标对象event-target">2.3.2 查找事件的目标对象（event target）</a></li><li><a href="#233-浏览器对事件的优化">2.3.3 浏览器对事件的优化</a></li></ul></li></ul></li><li><a href="#97-conclusion">97. conclusion</a></li><li><a href="#98-appendix">98. appendix</a><ul><li><a href="#1-uri的schema">1. uri的schema</a></li></ul></li><li><a href="#99-reference">99. reference</a></li></ul></li></ul>
     <div class="post__content">
       <h2 id="浏览器工作原理">浏览器工作原理</h2>
 
@@ -171,27 +178,21 @@
 <p>进程（process）是程序的一次执行过程，是一个动态概念，是程序在执行过程中分配和管理资源的基本单位；
 线程（thread）是CPU调度和分派的基本单位，它可与同属一个进程的其他的线程共享进程所拥有的全部资源。</p>
 
-<p>大家都知道，浏览器属于一个应用程序，而应用程序的一次执行，可以理解为计算机启动了一个进程，进程启动后，CPU会给该进程分配相应的内存空间，当我们的进程得到了内存之后，就可以使用线程进行资源调度，进而完成我们应用程序的功能。</p>
-
-<p>而在应用程序中，为了满足功能的需要，启动的进程会创建另外的新的进程来处理其他任务，这些创建出来的新的进程拥有全新的独立的内存空间，不能与原来的进程内向内存，如果这些进程之间需要通信，可以通过IPC机制（Inter Process Communication）来进行。</p>
-
-<p>很多应用程序都会采取这种多进程的方式来工作，因为进程和进程之间是互相独立的它们互不影响，也就是说，当其中一个进程挂掉了之后，不会影响到其他进程的执行，只需要重启挂掉的进程就可以恢复运行。</p>
-
-<p><img src="_imgs/0_browser_image.png" alt="alt text" /></p>
+<p><img src="/images/imgs/0_browser_image.png" alt="alt text" /></p>
 
 <p>假如我们去开发一个浏览器，它的架构可以是一个单进程多线程的应用程序，也可以是一个使用IPC通信的多进程应用程序。</p>
-
-<p>不同的浏览器使用不同的架构，下面主要以Chrome为例，介绍浏览器的多进程架构。</p>
 
 <h4 id="11-chrome浏览器的多进程架构">1.1 chrome浏览器的多进程架构</h4>
 <p>在Chrome中，主要的进程有4个：</p>
 
-<p>浏览器进程 (Browser Process)：负责浏览器的TAB的前进、后退、地址栏、书签栏的工作和处理浏览器的一些不可见的底层操作，比如网络请求和文件访问。
-渲染进程 (Renderer Process)：负责一个Tab内的显示相关的工作，也称渲染引擎。
-插件进程 (Plugin Process)：负责控制网页使用到的插件
-GPU进程 (GPU Process)：负责处理整个应用程序的GPU任务</p>
+<ul>
+  <li>浏览器进程 (Browser Process)：负责浏览器的TAB的前进、后退、地址栏、书签栏的工作和处理浏览器的一些不可见的底层操作，比如网络请求和文件访问。</li>
+  <li>渲染进程 (Renderer Process)：负责一个Tab内的显示相关的工作，也称渲染引擎。</li>
+  <li>插件进程 (Plugin Process)：负责控制网页使用到的插件</li>
+  <li>GPU进程 (GPU Process)：负责处理整个应用程序的GPU任务</li>
+</ul>
 
-<p><img src="_imgs/0_browser_image-1.png" alt="alt text" /></p>
+<p><img src="/images/imgs/0_browser_image-1.png" alt="alt text" /></p>
 
 <h4 id="12-进程之间的关系">1.2 进程之间的关系</h4>
 
@@ -205,10 +206,23 @@ GPU进程 (GPU Process)：负责处理整个应用程序的GPU任务</p>
 <h4 id="13-为什么要使用多进程架构">1.3 为什么要使用多进程架构？</h4>
 
 <ul>
-  <li>第一，更高的容错性。当今WEB应用中，HTML，JavaScript和CSS日益复杂，这些跑在渲染引擎的代码，频繁的出现BUG，而有些BUG会直接导致渲染引擎崩溃，多进程架构使得每一个渲染引擎运行在各自的进程中，相互之间不受影响，也就是说，当其中一个页面崩溃挂掉之后，其他页面还可以正常的运行不收影响。</li>
-  <li>第二，更高的安全性和沙盒性（sanboxing）。渲染引擎会经常性的在网络上遇到不可信、甚至是恶意的代码，它们会利用这些漏洞在你的电脑上安装恶意的软件，针对这一问题，浏览器对不同进程限制了不同的权限，并为其提供沙盒运行环境，使其更安全更可靠</li>
-  <li>第三，更高的响应速度。在单进程的架构中，各个任务相互竞争抢夺CPU资源，使得浏览器响应速度变慢，而多进程架构正好规避了这一缺点。
-<img src="_imgs/0_browser_image-2.png" alt="alt text" /></li>
+  <li>
+    <p>第一，更高的容错性。</p>
+
+    <p>当今WEB应用中，HTML，JavaScript和CSS日益复杂，这些跑在渲染引擎的代码，频繁的出现BUG，而有些BUG会直接导致渲染引擎崩溃，多进程架构使得每一个渲染引擎运行在各自的进程中，相互之间不受影响，也就是说，当其中一个页面崩溃挂掉之后，其他页面还可以正常的运行不收影响。</p>
+  </li>
+  <li>
+    <p>第二，更高的安全性和沙盒性（sanboxing）。</p>
+
+    <p>渲染引擎会经常性的在网络上遇到不可信、甚至是恶意的代码，它们会利用这些漏洞在你的电脑上安装恶意的软件，针对这一问题，浏览器对不同进程限制了不同的权限，并为其提供沙盒运行环境，使其更安全更可靠</p>
+  </li>
+  <li>
+    <p>第三，更高的响应速度。</p>
+
+    <p>在单进程的架构中，各个任务相互竞争抢夺CPU资源，使得浏览器响应速度变慢，而多进程架构正好规避了这一缺点。</p>
+
+    <p><img src="/images/imgs/0_browser_image-2.png" alt="alt text" /></p>
+  </li>
 </ul>
 
 <h4 id="14-多进程架构优化">1.4 多进程架构优化</h4>
@@ -216,17 +230,35 @@ GPU进程 (GPU Process)：负责处理整个应用程序的GPU任务</p>
 <p>之前的我们说到，Renderer Process的作用是负责一个Tab内的显示相关的工作，这就意味着，一个Tab，就会有一个Renderer Process，这些进程之间的内存无法进行共享，而不同进程的内存常常需要包含相同的内容。</p>
 
 <h5 id="141-浏览器的进程模式">1.4.1 浏览器的进程模式</h5>
-<ul>
-  <li>“site”
-  是指具有相同注册域名（例如：google.com，bbc.co.uk）和方案（例如：https://）的一组网页。例如，a.baidu.com和b.baidu.com可以被视为同一个”site”。这个概念是为了区分不同的网站，即使它们可能在同一个顶级域名下。</li>
-  <li>“site-instance”
-  则是指来自同一”site”的一组”connected”页面。这里的”connected”是指这些页面可以在脚本代码中获取对彼此的引用。如果满足以下两种情况，并且新打开的页面和旧页面属于上面定义的同一个”site”，那么它们就属于同一个”site-instance”。
-    <ul>
-      <li>用户通过<code class="language-plaintext highlighter-rouge">&lt;a target="_blank"&gt;</code>这种方式点击打开的新页面</li>
-      <li>JS代码打开的新页面（比如 window.open)</li>
-    </ul>
-  </li>
-</ul>
+<blockquote>
+  <ul>
+    <li>
+      <p>“site”</p>
+
+      <p>是指具有相同注册域名（例如：google.com，bbc.co.uk）和方案（例如：https://）的一组网页。</p>
+
+      <p>例如，a.baidu.com和b.baidu.com可以被视为同一个”site”。这个概念是为了区分不同的网站，即使它们可能在同一个顶级域名下。</p>
+    </li>
+  </ul>
+</blockquote>
+
+<blockquote>
+  <ul>
+    <li>
+      <p>“site-instance”
+  则是指来自同一”site”的一组”connected”页面。这里的”connected”是指这些页面可以在脚本代码中获取对彼此的引用。如果满足以下两种情况，并且新打开的页面和旧页面属于上面定义的同一个”site”，那么它们就属于同一个”site-instance”。</p>
+
+      <ul>
+        <li>
+          <p>用户通过<code class="language-plaintext highlighter-rouge">&lt;a target="_blank"&gt;</code>这种方式点击打开的新页面</p>
+        </li>
+        <li>
+          <p>JS代码打开的新页面（比如 window.open)</p>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</blockquote>
 
 <p>为了节省内存，Chrome提供了四种进程模式（Process Models），不同的进程模式会对 tab 进程做不同的处理。</p>
 
@@ -276,33 +308,33 @@ GPU进程 (GPU Process)：负责处理整个应用程序的GPU任务</p>
   <li>storage thread： 控制文件等的访问；</li>
 </ul>
 
-<p><img src="_imgs/0_browser_image-3.png" alt="alt text" /></p>
+<p><img src="/images/imgs/0_browser_image-3.png" alt="alt text" /></p>
 
 <ul>
   <li>
     <p>第一步：处理输入
   当我们在浏览器的地址栏输入内容按下回车时，UI thread会判断输入的内容是搜索关键词（search query）还是URL，如果是搜索关键词，跳转至默认搜索引擎对应都搜索URL，如果输入的内容是URL，则开始请求URL。
-  <img src="_imgs/0_browser_image-4.png" alt="alt text" /></p>
+  <img src="/images/imgs/0_browser_image-4.png" alt="alt text" /></p>
   </li>
   <li>
     <p>第二步：开始导航
   回车按下后，UI thread将关键词搜索对应的URL或输入的URL交给网络线程Network thread，此时UI线程使Tab前的图标展示为加载中状态，然后网络进程进行一系列诸如DNS寻址，建立TLS连接等操作进行资源请求，如果收到服务器的301重定向响应，它就会告知UI线程进行重定向然后它会再次发起一个新的网络请求。
-  <img src="_imgs/0_browser_image-5.png" alt="alt text" /></p>
+  <img src="/images/imgs/0_browser_image-5.png" alt="alt text" /></p>
   </li>
   <li>
     <p>第三步：读取响应
   network thread接收到服务器的响应后，开始解析HTTP响应报文，然后根据响应头中的Content-Type字段来确定响应主体的媒体类型（MIME Type），如果媒体类型是一个HTML文件，则将响应数据交给渲染进程（renderer process）来进行下一步的工作，如果是 zip 文件或者其它文件，会把相关数据传输给下载管理器。
-  <img src="_imgs/0_browser_image-19.png" alt="alt text" /></p>
+  <img src="/images/imgs/0_browser_image-19.png" alt="alt text" /></p>
 
     <p>与此同时，浏览器会进行 Safe Browsing 安全检查，如果域名或者请求内容匹配到已知的恶意站点，network thread 会展示一个警告页。除此之外，网络线程还会做 CORB（Cross Origin Read Blocking）检查来确定那些敏感的跨站数据不会被发送至渲染进程。</p>
 
-    <p><img src="_imgs/0_browser_image-20.png" alt="alt text" /></p>
+    <p><img src="/images/imgs/0_browser_image-20.png" alt="alt text" /></p>
   </li>
   <li>
     <p>第四步：查找渲染进程
   各种检查完毕以后，network thread 确信浏览器可以导航到请求网页，network thread 会通知 UI thread 数据已经准备好，UI thread 会查找到一个 renderer process 进行网页的渲染。</p>
 
-    <p><img src="_imgs/0_browser_image-21.png" alt="alt text" /></p>
+    <p><img src="/images/imgs/0_browser_image-21.png" alt="alt text" /></p>
 
     <p>浏览器为了对查找渲染进程这一步骤进行优化，考虑到网络请求获取响应需要时间，所以在第二步开始，浏览器已经预先查找和启动了一个渲染进程，如果中间步骤一切顺利，当 network thread 接收到数据时，渲染进程已经准备好了，但是如果遇到重定向，这个准备好的渲染进程也许就不可用了，这个时候会重新启动一个渲染进程。</p>
   </li>
@@ -310,14 +342,14 @@ GPU进程 (GPU Process)：负责处理整个应用程序的GPU任务</p>
     <p>第五步：提交导航
   到了这一步，数据和渲染进程都准备好了，Browser Process 会向 Renderer Process 发送IPC消息来确认导航，此时，浏览器进程将准备好的数据发送给渲染进程，渲染进程接收到数据之后，又发送IPC消息给浏览器进程，告诉浏览器进程导航已经提交了，页面开始加载。</p>
 
-    <p><img src="_imgs/0_browser_image-22.png" alt="alt text" /></p>
+    <p><img src="/images/imgs/0_browser_image-22.png" alt="alt text" /></p>
 
     <p>这个时候导航栏会更新，安全指示符更新（地址前面的小锁），访问历史列表（history tab）更新，即可以通过前进后退来切换该页面。</p>
   </li>
   <li>
     <p>第六步：初始化加载完成
   当导航提交完成后，渲染进程开始加载资源及渲染页面（详细内容下文介绍），当页面渲染完成后（页面及内部的iframe都触发了onload事件），会向浏览器进程发送IPC消息，告知浏览器进程，这个时候UI thread会停止展示tab中的加载中图标。
-  <img src="_imgs/0_browser_image-23.png" alt="alt text" /></p>
+  <img src="/images/imgs/0_browser_image-23.png" alt="alt text" /></p>
   </li>
 </ul>
 
@@ -328,9 +360,10 @@ GPU进程 (GPU Process)：负责处理整个应用程序的GPU任务</p>
   <li>一个主线程（main thread）</li>
   <li>多个工作线程（work thread）</li>
   <li>一个合成器线程（compositor thread）</li>
-  <li>多个光栅化线程（raster thread）
-<img src="_imgs/0_browser_image-6.png" alt="alt text" /></li>
+  <li>多个光栅化线程（raster thread）</li>
 </ul>
+
+<p><img src="/images/imgs/0_browser_image-6.png" alt="alt text" /></p>
 
 <p>不同的线程，有着不同的工作职责。</p>
 
@@ -342,8 +375,9 @@ GPU进程 (GPU Process)：负责处理整个应用程序的GPU任务</p>
   </li>
   <li>
     <p>子资源加载
-  在构建DOM的过程中，会解析到图片、CSS、JavaScript脚本等资源，这些资源是需要从网络或者缓存中获取的，主线程在构建DOM过程中如果遇到了这些资源，逐一发起请求去获取，而为了提升效率，浏览器也会运行预加载扫描（preload scanner）程序，如果HTML中存在img、link等标签，预加载扫描程序会把这些请求传递给Browser Process的network thread进行资源下载。
-  <img src="_imgs/0_browser_image-7.png" alt="alt text" /></p>
+  在构建DOM的过程中，会解析到图片、CSS、JavaScript脚本等资源，这些资源是需要从网络或者缓存中获取的，主线程在构建DOM过程中如果遇到了这些资源，逐一发起请求去获取，而为了提升效率，浏览器也会运行预加载扫描（preload scanner）程序，如果HTML中存在img、link等标签，预加载扫描程序会把这些请求传递给Browser Process的network thread进行资源下载。</p>
+
+    <p><img src="/images/imgs/0_browser_image-7.png" alt="alt text" /></p>
   </li>
   <li>
     <p>JavaScript的下载与执行
@@ -354,14 +388,16 @@ GPU进程 (GPU Process)：负责处理整个应用程序的GPU任务</p>
     <p>样式计算 - Style calculation
   DOM树只是我们页面的结构，我们要知道页面长什么样子，我们还需要知道DOM的每一个节点的样式。主线程在解析页面时，遇到<code class="language-plaintext highlighter-rouge">&lt;style&gt;</code>标签或者<code class="language-plaintext highlighter-rouge">&lt;link&gt;</code>标签的CSS资源，会加载CSS代码，根据CSS代码确定每个DOM节点的计算样式（computed style）。</p>
 
-    <p>计算样式是主线程根据CSS样式选择器（CSS selectors）计算出的每个DOM元素应该具备的具体样式，即使你的页面没有设置任何自定义的样式，浏览器也会提供其默认的样式。
-  <img src="_imgs/0_browser_image-8.png" alt="alt text" /></p>
+    <p>计算样式是主线程根据CSS样式选择器（CSS selectors）计算出的每个DOM元素应该具备的具体样式，即使你的页面没有设置任何自定义的样式，浏览器也会提供其默认的样式。</p>
+
+    <p><img src="/images/imgs/0_browser_image-8.png" alt="alt text" /></p>
   </li>
   <li>
     <p>布局 - Layout
   DOM树和计算样式完成后，我们还需要知道每一个节点在页面上的位置，布局（Layout）其实就是找到所有元素的几何关系的过程。
-  主线程会遍历DOM 及相关元素的计算样式，构建出包含每个元素的页面坐标信息及盒子模型大小的布局树（Render Tree），遍历过程中，会跳过隐藏的元素（display: none），另外，伪元素虽然在DOM上不可见，但是在布局树上是可见的。
-  <img src="_imgs/0_browser_image-24.png" alt="alt text" /></p>
+  主线程会遍历DOM 及相关元素的计算样式，构建出包含每个元素的页面坐标信息及盒子模型大小的布局树（Render Tree），遍历过程中，会跳过隐藏的元素（display: none），另外，伪元素虽然在DOM上不可见，但是在布局树上是可见的。</p>
+
+    <p><img src="/images/imgs/0_browser_image-24.png" alt="alt text" /></p>
   </li>
   <li>
     <p>绘制 - Paint
@@ -371,23 +407,25 @@ GPU进程 (GPU Process)：负责处理整个应用程序的GPU任务</p>
     <p>合成 - Compositing
   文档结构、元素的样式、元素的几何关系、绘画顺序，这些信息我们都有了，这个时候如果要绘制一个页面，我们需要做的是把这些信息转化为显示器中的像素，这个转化的过程，叫做光栅化（rasterizing）。</p>
 
-    <p>那我们要绘制一个页面，最简单的做法是只光栅化视口内（viewport）的网页内容，如果用户进行了页面滚动，就移动光栅帧（rastered frame）并且光栅化更多的内容以补上页面缺失的部分，如下：
-  <img src="_imgs/0_browser_image-10.webp" alt="alt text" /></p>
+    <p>那我们要绘制一个页面，最简单的做法是只光栅化视口内（viewport）的网页内容，如果用户进行了页面滚动，就移动光栅帧（rastered frame）并且光栅化更多的内容以补上页面缺失的部分，如下：</p>
+
+    <p><img src="/images/imgs/0_browser_image-10.webp" alt="alt text" /></p>
 
     <p>Chrome第一个版本就是采用这种简单的绘制方式，这一方式唯一的缺点就是每当页面滚动，光栅线程都需要对新移进视图的内容进行光栅化，这是一定的性能损耗，为了优化这种情况，Chrome采取一种更加复杂的叫做合成（compositing）的做法。</p>
 
-    <p>那么，什么是合成？合成是一种将页面分成若干层，然后分别对它们进行光栅化，最后在一个单独的线程 - 合成线程（compositor thread）里面合并成一个页面的技术。当用户滚动页面时，由于页面各个层都已经被光栅化了，浏览器需要做的只是合成一个新的帧来展示滚动后的效果罢了。页面的动画效果实现也是类似，将页面上的层进行移动并构建出一个新的帧即可。
-  <img src="_imgs/0_browser_image-10.webp" alt="alt text" /></p>
+    <p>那么，什么是合成？合成是一种将页面分成若干层，然后分别对它们进行光栅化，最后在一个单独的线程 - 合成线程（compositor thread）里面合并成一个页面的技术。当用户滚动页面时，由于页面各个层都已经被光栅化了，浏览器需要做的只是合成一个新的帧来展示滚动后的效果罢了。页面的动画效果实现也是类似，将页面上的层进行移动并构建出一个新的帧即可。</p>
+
+    <p><img src="/images/imgs/0_browser_image-10.webp" alt="alt text" /></p>
 
     <p>为了实现合成技术，我们需要对元素进行分层，确定哪些元素需要放置在哪一层，主线程需要遍历渲染树来创建一棵层次树（Layer Tree），对于添加了 will-change CSS 属性的元素，会被看做单独的一层，没有 will-change CSS属性的元素，浏览器会根据情况决定是否要把该元素放在单独的层。</p>
 
-    <p><img src="_imgs/0_browser_image-10.png" alt="alt text" /></p>
+    <p><img src="/images/imgs/0_browser_image-10.png" alt="alt text" /></p>
 
     <p>你可能会想要给页面上所有的元素一个单独的层，然而当页面的层超过一定的数量后，层的合成操作要比在每个帧中光栅化页面的一小部分还要慢，因此衡量你应用的渲染性能是十分重要的一件事情。</p>
 
     <p>一旦Layer Tree被创建，渲染顺序被确定，主线程会把这些信息通知给合成器线程，合成器线程开始对层次数的每一层进行光栅化。有的层的可以达到整个页面的大小，所以合成线程需要将它们切分为一块又一块的小图块（tiles），之后将这些小图块分别进行发送给一系列光栅线程（raster threads）进行光栅化，结束后光栅线程会将每个图块的光栅结果存在GPU Process的内存中。</p>
 
-    <p><img src="_imgs/0_browser_image-11.png" alt="alt text" /></p>
+    <p><img src="/images/imgs/0_browser_image-11.png" alt="alt text" /></p>
 
     <p>为了优化显示体验，合成线程可以给不同的光栅线程赋予不同的优先级，将那些在视口中的或者视口附近的层先被光栅化。</p>
 
@@ -399,7 +437,7 @@ GPU进程 (GPU Process)：负责处理整个应用程序的GPU任务</p>
 
     <p>以上所有步骤完成后，合成线程就会通过IPC向浏览器进程（browser process）提交（commit）一个渲染帧。这个时候可能有另外一个合成帧被浏览器进程的UI线程（UI thread）提交以改变浏览器的UI。这些合成帧都会被发送给GPU从而展示在屏幕上。如果合成线程收到页面滚动的事件，合成线程会构建另外一个合成帧发送给GPU来更新页面。</p>
 
-    <p><img src="_imgs/0_browser_image-12.png" alt="alt text" /></p>
+    <p><img src="/images/imgs/0_browser_image-12.png" alt="alt text" /></p>
 
     <p>合成的好处在于这个过程没有涉及到主线程，所以合成线程不需要等待样式的计算以及JavaScript完成执行。这就是为什么合成器相关的动画最流畅，如果某个动画涉及到布局或者绘制的调整，就会涉及到主线程的重新计算，自然会慢很多。</p>
   </li>
@@ -410,14 +448,14 @@ GPU进程 (GPU Process)：负责处理整个应用程序的GPU任务</p>
 
 <p>以点击事件（click event）为例，让鼠标点击页面时候，首先接受到事件信息的是Browser Process，但是Browser Process只知道事件发生的类型和发生的位置，具体怎么对这个点击事件进行处理，还是由Tab内的Renderer Process进行的。Browser Process接受到事件后，随后便把事件的信息传递给了渲染进程，渲染进程会找到根据事件发生的坐标，找到目标对象（target），并且运行这个目标对象的点击事件绑定的监听函数（listener）。</p>
 
-<p><img src="_imgs/0_browser_image-13.png" alt="alt text" /></p>
+<p><img src="/images/imgs/0_browser_image-13.png" alt="alt text" /></p>
 
 <h5 id="231-渲染进程中合成器线程接收事件">2.3.1 渲染进程中合成器线程接收事件</h5>
 <p>前面我们说到，合成器线程可以独立于主线程之外通过已光栅化的层创建组合帧，例如页面滚动，如果没有对页面滚动绑定相关的事件，组合器线程可以独立于主线程创建组合帧，如果页面绑定了页面滚动事件，合成器线程会等待主线程进行事件处理后才会创建组合帧。那么，合成器线程是如何判断出这个事件是否需要路由给主线程处理的呢？</p>
 
 <p>由于执行 JS 是主线程的工作，当页面合成时，合成器线程会标记页面中绑定有事件处理器的区域为非快速滚动区域(non-fast scrollable region)，如果事件发生在这些存在标注的区域，合成器线程会把事件信息发送给主线程，等待主线程进行事件处理，如果事件不是发生在这些区域，合成器线程则会直接合成新的帧而不用等到主线程的响应。</p>
 
-<p><img src="_imgs/0_browser_image-14.png" alt="alt text" /></p>
+<p><img src="/images/imgs/0_browser_image-14.png" alt="alt text" /></p>
 
 <p>而对于非快速滚动区域的标记，开发者需要注意全局事件的绑定，比如我们使用事件委托，将目标元素的事件交给根元素body进行处理，代码如下：</p>
 
@@ -430,7 +468,7 @@ GPU进程 (GPU Process)：负责处理整个应用程序的GPU任务</p>
 
 <p>在开发者角度看，这一段代码没什么问题，但是从浏览器角度看，这一段代码给body元素绑定了事件监听器，也就意味着整个页面都被编辑为一个非快速滚动区域，这会使得即使你的页面的某些区域没有绑定任何事件，每次用户触发事件时，合成器线程也需要和主线程通信并等待反馈，流畅的合成器独立处理合成帧的模式就失效了。</p>
 
-<p><img src="_imgs/0_browser_image-15.png" alt="alt text" /></p>
+<p><img src="/images/imgs/0_browser_image-15.png" alt="alt text" /></p>
 
 <p>其实这种情况也很好处理，只需要在事件监听时传递passtive参数为 true，passtive会告诉浏览器你既要绑定事件，又要让组合器线程直接跳过主线程的事件处理直接合成创建组合帧。</p>
 
@@ -444,33 +482,29 @@ GPU进程 (GPU Process)：负责处理整个应用程序的GPU任务</p>
 <h5 id="232-查找事件的目标对象event-target">2.3.2 查找事件的目标对象（event target）</h5>
 <p>当合成器线程接收到事件信息，判定到事件发生不在非快速滚动区域后，合成器线程会向主线程发送这个时间信息，主线程获取到事件信息的第一件事就是通过命中测试（hit test）去找到事件的目标对象。具体的命中测试流程是遍历在绘制阶段生成的绘画记录（paint records）来找到包含了事件发生坐标上的元素对象。</p>
 
-<p><img src="_imgs/0_browser_image-16.png" alt="alt text" /></p>
+<p><img src="/images/imgs/0_browser_image-16.png" alt="alt text" /></p>
 
 <h5 id="233-浏览器对事件的优化">2.3.3 浏览器对事件的优化</h5>
 <p>一般我们屏幕的帧率是每秒60帧，也就是60fps，但是某些事件触发的频率超过了这个数值，比如wheel，mousewheel，mousemove，pointermove，touchmove，这些连续性的事件一般每秒会触发60~120次，假如每一次触发事件都将事件发送到主线程处理，由于屏幕的刷新速率相对来说较低，这样使得主线程会触发过量的命中测试以及JS代码，使得性能有了没必要是损耗。</p>
 
-<p><img src="_imgs/0_browser_image-17.png" alt="alt text" /></p>
+<p><img src="/images/imgs/0_browser_image-17.png" alt="alt text" /></p>
 
 <p>出于优化的目的，浏览器会合并这些连续的事件，延迟到下一帧渲染是执行，也就是requestAnimationFrame之前。</p>
 
-<p><img src="_imgs/0_browser_image-18.png" alt="alt text" /></p>
+<p><img src="/images/imgs/0_browser_image-18.png" alt="alt text" /></p>
 
 <p>而对于非连续性的事件，如keydown，keyup，mousedown，mouseup，touchstart，touchend等，会直接派发给主线程去执行。</p>
 
-<h3 id="3-总结">3. 总结</h3>
-<p>浏览器的多进程架构，根据不同的功能划分了不同的进程，进程内不同的使命划分了不同的线程，当用户开始浏览网页时候，浏览器进程进行处理输入、开始导航请求数据、请求响应数据，查找新建渲染进程，提交导航，之后渲染又进行了解析HTML构建DOM、构建过程加载子资源、下载并执行JS代码、样式计算、布局、绘制、合成，一步一步的构建出一个可交互的WEB页面，之后浏览器进程又接受页面的交互事件信息，并将其交给渲染进程，渲染进程内主进程进行命中测试，查找目标元素并执行绑定的事件，完成页面的交互。</p>
+<h3 id="97-conclusion">97. conclusion</h3>
 
-<p>本文大部分内容也是对inside look at modern web browser系列文章的整理、解读和翻译吧，整理过程还是收获非常大的，希望读者读了本文只有有所启发吧。</p>
+<ul>
+  <li>浏览器的多进程架构，根据不同的功能划分了不同的进程，进程内不同的使命划分了不同的线程。</li>
+  <li>当用户开始浏览网页时候，浏览器进程进行处理输入、开始导航请求数据、请求响应数据，查找新建渲染进程，提交导航。</li>
+  <li>渲染又进行了解析HTML构建DOM、构建过程加载子资源、下载并执行JS代码、样式计算、布局、绘制、合成，一步一步的构建出一个可交互的WEB页面。</li>
+  <li>浏览器进程又接受页面的交互事件信息，并将其交给渲染进程，渲染进程内主进程进行命中测试，查找目标元素并执行绑定的事件，完成页面的交互。</li>
+</ul>
 
-<p>浏览器的进程模式
-来源资料：https://juejin.cn/post/684490…
-最原始资料：https://www.chromium.org/deve…</p>
-
-<h3 id="2-浏览器线程和进程">2. 浏览器线程和进程</h3>
-
-<h3 id="1-那就是从在浏览器地址栏中输入url到页面显示浏览器到底发生了什么">1. 那就是从在浏览器地址栏中输入URL到页面显示，浏览器到底发生了什么？</h3>
-
-<h3 id="附录">附录</h3>
+<h3 id="98-appendix">98. appendix</h3>
 <h4 id="1-uri的schema">1. uri的schema</h4>
 <p>在 URI（统一资源标识符）中，scheme 是用来定义如何访问和处理资源的。除了 “https”，还有许多其他的 scheme，以下是一些常见的例子：</p>
 
@@ -488,9 +522,10 @@ GPU进程 (GPU Process)：负责处理整个应用程序的GPU任务</p>
 
 <p>这些只是众多 scheme 中的一部分，实际上，可以根据需要定义自定义的 scheme。</p>
 
-<h3 id="参考">参考</h3>
+<h3 id="99-reference">99. reference</h3>
+
 <ol>
-  <li><a href="https://segmentfault.com/a/1190000022633988">参考</a></li>
+  <li><a href="https://developer.chrome.com/blog/inside-browser-part1?hl=zh-cn">深入了解现代网络浏览器</a></li>
 </ol>
 
     </div>
@@ -514,7 +549,7 @@ GPU进程 (GPU Process)：负责处理整个应用程序的GPU任务</p>
     </li>
     <li class="share__item">
       <a class="share__link share__pinterest"
-        href="http://pinterest.com/pin/create/button/?url=/blog/0-%E6%B5%8F%E8%A7%88%E5%99%A8%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86&amp;media=/images/post/post-57.jpeg&amp;description=%E6%B5%8F%E8%A7%88%E5%99%A8%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"
+        href="http://pinterest.com/pin/create/button/?url=/blog/0-%E6%B5%8F%E8%A7%88%E5%99%A8%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86&amp;media=/images/post/post-42.jpeg&amp;description=%E6%B5%8F%E8%A7%88%E5%99%A8%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"
         onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
         title="Share on Pinterest" rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
     </li>
@@ -536,25 +571,25 @@ GPU进程 (GPU Process)：负责处理整个应用程序的GPU任务</p>
     <div class="col col-10 col-d-12 push-d-0 push-1">
       <div class="post__navigation animate">
   
-  <a class="post__prev" href="/blog/0-cpp-quiz">
+  <a class="post__prev" href="/blog/1-%E4%BB%8E%E8%BE%93%E5%85%A5url%E5%88%B0%E9%A1%B5%E9%9D%A2%E5%B1%95%E7%A4%BA%E8%BF%99%E4%B8%AD%E9%97%B4%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88">
     <div class="prev__image">
-      <img loading="lazy" src="/images/post/post-1.jpg" alt="浏览器工作原理">
+      <img loading="lazy" src="/images/post/post-43.jpeg" alt="浏览器工作原理">
     </div>
     <div class="prev__box">
       <span class="post__nav post__nav__prev">Prev post</span>
-      <h2 class="post__nav__title">cpp quiz</h2>
+      <h2 class="post__nav__title">从输入URL到页面展示这中间发生了什么</h2>
     </div>
   </a>
   
 
   
-  <a class="post__next" href="/blog/1-%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B%E4%B8%8E%E5%8E%9F%E7%90%86">
+  <a class="post__next" href="/blog/0-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF-%E9%A1%B5%E9%9D%A2%E6%98%AF%E6%80%8E%E4%B9%88%E6%B4%BB%E8%B5%B7%E6%9D%A5%E7%9A%84">
     <div class="next__box">
       <span class="post__nav post__nav__next">Next post</span>
-      <h2 class="post__nav__title">编译过程与原理</h2>
+      <h2 class="post__nav__title">消息队列和事件循环：页面是怎么活起来的</h2>
     </div>
     <div class="next__image">
-      <img loading="lazy" src="/images/post/post-59.jpg" alt="浏览器工作原理">
+      <img loading="lazy" src="/images/post/post-48.jpg" alt="浏览器工作原理">
     </div>
   </a>
   
@@ -571,7 +606,7 @@ GPU进程 (GPU Process)：负责处理整个应用程序的GPU任务</p>
 
 <!-- begin related posts -->
 <div class="container">
-  <section class="related-posts  animate">
+  <section class="related-posts is-related animate">
     <div class="row">
       <div class="col col-12">
         <div class="container__inner">
@@ -580,12 +615,210 @@ GPU进程 (GPU Process)：负责处理整个应用程序的GPU任务</p>
               <h2 class="section__title">You may also like</h2>
               <a class="section__link" href="/blog">
                 
+                
+                  
+                    <a href="/tags#浏览器基本概念" class="section__link related-tag">See all<span> 浏览器基本概念</span> <i class="ion ion-md-arrow-forward"></i></a>
+                  
+                
+              
               </a>
             </div>
           </div>
           <div class="row">
 
           
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/99-%E6%B5%8F%E8%A7%88%E5%99%A8%E7%96%91%E9%97%AE">
+                      <img loading="lazy" src="/images/post/post-44.jpg" alt="浏览器疑问">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/浏览器基本概念" class="article__tag">浏览器基本概念</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/99-%E6%B5%8F%E8%A7%88%E5%99%A8%E7%96%91%E9%97%AE">浏览器疑问</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      ## 浏览器疑问
+
+### 1. javaScript
+
+#### 1.1 怎么理解变量提升？为什么要有变量提升？
+
+变量提升（Hoisting）是 JavaScript 中的一个特性，它意味着无论变量在哪里声明，都会被提升到当前作用...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-10T15:42:39+00:00">10 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/1-%E4%BB%8E%E8%BE%93%E5%85%A5url%E5%88%B0%E9%A1%B5%E9%9D%A2%E5%B1%95%E7%A4%BA%E8%BF%99%E4%B8%AD%E9%97%B4%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88">
+                      <img loading="lazy" src="/images/post/post-43.jpeg" alt="从输入URL到页面展示这中间发生了什么">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/浏览器基本概念" class="article__tag">浏览器基本概念</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/1-%E4%BB%8E%E8%BE%93%E5%85%A5url%E5%88%B0%E9%A1%B5%E9%9D%A2%E5%B1%95%E7%A4%BA%E8%BF%99%E4%B8%AD%E9%97%B4%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88">从输入URL到页面展示这中间发生了什么</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      从输入URL到页面展示这中间发生了什么
+
+1. concepts
+
+从图中可以看出，整个过程需要各个进程之间的配合，所以在开始正式流程之前，我们还是先来快速回顾下浏览器进程、渲染进程和网络进程的主要职责。
+
+
+  
+    浏览器进程...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-10T08:19:42+00:00">10 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
             
             
       

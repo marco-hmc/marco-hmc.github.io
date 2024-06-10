@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>mvp矩阵与矩阵变换</title>
+  <meta name='description' content='Marco’s Blog'>
+
+  <link rel="canonical" href="/blog/1-mvp%E7%9F%A9%E9%98%B5%E4%B8%8E%E7%9F%A9%E9%98%B5%E5%8F%98%E6%8D%A2">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="mvp矩阵与矩阵变换 – Marco’s Blog">
+  <meta name="twitter:description" content="mvp矩阵与矩阵变换
+">
+  <meta name="twitter:image:src" content="/images/post/post-51.jpeg">
+
+  <!-- Facebook OpenGraph -->
+  <meta property="og:title" content="mvp矩阵与矩阵变换 – Marco’s Blog">
+  <meta property="og:description" content="mvp矩阵与矩阵变换
+">
+  <meta property="og:image" content="/images/post/post-51.jpeg">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Ionicons -->
+  <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/main.css">
+</head>
+
+<body>
+
+    
+
+    <!-- begin header -->
+<header class="c-header">
+  <div class="container">
+    <div class="row">
+      <div class="c-header__inner">
+
+        <div class="logo">
+          <a class="logo__link" href="/">
+          
+            <img class="logo__image" src="/images/mc_logo1.ico" alt="Marco’s Blog">
+          
+          </a>
+        </div>
+
+        <nav class="main-nav">
+          <div class="main-nav__box">
+
+            <div class="nav__icon-close">
+              <i class="ion ion-md-close"></i>
+            </div>
+
+            <div class="nav__title">Menu</div>
+
+              <ul class="nav__list list-reset">
+
+              
+                
+                <li class="nav__item">
+                  <a href="/" class="nav__link">Home</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/projects/" class="nav__link">Projects</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/blog/" class="nav__link">Blog</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/about/" class="nav__link">About</a>
+                </li>
+                
+              
+
+            </ul>
+          </div>
+
+          <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+        </nav>
+
+        <div class="nav-button">
+          <i class="nav__icon nav__icon-menu ion ion-md-menu"></i>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+<!-- end header -->
+
+    <div class="post-top">
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="col col-6 col-d-12">
+        <div class="post-image">
+          <img loading="lazy" src="/images/post/post-51.jpeg" alt="mvp矩阵与矩阵变换">
+        </div>
+      </div>
+      
+
+      <div class="col col-6 col-d-12">
+        <div class="post__info">
+
+          
+          <div class="post-tags">
+            
+              <a href="/tag/计算机网络" class="post-tags__tag">计算机网络</a>
+            
+          </div>
+          
+
+
+          <h1 class="post__title">mvp矩阵与矩阵变换</h1>
+
+          <div class="post__meta">
+            <div class="post__author-image">
+              <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+            </div>
+
+            <div class="post__meta-bottom">
+              <div class="post__author">Marco Hwong</div>
+              <time class="post__date" datetime="2024-06-03T01:59:31+00:00">03 Jun 2024</time>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- begin post -->
+<div class="container animate">
+
+  <article class="post">
+
+    <ul><li><a href="#mvp矩阵与矩阵变换">mvp矩阵与矩阵变换</a><ul><li><a href="#1-矩阵基础">1. 矩阵基础</a><ul><li><a href="#11-什么是齐次坐标">1.1 什么是齐次坐标</a></li><li><a href="#12-为什么要用齐次坐标而不是笛卡尔坐标">1.2 为什么要用齐次坐标，而不是笛卡尔坐标？</a></li><li><a href="#13-矩阵变换">1.3 矩阵变换</a></li><li><a href="#14-空间变换">1.4 空间变换</a></li></ul></li><li><a href="#2-什么是mvp矩阵">2. 什么是mvp矩阵</a><ul><li><a href="#21-为什么要有mvp矩阵">2.1 为什么要有mvp矩阵？</a><ul><li><a href="#211-为什么要引入模型空间而不是直接使用世界空间呢">2.1.1 为什么要引入模型空间，而不是直接使用世界空间呢</a></li><li><a href="#212-视图空间有啥用">2.1.2 视图空间有啥用？</a></li><li><a href="#213-怎么理解裁剪空间">2.1.3 怎么理解裁剪空间？</a></li></ul></li><li><a href="#22-投影矩阵">2.2 投影矩阵</a></li><li><a href="#23-视口变换">2.3 视口变换</a></li></ul></li><li><a href="#99-quiz">99. quiz</a><ul><li><a href="#1-什么时候需要更改模型矩阵什么时候更改模型坐标">1. 什么时候需要更改模型矩阵,什么时候更改模型坐标?</a></li><li><a href="#2-为什么不可以统一都改模型坐标而不改模型矩阵吗">2. 为什么不可以统一都改模型坐标,而不改模型矩阵吗?</a></li><li><a href="#3-视图矩阵的eye-center-up是什么">3. 视图矩阵的eye, center, up是什么?</a></li></ul></li><li><a href="#附录">附录</a><ul><li><a href="#1-点乘和叉乘">1. 点乘和叉乘</a></li><li><a href="#2-点乘和投影">2. 点乘和投影</a></li><li><a href="#4-屏幕空间的坐标系是怎么样的">4. 屏幕空间的坐标系是怎么样的？</a></li><li><a href="#3-视锥体">3. 视锥体</a></li></ul></li></ul></li></ul>
+    <div class="post__content">
+      <h2 id="mvp矩阵与矩阵变换">mvp矩阵与矩阵变换</h2>
+
+<h3 id="1-矩阵基础">1. 矩阵基础</h3>
+
+<h4 id="11-什么是齐次坐标">1.1 什么是齐次坐标</h4>
+<p>齐次坐标是在计算机图形学中常用的一种坐标表示方法，它在传统的笛卡尔坐标系的基础上增加了一个额外的维度，通常表示为(x, y, z, w)。
+齐次坐标的主要优点是可以用来表示无穷远的点，并且可以通过一个矩阵乘法来表示旋转、缩放、平移等变换，这在计算机图形学中是非常有用的。</p>
+<ul>
+  <li>若w==1，则向量(x, y, z, 1)为空间中的点。</li>
+  <li>若w==0，则向量(x, y, z, 0)为方向。</li>
+</ul>
+
+<h4 id="12-为什么要用齐次坐标而不是笛卡尔坐标">1.2 为什么要用齐次坐标，而不是笛卡尔坐标？</h4>
+<blockquote>
+  <p>简单来说平面坐标系，和三维坐标系都是笛卡尔坐标的一种，笛卡尔坐标还可以扩展到任意维，关键点是所有轴互相正交。</p>
+  <ul>
+    <li>在三维图形中，3*3矩阵只能表示旋转无法表示平移，因此要引入多一个维度来表示。除此之外，引入这个维度的好处还在于可以表示点和方向。</li>
+  </ul>
+</blockquote>
+
+<h4 id="13-矩阵变换">1.3 矩阵变换</h4>
+<p>矩阵变换是一种在计算机图形学中常用的方法，用于表示和计算几何变换，如旋转、缩放和平移。这些变换通常用于改变物体的位置、方向和大小。</p>
+
+<p>在二维空间中，旋转、缩放和平移可以分别用以下的2x2或3x3矩阵来表示：</p>
+
+<ul>
+  <li>旋转（θ为旋转角度）：
+    <div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[ cosθ  -sinθ ]
+[ sinθ   cosθ ]
+</code></pre></div>    </div>
+  </li>
+  <li>缩放（sx和sy分别为x轴和y轴的缩放因子）：
+    <div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[ sx  0 ]
+[ 0   sy ]
+</code></pre></div>    </div>
+  </li>
+  <li>平移（tx和ty分别为x轴和y轴的平移距离）：
+    <div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[ 1  0  tx ]
+[ 0  1  ty ]
+[ 0  0  1  ]
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>在三维空间中，旋转、缩放和平移可以分别用以下的3x3或4x4矩阵来表示。例如，沿z轴旋转、在各轴上缩放和平移的矩阵分别为：</p>
+
+<ul>
+  <li>沿z轴旋转（θ为旋转角度）：
+    <div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[ cosθ  -sinθ  0  0 ]
+[ sinθ   cosθ  0  0 ]
+[ 0      0     1  0 ]
+[ 0      0     0  1 ]
+</code></pre></div>    </div>
+  </li>
+  <li>缩放（sx、sy和sz分别为x轴、y轴和z轴的缩放因子）：
+    <div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[ sx  0   0   0 ]
+[ 0   sy  0   0 ]
+[ 0   0   sz  0 ]
+[ 0   0   0   1 ]
+</code></pre></div>    </div>
+  </li>
+  <li>平移（tx、ty和tz分别为x轴、y轴和z轴的平移距离）：
+    <div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[ 1  0  0  tx ]
+[ 0  1  0  ty ]
+[ 0  0  1  tz ]
+[ 0  0  0  1  ]
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>通过将这些矩阵与物体的顶点坐标相乘，我们可以得到变换后的顶点坐标。如果有多个变换需要应用，我们可以先将这些变换矩阵相乘，得到一个总的变换矩阵，然后再与顶点坐标相乘。</p>
+
+<p>顶点坐标就是<code class="language-plaintext highlighter-rouge">p=[x y z w]</code>，其中w取1，表示是一个点。</p>
+
+<p>那矩阵变换就是<code class="language-plaintext highlighter-rouge">M_(平移)M_(旋转)p = p'</code>，而<code class="language-plaintext highlighter-rouge">M_(平移)M_(旋转)</code>可以通过矩阵结合律进行一个合并得到旋转平移矩阵，至于是先旋转还是平移就看运算顺序。在这个例子中是先旋转，再平移。按照从右往左的顺序，具体原理不一一说明。</p>
+
+<blockquote>
+  <p>这里可以更好说明为什么是<code class="language-plaintext highlighter-rouge">4*4</code>，因为平移需要<code class="language-plaintext highlighter-rouge">4*4</code>的矩阵，所以就对旋转矩阵和缩放矩阵扩展一个维度，且不影响原来的矩阵乘积效果，然后通过矩阵结合律去合并，就可以得到一个能够表示对顶点进行任意旋转、缩放和平移的矩阵了。</p>
+</blockquote>
+
+<h4 id="14-空间变换">1.4 空间变换</h4>
+<p>在矩阵变换的基础上，我们已经掌握了如何对一个点进行旋转、平移、缩放到另一个位置。接下来就开始讨论空间变换。</p>
+
+<p>这里的理解其实很简单，只有两句话：</p>
+<ul>
+  <li>模型矩阵其实是可以看成一个将模型空间的原点转换到世界空间原点的变换。</li>
+  <li>对模型空间下的所有点（这些所有点组成一个模型，比如可能是一个车的造型），乘上这个矩阵，那就相当于将模型空间中的其他点按照相同的方式进行转换。所以原来所有的点，就从原来的模型空间，被移动到了新的空间。</li>
+</ul>
+
+<h3 id="2-什么是mvp矩阵">2. 什么是mvp矩阵</h3>
+<p>MVP矩阵是在计算机图形学中常用的一个概念，它是Model-View-Projection三个矩阵的乘积，用于将物体的顶点坐标从其本地空间（Model Space）转换到屏幕空间（Screen Space）。</p>
+
+<ol>
+  <li>
+    <p><strong>模型矩阵（Model Matrix）</strong>：这个矩阵用于将物体的顶点坐标从模型空间转换到世界空间。模型空间是物体的本地坐标系统，而世界空间是一个全局的坐标系统，所有的物体都在这个空间中。模型矩阵通常包含了物体的位置、旋转和缩放信息。</p>
+  </li>
+  <li>
+    <p><strong>视图矩阵（View Matrix）</strong>：这个矩阵用于将物体的顶点坐标从世界空间转换到视图空间（也称为相机空间）。视图空间是以相机为中心的坐标系统，相机位于原点，朝向-z轴。视图矩阵通常包含了相机的位置和朝向信息。</p>
+  </li>
+  <li>
+    <p><strong>投影矩阵（Projection Matrix）</strong>：这个矩阵用于将物体的顶点坐标从视图空间转换到裁剪空间，然后通过除以齐次坐标w进行透视除法，得到归一化设备坐标（NDC），最后映射到屏幕空间。投影矩阵通常包含了相机的视野（FOV）、长宽比（Aspect Ratio）、近裁剪面（Near Clipping Plane）和远裁剪面（Far Clipping Plane）信息。</p>
+  </li>
+</ol>
+
+<blockquote>
+  <ol>
+    <li><strong>视口变换</strong>:在所有这些变换之后,我们还需要一个视口变换,将物体从裁剪空间转换到屏幕空间.这通常涉及到将物体的坐标从裁剪空间的-1到1范围映射到屏幕的像素坐标.
+完整</li>
+  </ol>
+</blockquote>
+
+<p>将这三个矩阵相乘，就得到了MVP矩阵。在顶点着色器中，我们通常会用MVP矩阵来计算顶点的最终位置。</p>
+
+<h4 id="21-为什么要有mvp矩阵">2.1 为什么要有mvp矩阵？</h4>
+
+<p>因为，我们使用了不同的坐标空间来描述物体的位置和方向，因此也就有了mvp矩阵。
+是先有了下面这些空间，才有了mvp矩阵。
+要理解mvp矩阵前，得先了解这些空间是干什么的。以下是这些空间的定义：</p>
+
+<ol>
+  <li><strong>模型空间（Model Space）</strong>：也称为物体空间，是物体的本地坐标系统。在模型空间中，物体的中心通常位于原点，物体的大小和方向都是相对于这个原点定义的。
+    <blockquote>
+      <p>引入模型空间</p>
+    </blockquote>
+  </li>
+  <li>
+    <p><strong>世界空间（World Space）</strong>：也称为全局空间，是一个全局的坐标系统，所有的物体都在这个空间中。世界空间中的坐标是相对于一个固定的原点（通常是场景的中心）定义的。模型矩阵用于将物体的顶点坐标从模型空间转换到世界空间。</p>
+  </li>
+  <li>
+    <p><strong>视图空间（View Space）</strong>：也称为相机空间或者眼睛空间，是以相机为中心的坐标系统。在视图空间中，相机位于原点，朝向-z轴，上方向是y轴。视图矩阵用于将物体的顶点坐标从世界空间转换到视图空间。</p>
+  </li>
+  <li><strong>裁剪空间（Clip Space）</strong>：在裁剪空间中，所有可见的物体都在一个定义好的立方体（通常是[-1, 1] x [-1, 1] x [-1, 1]）内。投影矩阵用于将物体的顶点坐标从视图空间转换到裁剪空间。然后，通过进行透视除法，将裁剪空间的坐标转换到归一化设备坐标（NDC）空间。在这个阶段,任何在这个立方体之外的物体都会被裁剪掉.</li>
+</ol>
+
+<hr />
+<ol>
+  <li><strong>屏幕空间(Screen Space)</strong>:这是最后的空间,物体的坐标是像素值,左上角是(0,0),右下角是(宽度,高度).这是通过视口变换实现的.</li>
+</ol>
+
+<p>这些空间的转换是通过矩阵乘法实现的，MVP矩阵就是这些转换矩阵的乘积。
+注意裁剪空间到屏幕空间的变换时通过视口变换实现的，因为这个不是通过矩阵运算表示的，所以mvp矩阵只包括从模型空间到裁剪空间，但不代表屏幕空间这个概念没有。</p>
+
+<h5 id="211-为什么要引入模型空间而不是直接使用世界空间呢">2.1.1 为什么要引入模型空间，而不是直接使用世界空间呢</h5>
+
+<p>引入模型空间（Model Space）的主要原因是为了方便地描述和操作物体。</p>
+
+<p>在模型空间中，物体的中心通常位于原点，物体的大小和方向都是相对于这个原点定义的。这样，我们可以在一个简单和一致的坐标系统中定义和操作物体，而不需要考虑物体在世界中的具体位置和方向。</p>
+
+<p>例如，如果我们想要旋转一个物体，我们可以简单地在模型空间中围绕原点进行旋转，而不需要考虑物体在世界空间中的位置。如果我们直接在世界空间中进行旋转，我们需要首先将物体移动到原点，然后进行旋转，最后再将物体移动回原来的位置。这显然比在模型空间中进行旋转要复杂得多。</p>
+
+<p>此外，模型空间还允许我们独立地操作每个物体。每个物体都有自己的模型空间，我们可以在这个空间中独立地移动、旋转和缩放物体，而不会影响到其他物体。</p>
+
+<p>总的来说，模型空间提供了一个简单、一致和独立的环境，使得我们可以更方便地描述和操作物体。</p>
+
+<h5 id="212-视图空间有啥用">2.1.2 视图空间有啥用？</h5>
+<p>简单来说，视图空间描述了相机的位置和朝向信息。就是三维世界中，相机的位置。</p>
+<blockquote>
+  <p>视图矩阵（View Matrix）是通过平移和旋转操作得到的</p>
+</blockquote>
+
+<h5 id="213-怎么理解裁剪空间">2.1.3 怎么理解裁剪空间？</h5>
+<p>简单来说，世界坐标系上已经有很多模型了，相机的位置也已经确定了，现在就显示到屏幕了。
+可以当成是相机坐标系上有一个平面，将世界坐标系上朝向这个平面的点，投影到这个平面。
+这个平面就是所谓的裁剪空间，也是显示设备，即屏幕了。</p>
+<blockquote>
+  <p>投影矩阵是用来将3D空间中的点投影到2D平面上的，它包含了相机的视野（FOV）、长宽比（Aspect Ratio）、近裁剪面（Near Clipping Plane）和远裁剪面（Far Clipping Plane）等信息。
+常见的有两种类型的投影矩阵：正交投影矩阵和透视投影矩阵。</p>
+</blockquote>
+
+<h4 id="22-投影矩阵">2.2 投影矩阵</h4>
+
+<ul>
+  <li>正交投影矩阵：
+    <ul>
+      <li>正交投影是一种线性投影,其中物体的大小不会随着深度的变化而变化.</li>
+      <li>这意味着远离相机的物体和靠近相机的物体大小看起来是一样的.这种投影常用于工程图/建筑图等需要精确测量的场合.</li>
+      <li>这个函数需要你提供视口的左/右/底/顶边界以及近/远裁剪面的距离</li>
+    </ul>
+  </li>
+  <li>透视投影矩阵：
+    <ul>
+      <li>透视投影是一种非线性投影,其中物体的大小会随着深度的变化而变化.</li>
+      <li>这意味着远离相机的物体看起来会比靠近相机的物体小.</li>
+      <li>这种投影更符合人眼看世界的方式,因此常用于3D游戏和其他需要真实感的应用.</li>
+      <li>这个函数需要设置包括视野角度(FOV)/宽高比(aspect ratio)/近裁剪面(near clipping plane)和远裁剪面(far clipping plane)</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="23-视口变换">2.3 视口变换</h4>
+
+<p>视口变换（Viewport Transform）是3D图形渲染流程中的一个步骤，它将裁剪空间中的坐标转换到屏幕空间的像素坐标系。</p>
+
+<p>在裁剪空间中，所有可见的物体都在一个由-1到1的立方体中。视口变换将这个立方体映射到屏幕的像素坐标系，这通常涉及到将x和y坐标乘以屏幕的宽度和高度，然后再加上屏幕的左上角坐标。</p>
+
+<p>视口变换包括两个步骤：</p>
+
+<ol>
+  <li>
+    <p><strong>透视除法（Perspective Division）</strong>：这一步将裁剪空间中的坐标除以它们的w分量。这一步将立方体变成了一个单位立方体，所有的坐标都在-1到1的范围内。</p>
+  </li>
+  <li>
+    <p><strong>视口变换（Viewport Transform）</strong>：这一步将单位立方体映射到屏幕的像素坐标系。</p>
+  </li>
+</ol>
+
+<p>以下是一个简单的视口变换的例子：</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">vec2</span> <span class="nf">viewportTransform</span><span class="p">(</span><span class="n">vec3</span> <span class="n">clipSpace</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">float</span> <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">clipSpace</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">screenWidth</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">clipSpace</span><span class="p">.</span><span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">screenHeight</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">vec2</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>这个函数首先将裁剪空间的坐标映射到0到1的范围，然后乘以屏幕的宽度和高度。注意，我们需要将y坐标翻转，因为在屏幕空间中，y轴是向下的，而在裁剪空间中，y轴是向上的。</p>
+
+<h3 id="99-quiz">99. quiz</h3>
+
+<h4 id="1-什么时候需要更改模型矩阵什么时候更改模型坐标">1. 什么时候需要更改模型矩阵,什么时候更改模型坐标?</h4>
+<p>总的来说,当你需要改变物体的位置/方向或大小时,你需要更改模型矩阵.当你需要改变物体的形状时,你需要更改模型坐标.
+更改大小”通常通过改变模型矩阵中的缩放因子来实现,而”更改形状”则需要直接修改模型的顶点坐标.</p>
+
+<h4 id="2-为什么不可以统一都改模型坐标而不改模型矩阵吗">2. 为什么不可以统一都改模型坐标,而不改模型矩阵吗?</h4>
+<p>理论上,你可以通过直接修改模型坐标来改变物体的位置/方向和大小,但这通常不是一个好的做法.</p>
+
+<p>首先,直接修改模型坐标会更加复杂和耗时.例如,如果你想将一个物体向右移动10个单位,你需要遍历所有的顶点,并将每个顶点的x坐标增加10.而如果你使用模型矩阵,你只需要将模型矩阵的平移部分增加10即可.</p>
+
+<p>其次,直接修改模型坐标会破坏物体的原始数据.如果你需要恢复物体的原始位置/方向或大小,你需要保存一份原始的模型坐标,这会增加内存的使用.</p>
+
+<p>最后,使用模型矩阵可以更好地利用图形硬件的能力.图形硬件可以高效地处理矩阵运算,而且许多图形API(如OpenGL和DirectX)都提供了对模型矩阵的直接支持.</p>
+
+<p>因此,通常我们会优先使用模型矩阵来改变物体的位置/方向和大小,而只在需要改变物体的形状时才直接修改模型坐标.</p>
+
+<h4 id="3-视图矩阵的eye-center-up是什么">3. 视图矩阵的eye, center, up是什么?</h4>
+<p>在MVP矩阵中,”eye”和”center”是相机的位置和观察目标的位置,up是相机的上方向(通常,我们选择(0.0, 1.0, 0.0)作为up参数,表示相机的顶部指向世界空间的上方)</p>
+
+<ul>
+  <li>“eye”代表相机的位置,即相机在世界空间中的坐标.它定义了相机的位置和朝向.</li>
+  <li>“center”代表观察目标的位置,即相机所看的点在世界空间中的坐标.它定义了相机的视线方向.也可以理解为焦点</li>
+  <li>up是相机的上方向(通常,我们选择(0.0, 1.0, 0.0)作为up参数,表示相机的顶部指向世界空间的上方)</li>
+</ul>
+
+<p>这三个参数一起定义了相机的位置和朝向,用于计算视图矩阵.视图矩阵将物体从世界空间转换到相机空间,使得物体相对于相机的位置和方向进行变换.
+一般设定了eye center和up，函数库会自动求解4*4的视图矩阵。</p>
+
+<h3 id="附录">附录</h3>
+
+<h4 id="1-点乘和叉乘">1. 点乘和叉乘</h4>
+<p>点乘（Dot Product）和叉乘（Cross Product）是向量运算中的两种基本运算。</p>
+
+<ol>
+  <li>
+    <p>点乘：点乘是一种二元运算，它接受两个向量作为输入，并产生一个标量作为输出。在二维或三维空间中，两个向量A和B的点乘定义为：</p>
+
+    <table>
+      <tbody>
+        <tr>
+          <td>A·B =</td>
+          <td>A</td>
+          <td> </td>
+          <td>B</td>
+          <td>cosθ</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table>
+      <tbody>
+        <tr>
+          <td>其中，</td>
+          <td>A</td>
+          <td>和</td>
+          <td>B</td>
+          <td>分别是A和B的长度，θ是A和B之间的角度。在计算机图形学中，点乘常常用来计算两个向量之间的角度，或者判断两个向量是否垂直。</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <p>叉乘：叉乘也是一种二元运算，但它接受两个向量作为输入，并产生一个新的向量作为输出。在三维空间中，两个向量A和B的叉乘定义为：</p>
+
+    <table>
+      <tbody>
+        <tr>
+          <td>A×B =</td>
+          <td>A</td>
+          <td> </td>
+          <td>B</td>
+          <td>sinθn</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>其中，n是垂直于A和B的单位向量，方向由右手法则决定。叉乘的结果向量的长度等于原来两个向量构成的平行四边形的面积，方向垂直于这两个向量。在计算机图形学中，叉乘常常用来计算两个向量的法向量，或者判断两个向量是否平行。</p>
+  </li>
+</ol>
+
+<p>在实际计算中，点乘和叉乘通常通过向量的各个分量来计算。例如，如果A = [Ax, Ay, Az]，B = [Bx, By, Bz]，那么：</p>
+
+<p>A·B = Ax<em>Bx + Ay</em>By + Az*Bz</p>
+
+<p>A×B = [Ay<em>Bz - Az</em>By, Az<em>Bx - Ax</em>Bz, Ax<em>By - Ay</em>Bx]</p>
+
+<h4 id="2-点乘和投影">2. 点乘和投影</h4>
+<p>点乘和投影之间有着密切的关系。在向量运算中，点乘可以用来计算一个向量在另一个向量上的投影。</p>
+
+<p>假设我们有两个向量A和B，我们想要找到A在B上的投影。这个投影是一个向量，它的方向与B相同，长度等于A在B方向上的分量。我们可以通过以下步骤计算这个投影：</p>
+
+<ol>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>首先，我们计算A和B的点乘，得到一个标量值：A·B =</td>
+          <td>A</td>
+          <td> </td>
+          <td>B</td>
+          <td>cosθ，其中θ是A和B之间的角度。</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>然后，我们将这个标量值除以B的长度，得到A在B方向上的分量：A·B/</td>
+          <td>B</td>
+          <td>=</td>
+          <td>A</td>
+          <td>cosθ。</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>最后，我们将这个分量乘以B的单位向量，得到投影向量：(A·B/</td>
+          <td>B</td>
+          <td>) * (B/</td>
+          <td>B</td>
+          <td>) = (A·B/</td>
+          <td>B</td>
+          <td>^2) * B。</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+</ol>
+
+<p>所以，A在B上的投影可以通过点乘和除法运算得到，公式如下：</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Proj_B(A) = (A·B/</td>
+      <td>B</td>
+      <td>^2) * B</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这就是点乘和投影之间的关系。</p>
+
+<hr />
+<h4 id="4-屏幕空间的坐标系是怎么样的">4. 屏幕空间的坐标系是怎么样的？</h4>
+<p>在计算机图形学中，屏幕的坐标系通常是这样的：</p>
+
+<ul>
+  <li>原点（0,0）位于屏幕的左上角。</li>
+  <li>x轴的正方向是向右，所以当你增加x值时，你会向屏幕的右边移动。</li>
+  <li>y轴的正方向是向下，所以当你增加y值时，你会向屏幕的下方移动。</li>
+</ul>
+
+<h4 id="3-视锥体">3. 视锥体</h4>
+<p>这是一个在3D空间中定义了相机视野的体积.任何在这个体积之外的物体都不会被渲染.</p>
+
+    </div>
+
+    <div class="post__share">
+  <div class="share__head">
+    <div class="share__title">Share this Post</div>
+  </div>
+  <ul class="share__list list-reset">
+    <li class="share__item">
+      <a class="share__link share__twitter"
+        href="https://twitter.com/intent/tweet?text=mvp%E7%9F%A9%E9%98%B5%E4%B8%8E%E7%9F%A9%E9%98%B5%E5%8F%98%E6%8D%A2&url=/blog/1-mvp%E7%9F%A9%E9%98%B5%E4%B8%8E%E7%9F%A9%E9%98%B5%E5%8F%98%E6%8D%A2"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__facebook"
+        href="https://www.facebook.com/sharer/sharer.php?u=/blog/1-mvp%E7%9F%A9%E9%98%B5%E4%B8%8E%E7%9F%A9%E9%98%B5%E5%8F%98%E6%8D%A2"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__pinterest"
+        href="http://pinterest.com/pin/create/button/?url=/blog/1-mvp%E7%9F%A9%E9%98%B5%E4%B8%8E%E7%9F%A9%E9%98%B5%E5%8F%98%E6%8D%A2&amp;media=/images/post/post-51.jpeg&amp;description=mvp%E7%9F%A9%E9%98%B5%E4%B8%8E%E7%9F%A9%E9%98%B5%E5%8F%98%E6%8D%A2"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Pinterest" rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&url=/blog/1-mvp%E7%9F%A9%E9%98%B5%E4%B8%8E%E7%9F%A9%E9%98%B5%E5%8F%98%E6%8D%A2&title=mvp%E7%9F%A9%E9%98%B5%E4%B8%8E%E7%9F%A9%E9%98%B5%E5%8F%98%E6%8D%A2&summary=&source=Vonge"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
+    </li>
+  </ul>
+</div>
+
+  </article>
+</div>
+<!-- end post -->
+
+<div class="container">
+  <div class="row">
+    <div class="col col-10 col-d-12 push-d-0 push-1">
+      <div class="post__navigation animate">
+  
+  <a class="post__prev" href="/blog/2-my-effective-c">
+    <div class="prev__image">
+      <img loading="lazy" src="/images/post/post-9.jpg" alt="mvp矩阵与矩阵变换">
+    </div>
+    <div class="prev__box">
+      <span class="post__nav post__nav__prev">Prev post</span>
+      <h2 class="post__nav__title">My effective C++</h2>
+    </div>
+  </a>
+  
+
+  
+  <a class="post__next" href="/blog/99-%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E9%83%A8%E5%88%86">
+    <div class="next__box">
+      <span class="post__nav post__nav__next">Next post</span>
+      <h2 class="post__nav__title">99 # **网络通信部分**</h2>
+    </div>
+    <div class="next__image">
+      <img loading="lazy" src="/images/post/post-35.jpg" alt="mvp矩阵与矩阵变换">
+    </div>
+  </a>
+  
+</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- begin related posts -->
+<div class="container">
+  <section class="related-posts is-related animate">
+    <div class="row">
+      <div class="col col-12">
+        <div class="container__inner">
+          <div class="section__info">
+            <div class="section__head">
+              <h2 class="section__title">You may also like</h2>
+              <a class="section__link" href="/blog">
+                
+                
+                  
+                    <a href="/tags#计算机网络" class="section__link related-tag">See all<span> 计算机网络</span> <i class="ion ion-md-arrow-forward"></i></a>
+                  
+                
+              
+              </a>
+            </div>
+          </div>
+          <div class="row">
+
+          
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/2-%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF">
+                      <img loading="lazy" src="/images/post/post-52.jpg" alt="渲染管线">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/计算机网络" class="article__tag">计算机网络</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/2-%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF">渲染管线</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      ## 渲染管线
+
+### 1. 什么是渲染管线？
+渲染管线，也被称为图形管线，是一个用于生成2D图像（如屏幕上的图像）的硬件或软件实现的概念模型。这个过程通常基于3D场景的数据，包括但不限于几何、视点、纹理、光照信息等。
+
+渲染管线通...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-09T09:10:51+00:00">09 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/1-%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B%E4%B8%8E%E5%8E%9F%E7%90%86">
+                      <img loading="lazy" src="/images/post/post-39.jpg" alt="编译过程与原理">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/计算机网络" class="article__tag">计算机网络</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/1-%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B%E4%B8%8E%E5%8E%9F%E7%90%86">编译过程与原理</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      ## 编译过程与原理
+
+### 1. 编译过程 - 编译器在做什么？
+
+如果想要机器按照我们的设想执行我们的命令，我们需要一个能够跟机器沟通的方式，而这种方式也就是==机器语言(第一代计算机语言)==，一堆`01`构成的指令。我们需要...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-09T09:09:14+00:00">09 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/99-99-%E5%85%B3%E4%BA%8E%E7%BD%91%E7%BB%9C%E7%9A%84%E4%B8%80%E4%BA%9Bquiz">
+                      <img loading="lazy" src="/images/post/post-26.jpg" alt="（99）关于网络的一些quiz">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/计算机网络" class="article__tag">计算机网络</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/99-99-%E5%85%B3%E4%BA%8E%E7%BD%91%E7%BB%9C%E7%9A%84%E4%B8%80%E4%BA%9Bquiz">（99）关于网络的一些quiz</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      ## （99）关于网络的一些quiz
+
+#### 1. 画出tcp头部的协议格式
+
+#### 2.udp头部/ip头部/http头部
+
+#### 3. 滑动窗口的作用
+答:主要就是为了实现流量控制,控制了发送包的速率,每次发送方只能发...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-09T09:01:42+00:00">09 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+                  
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- end related posts -->
+
+
+
+
+
+
+    <!--
+        Bookshop components are accessed using the bookshop tag,
+        using the same syntax as the standard Jekyll include tag.
+    -->
+    <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
+
+<!--bookshop-live end-->
+
+    <div class="top" title="Top"><i class="ion ion-ios-arrow-up"></i></div>
+
+    <!-- begin footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+
+        <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+
+        <ul class="footer_nav list-reset">
+          
+          <li class="footer_nav__item">
+            <a href="/" class="footer_nav__link">Home</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/projects/" class="footer_nav__link">Projects</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/elements/" class="footer_nav__link">Elements</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/about/" class="footer_nav__link">About</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/blog/" class="footer_nav__link">Blog</a>
+          </li>
+          
+        </ul>
+
+        <div class="copyright"><p> 2021 &copy; <a href="/">Vonge</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
+
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- end footer -->
+
+    <script src="/js/scripts.js"></script>
+    <script src="/js/common.js"></script>
+</body>
+</html>

@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>迭代器</title>
+  <meta name='description' content='Marco’s Blog'>
+
+  <link rel="canonical" href="/blog/4-%E8%BF%AD%E4%BB%A3%E5%99%A8">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="迭代器 – Marco’s Blog">
+  <meta name="twitter:description" content="迭代器
+
+">
+  <meta name="twitter:image:src" content="/images/post/post-10.jpeg">
+
+  <!-- Facebook OpenGraph -->
+  <meta property="og:title" content="迭代器 – Marco’s Blog">
+  <meta property="og:description" content="迭代器
+
+">
+  <meta property="og:image" content="/images/post/post-10.jpeg">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Ionicons -->
+  <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/main.css">
+</head>
+
+<body>
+
+    
+
+    <!-- begin header -->
+<header class="c-header">
+  <div class="container">
+    <div class="row">
+      <div class="c-header__inner">
+
+        <div class="logo">
+          <a class="logo__link" href="/">
+          
+            <img class="logo__image" src="/images/mc_logo1.ico" alt="Marco’s Blog">
+          
+          </a>
+        </div>
+
+        <nav class="main-nav">
+          <div class="main-nav__box">
+
+            <div class="nav__icon-close">
+              <i class="ion ion-md-close"></i>
+            </div>
+
+            <div class="nav__title">Menu</div>
+
+              <ul class="nav__list list-reset">
+
+              
+                
+                <li class="nav__item">
+                  <a href="/" class="nav__link">Home</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/projects/" class="nav__link">Projects</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/blog/" class="nav__link">Blog</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/about/" class="nav__link">About</a>
+                </li>
+                
+              
+
+            </ul>
+          </div>
+
+          <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+        </nav>
+
+        <div class="nav-button">
+          <i class="nav__icon nav__icon-menu ion ion-md-menu"></i>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+<!-- end header -->
+
+    <div class="post-top">
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="col col-6 col-d-12">
+        <div class="post-image">
+          <img loading="lazy" src="/images/post/post-10.jpeg" alt="迭代器">
+        </div>
+      </div>
+      
+
+      <div class="col col-6 col-d-12">
+        <div class="post__info">
+
+          
+          <div class="post-tags">
+            
+              <a href="/tag/grammar" class="post-tags__tag">grammar</a>
+            
+          </div>
+          
+
+
+          <h1 class="post__title">迭代器</h1>
+
+          <div class="post__meta">
+            <div class="post__author-image">
+              <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+            </div>
+
+            <div class="post__meta-bottom">
+              <div class="post__author">Marco Hwong</div>
+              <time class="post__date" datetime="2024-06-09T09:37:22+00:00">09 Jun 2024</time>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- begin post -->
+<div class="container animate">
+
+  <article class="post">
+
+    <ul><li><a href="#迭代器">迭代器</a><ul><li><a href="#1-迭代器有哪些">1. 迭代器有哪些</a></li><li><a href="#2-什么叫只支持一次正向访问和支持多次正向访问">2. 什么叫只支持一次正向访问,和支持多次正向访问?</a><ul><li><a href="#21-如何判断stdcin结束的">2.1 如何判断std::cin结束的?</a></li></ul></li><li><a href="#3-如果某一个迭代器的实现是指针即containerbegin返回的是指针那这是什么迭代器">3. 如果某一个迭代器的实现是指针,即<code class="language-plaintext highlighter-rouge">CONTAINER.begin()</code>返回的是指针,那这是什么迭代器?</a></li><li><a href="#4-常见stl算法对迭代器有什么要求">4. 常见stl算法对迭代器有什么要求?</a></li><li><a href="#99-习题">99. 习题</a></li></ul></li></ul>
+    <div class="post__content">
+      <h2 id="迭代器">迭代器</h2>
+<p><img src="/images/imgs/4_iterator_image.png" alt="alt text" /></p>
+
+<h3 id="1-迭代器有哪些">1. 迭代器有哪些</h3>
+<p>STL(Standard Template Library,标准模板库)中的迭代器主要有五种类型:</p>
+
+<ol>
+  <li>
+    <p><strong>输入迭代器(Input Iterators)</strong>:只支持对元素进行一次正向访问,只能进行读取操作.
+ 需要重载 <code class="language-plaintext highlighter-rouge">operator*</code>(解引用)和 <code class="language-plaintext highlighter-rouge">operator++</code>(前置和后置递增).</p>
+  </li>
+  <li>
+    <p><strong>输出迭代器(Output Iterators)</strong>:只支持对元素进行一次正向访问,只能进行写入操作.
+ 需要重载 <code class="language-plaintext highlighter-rouge">operator*</code>(解引用)和 <code class="language-plaintext highlighter-rouge">operator++</code>(前置和后置递增).</p>
+  </li>
+  <li>
+    <p><strong>前向迭代器(Forward Iterators)</strong>:支持对元素进行多次正向访问,可以进行读取和写入操作.
+ 除了输入迭代器的所有运算符外,还需要重载 <code class="language-plaintext highlighter-rouge">operator==</code> 和 <code class="language-plaintext highlighter-rouge">operator!=</code> 用于比较两个迭代器是否相等.</p>
+  </li>
+  <li>
+    <p><strong>双向迭代器(Bidirectional Iterators)</strong>:支持对元素进行多次正向和反向访问,可以进行读取和写入操作.
+ 除了前向迭代器的所有运算符外,还需要重载 <code class="language-plaintext highlighter-rouge">operator--</code>(前置和后置递减).</p>
+  </li>
+  <li>
+    <p><strong>随机访问迭代器(Random Access Iterators)</strong>:支持对元素进行多次任意访问,可以进行读取和写入操作.
+ 除了双向迭代器的所有运算符外,还需要重载 <code class="language-plaintext highlighter-rouge">operator+</code>/<code class="language-plaintext highlighter-rouge">operator-</code>/<code class="language-plaintext highlighter-rouge">operator+=</code>/<code class="language-plaintext highlighter-rouge">operator-=</code>/<code class="language-plaintext highlighter-rouge">operator[]</code> 用于随机访问,以及 <code class="language-plaintext highlighter-rouge">operator&lt;</code>/<code class="language-plaintext highlighter-rouge">operator&gt;</code>/<code class="language-plaintext highlighter-rouge">operator&lt;=</code>/<code class="language-plaintext highlighter-rouge">operator&gt;=</code> 用于比较两个迭代器的顺序.</p>
+  </li>
+</ol>
+
+<p>每种类型的迭代器都提供了一些特定的操作,例如递增(++)/递减(–)/解引用(*)等.更高级的迭代器类型提供了更多的操作,例如随机访问迭代器还支持随机访问([])和比较(&lt;, &gt;, &lt;=, &gt;=)等操作.</p>
+
+<h3 id="2-什么叫只支持一次正向访问和支持多次正向访问">2. 什么叫只支持一次正向访问,和支持多次正向访问?</h3>
+<p>简单来说,支持一次正向访问的就是流式数据,数据读完就没了.
+输入迭代器通常用于处理流式数据,例如从输入流(如std::cin或文件输入流)中读取数据.一旦输入迭代器读取了一个元素,你就不能再回到它,这就像是数据被”消费”了一样.这种特性使得输入迭代器特别适合用于一次性读取或处理数据的场景.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;iterator&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"请输入一些整数(以空格分隔):"</span><span class="p">;</span>
+
+    <span class="c1">// 使用输入迭代器从输入流中读取数据</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">istream_iterator</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">start</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">cin</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">istream_iterator</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">end</span><span class="p">;</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">numbers</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">);</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"你输入的数字是:"</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">num</span> <span class="o">:</span> <span class="n">numbers</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">num</span> <span class="o">&lt;&lt;</span> <span class="s">" "</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>在这段代码中,std::istream_iterator<int> start(std::cin);和std::istream_iterator<int> end;定义了一个输入迭代器的范围,这个范围从std::cin的当前位置开始,到std::cin的结束位置(或者到遇到的第一个非整数输入).</int></int></p>
+
+<p>然后,std::vector<int> numbers(start, end);使用这个范围来初始化numbers.这个过程会从start开始,一次正向访问每个元素,直到到达end.在这个过程中,每个被访问的元素都会被"消费",也就是说,一旦一个元素被访问,你就不能再通过start迭代器来访问它.
+因此,一旦numbers被构造完成,start和end迭代器就没有意义了,因为它们已经"消费"了所有的元素.如果你试图再次使用start迭代器,你将无法访问到任何元素,因为所有的元素都已经被"消费"了.</int></p>
+
+<h4 id="21-如何判断stdcin结束的">2.1 如何判断std::cin结束的?</h4>
+<p>std::istream_iterator在读取到EOF时变成结束迭代器的过程是通过其内部的实现来完成的.当我们尝试从输入流中读取数据时,如果读取失败(例如由于到达EOF),std::istream_iterator会变成一个特殊的状态,我们称之为”结束状态”.</p>
+
+<p>这个过程的具体实现可能因库的实现而异,但一般来说,它可能是这样的:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">istream_iterator</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">istream_iterator</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">istream</span><span class="o">&amp;</span> <span class="n">stream</span><span class="p">)</span> <span class="o">:</span> <span class="n">stream_</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span> <span class="p">{</span>
+        <span class="o">++</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">);</span>  <span class="c1">// 读取第一个元素</span>
+    <span class="p">}</span>
+
+    <span class="n">istream_iterator</span><span class="p">()</span> <span class="o">:</span> <span class="n">stream_</span><span class="p">(</span><span class="nb">nullptr</span><span class="p">),</span> <span class="n">end_</span><span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{}</span>  <span class="c1">// 结束迭代器</span>
+
+    <span class="n">T</span> <span class="k">operator</span><span class="o">*</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">value_</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">istream_iterator</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">++</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">stream_</span> <span class="o">&gt;&gt;</span> <span class="n">value_</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">end_</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>  <span class="c1">// 如果读取失败,标记为结束状态</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="k">const</span> <span class="n">istream_iterator</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">end_</span> <span class="o">==</span> <span class="n">other</span><span class="p">.</span><span class="n">end_</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="k">const</span> <span class="n">istream_iterator</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="o">!</span><span class="p">(</span><span class="o">*</span><span class="k">this</span> <span class="o">==</span> <span class="n">other</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">istream</span><span class="o">*</span> <span class="n">stream_</span><span class="p">;</span>
+    <span class="n">T</span> <span class="n">value_</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">end_</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+<p>在这个简化的实现中,当我们尝试从stream_中读取一个T类型的值时,如果读取失败(!(stream_ » value_)),我们就将end_标记为true,表示这个迭代器已经到达结束状态.然后,我们可以通过比较两个迭代器的end_成员来判断它们是否相等.</p>
+
+<p>需要注意的是,这只是一个简化的实现,真实的std::istream_iterator的实现可能会更复杂,但基本的原理是一样的.</p>
+
+<h3 id="3-如果某一个迭代器的实现是指针即containerbegin返回的是指针那这是什么迭代器">3. 如果某一个迭代器的实现是指针,即<code class="language-plaintext highlighter-rouge">CONTAINER.begin()</code>返回的是指针,那这是什么迭代器?</h3>
+
+<p>指针被归类为随机访问迭代器(Random Access Iterator).在C++中,迭代器按照其功能和性能分为不同的类别,其中包括:</p>
+
+<p>输入迭代器(Input Iterator): 只能进行单次顺序遍历,支持解引用操作,但不保证支持递增操作.</p>
+
+<p>输出迭代器(Output Iterator): 只能进行单次顺序遍历,支持递增操作,但不保证支持解引用操作.</p>
+
+<p>前向迭代器(Forward Iterator): 可以进行多次顺序遍历,支持解引用和递增操作.</p>
+
+<p>双向迭代器(Bidirectional Iterator): 可以进行多次双向遍历,支持解引用/递增和递减操作.</p>
+
+<p>随机访问迭代器(Random Access Iterator): 具备双向迭代器的所有功能,并且还支持在常数时间内进行跳跃式的访问(随机访问).</p>
+
+<p>指针在这个分类中属于随机访问迭代器,因为它们具有在常数时间内进行递增/递减和随机访问的能力.指针允许通过指针算术运算(如加法和减法)在内存中直接移动,使得访问数组等数据结构的任意位置都是高效的.</p>
+
+<p>随机访问迭代器是最强大的迭代器类型,支持对序列进行灵活而高效的操作.因此,当你使用指针作为迭代器时,你可以利用随机访问迭代器的特性进行快速而灵活的元素访问和操作.</p>
+
+<h3 id="4-常见stl算法对迭代器有什么要求">4. 常见stl算法对迭代器有什么要求?</h3>
+<ol>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">std::for_each</code>:需要输入迭代器.这个算法会遍历给定的范围,并对每个元素执行给定的函数.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">std::find</code>:需要输入迭代器.这个算法会遍历给定的范围,寻找第一个等于给定值的元素.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">std::copy</code>:需要输入迭代器和输出迭代器.这个算法会将一个范围内的元素复制到另一个范围.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">std::sort</code>:需要随机访问迭代器.这个算法会对给定的范围内的元素进行排序.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">std::reverse</code>:需要双向迭代器.这个算法会反转给定范围内的元素.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">std::unique</code>:需要前向迭代器.这个算法会移除给定范围内的连续重复元素.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">std::lower_bound</code>和<code class="language-plaintext highlighter-rouge">std::upper_bound</code>:需要前向迭代器.这些算法用于在已排序的范围内查找元素.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">std::rotate</code>:需要前向迭代器.这个算法会将给定范围内的元素向左或向右旋转.</p>
+  </li>
+</ol>
+
+<p>以上只是一部分STL算法,实际上STL中有很多其他的算法,它们对迭代器的要求可能会有所不同.在使用某个算法时,你应该查阅相关的文档,了解它对迭代器的具体要求.
+另外,迭代器的类别有层级结构,或者简单来说就是向下兼容,层级高的迭代器就能满足需要层级低的迭代器的要求.
+比如说<code class="language-plaintext highlighter-rouge">std::for_each</code>要求输入迭代器,但是给一个随机访问迭代器也行,因为随机访问迭代器的能力是输入迭代器的超集.</p>
+
+<h3 id="99-习题">99. 习题</h3>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="k">class</span> <span class="nc">fibit</span> <span class="p">{</span>
+  <span class="kt">size_t</span> <span class="n">i</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+  <span class="kt">size_t</span> <span class="n">a</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+  <span class="kt">size_t</span> <span class="n">b</span><span class="p">{</span><span class="mi">1</span><span class="p">};</span>
+
+<span class="k">public</span><span class="o">:</span>
+  <span class="n">fibit</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+  <span class="k">explicit</span> <span class="n">fibit</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">i_</span><span class="p">)</span> <span class="o">:</span> <span class="n">i</span><span class="p">{</span><span class="n">i_</span><span class="p">}</span> <span class="p">{}</span>
+
+  <span class="kt">size_t</span> <span class="k">operator</span><span class="o">*</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">b</span><span class="p">;</span> <span class="p">}</span>
+  <span class="n">fibit</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">++</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">const</span> <span class="kt">size_t</span> <span class="n">old_b</span><span class="p">{</span><span class="n">b</span><span class="p">};</span>
+    <span class="n">b</span> <span class="o">+=</span> <span class="n">a</span><span class="p">;</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">old_b</span><span class="p">;</span>
+    <span class="o">++</span><span class="n">i</span><span class="p">;</span>
+    <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="k">const</span> <span class="n">fibit</span> <span class="o">&amp;</span><span class="n">o</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">o</span><span class="p">.</span><span class="n">i</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">fib_range</span> <span class="p">{</span>
+  <span class="kt">size_t</span> <span class="n">end_n</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+  <span class="n">fib_range</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">end_n_</span><span class="p">)</span> <span class="o">:</span> <span class="n">end_n</span><span class="p">{</span><span class="n">end_n_</span><span class="p">}</span> <span class="p">{}</span>
+  <span class="n">fibit</span> <span class="n">begin</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">fibit</span><span class="p">{};</span> <span class="p">}</span>
+  <span class="n">fibit</span> <span class="n">end</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">fibit</span><span class="p">{</span><span class="n">end_n</span><span class="p">};</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">i</span> <span class="o">:</span> <span class="n">fib_range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="s">", "</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+    </div>
+
+    <div class="post__share">
+  <div class="share__head">
+    <div class="share__title">Share this Post</div>
+  </div>
+  <ul class="share__list list-reset">
+    <li class="share__item">
+      <a class="share__link share__twitter"
+        href="https://twitter.com/intent/tweet?text=%E8%BF%AD%E4%BB%A3%E5%99%A8&url=/blog/4-%E8%BF%AD%E4%BB%A3%E5%99%A8"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__facebook"
+        href="https://www.facebook.com/sharer/sharer.php?u=/blog/4-%E8%BF%AD%E4%BB%A3%E5%99%A8"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__pinterest"
+        href="http://pinterest.com/pin/create/button/?url=/blog/4-%E8%BF%AD%E4%BB%A3%E5%99%A8&amp;media=/images/post/post-10.jpeg&amp;description=%E8%BF%AD%E4%BB%A3%E5%99%A8"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Pinterest" rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&url=/blog/4-%E8%BF%AD%E4%BB%A3%E5%99%A8&title=%E8%BF%AD%E4%BB%A3%E5%99%A8&summary=&source=Vonge"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
+    </li>
+  </ul>
+</div>
+
+  </article>
+</div>
+<!-- end post -->
+
+<div class="container">
+  <div class="row">
+    <div class="col col-10 col-d-12 push-d-0 push-1">
+      <div class="post__navigation animate">
+  
+  <a class="post__prev" href="/blog/2-%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF">
+    <div class="prev__image">
+      <img loading="lazy" src="/images/post/post-52.jpg" alt="迭代器">
+    </div>
+    <div class="prev__box">
+      <span class="post__nav post__nav__prev">Prev post</span>
+      <h2 class="post__nav__title">渲染管线</h2>
+    </div>
+  </a>
+  
+
+  
+  <a class="post__next" href="/blog/1-%E4%BB%8E%E8%BE%93%E5%85%A5url%E5%88%B0%E9%A1%B5%E9%9D%A2%E5%B1%95%E7%A4%BA%E8%BF%99%E4%B8%AD%E9%97%B4%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88">
+    <div class="next__box">
+      <span class="post__nav post__nav__next">Next post</span>
+      <h2 class="post__nav__title">从输入URL到页面展示这中间发生了什么</h2>
+    </div>
+    <div class="next__image">
+      <img loading="lazy" src="/images/post/post-43.jpeg" alt="迭代器">
+    </div>
+  </a>
+  
+</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- begin related posts -->
+<div class="container">
+  <section class="related-posts is-related animate">
+    <div class="row">
+      <div class="col col-12">
+        <div class="container__inner">
+          <div class="section__info">
+            <div class="section__head">
+              <h2 class="section__title">You may also like</h2>
+              <a class="section__link" href="/blog">
+                
+                
+                  
+                    <a href="/tags#grammar" class="section__link related-tag">See all<span> grammar</span> <i class="ion ion-md-arrow-forward"></i></a>
+                  
+                
+              
+              </a>
+            </div>
+          </div>
+          <div class="row">
+
+          
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/3-%E7%B1%BB%E7%9A%84quiz">
+                      <img loading="lazy" src="/images/post/post-16.jpeg" alt="类的quiz">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/grammar" class="article__tag">grammar</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/3-%E7%B1%BB%E7%9A%84quiz">类的quiz</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      ## 类的quiz
+
+### 99. quiz
+#### 1. 编译器会为C++的类自动生成什么函数？
+编译器会为C++的类自动生成以下六种特殊的成员函数：
+
+1. 默认构造函数（如果没有定义任何构造函数）
+2. 析构函数（如果没有定...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-10T15:45:27+00:00">10 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/14-c-%E4%B8%AD%E7%9A%84%E7%9C%81%E7%95%A5%E5%8F%B7">
+                      <img loading="lazy" src="/images/post/post-13.jpeg" alt="c++ 中的省略号">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/grammar" class="article__tag">grammar</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/14-c-%E4%B8%AD%E7%9A%84%E7%9C%81%E7%95%A5%E5%8F%B7">c++ 中的省略号</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      c++ 中的省略号
+
+1. c++ 中的省略号怎么用？
+在C++中，省略号（…）有两种主要的用途：
+
+
+  可变参数模板（Variadic Templates）：在模板编程中，省略号用于表示一个参数包（Parameter Pack），...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-09T04:16:25+00:00">09 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/2-%E5%87%BD%E6%95%B0%E5%AF%B9%E8%B1%A1-%E4%BB%BF%E5%87%BD%E6%95%B0">
+                      <img loading="lazy" src="/images/post/post-14.jpg" alt="函数对象（仿函数）">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/grammar" class="article__tag">grammar</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/2-%E5%87%BD%E6%95%B0%E5%AF%B9%E8%B1%A1-%E4%BB%BF%E5%87%BD%E6%95%B0">函数对象（仿函数）</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      函数对象（仿函数）
+
+1. 什么是函数对象，什么是仿函数
+在 C++ 中，函数对象（也称为仿函数）是一个行为类似函数的对象。任何类如果重载了 operator()，那么该类的对象就可以作为函数来使用，这样的对象就被称为函数对象。
+
+函...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-09T04:08:41+00:00">09 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+                  
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- end related posts -->
+
+
+
+
+
+
+    <!--
+        Bookshop components are accessed using the bookshop tag,
+        using the same syntax as the standard Jekyll include tag.
+    -->
+    <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
+
+<!--bookshop-live end-->
+
+    <div class="top" title="Top"><i class="ion ion-ios-arrow-up"></i></div>
+
+    <!-- begin footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+
+        <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+
+        <ul class="footer_nav list-reset">
+          
+          <li class="footer_nav__item">
+            <a href="/" class="footer_nav__link">Home</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/projects/" class="footer_nav__link">Projects</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/elements/" class="footer_nav__link">Elements</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/about/" class="footer_nav__link">About</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/blog/" class="footer_nav__link">Blog</a>
+          </li>
+          
+        </ul>
+
+        <div class="copyright"><p> 2021 &copy; <a href="/">Vonge</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
+
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- end footer -->
+
+    <script src="/js/scripts.js"></script>
+    <script src="/js/common.js"></script>
+</body>
+</html>

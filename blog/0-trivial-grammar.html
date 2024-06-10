@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>trivial grammar</title>
+  <meta name='description' content='Marco’s Blog'>
+
+  <link rel="canonical" href="/blog/0-trivial-grammar">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="trivial grammar – Marco’s Blog">
+  <meta name="twitter:description" content="trivial grammar
+">
+  <meta name="twitter:image:src" content="/images/post/post-11.jpg">
+
+  <!-- Facebook OpenGraph -->
+  <meta property="og:title" content="trivial grammar – Marco’s Blog">
+  <meta property="og:description" content="trivial grammar
+">
+  <meta property="og:image" content="/images/post/post-11.jpg">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Ionicons -->
+  <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/main.css">
+</head>
+
+<body>
+
+    
+
+    <!-- begin header -->
+<header class="c-header">
+  <div class="container">
+    <div class="row">
+      <div class="c-header__inner">
+
+        <div class="logo">
+          <a class="logo__link" href="/">
+          
+            <img class="logo__image" src="/images/mc_logo1.ico" alt="Marco’s Blog">
+          
+          </a>
+        </div>
+
+        <nav class="main-nav">
+          <div class="main-nav__box">
+
+            <div class="nav__icon-close">
+              <i class="ion ion-md-close"></i>
+            </div>
+
+            <div class="nav__title">Menu</div>
+
+              <ul class="nav__list list-reset">
+
+              
+                
+                <li class="nav__item">
+                  <a href="/" class="nav__link">Home</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/projects/" class="nav__link">Projects</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/blog/" class="nav__link">Blog</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/about/" class="nav__link">About</a>
+                </li>
+                
+              
+
+            </ul>
+          </div>
+
+          <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+        </nav>
+
+        <div class="nav-button">
+          <i class="nav__icon nav__icon-menu ion ion-md-menu"></i>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+<!-- end header -->
+
+    <div class="post-top">
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="col col-6 col-d-12">
+        <div class="post-image">
+          <img loading="lazy" src="/images/post/post-11.jpg" alt="trivial grammar">
+        </div>
+      </div>
+      
+
+      <div class="col col-6 col-d-12">
+        <div class="post__info">
+
+          
+          <div class="post-tags">
+            
+              <a href="/tag/grammar" class="post-tags__tag">grammar</a>
+            
+          </div>
+          
+
+
+          <h1 class="post__title">trivial grammar</h1>
+
+          <div class="post__meta">
+            <div class="post__author-image">
+              <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+            </div>
+
+            <div class="post__meta-bottom">
+              <div class="post__author">Marco Hwong</div>
+              <time class="post__date" datetime="2024-06-05T13:22:45+00:00">05 Jun 2024</time>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- begin post -->
+<div class="container animate">
+
+  <article class="post">
+
+    <ul><li><a href="#trivial-grammar">trivial grammar</a><ul><li><a href="#1-attribute">1. attribute</a></li><li><a href="#2-literals">2. literals</a></li><li><a href="#3-ref-qualified-member-functions">3. Ref-qualified member functions</a></li></ul></li></ul>
+    <div class="post__content">
+      <h2 id="trivial-grammar">trivial grammar</h2>
+
+<h3 id="1-attribute">1. attribute</h3>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="p">[[</span><span class="n">deprecated</span><span class="p">(</span><span class="s">"This function is deprecated. Use newFunction() instead."</span><span class="p">)]]</span> <span class="kt">void</span>
+<span class="nf">oldFunction</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"This is the old function."</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="kt">int</span> <span class="nf">calculate</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="mi">42</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">oldFunction</span><span class="p">();</span> <span class="c1">// Generates a deprecation warning</span>
+  <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span>
+      <span class="n">calculate</span><span class="p">();</span> <span class="c1">// Generates a warning if the return value is ignored</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>这段代码展示了C++17标准中引入的两个新属性：<code class="language-plaintext highlighter-rouge">[[deprecated]]</code>和<code class="language-plaintext highlighter-rouge">[[nodiscard]]</code>。</p>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">[[deprecated]]</code>属性用于标记已经被废弃的函数。当你试图使用被<code class="language-plaintext highlighter-rouge">[[deprecated]]</code>标记的函数时，编译器会生成一个警告，告诉你这个函数已经被废弃，你应该使用其他函数代替。在这个例子中，<code class="language-plaintext highlighter-rouge">oldFunction</code>函数被标记为废弃，所以在<code class="language-plaintext highlighter-rouge">main</code>函数中调用<code class="language-plaintext highlighter-rouge">oldFunction</code>时，编译器会生成一个警告。</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">[[nodiscard]]</code>属性用于标记那些返回值不应该被忽略的函数。如果你调用了被<code class="language-plaintext highlighter-rouge">[[nodiscard]]</code>标记的函数，但没有使用它的返回值，编译器会生成一个警告。在这个例子中，<code class="language-plaintext highlighter-rouge">calculate</code>函数被标记为<code class="language-plaintext highlighter-rouge">[[nodiscard]]</code>，所以在<code class="language-plaintext highlighter-rouge">main</code>函数中调用<code class="language-plaintext highlighter-rouge">calculate</code>但没有使用它的返回值时，编译器会生成一个警告。</p>
+  </li>
+</ul>
+
+<p>除了<code class="language-plaintext highlighter-rouge">[[deprecated]]</code>和<code class="language-plaintext highlighter-rouge">[[nodiscard]]</code>，C++还有其他的属性，如<code class="language-plaintext highlighter-rouge">[[maybe_unused]]</code>（用于标记可能未被使用的变量，以避免编译器生成未使用变量的警告）、<code class="language-plaintext highlighter-rouge">[[likely]]</code>和<code class="language-plaintext highlighter-rouge">[[unlikely]]</code>（用于给编译器提供分支预测的提示，这两个属性在C++20中引入）等。</p>
+
+<h3 id="2-literals">2. literals</h3>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;cmath&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
+</span>
+<span class="c1">// 是使用字面量方式实现的.在C++中,字面量是表示固定值的文本形式.整数字面量可以加上后缀来指定其类型.</span>
+<span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1u</span><span class="p">;</span>
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">1ul</span><span class="p">;</span> <span class="c1">// 可以32位,一般64位</span>
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">z</span> <span class="o">=</span> <span class="mi">1LU</span><span class="p">;</span>
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">w</span> <span class="o">=</span> <span class="mi">1ull</span><span class="p">;</span> <span class="c1">// 至少64位</span>
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">v</span> <span class="o">=</span> <span class="mi">1LLU</span><span class="p">;</span>
+<span class="kt">long</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1l</span><span class="p">;</span>
+<span class="kt">long</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">1L</span><span class="p">;</span>
+<span class="kt">long</span> <span class="kt">long</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">1ll</span><span class="p">;</span>
+<span class="kt">long</span> <span class="kt">long</span> <span class="n">d</span> <span class="o">=</span> <span class="mi">1LL</span><span class="p">;</span>
+
+<span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">utf8Str</span> <span class="o">=</span> <span class="s">u8"这是一个UTF-8字符串"</span><span class="p">;</span>
+<span class="k">const</span> <span class="kt">char16_t</span> <span class="o">*</span><span class="n">utf16Str</span> <span class="o">=</span> <span class="s">u"这是一个UTF-16字符串"</span><span class="p">;</span>
+<span class="k">const</span> <span class="kt">char32_t</span> <span class="o">*</span><span class="n">utf32Str</span> <span class="o">=</span> <span class="s">U"这是一个UTF-32字符串"</span><span class="p">;</span>
+<span class="k">const</span> <span class="kt">wchar_t</span> <span class="o">*</span><span class="n">wideStr</span> <span class="o">=</span> <span class="s">L"这是一个宽字符串"</span><span class="p">;</span>
+
+<span class="c1">// Usage: 24_celsius; // == 75</span>
+<span class="kt">long</span> <span class="kt">long</span> <span class="k">operator</span><span class="s">""</span> <span class="n">_celsius</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">tempCelsius</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">llround</span><span class="p">(</span><span class="n">tempCelsius</span> <span class="o">*</span> <span class="mf">1.8</span> <span class="o">+</span> <span class="mi">32</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// Usage: "123"_int; // == 123, with type `int`</span>
+<span class="kt">int</span> <span class="k">operator</span><span class="s">""</span> <span class="n">_int</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">str</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">stoi</span><span class="p">(</span><span class="n">str</span><span class="p">);</span> <span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// 使用_celsius字面量将摄氏温度转换为华氏温度</span>
+  <span class="kt">long</span> <span class="kt">long</span> <span class="n">tempFahrenheit</span> <span class="o">=</span> <span class="mi">24</span><span class="n">_celsius</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"24 degrees Celsius is "</span> <span class="o">&lt;&lt;</span> <span class="n">tempFahrenheit</span>
+            <span class="o">&lt;&lt;</span> <span class="s">" degrees Fahrenheit.</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+
+  <span class="c1">// 使用_int字面量将字符串转换为整数</span>
+  <span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="s">"123"</span><span class="n">_int</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"The integer value of the string </span><span class="se">\"</span><span class="s">123</span><span class="se">\"</span><span class="s"> is "</span> <span class="o">&lt;&lt;</span> <span class="n">num</span> <span class="o">&lt;&lt;</span> <span class="s">".</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="3-ref-qualified-member-functions">3. Ref-qualified member functions</h3>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">Bar</span> <span class="p">{</span>
+  <span class="c1">// ...</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="nc">Foo</span> <span class="p">{</span>
+  <span class="n">Bar</span> <span class="n">getBar</span><span class="p">()</span> <span class="o">&amp;</span> <span class="p">{</span> <span class="k">return</span> <span class="n">bar</span><span class="p">;</span> <span class="p">}</span>
+  <span class="n">Bar</span> <span class="n">getBar</span><span class="p">()</span> <span class="k">const</span><span class="o">&amp;</span> <span class="p">{</span> <span class="k">return</span> <span class="n">bar</span><span class="p">;</span> <span class="p">}</span>
+  <span class="n">Bar</span> <span class="nf">getBar</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="p">{</span> <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">bar</span><span class="p">);</span> <span class="p">}</span>
+<span class="k">private</span><span class="o">:</span>
+  <span class="n">Bar</span> <span class="n">bar</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">Foo</span> <span class="n">foo</span><span class="p">{};</span>
+<span class="n">Bar</span> <span class="n">bar</span> <span class="o">=</span> <span class="n">foo</span><span class="p">.</span><span class="n">getBar</span><span class="p">();</span> <span class="c1">// calls `Bar getBar() &amp;`</span>
+
+<span class="k">const</span> <span class="n">Foo</span> <span class="n">foo2</span><span class="p">{};</span>
+<span class="n">Bar</span> <span class="n">bar2</span> <span class="o">=</span> <span class="n">foo2</span><span class="p">.</span><span class="n">getBar</span><span class="p">();</span> <span class="c1">// calls `Bar Foo::getBar() const&amp;`</span>
+
+<span class="n">Foo</span><span class="p">{}.</span><span class="n">getBar</span><span class="p">();</span> <span class="c1">// calls `Bar Foo::getBar() &amp;&amp;`</span>
+<span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">foo</span><span class="p">).</span><span class="n">getBar</span><span class="p">();</span> <span class="c1">// calls `Bar Foo::getBar() &amp;&amp;`</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">foo2</span><span class="p">).</span><span class="n">getBar</span><span class="p">();</span> <span class="c1">// calls `Bar Foo::getBar() const&amp;&amp;`</span>
+</code></pre></div></div>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">auto</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="k">auto</span> <span class="n">f</span> <span class="o">=</span> <span class="p">[</span><span class="o">&amp;</span><span class="n">r</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">10</span><span class="p">]</span> <span class="p">{</span>
+  <span class="o">++</span><span class="n">r</span><span class="p">;</span>
+  <span class="k">return</span> <span class="n">r</span> <span class="o">+</span> <span class="n">x</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="n">f</span><span class="p">();</span> <span class="c1">// sets x to 2 and returns 12</span>
+</code></pre></div></div>
+
+<p>在C++11之前，成员函数只能根据是否修改了对象的状态（即是否为const）进行重载。C++11引入了引用限定的成员函数，允许你根据*this是左值引用还是右值引用来重载成员函数。</p>
+
+<p>在这个例子中，Foo类有三个getBar成员函数，它们的区别在于*this的类型：</p>
+
+<p>Bar getBar() &amp;：当<em>this是非const左值引用时，调用这个版本的函数。
+Bar getBar() const&amp;：当</em>this是const左值引用时，调用这个版本的函数。
+Bar getBar() &amp;&amp;：当*this是右值引用时，调用这个版本的函数。
+这种特性在你需要根据对象是左值还是右值来选择不同的行为时非常有用。例如，当对象是右值时，你可能希望移动（而不是拷贝）它的成员，以提高性能。</p>
+
+<p>在这个例子中，当Foo对象是右值时，getBar函数会返回bar成员的移动版本，而不是拷贝版本。这可以避免不必要的拷贝，从而提高性能。</p>
+
+<p>此外，这段代码还展示了C++14引入的一种新特性：初始化捕获（Init capture）。这种特性允许你在lambda表达式的捕获列表中进行初始化。在这个例子中，lambda表达式捕获了x的引用和x * 10的值。</p>
+
+    </div>
+
+    <div class="post__share">
+  <div class="share__head">
+    <div class="share__title">Share this Post</div>
+  </div>
+  <ul class="share__list list-reset">
+    <li class="share__item">
+      <a class="share__link share__twitter"
+        href="https://twitter.com/intent/tweet?text=trivial%20grammar&url=/blog/0-trivial-grammar"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__facebook"
+        href="https://www.facebook.com/sharer/sharer.php?u=/blog/0-trivial-grammar"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__pinterest"
+        href="http://pinterest.com/pin/create/button/?url=/blog/0-trivial-grammar&amp;media=/images/post/post-11.jpg&amp;description=trivial%20grammar"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Pinterest" rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&url=/blog/0-trivial-grammar&title=trivial%20grammar&summary=&source=Vonge"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
+    </li>
+  </ul>
+</div>
+
+  </article>
+</div>
+<!-- end post -->
+
+<div class="container">
+  <div class="row">
+    <div class="col col-10 col-d-12 push-d-0 push-1">
+      <div class="post__navigation animate">
+  
+  <a class="post__prev" href="/blog/99-%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E9%83%A8%E5%88%86">
+    <div class="prev__image">
+      <img loading="lazy" src="/images/post/post-35.jpg" alt="trivial grammar">
+    </div>
+    <div class="prev__box">
+      <span class="post__nav post__nav__prev">Prev post</span>
+      <h2 class="post__nav__title">99 # **网络通信部分**</h2>
+    </div>
+  </a>
+  
+
+  
+  <a class="post__next" href="/blog/5-%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88">
+    <div class="next__box">
+      <span class="post__nav post__nav__next">Next post</span>
+      <h2 class="post__nav__title">智能指针</h2>
+    </div>
+    <div class="next__image">
+      <img loading="lazy" src="/images/post/post-15.jpeg" alt="trivial grammar">
+    </div>
+  </a>
+  
+</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- begin related posts -->
+<div class="container">
+  <section class="related-posts is-related animate">
+    <div class="row">
+      <div class="col col-12">
+        <div class="container__inner">
+          <div class="section__info">
+            <div class="section__head">
+              <h2 class="section__title">You may also like</h2>
+              <a class="section__link" href="/blog">
+                
+                
+                  
+                    <a href="/tags#grammar" class="section__link related-tag">See all<span> grammar</span> <i class="ion ion-md-arrow-forward"></i></a>
+                  
+                
+              
+              </a>
+            </div>
+          </div>
+          <div class="row">
+
+          
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/3-%E7%B1%BB%E7%9A%84quiz">
+                      <img loading="lazy" src="/images/post/post-16.jpeg" alt="类的quiz">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/grammar" class="article__tag">grammar</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/3-%E7%B1%BB%E7%9A%84quiz">类的quiz</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      ## 类的quiz
+
+### 99. quiz
+#### 1. 编译器会为C++的类自动生成什么函数？
+编译器会为C++的类自动生成以下六种特殊的成员函数：
+
+1. 默认构造函数（如果没有定义任何构造函数）
+2. 析构函数（如果没有定...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-10T15:45:27+00:00">10 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/4-%E8%BF%AD%E4%BB%A3%E5%99%A8">
+                      <img loading="lazy" src="/images/post/post-10.jpeg" alt="迭代器">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/grammar" class="article__tag">grammar</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/4-%E8%BF%AD%E4%BB%A3%E5%99%A8">迭代器</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      ## 迭代器
+![alt text](/images/imgs/4_iterator_image.png)
+
+### 1. 迭代器有哪些
+STL(Standard Template Library,标准模板库)中的迭代器主要有五种类型...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-09T09:37:22+00:00">09 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/14-c-%E4%B8%AD%E7%9A%84%E7%9C%81%E7%95%A5%E5%8F%B7">
+                      <img loading="lazy" src="/images/post/post-13.jpeg" alt="c++ 中的省略号">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/grammar" class="article__tag">grammar</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/14-c-%E4%B8%AD%E7%9A%84%E7%9C%81%E7%95%A5%E5%8F%B7">c++ 中的省略号</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      ## c++ 中的省略号
+
+### 1. c++ 中的省略号怎么用？
+在C++中，省略号（...）有两种主要的用途：
+
+1. 可变参数模板（Variadic Templates）：在模板编程中，省略号用于表示一个参数包（Paramet...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2024-06-09T04:16:25+00:00">09 Jun 2024</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+                  
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- end related posts -->
+
+
+
+
+
+
+    <!--
+        Bookshop components are accessed using the bookshop tag,
+        using the same syntax as the standard Jekyll include tag.
+    -->
+    <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
+
+<!--bookshop-live end-->
+
+    <div class="top" title="Top"><i class="ion ion-ios-arrow-up"></i></div>
+
+    <!-- begin footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+
+        <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+
+        <ul class="footer_nav list-reset">
+          
+          <li class="footer_nav__item">
+            <a href="/" class="footer_nav__link">Home</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/projects/" class="footer_nav__link">Projects</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/elements/" class="footer_nav__link">Elements</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/about/" class="footer_nav__link">About</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/blog/" class="footer_nav__link">Blog</a>
+          </li>
+          
+        </ul>
+
+        <div class="copyright"><p> 2021 &copy; <a href="/">Vonge</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
+
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- end footer -->
+
+    <script src="/js/scripts.js"></script>
+    <script src="/js/common.js"></script>
+</body>
+</html>
