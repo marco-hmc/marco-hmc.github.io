@@ -1,7 +1,7 @@
 ---
 title: My effective C++
 date: 2024-06-02 16:35:48 +0800
-image: /images/post/post-31.jpeg
+image: /images/post/post-9.jpg
 project: project_ccpp
 tags: reading
 

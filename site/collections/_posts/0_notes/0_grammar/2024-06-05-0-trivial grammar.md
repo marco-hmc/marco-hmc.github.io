@@ -1,7 +1,7 @@
 ---
 title: trivial grammar
 date: 2024-06-05 21:22:45 +0800
-image: /images/post/post-33.jpg
+image: /images/post/post-11.jpg
 project: project_ccpp
 tags: grammar
 
