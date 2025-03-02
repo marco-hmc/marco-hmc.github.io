@@ -42,6 +42,8 @@ Install the Jekyll dependencies with [Bundler](http://bundler.io/):
 $ npm run jekyll:install
 ~~~
 
+      bundle config set --local path 'vendor/bundle'
+      bundle install
 Run the website:
 
 ~~~bash
