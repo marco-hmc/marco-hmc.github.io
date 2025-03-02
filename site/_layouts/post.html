@@ -6,13 +6,13 @@ layout: default
   <div class="container">
     <div class="row">
 
-      {%if page.image %}
+      {% if page.image %}
       <div class="col col-6 col-d-12">
         <div class="post-image">
-          <img loading="lazy" src="{{site.baseurl}}{{page.image}}" alt="{{page.title}}">
+          <img loading="lazy" src="{{ site.baseurl }}{{ page.image }}" alt="{{ page.title }}">
         </div>
       </div>
-      {%endif %}
+      {% endif %}
 
       <div class="col col-6 col-d-12">
         <div class="post__info">
@@ -20,11 +20,10 @@ layout: default
           {% if page.tags.size >= 1 %}
           <div class="post-tags">
             {% for tag in page.tags %}
-              <a href="{{ site.baseurl }}/tag/{{ tag | downcase }}" class="post-tags__tag">{{ tag }}</a>
+            <a href="{{ site.baseurl }}/tag/{{ tag | downcase }}" class="post-tags__tag">{{ tag }}</a>
             {% endfor %}
           </div>
           {% endif %}
-
 
           <h1 class="post__title">{{ page.title | escape }}</h1>
 
@@ -35,8 +34,7 @@ layout: default
 
             <div class="post__meta-bottom">
               <div class="post__author">{{ site.data.author.author_name }}</div>
-              <time class="post__date" datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date_to_string
-                }}</time>
+              <time class="post__date" datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date_to_string }}</time>
             </div>
           </div>
 
@@ -47,17 +45,17 @@ layout: default
 </div>
 
 <!-- begin post -->
-<div class="container animate">
+<div class="container-with-sidebar animate">
+  <div class="sidebar">
+    <div id="toc"></div>
+  </div>
 
   <article class="post">
-
-    {% include toc.html html=content %}
     <div class="post__content">
       {{ content }}
     </div>
 
     {% include share.html %}
-
   </article>
 </div>
 <!-- end post -->
@@ -73,6 +71,5 @@ layout: default
 {% include related-posts.html %}
 
 {% if site.data.general_settings.disqus-identifier %}
-  {% include disqus-comments.html %}
+{% include disqus-comments.html %}
 {% endif %}
-

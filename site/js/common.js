@@ -144,3 +144,64 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  const headings = document.querySelectorAll(
+    ".post__content h1, .post__content h2, .post__content h3, .post__content h4, .post__content h5, .post__content h6"
+  );
+  const toc = document.getElementById("toc");
+  const tocList = document.createElement("ul");
+  let stack = [{ ul: tocList, level: 1 }]; // 初始化堆栈
+
+  // 生成目录结构
+  headings.forEach((heading) => {
+    const level = parseInt(heading.tagName.slice(1));
+    // 自动生成ID（若缺失）
+    if (!heading.id) {
+      heading.id = heading.textContent
+        .toLowerCase()
+        .replace(/[^\w\s]/g, "")
+        .replace(/\s+/g, "-");
+    }
+    // 动态创建层级目录
+    while (stack.length > 0 && stack[stack.length - 1].level >= level) {
+      stack.pop();
+    }
+    const parentUl = stack[stack.length - 1].ul;
+    const listItem = document.createElement("li");
+    listItem.className = `toc-item level-${level}`;
+    // 创建链接和平滑滚动
+    const anchor = document.createElement("a");
+    anchor.className = "toc-link";
+    anchor.textContent = heading.textContent.replace(/^#+\s*/, "");
+    anchor.href = `#${heading.id}`;
+    anchor.addEventListener("click", (e) => {
+      e.preventDefault();
+      document
+        .querySelector(anchor.getAttribute("href"))
+        .scrollIntoView({ behavior: "smooth" });
+    });
+    listItem.appendChild(anchor);
+    parentUl.appendChild(listItem);
+    // 处理子层级
+    if (level > stack[stack.length - 1].level) {
+      const subUl = document.createElement("ul");
+      listItem.appendChild(subUl);
+      stack.push({ ul: subUl, level: level });
+    }
+  });
+
+  toc.appendChild(tocList);
+
+  // 高亮当前标题
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const link = document.querySelector(`a[href="#${entry.target.id}"]`);
+        link?.classList.toggle("active", entry.isIntersecting);
+      });
+    },
+    { rootMargin: "-50% 0px -50% 0px", threshold: 0 }
+  );
+  headings.forEach((heading) => observer.observe(heading));
+});
