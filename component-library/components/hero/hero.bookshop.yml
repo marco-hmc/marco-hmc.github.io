@@ -30,8 +30,8 @@ preview:
     from online media to printed artwork.
   image: /images/01.jpg
   image_alt: Vanessa Marley's picture
-  cta_button: Get in touch
-  cta_button_link: "#contact"
+  cta_button: About me
+  cta_button_link: "/about.html"
   works_button: See my works
   works_button_link: "#projects"
 
