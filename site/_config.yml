@@ -5,8 +5,8 @@ plugins:
   - jekyll-sitemap
   - jekyll/tagging
 
-# Multiple bookshops can be used on one website,
-# or different production / staging locations.
+permalink: /:categories/:title.html
+
 bookshop_locations:
   - ../component-library
 
@@ -17,20 +17,20 @@ exclude:
 include:
   - _cloudcannon
 
-collections_dir: 'collections'
+collections_dir: "collections"
 
 collections:
   pages:
     output: true
-    permalink: /:title/
+    permalink: /:title.html
   projects:
     output: true
-    permalink: /project/:slug
+    permalink: /project/:slug.html
   testimonials:
     output: false
   posts:
     output: true
-    permalink: /blog/:slug
+    permalink: /blog/:slug.html
 
 defaults:
   - scope:
@@ -54,4 +54,4 @@ defaults:
 # Tags
 tag_page_dir: tag
 tag_page_layout: tag_page
-tag_permalink_style: /:title
+tag_permalink_style: /:title.html
