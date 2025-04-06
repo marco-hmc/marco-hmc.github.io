@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>网络安全</title>
+  <meta name='description' content='Marco’s Blog'>
+
+  <link rel="canonical" href="http://localhost:6060/blog/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8.html">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="网络安全 – Marco’s Blog">
+  <meta name="twitter:description" content="常见网络攻击：局域网ARP泛洪、DDoS、TCP SYN Flood、XSS等
+">
+  <meta name="twitter:image:src" content="http://localhost:6060/images/post/post-34.jpg">
+
+  <!-- Facebook OpenGraph -->
+  <meta property="og:title" content="网络安全 – Marco’s Blog">
+  <meta property="og:description" content="常见网络攻击：局域网ARP泛洪、DDoS、TCP SYN Flood、XSS等
+">
+  <meta property="og:image" content="http://localhost:6060/images/post/post-34.jpg">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Ionicons -->
+  <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/main.css">
+</head>
+
+<body>
+
+    
+
+    <!-- begin header -->
+<header class="c-header">
+  <div class="container">
+    <div class="row">
+      <div class="c-header__inner">
+
+        <div class="logo">
+          <a class="logo__link" href="/">
+          
+            <img class="logo__image" src="/images/mc_logo1.ico" alt="Marco’s Blog">
+          
+          </a>
+        </div>
+
+        <nav class="main-nav">
+          <div class="main-nav__box">
+
+            <div class="nav__icon-close">
+              <i class="ion ion-md-close"></i>
+            </div>
+
+            <div class="nav__title">Menu</div>
+
+              <ul class="nav__list list-reset">
+
+              
+                
+                <li class="nav__item">
+                  <a href="/" class="nav__link">Home</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/projects/" class="nav__link">Projects</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/blog/" class="nav__link">Blog</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/about/" class="nav__link">About</a>
+                </li>
+                
+              
+
+            </ul>
+          </div>
+
+          <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+        </nav>
+
+        <div class="nav-button">
+          <i class="nav__icon nav__icon-menu ion ion-md-menu"></i>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+<!-- end header -->
+
+    <div class="post-top">
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="col col-6 col-d-12">
+        <div class="post-image">
+          <img loading="lazy" src="/images/post/post-34.jpg" alt="网络安全">
+        </div>
+      </div>
+      
+
+      <div class="col col-6 col-d-12">
+        <div class="post__info">
+
+          
+
+          <h1 class="post__title">网络安全</h1>
+
+          <div class="post__meta">
+            <div class="post__author-image">
+              <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+            </div>
+
+            <div class="post__meta-bottom">
+              <div class="post__author">Marco Hwong</div>
+              <time class="post__date" datetime="2025-02-25T22:07:20+08:00">25 Feb 2025</time>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- begin post -->
+<div class="container-with-sidebar animate">
+  <div class="sidebar">
+    <div id="toc"></div>
+  </div>
+
+  <article class="post">
+    <div class="post__content">
+      <p>常见网络攻击：局域网ARP泛洪、DDoS、TCP SYN Flood、XSS等</p>
+
+<p># （6）网络安全</p>
+
+<h3 id="1-dns">1. DNS</h3>
+
+<h4 id="1-针对dns服务器的攻击">1. 针对DNS服务器的攻击</h4>
+
+<ul>
+  <li>
+    <p><strong><em>是什么？</em></strong></p>
+
+    <p>​	通过随机生成一些域名，向DNS服务器发起解析，由于DNS本地一般不会有随机生成的域名结果，就会递归往上查询。如果有很多域名解析请求就会导致DNS服务器崩溃。</p>
+  </li>
+  <li>
+    <p><strong><em>怎么应对？</em></strong></p>
+
+    <p>​	因为DNS无法判断一个域名到底是恶意的，还是非恶意的，所以还是逃不了应搜尽搜。唯一的解决思路就是判断请求是否恶意，如果短时间某个IP地址发起大量请求，就对其进行限制</p>
+
+    <ul>
+      <li>对突然发起大量相应频度低(即没什么人搜索的域名)进行带宽限制</li>
+      <li>对突然发起大量相应频度低(即没什么人搜索的域名)设置低优先级</li>
+      <li>限制每个IP的域名解析次数</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="2-dns劫持">2. DNS劫持</h4>
+
+<ul>
+  <li>
+    <p><strong><em>是什么？</em></strong></p>
+
+    <p>​	攻击或者伪造域名解析服务器(DNS)，把目标域名解析到错误的地址，导致用户无法正确访问网站，或被引导到冒牌网站，导致被骗的风险。</p>
+  </li>
+  <li>
+    <p><strong><em>具体实现方法是？</em></strong></p>
+
+    <ul>
+      <li>
+        <p>本地电脑被恶意入侵，本地DNS配置(hosts文件、DNS服务器地址、DNS缓存)</p>
+
+        <blockquote>
+          <p>本地的dns就是hosts，DNS缓存是避免高频次使用网站每次都要查</p>
+        </blockquote>
+      </li>
+      <li>
+        <p>路由器存在漏洞，被入侵并篡改配置</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><strong><em>怎么应对？</em></strong></p>
+
+    <p>​	总的来说，预防大于根治，DNS劫持挺难防范的，做好防范木马，关闭不必要的DNS解析就差不多了。更多的DNS防止劫持方法看<a href="https://www.dns.com/supports/1630.html">这里</a></p>
+  </li>
+</ul>
+
+<h3 id="2-中间人攻击">2. 中间人攻击</h3>
+
+<ul>
+  <li>
+    <p><strong><em>prerequisties</em></strong></p>
+
+    <ul>
+      <li>https</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong><em>是什么？</em></strong></p>
+
+    <blockquote>
+      <p><a href="https://zhuanlan.zhihu.com/p/62025258">什么是中间人攻击</a></p>
+    </blockquote>
+
+    <p>​	是指攻击者与通讯的两端分别创建独立的联系，并交换其所收到的数据，使通讯的两端认为他们正在通过一个私密的连接与对方 直接对话，但事实上整个会话都被攻击者完全控制。在中间人攻击中，攻击者可以拦截通讯双方的通话并插入新的内容。中间人攻击是一个(缺乏)相互认证的攻击。</p>
+
+    <p>​	大多数的加密协议都专门加入了一些特殊的认证方法以阻止中间人攻击。例如，SSL协议可以验证参与通讯的一方或双方使用的证书是否是由权威的受信任的数字证书认证机构颁发，并且能执行双向身份认证。</p>
+  </li>
+  <li>
+    <p><strong><em>具体实现方法</em></strong></p>
+
+    <ol>
+      <li>
+        <p>客户端发送请求到服务端，请求被中间人截获。</p>
+      </li>
+      <li>
+        <p>服务器向客户端发送公钥。</p>
+      </li>
+      <li>
+        <p>中间人截获公钥，保留在自己手上。然后自己生成一个【伪 造的】公钥，发给客户端。</p>
+      </li>
+      <li>
+        <p>客户端收到伪造的公钥后，生成加密hash值发给服务器。</p>
+      </li>
+      <li>
+        <p>中间人获得加密hash值，用自己的私钥解密获得真秘钥。同时生成假的加密hash值，发给服务器。</p>
+      </li>
+      <li>
+        <p>服务器用私钥解密获得假密钥。然后加密数据传输给客户端。</p>
+
+        <table>
+          <tbody>
+            <tr>
+              <td>![img](https://upload-images.jianshu.io/upload_images/10170988-93003325e641a498.png?imageMogr2/auto-orient/strip</td>
+              <td>imageView2/2/w/386/format/webp)</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p><strong><em>怎么应对？</em></strong></p>
+
+    <ul>
+      <li>
+        <p>在与server通信前，我们会先查询网站的证书，证书能保证对方就是server，如果证书不正确则有可能被中间人攻击了。</p>
+
+        <p><img src="https://s2.loli.net/2022/04/19/18NhVO4DySweK6n.png" alt="image-20220419165109285" /></p>
+      </li>
+      <li>
+        <p>而这个证书的校验依赖于CA机构，而CA结构是比较权威的机构，一般来说都是选择相信。</p>
+      </li>
+      <li>
+        <p>至于，证书被伪造之类的，读者有兴趣可以看<a href="https://www.zhihu.com/question/37370216">这个</a></p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="3-分布式拒绝服务攻击ddos">3. 分布式拒绝服务攻击Ddos</h3>
+
+<ul>
+  <li>
+    <p><strong><em>是什么？</em></strong></p>
+
+    <p>​	攻击者发出海量实际上并不需要的互联网流量，致使目标服务器的资源耗尽，从而无法正常提供服务。</p>
+  </li>
+  <li>
+    <p><strong><em>具体实现方法是？</em></strong></p>
+
+    <p>​	在古早技术年代，一般需要攻击者的宽带大于目标服务器的宽带，所以你发送的无用请求才能大于人家接受能力。</p>
+
+    <p>​	随后，随着技术的发展，攻击者可以操控一些受到恶意软件感染的机器，或者说一些古早机器仍然使用win98，而这些老系统存在一些系统漏洞，可能就不知不觉地被操作了。而这些被操控的机器被叫做<a href="https://www.cloudflare.com/zh-cn/learning/ddos/what-is-a-ddos-botnet/">僵尸网络</a>。僵尸网络可能存在成千上万个，甚至数十万到数百万，庞大的僵尸网络总能够发出足够的流量冲击你的服务器。</p>
+
+    <p>​	除此之外，还有一种伪装服务器IP的方式，向校时服务器发送请求，而目前的时间矫正协议，有一个设计很愚蠢的指令，能够返回600个向校时服务器请求过时间的机器的信息。而校时服务器有很多，且宽带巨大。</p>
+
+    <p>​	那使用僵尸网络伪装服务器向校时服务器发送指令，校时服务器就会向目标服务器发出巨大的流量，足以导致任何一个服务器崩溃。这是一个流量放大的操作。</p>
+
+    <blockquote>
+      <p>感兴趣的可以看这个<a href="https://www.bilibili.com/video/BV1t5411Y7jr?spm_id_from=333.337.search-card.all.click">科普视频</a></p>
+    </blockquote>
+  </li>
+  <li>
+    <p><strong><em>怎么应对？</em></strong></p>
+
+    <p>​	其实最先进的DDos攻击可以达到Tb的单位，因为根本就无法识别一个新请求到底是不是恶意的，所以面对所有新的请求都得处理。也就是说DDos方法操作都是基于如何扩容的。</p>
+
+    <p>​	而目前的DDos防护都是以G，几G到几百G的，越高越贵。可以说没有绝对能够防住的，都是缓解。好就好在，黑客团队一般都是攻击非法网站为主。</p>
+
+    <ul>
+      <li>
+        <p><strong>提高宽带：</strong>但不是一点钱能搞定的，很贵。</p>
+
+        <blockquote>
+          <p>果壳网彼时只买了不足100M带宽，所在早期机房总带宽也不足40G，攻击带宽都没见过低于10G的(机房的人后来告诉我的)。假设某便宜机房(肯定不在北上广深)，带宽价格为100元/M*月，每月按峰值计费。则要买10G带宽顶一下，需要的月费是100万</p>
+        </blockquote>
+      </li>
+      <li>
+        <p><strong>CDN服务：</strong>CDN服务可以将对源节点的访问，改变成就近的CDN节点，但是因为CDN节点和源节点的同步问题，当前的分发技术不允许CDN提供商做到动态网页加速，也就是只能CDN服务只能保住静态网页。</p>
+      </li>
+      <li>
+        <p><strong>分布式集群防御：</strong>分布式集群防御的特点是在每个节点服务器配置多个IP地址，并且每个节点能承受不低于10G的DDoS攻击，如一个节点受攻击无法提供服务，系统将会根据优先级设置自动切换另一个节点，并将攻击者的数据包全部返回发送点，使攻击源成为瘫痪状态，从更为深度的安全防护角度去影响企业的安全执行决策。</p>
+      </li>
+      <li>
+        <p>总的来说，很少有什么好的解决方法，上云由云服务厂家解决是比较好的方法。</p>
+      </li>
+      <li>
+        <p><a href="https://www.zhihu.com/question/19581905">更多方法方法查看这里</a></p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="31-syn攻击">3.1 SYN攻击</h4>
+
+<ul>
+  <li>
+    <p><strong><em>是什么</em></strong></p>
+
+    <p>​	SYN攻击是DDos攻击最常见的一种，下面简单介绍一下</p>
+  </li>
+  <li>
+    <p><strong><em>具体实现</em></strong></p>
+
+    <ul>
+      <li>直接攻击：不伪造IP地址直接发送大量SYN包，屏蔽IP地址即可</li>
+      <li>伪造ip攻击：伪造IP发送SYN包，如果是伪造IP需要对数据包溯源，除非网络运营商愿意配合，否则不好实现</li>
+      <li>僵尸网络攻击：使用僵尸网络发送SYN包</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong><em>怎么应对</em></strong></p>
+
+    <ul>
+      <li>如果队列慢的时候，回收最先创建的TCP半开链接</li>
+      <li>cookie，对每一个SYN包都会回复，SYN-ACK数据包，但是之后服务器就会删除该请求，如果再收到ACK包的时候，再重建</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="4-sql注入">4. SQL注入</h3>
+
+<ul>
+  <li>
+    <p><strong><em>是什么</em></strong></p>
+
+    <p>​	在网站里面，如果程序没有对用户输入数据的合法性进行判断和处理，就有可能受到SQL注入攻击。因为你的输入数据，是转变为SQL语句到数据库进行查询或者说校验工作的。如果没有对输入数据进行校验，输入数据有可能就夹杂着一些本来不该允许的SQL语句，如查询管理员账户密码、或者说删除数据库等。</p>
+  </li>
+  <li>
+    <p><strong><em>具体实现</em></strong></p>
+
+    <ul>
+      <li>
+        <p><strong>恶意拼接查询</strong></p>
+
+        <ul>
+          <li>
+            <p>我们知道，SQL 语句可以查询、插入、更新和删除数据，且使用分号来分隔不同的命令。例如：</p>
+
+            <p><code class="language-plaintext highlighter-rouge">SELECT * FROM users WHERE user_id = $user_id</code></p>
+
+            <p>其中，user_id 是传入的参数，如果传入的参数值为<code class="language-plaintext highlighter-rouge">“1234; DELETE FROM users”</code>，那么最终的查询语句会变为：</p>
+
+            <p><code class="language-plaintext highlighter-rouge">SELECT * FROM users WHERE user_id = 1234; DELETE FROM users</code></p>
+
+            <p>如果以上语句执行，则会删除 users 表中的所有数据。</p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p><strong>利用注释执行非法命令</strong></p>
+
+        <ul>
+          <li>
+            <p>SQL 语句中可以插入注释。例如：</p>
+
+            <p><code class="language-plaintext highlighter-rouge">SELECT COUNT(*) AS 'num' FROM game_score WHERE game_id=24411 AND version=$version</code></p>
+
+            <p>如果 version 包含了恶意的字符串<code class="language-plaintext highlighter-rouge">'-1' OR 3 AND SLEEP(500)--</code>，那么最终查询语句会变为：</p>
+
+            <p><code class="language-plaintext highlighter-rouge">SELECT COUNT(*) AS 'num' FROM game_score WHERE game_id=24411 AND version='-1' OR 3 AND SLEEP(500)--</code></p>
+
+            <p>以上恶意查询只是想耗尽系统资源，SLEEP(500) 将导致 SQL 语句一直运行。如果其中添加了修改、删除数据的恶意指令，那么将会造成更大的破坏。</p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p><strong>传入非法参数</strong></p>
+
+        <ul>
+          <li>
+            <p>SQL 语句中传入的字符串参数是用单引号引起来的，如果字符串本身包含单引号而没有被处理，那么可能会篡改原本 SQL 语句的作用。 例如：</p>
+
+            <p><code class="language-plaintext highlighter-rouge">SELECT * FROM user_name WHERE user_name = $user_name</code></p>
+
+            <p>如果 <code class="language-plaintext highlighter-rouge">user_name</code> 传入参数值为 <code class="language-plaintext highlighter-rouge">G'chen</code>，那么最终的查询语句会变为：</p>
+
+            <p><code class="language-plaintext highlighter-rouge">SELECT * FROM user_name WHERE user_name ='G'chen'</code></p>
+
+            <p>一般情况下，以上语句会执行出错，这样的语句风险比较小。虽然没有语法错误，但可能会恶意产生 SQL 语句，并且以一种你不期望的方式运行。</p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p><strong>添加额外条件</strong></p>
+
+        <ul>
+          <li>
+            <p>在 SQL 语句中添加一些额外条件，以此来改变执行行为。条件一般为真值表达式。例如：</p>
+
+            <p><code class="language-plaintext highlighter-rouge">UPDATE users SET userpass='$userpass' WHERE user_id=$user_id;</code></p>
+
+            <p>如果 <code class="language-plaintext highlighter-rouge">user_id</code> 被传入恶意的字符串<code class="language-plaintext highlighter-rouge">“1234 OR TRUE”</code>，那么最终的 SQL 语句会变为：</p>
+
+            <p><code class="language-plaintext highlighter-rouge">UPDATE users SET userpass= '123456' WHERE user_id=1234 OR TRUE</code>;</p>
+
+            <p>这将更改所有用户的密码。</p>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><strong><em>怎么应对</em></strong></p>
+
+    <ul>
+      <li><strong>过滤/检验输入内容</strong>，简单来说就是用正则表达式匹配输入内容</li>
+      <li><strong>参数化运行</strong>，就是对SQL语句进行编译，这个是查询的的就只可能执行查询，然后将输入数据转变话参数代入运行，如果参数含有攻击语句，也不会运行。</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<ul>
+  <li><strong>避免将用户输入直接放入SQL语句</strong></li>
+  <li><strong>数据库的机密数据，可以加密</strong></li>
+  <li><strong>设置数据库权限</strong></li>
+</ul>
+
+<h3 id="5-爬虫攻击">5. 爬虫攻击</h3>
+
+<ul>
+  <li>
+    <p><strong><em>是什么</em></strong></p>
+
+    <p>​	网络爬虫相当于模拟浏览器发送网络请求，然后将这些数据下载到本地。比如说，我想做一个社交网站的群体画像，首先从地区做起吧。而这个社交网站并不开放我们这个搜索，我们只能只能一个一个打开用户，看其注册地址所在。</p>
+
+    <p>​	而这个时候就可以用爬虫技术，去模拟我们在浏览器的操作，然后将需要的数据下载下来。而爬虫这种行为，对一些内容网站来说是很反感的，因为其内容数据可能是其安身立命之处。因此有爬虫技术，就有发爬虫技术。</p>
+
+    <p>​	而本质上爬虫都是模拟浏览器进行操作，而这个模拟浏览器的行为是不可知的，也就是说，网站不知道这个是正常操作还是爬虫操作，那么反爬虫只能是一种后知后觉的防御机制了。也就是先被爬了，然后感觉到同类数据的请求有异常，比如说短时间内很多，或者一个IP地址发出很多等，然后再去做一些限制操作。</p>
+  </li>
+  <li>
+    <p><strong><em>具体实现</em></strong></p>
+
+    <ul>
+      <li>爬取网页：
+        <ul>
+          <li>简单来说就是设定url，根据什么规矩去获得url，并进行访问</li>
+        </ul>
+      </li>
+      <li>解析数据：
+        <ul>
+          <li>一般就是使用正则表达式，匹配想要获取的数据。</li>
+        </ul>
+      </li>
+      <li>保存数据：
+        <ul>
+          <li>保存到本地，可以直接保存，或者保存sqlite数据库中</li>
+        </ul>
+      </li>
+      <li>总结：爬虫具体实现的话依赖于库，因为写起来挺繁琐的，主流爬虫方式都是python调用库去爬，找一个爬虫库学就行了。</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong><em>怎么应对</em></strong></p>
+
+    <ul>
+      <li>
+        <p>封IP</p>
+      </li>
+      <li>
+        <p>封cookie</p>
+      </li>
+      <li>
+        <p>验证码</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="6-总结">6. 总结</h3>
+
+<p>​	上面是常见的一些网络攻击，本文仅做一些介绍。在最后的时候，读者可以看看这个<a href="https://www.bilibili.com/video/BV1UY411A7qU?spm_id_from=333.851.b_7265636f6d6d656e64.8">视频</a>进行回顾</p>
+
+    </div>
+
+    <div class="post__share">
+  <div class="share__head">
+    <div class="share__title">Share this Post</div>
+  </div>
+  <ul class="share__list list-reset">
+    <li class="share__item">
+      <a class="share__link share__twitter"
+        href="https://twitter.com/intent/tweet?text=%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8&url=http://localhost:6060/blog/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8.html"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__facebook"
+        href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:6060/blog/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8.html"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__pinterest"
+        href="http://pinterest.com/pin/create/button/?url=http://localhost:6060/blog/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8.html&amp;media=http://localhost:6060/images/post/post-34.jpg&amp;description=%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Pinterest" rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:6060/blog/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8.html&title=%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8&summary=&source=Vonge"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
+    </li>
+  </ul>
+</div>
+  </article>
+</div>
+<!-- end post -->
+
+<div class="container">
+  <div class="row">
+    <div class="col col-10 col-d-12 push-d-0 push-1">
+      <div class="post__navigation animate">
+  
+  <a class="post__prev" href="/blog/%E5%BA%94%E7%94%A8%E5%B1%82.html">
+    <div class="prev__image">
+      <img loading="lazy" src="/images/post/post-44.jpg" alt="网络安全">
+    </div>
+    <div class="prev__box">
+      <span class="post__nav post__nav__prev">Prev post</span>
+      <h2 class="post__nav__title">应用层</h2>
+    </div>
+  </a>
+  
+
+  
+  <a class="post__next" href="/blog/cache.html">
+    <div class="next__box">
+      <span class="post__nav post__nav__next">Next post</span>
+      <h2 class="post__nav__title">cache</h2>
+    </div>
+    <div class="next__image">
+      <img loading="lazy" src="/images/post/post-47.jpg" alt="网络安全">
+    </div>
+  </a>
+  
+</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- begin related posts -->
+<div class="container">
+  <section class="related-posts  animate">
+    <div class="row">
+      <div class="col col-12">
+        <div class="container__inner">
+          <div class="section__info">
+            <div class="section__head">
+              <h2 class="section__title">You may also like</h2>
+              <a class="section__link" href="/blog">
+                
+              </a>
+            </div>
+          </div>
+          <div class="row">
+
+          
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- end related posts -->
+
+
+
+
+    <!--
+        Bookshop components are accessed using the bookshop tag,
+        using the same syntax as the standard Jekyll include tag.
+    -->
+    <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
+
+<!--bookshop-live end-->
+
+    <div class="top" title="Top"><i class="ion ion-ios-arrow-up"></i></div>
+
+    <!-- begin footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+
+        <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+
+        <ul class="footer_nav list-reset">
+          
+          <li class="footer_nav__item">
+            <a href="/" class="footer_nav__link">Home</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/projects/" class="footer_nav__link">Projects</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/about/" class="footer_nav__link">About</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/blog/" class="footer_nav__link">Blog</a>
+          </li>
+          
+        </ul>
+
+        <div class="copyright"><p> 2021 &copy; <a href="/">Vonge</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
+
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- end footer -->
+
+    <script src="/js/scripts.js"></script>
+    <script src="/js/common.js"></script>
+</body>
+</html>

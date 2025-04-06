@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>crossLanguageInvocation</title>
+  <meta name='description' content='Marco’s Blog'>
+
+  <link rel="canonical" href="http://localhost:6060/blog/crosslanguageinvocation.html">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="crossLanguageInvocation – Marco’s Blog">
+  <meta name="twitter:description" content="1. extern”C”里面可以使用C++语法吗？有什么限制？
+extern“C”{}只是让C++按照C语言的函数调用约定去生成汇编，C语言的函数调用约定无法实现成员函数的调用，模板的使用，重载函数，以及异常的抛出，而其他的c++能力都能够支持。
+">
+  <meta name="twitter:image:src" content="http://localhost:6060/images/post/post-7.jpg">
+
+  <!-- Facebook OpenGraph -->
+  <meta property="og:title" content="crossLanguageInvocation – Marco’s Blog">
+  <meta property="og:description" content="1. extern”C”里面可以使用C++语法吗？有什么限制？
+extern“C”{}只是让C++按照C语言的函数调用约定去生成汇编，C语言的函数调用约定无法实现成员函数的调用，模板的使用，重载函数，以及异常的抛出，而其他的c++能力都能够支持。
+">
+  <meta property="og:image" content="http://localhost:6060/images/post/post-7.jpg">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Ionicons -->
+  <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/main.css">
+</head>
+
+<body>
+
+    
+
+    <!-- begin header -->
+<header class="c-header">
+  <div class="container">
+    <div class="row">
+      <div class="c-header__inner">
+
+        <div class="logo">
+          <a class="logo__link" href="/">
+          
+            <img class="logo__image" src="/images/mc_logo1.ico" alt="Marco’s Blog">
+          
+          </a>
+        </div>
+
+        <nav class="main-nav">
+          <div class="main-nav__box">
+
+            <div class="nav__icon-close">
+              <i class="ion ion-md-close"></i>
+            </div>
+
+            <div class="nav__title">Menu</div>
+
+              <ul class="nav__list list-reset">
+
+              
+                
+                <li class="nav__item">
+                  <a href="/" class="nav__link">Home</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/projects/" class="nav__link">Projects</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/blog/" class="nav__link">Blog</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/about/" class="nav__link">About</a>
+                </li>
+                
+              
+
+            </ul>
+          </div>
+
+          <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+        </nav>
+
+        <div class="nav-button">
+          <i class="nav__icon nav__icon-menu ion ion-md-menu"></i>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+<!-- end header -->
+
+    <div class="post-top">
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="col col-6 col-d-12">
+        <div class="post-image">
+          <img loading="lazy" src="/images/post/post-7.jpg" alt="crossLanguageInvocation">
+        </div>
+      </div>
+      
+
+      <div class="col col-6 col-d-12">
+        <div class="post__info">
+
+          
+          <div class="post-tags">
+            
+            <a href="/tag/跨语言调用" class="post-tags__tag">跨语言调用</a>
+            
+          </div>
+          
+
+          <h1 class="post__title">crossLanguageInvocation</h1>
+
+          <div class="post__meta">
+            <div class="post__author-image">
+              <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+            </div>
+
+            <div class="post__meta-bottom">
+              <div class="post__author">Marco Hwong</div>
+              <time class="post__date" datetime="2025-04-04T10:27:01+08:00">04 Apr 2025</time>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- begin post -->
+<div class="container-with-sidebar animate">
+  <div class="sidebar">
+    <div id="toc"></div>
+  </div>
+
+  <article class="post">
+    <div class="post__content">
+      <h4 id="1-externc里面可以使用c语法吗有什么限制">1. extern”C”里面可以使用C++语法吗？有什么限制？</h4>
+<p>extern“C”{}只是让C++按照C语言的函数调用约定去生成汇编，C语言的函数调用约定无法实现成员函数的调用，模板的使用，重载函数，以及异常的抛出，而其他的c++能力都能够支持。</p>
+
+<p>C 语言调用 C++语法函数怎么做？
+那 C++调用 C 语法的函数怎么做？
+Extern “C”是什么意思？</p>
+
+<h4 id="116-externc的作用有什么注意事项">1.16 extern”C”的作用?有什么注意事项？</h4>
+
+<p><code class="language-plaintext highlighter-rouge">extern "C"</code>在C++中的主要作用是实现C和C++的混合编程。它告诉C++编译器按照C语言的规则来编译和链接代码。</p>
+
+<p>C++支持函数重载，所以C++编译器会对函数名进行名字修饰（name mangling）以区分重载函数。然而，C语言不支持函数重载，也就不进行名字修饰。因此，如果你想在C++代码中调用C语言编写的函数，或者反过来，你需要告诉C++编译器不要对这些函数进行名字修饰。这就是<code class="language-plaintext highlighter-rouge">extern "C"</code>的作用。</p>
+
+<p>那如果c++代码中有函数重载的部分，也希望这部分代码能够被C语言使用，我还可以使用extern c吗？</p>
+
+<p>不幸的是，你不能这样做。C语言不支持函数重载，这意味着在C语言中，你不能有两个或更多的函数具有相同的名字，即使它们的参数类型或数量不同。</p>
+
+<p>当你在C++中使用<code class="language-plaintext highlighter-rouge">extern "C"</code>时，你告诉C++编译器按照C语言的规则来处理被<code class="language-plaintext highlighter-rouge">extern "C"</code>修饰的代码。这意味着，如果你尝试在<code class="language-plaintext highlighter-rouge">extern "C"</code>块中定义两个或更多的重载函数，你会得到一个编译错误，因为这违反了C语言的规则。</p>
+
+<p>不同编程语言之间的相互调用通常被称为“语言互操作性”（Language Interoperability）或“跨语言调用”（Cross-Language Invocation）。这种技术允许一个语言编写的代码调用另一个语言编写的代码，从而实现不同语言之间的协作和集成。</p>
+
+<h3 id="相关术语和概念">相关术语和概念</h3>
+
+<ol>
+  <li>
+    <p><strong>语言互操作性（Language Interoperability）</strong>：</p>
+
+    <ul>
+      <li>这是一个广义的术语，指的是不同编程语言之间能够相互调用和协作的能力。它包括跨语言调用、数据类型转换、错误处理等方面。</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>跨语言调用（Cross-Language Invocation）</strong>：</p>
+
+    <ul>
+      <li>这是指在一个编程语言中调用另一个编程语言中的函数或方法。例如，在 C++ 中调用 Python 函数，或者在 C 中调用 C++ 函数。</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>外部函数接口（Foreign Function Interface, FFI）</strong>：</p>
+
+    <ul>
+      <li>这是一个允许一种编程语言调用另一种编程语言函数的机制。FFI 通常用于跨语言调用，例如在 C++ 中调用 C 函数，或者在 Python 中调用 C 函数。</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>名称修饰（Name Mangling）</strong>：</p>
+    <ul>
+      <li>这是 C++ 编译器用来支持函数重载的一种技术。名称修饰会将函数名转换为包含参数类型信息的唯一名称，以便在链接时区分不同的重载函数。在跨语言调用时，通常需要使用 <code class="language-plaintext highlighter-rouge">extern "C"</code> 来禁用名称修饰，以便 C 代码能够正确调用 C++ 函数。</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="相关技术和工具">相关技术和工具</h3>
+
+<ol>
+  <li>
+    <p><strong>C++ 调用 C</strong>：</p>
+
+    <ul>
+      <li>使用 <code class="language-plaintext highlighter-rouge">extern "C"</code> 关键字来禁用名称修饰，使得 C++ 函数可以被 C 代码调用。</li>
+    </ul>
+
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// C++ 代码</span>
+<span class="k">extern</span> <span class="s">"C"</span> <span class="kt">void</span> <span class="nf">cpp_function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// 函数实现</span>
+<span class="p">}</span>
+</code></pre></div>    </div>
+
+    <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// C 代码</span>
+<span class="k">extern</span> <span class="kt">void</span> <span class="nf">cpp_function</span><span class="p">();</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">cpp_function</span><span class="p">();</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong>C++ 调用 Python</strong>：</p>
+
+    <ul>
+      <li>使用 Python 的 C API 或者 Boost.Python 库来实现 C++ 调用 Python 函数。</li>
+    </ul>
+
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 使用 Python C API</span>
+<span class="cp">#include</span> <span class="cpf">&lt;Python.h&gt;</span><span class="cp">
+</span>
+<span class="kt">void</span> <span class="nf">call_python_function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">Py_Initialize</span><span class="p">();</span>
+    <span class="n">PyRun_SimpleString</span><span class="p">(</span><span class="s">"print('Hello from Python!')"</span><span class="p">);</span>
+    <span class="n">Py_Finalize</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong>Python 调用 C++</strong>：</p>
+
+    <ul>
+      <li>使用 ctypes 或 cffi 库来调用 C++ 函数，或者使用 SWIG（Simplified Wrapper and Interface Generator）生成包装代码。</li>
+    </ul>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 使用 ctypes 调用 C++ 函数
+</span><span class="kn">import</span> <span class="n">ctypes</span>
+
+<span class="n">cpp_lib</span> <span class="o">=</span> <span class="n">ctypes</span><span class="p">.</span><span class="nc">CDLL</span><span class="p">(</span><span class="sh">'</span><span class="s">./cpp_lib.so</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">cpp_lib</span><span class="p">.</span><span class="nf">cpp_function</span><span class="p">()</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h3 id="相关知识">相关知识</h3>
+
+<ol>
+  <li>
+    <p><strong>数据类型转换</strong>：</p>
+
+    <ul>
+      <li>在跨语言调用中，不同语言的数据类型可能不兼容，需要进行数据类型转换。例如，将 C++ 的 <code class="language-plaintext highlighter-rouge">std::string</code> 转换为 C 的 <code class="language-plaintext highlighter-rouge">char*</code>，或者将 Python 的 <code class="language-plaintext highlighter-rouge">str</code> 转换为 C 的 <code class="language-plaintext highlighter-rouge">char*</code>。</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>错误处理</strong>：</p>
+
+    <ul>
+      <li>不同语言的错误处理机制可能不同。在跨语言调用中，需要处理好错误和异常。例如，将 C++ 的异常转换为 C 的错误码，或者将 Python 的异常转换为 C 的错误码。</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>内存管理</strong>：</p>
+    <ul>
+      <li>不同语言的内存管理机制可能不同。在跨语言调用中，需要注意内存的分配和释放。例如，在 C++ 中分配的内存需要在 C++ 中释放，避免内存泄漏。</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="总结">总结</h3>
+
+<p>语言互操作性和跨语言调用是现代软件开发中常见的需求。通过使用外部函数接口（FFI）、名称修饰（Name Mangling）等技术，可以实现不同编程语言之间的相互调用和协作。在实际开发中，需要注意数据类型转换、错误处理和内存管理等问题，以确保跨语言调用的正确性和稳定性。</p>
+
+<p>你的理解基本正确，但可以进一步细化和澄清一些细节。以下是对 C++ 调用 Python 函数的详细解释：</p>
+
+<h3 id="c-调用-python-函数的基本步骤">C++ 调用 Python 函数的基本步骤</h3>
+
+<ol>
+  <li>
+    <p><strong>嵌入 Python 解释器</strong>：</p>
+
+    <ul>
+      <li>C++ 需要嵌入 Python 解释器，以便能够执行 Python 代码。这通常通过初始化 Python 解释器来实现。</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>数据类型转换</strong>：</p>
+
+    <ul>
+      <li>C++ 需要依赖一个库（如 Python C API 或 pybind11）来实现 C++ 数据类型与 Python 数据类型之间的转换。这包括将 C++ 数据转换为 Python 对象，以及将 Python 对象转换为 C++ 数据。</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>加载和解析 Python 文件</strong>：</p>
+
+    <ul>
+      <li>C++ 需要提供一个机制来加载和解析 Python 文件，以便能够调用 Python 文件中的函数和方法。这通常通过 Python C API 提供的模块加载功能来实现。</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>调用 Python 函数</strong>：</p>
+
+    <ul>
+      <li>C++ 需要调用 Python 函数，并传递转换后的参数。这通常通过 Python C API 提供的函数调用功能来实现。</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>处理返回值</strong>：</p>
+    <ul>
+      <li>Python 函数处理完数据后，返回值需要转换回 C++ 数据类型，以便在 C++ 代码中使用。</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="详细步骤">详细步骤</h3>
+
+<ol>
+  <li>
+    <p><strong>嵌入 Python 解释器</strong>：</p>
+
+    <ul>
+      <li>使用 <code class="language-plaintext highlighter-rouge">Py_Initialize()</code> 函数初始化 Python 解释器，使其可以在 C++ 程序中运行。</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>数据类型转换</strong>：</p>
+
+    <ul>
+      <li>使用 Python C API 提供的函数（如 <code class="language-plaintext highlighter-rouge">PyLong_FromLong</code>、<code class="language-plaintext highlighter-rouge">PyFloat_FromDouble</code> 等）将 C++ 数据转换为 Python 对象。</li>
+      <li>使用 Python C API 提供的函数（如 <code class="language-plaintext highlighter-rouge">PyLong_AsLong</code>、<code class="language-plaintext highlighter-rouge">PyFloat_AsDouble</code> 等）将 Python 对象转换为 C++ 数据。</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>加载和解析 Python 文件</strong>：</p>
+
+    <ul>
+      <li>使用 <code class="language-plaintext highlighter-rouge">PyImport_ImportModule</code> 函数加载 Python 模块。例如，加载名为 <code class="language-plaintext highlighter-rouge">myscript</code> 的模块。</li>
+      <li>使用 <code class="language-plaintext highlighter-rouge">PyObject_GetAttrString</code> 函数从模块对象中获取目标函数的引用。</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>调用 Python 函数</strong>：</p>
+
+    <ul>
+      <li>使用 <code class="language-plaintext highlighter-rouge">PyObject_CallObject</code> 函数调用目标函数，并传递参数。</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>处理返回值</strong>：</p>
+    <ul>
+      <li>使用 <code class="language-plaintext highlighter-rouge">PyLong_AsLong</code> 或其他类型转换函数将 Python 对象转换为 C++ 数据类型。</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="示例代码">示例代码</h3>
+
+<p>以下是一个示例，展示了如何在 C++ 中调用 Python 函数：</p>
+
+<h4 id="python-脚本myscriptpy">Python 脚本（myscript.py）</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># myscript.py
+</span><span class="k">def</span> <span class="nf">my_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+</code></pre></div></div>
+
+<h4 id="c-代码">C++ 代码</h4>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;Python.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="kt">void</span> <span class="nf">call_python_function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// 初始化 Python 解释器</span>
+    <span class="n">Py_Initialize</span><span class="p">();</span>
+
+    <span class="c1">// 加载 Python 脚本</span>
+    <span class="n">PyObject</span><span class="o">*</span> <span class="n">pName</span> <span class="o">=</span> <span class="n">PyUnicode_DecodeFSDefault</span><span class="p">(</span><span class="s">"myscript"</span><span class="p">);</span>
+    <span class="n">PyObject</span><span class="o">*</span> <span class="n">pModule</span> <span class="o">=</span> <span class="n">PyImport_Import</span><span class="p">(</span><span class="n">pName</span><span class="p">);</span>
+    <span class="n">Py_DECREF</span><span class="p">(</span><span class="n">pName</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">pModule</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 获取 Python 函数</span>
+        <span class="n">PyObject</span><span class="o">*</span> <span class="n">pFunc</span> <span class="o">=</span> <span class="n">PyObject_GetAttrString</span><span class="p">(</span><span class="n">pModule</span><span class="p">,</span> <span class="s">"my_function"</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">pFunc</span> <span class="o">&amp;&amp;</span> <span class="n">PyCallable_Check</span><span class="p">(</span><span class="n">pFunc</span><span class="p">))</span> <span class="p">{</span>
+            <span class="c1">// 准备参数</span>
+            <span class="n">PyObject</span><span class="o">*</span> <span class="n">pArgs</span> <span class="o">=</span> <span class="n">PyTuple_Pack</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">PyLong_FromLong</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">PyLong_FromLong</span><span class="p">(</span><span class="mi">5</span><span class="p">));</span>
+            <span class="c1">// 调用 Python 函数</span>
+            <span class="n">PyObject</span><span class="o">*</span> <span class="n">pValue</span> <span class="o">=</span> <span class="n">PyObject_CallObject</span><span class="p">(</span><span class="n">pFunc</span><span class="p">,</span> <span class="n">pArgs</span><span class="p">);</span>
+            <span class="n">Py_DECREF</span><span class="p">(</span><span class="n">pArgs</span><span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">pValue</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Result of call: "</span> <span class="o">&lt;&lt;</span> <span class="n">PyLong_AsLong</span><span class="p">(</span><span class="n">pValue</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+                <span class="n">Py_DECREF</span><span class="p">(</span><span class="n">pValue</span><span class="p">);</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="n">PyErr_Print</span><span class="p">();</span>
+            <span class="p">}</span>
+            <span class="n">Py_XDECREF</span><span class="p">(</span><span class="n">pFunc</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="n">PyErr_Print</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="n">Py_DECREF</span><span class="p">(</span><span class="n">pModule</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">PyErr_Print</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 终止 Python 解释器</span>
+    <span class="n">Py_Finalize</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">call_python_function</span><span class="p">();</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="总结-1">总结</h3>
+
+<p>你的理解基本正确，C++ 调用 Python 函数的确需要以下几个关键步骤：</p>
+
+<ol>
+  <li><strong>嵌入 Python 解释器</strong>：初始化 Python 解释器，使其可以在 C++ 程序中运行。</li>
+  <li><strong>数据类型转换</strong>：使用 Python C API 或第三方库（如 pybind11）实现 C++ 数据类型与 Python 数据类型之间的转换。</li>
+  <li><strong>加载和解析 Python 文件</strong>：加载 Python 模块，并获取目标函数的引用。</li>
+  <li><strong>调用 Python 函数</strong>：调用 Python 函数，并传递参数。</li>
+  <li><strong>处理返回值</strong>：将 Python 函数的返回值转换为 C++ 数据类型。</li>
+</ol>
+
+<p>通过实现这些步骤，C++ 可以成功调用 Python 函数，实现跨语言的互操作性。</p>
+
+
+    </div>
+
+    <div class="post__share">
+  <div class="share__head">
+    <div class="share__title">Share this Post</div>
+  </div>
+  <ul class="share__list list-reset">
+    <li class="share__item">
+      <a class="share__link share__twitter"
+        href="https://twitter.com/intent/tweet?text=crossLanguageInvocation&url=http://localhost:6060/blog/crosslanguageinvocation.html"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__facebook"
+        href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:6060/blog/crosslanguageinvocation.html"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__pinterest"
+        href="http://pinterest.com/pin/create/button/?url=http://localhost:6060/blog/crosslanguageinvocation.html&amp;media=http://localhost:6060/images/post/post-7.jpg&amp;description=crossLanguageInvocation"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Pinterest" rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:6060/blog/crosslanguageinvocation.html&title=crossLanguageInvocation&summary=&source=Vonge"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
+    </li>
+  </ul>
+</div>
+  </article>
+</div>
+<!-- end post -->
+
+<div class="container">
+  <div class="row">
+    <div class="col col-10 col-d-12 push-d-0 push-1">
+      <div class="post__navigation animate">
+  
+  <a class="post__prev" href="/blog/callpyincpp.html">
+    <div class="prev__image">
+      <img loading="lazy" src="/images/post/post-8.jpg" alt="crossLanguageInvocation">
+    </div>
+    <div class="prev__box">
+      <span class="post__nav post__nav__prev">Prev post</span>
+      <h2 class="post__nav__title">callPyIncpp</h2>
+    </div>
+  </a>
+  
+
+  
+  <a class="post__next" href="/blog/%E5%AF%B9%E8%B1%A1%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B.html">
+    <div class="next__box">
+      <span class="post__nav post__nav__next">Next post</span>
+      <h2 class="post__nav__title">对象内存模型</h2>
+    </div>
+    <div class="next__image">
+      <img loading="lazy" src="/images/post/post-17.jpg" alt="crossLanguageInvocation">
+    </div>
+  </a>
+  
+</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- begin related posts -->
+<div class="container">
+  <section class="related-posts is-related animate">
+    <div class="row">
+      <div class="col col-12">
+        <div class="container__inner">
+          <div class="section__info">
+            <div class="section__head">
+              <h2 class="section__title">You may also like</h2>
+              <a class="section__link" href="/blog">
+                
+                
+                  
+                    <!-- <a href="/tags#跨语言调用" class="section__link related-tag">See all<span> 跨语言调用</span> <i class="ion ion-md-arrow-forward"></i></a> -->
+                  
+                
+              
+              </a>
+            </div>
+          </div>
+          <div class="row">
+
+          
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/callpyincpp.html">
+                      <img loading="lazy" src="/images/post/post-8.jpg" alt="callPyIncpp">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/跨语言调用" class="article__tag">跨语言调用</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/callpyincpp.html">callPyIncpp</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      python: caller.py
+cpp: String.cpp
+
+python如何调用cpp代码用于测试？
+
+1. 什么是swig
+SWIG（Simplified Wrapper and Interface Generator）是...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2025-04-04T10:27:01+08:00">04 Apr 2025</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- end related posts -->
+
+
+
+
+    <!--
+        Bookshop components are accessed using the bookshop tag,
+        using the same syntax as the standard Jekyll include tag.
+    -->
+    <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
+
+<!--bookshop-live end-->
+
+    <div class="top" title="Top"><i class="ion ion-ios-arrow-up"></i></div>
+
+    <!-- begin footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+
+        <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+
+        <ul class="footer_nav list-reset">
+          
+          <li class="footer_nav__item">
+            <a href="/" class="footer_nav__link">Home</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/projects/" class="footer_nav__link">Projects</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/about/" class="footer_nav__link">About</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/blog/" class="footer_nav__link">Blog</a>
+          </li>
+          
+        </ul>
+
+        <div class="copyright"><p> 2021 &copy; <a href="/">Vonge</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
+
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- end footer -->
+
+    <script src="/js/scripts.js"></script>
+    <script src="/js/common.js"></script>
+</body>
+</html>

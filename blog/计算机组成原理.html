@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>计算机组成原理</title>
+  <meta name='description' content='Marco’s Blog'>
+
+  <link rel="canonical" href="http://localhost:6060/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86.html">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="计算机组成原理 – Marco’s Blog">
+  <meta name="twitter:description" content="计算机组成
+">
+  <meta name="twitter:image:src" content="http://localhost:6060/images/post/post-71.jpg">
+
+  <!-- Facebook OpenGraph -->
+  <meta property="og:title" content="计算机组成原理 – Marco’s Blog">
+  <meta property="og:description" content="计算机组成
+">
+  <meta property="og:image" content="http://localhost:6060/images/post/post-71.jpg">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Ionicons -->
+  <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/main.css">
+</head>
+
+<body>
+
+    
+
+    <!-- begin header -->
+<header class="c-header">
+  <div class="container">
+    <div class="row">
+      <div class="c-header__inner">
+
+        <div class="logo">
+          <a class="logo__link" href="/">
+          
+            <img class="logo__image" src="/images/mc_logo1.ico" alt="Marco’s Blog">
+          
+          </a>
+        </div>
+
+        <nav class="main-nav">
+          <div class="main-nav__box">
+
+            <div class="nav__icon-close">
+              <i class="ion ion-md-close"></i>
+            </div>
+
+            <div class="nav__title">Menu</div>
+
+              <ul class="nav__list list-reset">
+
+              
+                
+                <li class="nav__item">
+                  <a href="/" class="nav__link">Home</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/projects/" class="nav__link">Projects</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/blog/" class="nav__link">Blog</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/about/" class="nav__link">About</a>
+                </li>
+                
+              
+
+            </ul>
+          </div>
+
+          <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+        </nav>
+
+        <div class="nav-button">
+          <i class="nav__icon nav__icon-menu ion ion-md-menu"></i>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+<!-- end header -->
+
+    <div class="post-top">
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="col col-6 col-d-12">
+        <div class="post-image">
+          <img loading="lazy" src="/images/post/post-71.jpg" alt="计算机组成原理">
+        </div>
+      </div>
+      
+
+      <div class="col col-6 col-d-12">
+        <div class="post__info">
+
+          
+
+          <h1 class="post__title">计算机组成原理</h1>
+
+          <div class="post__meta">
+            <div class="post__author-image">
+              <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+            </div>
+
+            <div class="post__meta-bottom">
+              <div class="post__author">Marco Hwong</div>
+              <time class="post__date" datetime="2025-02-25T22:07:24+08:00">25 Feb 2025</time>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- begin post -->
+<div class="container-with-sidebar animate">
+  <div class="sidebar">
+    <div id="toc"></div>
+  </div>
+
+  <article class="post">
+    <div class="post__content">
+      <h2 id="计算机组成">计算机组成</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>计算机组成
+├── 引言
+│   ├── 计算机组成的基本概念
+│   └── 计算机组成的发展历史
+├── 计算机系统结构
+│   ├── 计算机系统的基本组成
+│   └── 计算机系统的分类
+├── 中央处理器（CPU）
+│   ├── CPU 的基本组成
+│   │   ├── 控制单元（Control Unit）
+│   │   ├── 算术逻辑单元（ALU）
+│   │   ├── 寄存器（Registers）
+│   │   └── 缓存（Cache）
+│   ├── CPU 的工作原理
+│   │   ├── 指令周期（Instruction Cycle）
+│   │   ├── 时钟周期（Clock Cycle）
+│   │   └── 流水线（Pipeline）
+│   └── CPU 的性能指标
+│       ├── 主频（Clock Speed）
+│       ├── IPC（每时钟周期指令数）
+│       └── FLOPS（每秒浮点运算次数）
+├── 存储器
+│   ├── 存储器的分类
+│   │   ├── 主存储器（Primary Memory）
+│   │   ├── 辅助存储器（Secondary Memory）
+│   │   └── 高速缓存（Cache Memory）
+│   ├── 存储器的工作原理
+│   │   ├── 存储器的读写操作
+│   │   └── 存储器的层次结构
+│   └── 存储器的性能指标
+│       ├── 存取时间（Access Time）
+│       ├── 带宽（Bandwidth）
+│       └── 容量（Capacity）
+├── 输入输出系统（I/O）
+│   ├── I/O 系统的基本组成
+│   │   ├── 输入设备（Input Devices）
+│   │   ├── 输出设备（Output Devices）
+│   │   └── I/O 接口（I/O Interface）
+│   ├── I/O 系统的工作原理
+│   │   ├── I/O 操作
+│   │   └── 中断机制（Interrupt Mechanism）
+│   └── I/O 系统的性能指标
+│       ├── 数据传输率（Data Transfer Rate）
+│       └── 延迟（Latency）
+├── 总线系统
+│   ├── 总线的基本组成
+│   │   ├── 地址总线（Address Bus）
+│   │   ├── 数据总线（Data Bus）
+│   │   └── 控制总线（Control Bus）
+│   ├── 总线的工作原理
+│   │   ├── 总线仲裁（Bus Arbitration）
+│   │   ├── 总线周期（Bus Cycle）
+│   │   └── 总线传输（Bus Transfer）
+│   └── 总线的类型
+│       ├── 系统总线（System Bus）
+│       ├── I/O 总线（I/O Bus）
+├───────└── 存储总线（Memory Bus）
+</code></pre></div></div>
+
+<h3 id="1-总结">1. 总结</h3>
+<p>计算机组成原理基本是冯诺依曼架构展开的，即计算单元+控制器（cpu）、存储单元、输入输出设备、总线。</p>
+
+<h3 id="2-中央处理器cpu">2. 中央处理器（CPU）</h3>
+<ul>
+  <li>CPU 的基本组成
+    <ul>
+      <li>控制单元（Control Unit）</li>
+      <li>算术逻辑单元（ALU）</li>
+      <li>寄存器（Registers）</li>
+      <li>缓存（Cache）</li>
+    </ul>
+  </li>
+  <li>CPU 的工作原理
+    <ul>
+      <li>指令周期（Instruction Cycle）</li>
+      <li>时钟周期（Clock Cycle）</li>
+      <li>流水线（Pipeline）</li>
+    </ul>
+  </li>
+  <li>CPU 的性能指标
+    <ul>
+      <li>主频（Clock Speed）</li>
+      <li>IPC（每时钟周期指令数）</li>
+      <li>FLOPS（每秒浮点运算次数）</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="3-存储器">3. 存储器</h3>
+<ul>
+  <li>存储器的分类
+    <ul>
+      <li>主存储器（Primary Memory）</li>
+      <li>辅助存储器（Secondary Memory）</li>
+      <li>高速缓存（Cache Memory）</li>
+    </ul>
+  </li>
+  <li>存储器的工作原理
+    <ul>
+      <li>存储器的读写操作</li>
+      <li>存储器的层次结构</li>
+    </ul>
+  </li>
+  <li>存储器的性能指标
+    <ul>
+      <li>存取时间（Access Time）</li>
+      <li>带宽（Bandwidth）</li>
+      <li>容量（Capacity）</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="4-输入输出系统io">4. 输入输出系统（I/O）</h3>
+<ul>
+  <li>I/O 系统的基本组成
+    <ul>
+      <li>输入设备（Input Devices）</li>
+      <li>输出设备（Output Devices）</li>
+      <li>I/O 接口（I/O Interface）</li>
+    </ul>
+  </li>
+  <li>I/O 系统的工作原理
+    <ul>
+      <li>I/O 操作</li>
+      <li>中断机制（Interrupt Mechanism）</li>
+    </ul>
+  </li>
+  <li>I/O 系统的性能指标
+    <ul>
+      <li>数据传输率（Data Transfer Rate）</li>
+      <li>延迟（Latency）</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="5-总线系统">5. 总线系统</h3>
+<ul>
+  <li>总线的基本组成
+    <ul>
+      <li>地址总线（Address Bus）</li>
+      <li>数据总线（Data Bus）</li>
+      <li>控制总线（Control Bus）</li>
+    </ul>
+  </li>
+  <li>总线的工作原理
+    <ul>
+      <li>总线仲裁（Bus Arbitration）</li>
+      <li>总线周期（Bus Cycle）</li>
+      <li>总线传输（Bus Transfer）</li>
+    </ul>
+  </li>
+  <li>总线的类型
+    <ul>
+      <li>系统总线（System Bus）</li>
+      <li>I/O 总线（I/O Bus）</li>
+      <li>存储总线（Memory Bus）</li>
+    </ul>
+  </li>
+</ul>
+
+    </div>
+
+    <div class="post__share">
+  <div class="share__head">
+    <div class="share__title">Share this Post</div>
+  </div>
+  <ul class="share__list list-reset">
+    <li class="share__item">
+      <a class="share__link share__twitter"
+        href="https://twitter.com/intent/tweet?text=%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86&url=http://localhost:6060/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86.html"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__facebook"
+        href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:6060/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86.html"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__pinterest"
+        href="http://pinterest.com/pin/create/button/?url=http://localhost:6060/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86.html&amp;media=http://localhost:6060/images/post/post-71.jpg&amp;description=%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Pinterest" rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:6060/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86.html&title=%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86&summary=&source=Vonge"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
+    </li>
+  </ul>
+</div>
+  </article>
+</div>
+<!-- end post -->
+
+<div class="container">
+  <div class="row">
+    <div class="col col-10 col-d-12 push-d-0 push-1">
+      <div class="post__navigation animate">
+  
+  <a class="post__prev" href="/blog/structuralpatterns.html">
+    <div class="prev__image">
+      <img loading="lazy" src="/images/post/post-76.jpg" alt="计算机组成原理">
+    </div>
+    <div class="prev__box">
+      <span class="post__nav post__nav__prev">Prev post</span>
+      <h2 class="post__nav__title">structuralPatterns</h2>
+    </div>
+  </a>
+  
+
+  
+  <a class="post__next" href="/blog/exceptionandfaultcode.html">
+    <div class="next__box">
+      <span class="post__nav post__nav__next">Next post</span>
+      <h2 class="post__nav__title">exceptionAndFaultCode</h2>
+    </div>
+    <div class="next__image">
+      <img loading="lazy" src="/images/post/post-12.jpg" alt="计算机组成原理">
+    </div>
+  </a>
+  
+</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- begin related posts -->
+<div class="container">
+  <section class="related-posts  animate">
+    <div class="row">
+      <div class="col col-12">
+        <div class="container__inner">
+          <div class="section__info">
+            <div class="section__head">
+              <h2 class="section__title">You may also like</h2>
+              <a class="section__link" href="/blog">
+                
+              </a>
+            </div>
+          </div>
+          <div class="row">
+
+          
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- end related posts -->
+
+
+
+
+    <!--
+        Bookshop components are accessed using the bookshop tag,
+        using the same syntax as the standard Jekyll include tag.
+    -->
+    <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
+
+<!--bookshop-live end-->
+
+    <div class="top" title="Top"><i class="ion ion-ios-arrow-up"></i></div>
+
+    <!-- begin footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+
+        <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+
+        <ul class="footer_nav list-reset">
+          
+          <li class="footer_nav__item">
+            <a href="/" class="footer_nav__link">Home</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/projects/" class="footer_nav__link">Projects</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/about/" class="footer_nav__link">About</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/blog/" class="footer_nav__link">Blog</a>
+          </li>
+          
+        </ul>
+
+        <div class="copyright"><p> 2021 &copy; <a href="/">Vonge</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
+
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- end footer -->
+
+    <script src="/js/scripts.js"></script>
+    <script src="/js/common.js"></script>
+</body>
+</html>

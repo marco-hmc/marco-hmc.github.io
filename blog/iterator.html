@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>iterator</title>
+  <meta name='description' content='Marco’s Blog'>
+
+  <link rel="canonical" href="http://localhost:6060/blog/iterator.html">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="iterator – Marco’s Blog">
+  <meta name="twitter:description" content="迭代器
+
+">
+  <meta name="twitter:image:src" content="http://localhost:6060/images/post/post-7.jpg">
+
+  <!-- Facebook OpenGraph -->
+  <meta property="og:title" content="iterator – Marco’s Blog">
+  <meta property="og:description" content="迭代器
+
+">
+  <meta property="og:image" content="http://localhost:6060/images/post/post-7.jpg">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Ionicons -->
+  <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/main.css">
+</head>
+
+<body>
+
+    
+
+    <!-- begin header -->
+<header class="c-header">
+  <div class="container">
+    <div class="row">
+      <div class="c-header__inner">
+
+        <div class="logo">
+          <a class="logo__link" href="/">
+          
+            <img class="logo__image" src="/images/mc_logo1.ico" alt="Marco’s Blog">
+          
+          </a>
+        </div>
+
+        <nav class="main-nav">
+          <div class="main-nav__box">
+
+            <div class="nav__icon-close">
+              <i class="ion ion-md-close"></i>
+            </div>
+
+            <div class="nav__title">Menu</div>
+
+              <ul class="nav__list list-reset">
+
+              
+                
+                <li class="nav__item">
+                  <a href="/" class="nav__link">Home</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/projects/" class="nav__link">Projects</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/blog/" class="nav__link">Blog</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/about/" class="nav__link">About</a>
+                </li>
+                
+              
+
+            </ul>
+          </div>
+
+          <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+        </nav>
+
+        <div class="nav-button">
+          <i class="nav__icon nav__icon-menu ion ion-md-menu"></i>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+<!-- end header -->
+
+    <div class="post-top">
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="col col-6 col-d-12">
+        <div class="post-image">
+          <img loading="lazy" src="/images/post/post-7.jpg" alt="iterator">
+        </div>
+      </div>
+      
+
+      <div class="col col-6 col-d-12">
+        <div class="post__info">
+
+          
+          <div class="post-tags">
+            
+            <a href="/tag/std" class="post-tags__tag">std</a>
+            
+            <a href="/tag/iterator" class="post-tags__tag">iterator</a>
+            
+          </div>
+          
+
+          <h1 class="post__title">iterator</h1>
+
+          <div class="post__meta">
+            <div class="post__author-image">
+              <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+            </div>
+
+            <div class="post__meta-bottom">
+              <div class="post__author">Marco Hwong</div>
+              <time class="post__date" datetime="2025-04-06T14:42:26+08:00">06 Apr 2025</time>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- begin post -->
+<div class="container-with-sidebar animate">
+  <div class="sidebar">
+    <div id="toc"></div>
+  </div>
+
+  <article class="post">
+    <div class="post__content">
+      <h2 id="迭代器">迭代器</h2>
+<p><img src="imgs/4_iterator_image.png" alt="alt text" /></p>
+
+<h3 id="1-concepts">1. concepts</h3>
+<h4 id="11-迭代器有哪些">1.1 迭代器有哪些？</h4>
+<p>STL(Standard Template Library，标准模板库)中的迭代器按照迭代方式主要有五种类型：</p>
+
+<ol>
+  <li>
+    <p><strong>输入迭代器(Input Iterators)</strong>：
+ 只支持对元素进行一次正向访问，只能进行读取操作.
+ 需要重载 <code class="language-plaintext highlighter-rouge">operator*</code>(解引用)和 <code class="language-plaintext highlighter-rouge">operator++</code>(前置和后置递增).</p>
+  </li>
+  <li>
+    <p><strong>输出迭代器(Output Iterators)</strong>：
+ 只支持对元素进行一次正向访问，只能进行写入操作.
+ 需要重载 <code class="language-plaintext highlighter-rouge">operator*</code>(解引用)和 <code class="language-plaintext highlighter-rouge">operator++</code>(前置和后置递增).</p>
+  </li>
+  <li>
+    <p><strong>前向迭代器(Forward Iterators)</strong>：
+ 支持对元素进行多次正向访问，可以进行读取和写入操作.
+ 除了输入迭代器的所有运算符外，还需要重载 <code class="language-plaintext highlighter-rouge">operator==</code> 和 <code class="language-plaintext highlighter-rouge">operator!=</code> 用于比较两个迭代器是否相等.</p>
+  </li>
+  <li>
+    <p><strong>双向迭代器(Bidirectional Iterators)</strong>：
+ 支持对元素进行多次正向和反向访问，可以进行读取和写入操作.
+ 除了前向迭代器的所有运算符外，还需要重载 <code class="language-plaintext highlighter-rouge">operator--</code>(前置和后置递减).</p>
+  </li>
+  <li>
+    <p><strong>随机访问迭代器(Random Access Iterators)</strong>：
+ 支持对元素进行多次任意访问，可以进行读取和写入操作.
+ 除了双向迭代器的所有运算符外，还需要重载 <code class="language-plaintext highlighter-rouge">operator+</code>/<code class="language-plaintext highlighter-rouge">operator-</code>/<code class="language-plaintext highlighter-rouge">operator+=</code>/<code class="language-plaintext highlighter-rouge">operator-=</code>/<code class="language-plaintext highlighter-rouge">operator[]</code> 用于随机访问，以及 <code class="language-plaintext highlighter-rouge">operator&lt;</code>/<code class="language-plaintext highlighter-rouge">operator&gt;</code>/<code class="language-plaintext highlighter-rouge">operator&lt;=</code>/<code class="language-plaintext highlighter-rouge">operator&gt;=</code> 用于比较两个迭代器的顺序.</p>
+  </li>
+</ol>
+
+<p>每种类型的迭代器都提供了一些特定的操作，例如递增(++)/递减(–)/解引用(*)等.更高级的迭代器类型提供了更多的操作，例如随机访问迭代器还支持随机访问([])和比较(&lt;， &gt;， &lt;=， &gt;=)等操作.</p>
+
+<p>个人按照功能目的来分，可以分为两大类：</p>
+<ul>
+  <li>只读迭代器：不会修改容器，不对外操作
+    <ul>
+      <li>流式迭代器：只可以读一次，或者说只可以一次正向访问
+        <ul>
+          <li>输入迭代器，只可递增，解引用，比较等于不等于</li>
+        </ul>
+      </li>
+      <li>非流式迭代器：可以读多次
+        <ul>
+          <li>双向迭代器：双向迭代器，可递增递减，解引用，比较等于不等于</li>
+          <li>随机迭代器：可递增递减，解引用，比较等于大小于和，还可+2,-2等迭代操作</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>其他迭代器：可能修改容器，可能对外操作。
+    <ul>
+      <li>流式迭代器：
+        <ul>
+          <li>输出迭代器：对外输出</li>
+        </ul>
+      </li>
+      <li>非流式迭代器：
+        <ul>
+          <li>插入迭代器：添加元素到容器</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="12-迭代器意义是什么">1.2 迭代器意义是什么</h4>
+<p>迭代器的意义在于提供了一种统一的形式给外部去访问容器内部的元素。
+这种统一的形式便于各种函数的调用，而且能够封装丑陋且不必要的遍历细节（比如说哈希表遍历，外表不需要感知的）。</p>
+
+<p>常见的的范围基于循环（range-based loop）的本质就是通过迭代器来迭代容器中的元素。</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="n">element</span> <span class="o">:</span> <span class="n">container</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">}</span>
+    
+    <span class="cm">/* 等价于 */</span>
+    <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">container</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">container</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span><span class="p">)</span> <span class="p">{</span>
+    
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="2-插入迭代器">2. 插入迭代器</h3>
+<h4 id="21-什么是插入迭代器">2.1 什么是插入迭代器？</h4>
+
+<p>下面例子足够说明插入迭代器了</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;algorithm&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;iterator&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">vec</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">};</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">vec2</span><span class="p">;</span>
+
+<span class="k">namespace</span> <span class="n">inserter</span> <span class="p">{</span>
+    <span class="kt">void</span> <span class="n">task</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">transform</span><span class="p">(</span><span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">vec</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">std</span><span class="o">::</span><span class="n">back_inserter</span><span class="p">(</span><span class="n">vec2</span><span class="p">),</span>
+                       <span class="p">[](</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">n</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span> <span class="p">});</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"After back_inserter: "</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>  <span class="c1">// namespace inserter</span>
+
+<span class="k">namespace</span> <span class="n">withoutInserter</span> <span class="p">{</span>
+    <span class="kt">void</span> <span class="n">task</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">vec2</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">vec</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">transform</span><span class="p">(</span><span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">vec</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">vec2</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span>
+                       <span class="p">[](</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">n</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span> <span class="p">});</span>
+    <span class="p">}</span>
+<span class="p">}</span>  <span class="c1">// namespace withoutInserter</span>
+
+<span class="k">namespace</span> <span class="n">tranformImpl</span> <span class="p">{</span>
+    <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">InputIt</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">OutputIt</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">UnaryOperation</span><span class="p">&gt;</span>
+    <span class="n">OutputIt</span> <span class="n">transform</span><span class="p">(</span><span class="n">InputIt</span> <span class="n">first</span><span class="p">,</span> <span class="n">InputIt</span> <span class="n">last</span><span class="p">,</span> <span class="n">OutputIt</span> <span class="n">d_first</span><span class="p">,</span>
+                       <span class="n">UnaryOperation</span> <span class="n">unary_op</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">first</span> <span class="o">!=</span> <span class="n">last</span><span class="p">)</span> <span class="p">{</span>
+            <span class="o">*</span><span class="n">d_first</span><span class="o">++</span> <span class="o">=</span> <span class="n">unary_op</span><span class="p">(</span><span class="o">*</span><span class="n">first</span><span class="o">++</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">d_first</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>  <span class="c1">// namespace tranformImpl</span>
+
+<span class="cm">/*
+back_inserter的关键点在于
+```c++
+    back_insert_iterator&amp; operator=(const container_value_type&amp; value) {
+        container-&gt;append(value);
+        return *this;
+    }
+
+    back_insert_iterator&amp; operator=(container_value_type&amp;&amp; value) {
+        container-&gt;append(std::move(value));
+        return *this;
+    }
+/```
+*/</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">inserter</span><span class="o">::</span><span class="n">task</span><span class="p">();</span>
+    <span class="n">withoutInserter</span><span class="o">::</span><span class="n">task</span><span class="p">();</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<h4 id="22-插入迭代器有哪些类型">2.2 插入迭代器有哪些类型？</h4>
+
+<p>插入迭代器主要有以下几种类型：</p>
+
+<ol>
+  <li><strong><code class="language-plaintext highlighter-rouge">std::back_insert_iterator</code></strong>：
+    <ul>
+      <li>使用 <code class="language-plaintext highlighter-rouge">push_back</code> 方法将元素插入到容器的末尾。</li>
+      <li>适用于支持 <code class="language-plaintext highlighter-rouge">push_back</code> 方法的容器，如 <code class="language-plaintext highlighter-rouge">std::vector</code>, <code class="language-plaintext highlighter-rouge">std::deque</code>, 和 <code class="language-plaintext highlighter-rouge">std::list</code>。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">std::front_insert_iterator</code></strong>：
+    <ul>
+      <li>使用 <code class="language-plaintext highlighter-rouge">push_front</code> 方法将元素插入到容器的开头。</li>
+      <li>适用于支持 <code class="language-plaintext highlighter-rouge">push_front</code> 方法的容器，如 <code class="language-plaintext highlighter-rouge">std::deque</code> 和 <code class="language-plaintext highlighter-rouge">std::list</code>。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">std::insert_iterator</code></strong>：
+    <ul>
+      <li>使用 <code class="language-plaintext highlighter-rouge">insert</code> 方法将元素插入到容器的指定位置。</li>
+      <li>适用于支持 <code class="language-plaintext highlighter-rouge">insert</code> 方法的容器，如 <code class="language-plaintext highlighter-rouge">std::vector</code>, <code class="language-plaintext highlighter-rouge">std::deque</code>, <code class="language-plaintext highlighter-rouge">std::list</code>, 和 <code class="language-plaintext highlighter-rouge">std::set</code>。</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="3-迭代器traits">3. 迭代器traits</h3>
+
+<p>迭代器traits 是一种用于描述迭代器特性和属性的机制。它们通常通过类型定义（type definitions）和类型别名（type aliases）来提供有关迭代器的信息。这些信息可以帮助标准库和用户代码在编译时了解迭代器的特性，从而进行相应的优化和类型检查。</p>
+
+<ul>
+  <li><strong>迭代器 traits 的定义</strong></li>
+</ul>
+
+<p>迭代器 traits 通常通过 <code class="language-plaintext highlighter-rouge">std::iterator_traits</code> 模板类来定义。这个模板类提供了一组类型定义，用于描述迭代器的特性。以下是 <code class="language-plaintext highlighter-rouge">std::iterator_traits</code> 的常见类型定义：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">iterator_category</code>：迭代器的类别（如输入迭代器、输出迭代器、前向迭代器、双向迭代器、随机访问迭代器）。</li>
+  <li><code class="language-plaintext highlighter-rouge">value_type</code>：迭代器所指向的元素类型。</li>
+  <li><code class="language-plaintext highlighter-rouge">difference_type</code>：两个迭代器之间的距离类型。</li>
+  <li><code class="language-plaintext highlighter-rouge">pointer</code>：指向元素的指针类型。</li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">reference</code>：指向元素的引用类型。</p>
+  </li>
+  <li><strong>迭代器 traits 的作用</strong></li>
+</ul>
+
+<p>迭代器 traits 的主要作用是为标准库和用户代码提供有关迭代器的信息，从而进行相应的优化和类型检查。具体作用包括：</p>
+
+<ol>
+  <li><strong>类型推导</strong>：通过迭代器 traits，可以在编译时推导出迭代器的相关类型，从而避免显式指定类型。</li>
+  <li><strong>类型检查</strong>：通过迭代器 traits，可以在编译时检查迭代器的类型是否符合预期，从而提高代码的安全性和可维护性。</li>
+  <li><strong>优化</strong>：通过迭代器 traits，可以在编译时了解迭代器的特性，从而进行相应的优化。例如，对于随机访问迭代器，可以使用更高效的算法。</li>
+</ol>
+
+<h3 id="99-quiz">99. quiz</h3>
+
+<h4 id="1-什么叫只支持一次正向访问和支持多次正向访问">1. 什么叫只支持一次正向访问，和支持多次正向访问？</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>简单来说，支持一次正向访问的就是流式数据，数据读完就没了.
+输入迭代器通常用于处理流式数据，例如从输入流(如std::cin或文件输入流)中读取数据.一旦输入迭代器读取了一个元素，你就不能再回到它，这就像是数据被"消费"了一样.这种特性使得输入迭代器特别适合用于一次性读取或处理数据的场景.
+
+```c++
+#include &lt;iostream&gt;
+#include &lt;iterator&gt;
+#include &lt;vector&gt;
+
+int main() {
+    std::cout &lt;&lt; "请输入一些整数(以空格分隔):";
+
+    // 使用输入迭代器从输入流中读取数据
+    std::istream_iterator&lt;int&gt; start(std::cin);
+    std::istream_iterator&lt;int&gt; end;
+
+    std::vector&lt;int&gt; numbers(start, end);
+
+    std::cout &lt;&lt; "你输入的数字是:";
+    for (int num : numbers) {
+        std::cout &lt;&lt; num &lt;&lt; " ";
+    }
+
+    return 0;
+}
+```
+
+在这段代码中，std::istream_iterator&lt;int&gt; start(std::cin);和std::istream_iterator&lt;int&gt; end;定义了一个输入迭代器的范围，这个范围从std::cin的当前位置开始，到std::cin的结束位置(或者到遇到的第一个非整数输入)。
+
+然后，std::vector&lt;int&gt; numbers(start， end);使用这个范围来初始化numbers。这个过程会从start开始，一次正向访问每个元素，直到到达end。在这个过程中，每个被访问的元素都会被"消费"，也就是说，一旦一个元素被访问，你就不能再通过start迭代器来访问它。
+因此，一旦numbers被构造完成，start和end迭代器就没有意义了，因为它们已经"消费"了所有的元素。如果你试图再次使用start迭代器，你将无法访问到任何元素，因为所有的元素都已经被"消费"了。
+</code></pre></div></div>
+
+<h4 id="2-stdistream_iterator迭代器如何判断stdcin结束的">2. std::istream_iterator迭代器如何判断std::cin结束的？</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>std::istream_iterator在读取到EOF时变成结束迭代器的过程是通过其内部的实现来完成的.当我们尝试从输入流中读取数据时，如果读取失败(例如由于到达EOF)，std::istream_iterator会变成一个特殊的状态，我们称之为"结束状态"。
+这个过程的具体实现可能因库的实现而异，但一般来说，它可能是这样的:
+
+```c++
+template &lt;typename T&gt;
+class istream_iterator {
+public:
+    istream_iterator(std::istream&amp; stream) : stream_(stream) {
+        ++(*this);
+    }
+
+    istream_iterator() : stream_(nullptr)， end_(true) {}
+
+    T operator*() const {
+        return value_;
+    }
+
+    istream_iterator&amp; operator++() {
+        if (!(stream_ &gt;&gt; value_)) {
+            end_ = true;  // 如果读取失败，标记为结束状态
+        }
+        return *this;
+    }
+
+    bool operator==(const istream_iterator&amp; other) const {
+        return (end_ == other.end_);
+    }
+
+    bool operator!=(const istream_iterator&amp; other) const {
+        return !(*this == other);
+    }
+
+private:
+    std::istream* stream_;
+    T value_;
+    bool end_ = false;
+};
+```
+
+在这个简化的实现中，当我们尝试从stream_中读取一个T类型的值时，如果读取失败(!(stream_ &gt;&gt; value_))，我们就将end_标记为true，表示这个迭代器已经到达结束状态.然后，我们可以通过比较两个迭代器的end_成员来判断它们是否相等.
+
+需要注意的是，这只是一个简化的实现，真实的std::istream_iterator的实现可能会更复杂，但基本的原理是一样的.
+</code></pre></div></div>
+
+<h4 id="3-如果某一个迭代器的实现是指针即containerbegin返回的是指针那这是什么迭代器">3. 如果某一个迭代器的实现是指针，即<code class="language-plaintext highlighter-rouge">CONTAINER.begin()</code>返回的是指针，那这是什么迭代器？</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>指针被归类为随机访问迭代器(Random Access Iterator)，因为它们具有在常数时间内进行递增/递减和随机访问的能力。指针允许通过指针算术运算(如加法和减法)在内存中直接移动，使得访问数组等数据结构的任意位置都是高效的。随机访问迭代器是最强大的迭代器类型，支持对序列进行灵活而高效的操作。因此，当你使用指针作为迭代器时，你可以利用随机访问迭代器的特性进行快速而灵活的元素访问和操作。
+</code></pre></div></div>
+
+<h4 id="4-常见stl算法对迭代器有什么要求">4. 常见stl算法对迭代器有什么要求？</h4>
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">std::for_each</code>：需要输入迭代器。这个算法会遍历给定的范围，并对每个元素执行给定的函数。</li>
+  <li><code class="language-plaintext highlighter-rouge">std::find</code>：需要输入迭代器。这个算法会遍历给定的范围，寻找第一个等于给定值的元素。</li>
+  <li><code class="language-plaintext highlighter-rouge">std::copy</code>：需要输入迭代器和输出迭代器。这个算法会将一个范围内的元素复制到另一个范围。</li>
+  <li><code class="language-plaintext highlighter-rouge">std::sort</code>：需要随机访问迭代器。这个算法会对给定的范围内的元素进行排序。</li>
+  <li><code class="language-plaintext highlighter-rouge">std::reverse</code>：需要双向迭代器。这个算法会反转给定范围内的元素。</li>
+  <li><code class="language-plaintext highlighter-rouge">std::unique</code>：需要前向迭代器。这个算法会移除给定范围内的连续重复元素。</li>
+  <li><code class="language-plaintext highlighter-rouge">std::lower_bound</code>和<code class="language-plaintext highlighter-rouge">std::upper_bound</code>：需要前向迭代器。这些算法用于在已排序的范围内查找元素。</li>
+  <li><code class="language-plaintext highlighter-rouge">std::rotate</code>：需要前向迭代器。这个算法会将给定范围内的元素向左或向右旋转。</li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>以上只是一部分STL算法，实际上STL中有很多其他的算法，它们对迭代器的要求可能会有所不同.在使用某个算法时，你应该查阅相关的文档，了解它对迭代器的具体要求.
+另外，迭代器的类别有层级结构，或者简单来说就是向下兼容，层级高的迭代器就能满足需要层级低的迭代器的要求.
+比如说`std::for_each`要求输入迭代器，但是给一个随机访问迭代器也行，因为随机访问迭代器的能力是输入迭代器的超集.
+</code></pre></div></div>
+
+<h3 id="99-习题">99. 习题</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>```c++
+#include &lt;iostream&gt;
+
+class fibit {
+    size_t i{0};
+    size_t a{0};
+    size_t b{1};
+
+public:
+    fibit() = default;
+    explicit fibit(size_t i_) : i{i_} {}
+
+    size_t operator*() const { return b; }
+    fibit &amp;operator++() {
+        const size_t old_b{b};
+        b += a;
+        a = old_b;
+        ++i;
+        return *this;
+    }
+    bool operator!=(const fibit &amp;o) const { return i != o.i; }
+};
+
+class fib_range {
+    size_t end_n;
+
+public:
+    fib_range(size_t end_n_) : end_n{end_n_} {}
+    fibit begin() const { return fibit{}; }
+    fibit end() const { return fibit{end_n}; }
+};
+
+int main() {
+    for (auto i : fib_range(10)) {
+        std::cout &lt;&lt; i &lt;&lt; ", ";
+    }
+    std::cout &lt;&lt; '\n';
+}
+```
+</code></pre></div></div>
+
+<p>所谓的迭代器失效，是指取出迭代器之后，经过某些和这个迭代器不直接相关的操作，如新增元素，会导致原来的迭代器失效。是这个意思吗？常见的迭代器失效有哪些？</p>
+
+<p>你对迭代器失效的理解基本正确。迭代器失效指的是在获取迭代器之后，由于对容器进行了某些操作，使得迭代器指向的元素不再有效，或者迭代器的行为变得不可预测。下面将从不同容器类型介绍常见的迭代器失效情况。</p>
+
+<h3 id="1-stdvector-和-stdstring">1. <code class="language-plaintext highlighter-rouge">std::vector</code> 和 <code class="language-plaintext highlighter-rouge">std::string</code></h3>
+<p>这两种容器在内存中是连续存储的。当进行插入、删除等操作时，可能会导致内存重新分配，从而使原有的迭代器失效。</p>
+<ul>
+  <li><strong>插入元素</strong>：如果插入元素时，容器的容量不足以容纳新元素，会重新分配一块更大的内存空间，并将原有的元素复制到新的内存中，原有的迭代器就会失效。
+```cpp
+#include <iostream>
+#include <vector></vector></iostream></li>
+</ul>
+
+<p>int main() {
+    std::vector<int> vec = {1, 2, 3};
+    auto it = vec.begin();
+    vec.push_back(4); // 可能导致内存重新分配
+    // 此时 it 可能已经失效
+    std::cout &lt;&lt; *it &lt;&lt; std::endl; // 未定义行为
+    return 0;
+}</int></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- **删除元素**：删除元素后，被删除元素及其后面的元素的迭代器都会失效。
+```cpp
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+int main() {
+    std::vector&lt;int&gt; vec = {1, 2, 3};
+    auto it = vec.begin() + 1;
+    vec.erase(it); // 删除元素 2
+    // 此时 it 已经失效
+    // std::cout &lt;&lt; *it &lt;&lt; std::endl; // 未定义行为
+    return 0;
+}
+</code></pre></div></div>
+
+<h3 id="2-stdliststdsetstdmap-等">2. <code class="language-plaintext highlighter-rouge">std::list</code>、<code class="language-plaintext highlighter-rouge">std::set</code>、<code class="language-plaintext highlighter-rouge">std::map</code> 等</h3>
+<p>这些容器的元素在内存中不是连续存储的。插入操作通常不会使迭代器失效，但删除操作会使指向被删除元素的迭代器失效。</p>
+<ul>
+  <li><strong>插入元素</strong>：插入操作不会使迭代器失效。
+```cpp
+#include <iostream>
+#include <list></list></iostream></li>
+</ul>
+
+<p>int main() {
+    std::list<int> lst = {1, 2, 3};
+    auto it = lst.begin();
+    lst.push_back(4); // 插入操作不会使 it 失效
+    std::cout &lt;&lt; *it &lt;&lt; std::endl; // 输出 1
+    return 0;
+}</int></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- **删除元素**：删除操作会使指向被删除元素的迭代器失效。
+```cpp
+#include &lt;iostream&gt;
+#include &lt;list&gt;
+
+int main() {
+    std::list&lt;int&gt; lst = {1, 2, 3};
+    auto it = lst.begin();
+    lst.erase(it); // 删除元素 1
+    // 此时 it 已经失效
+    // std::cout &lt;&lt; *it &lt;&lt; std::endl; // 未定义行为
+    return 0;
+}
+</code></pre></div></div>
+
+<h3 id="避免迭代器失效的方法">避免迭代器失效的方法</h3>
+<ul>
+  <li>插入元素后，重新获取迭代器。</li>
+  <li>删除元素时，使用 <code class="language-plaintext highlighter-rouge">erase</code> 方法的返回值更新迭代器。
+```cpp
+#include <iostream>
+#include <vector></vector></iostream></li>
+</ul>
+
+<p>int main() {
+    std::vector<int> vec = {1, 2, 3};
+    auto it = vec.begin();
+    vec.insert(it, 0); // 插入元素 0
+    it = vec.begin(); // 重新获取迭代器
+    std::cout &lt;&lt; *it &lt;&lt; std::endl; // 输出 0</int></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>it = vec.erase(it); // 删除元素 0，并更新迭代器
+std::cout &lt;&lt; *it &lt;&lt; std::endl; // 输出 1
+return 0; } ```
+</code></pre></div></div>
+
+<p>总之，在使用迭代器时，要特别注意容器的操作是否会导致迭代器失效，并采取相应的措施来避免未定义行为。</p>
+
+    </div>
+
+    <div class="post__share">
+  <div class="share__head">
+    <div class="share__title">Share this Post</div>
+  </div>
+  <ul class="share__list list-reset">
+    <li class="share__item">
+      <a class="share__link share__twitter"
+        href="https://twitter.com/intent/tweet?text=iterator&url=http://localhost:6060/blog/iterator.html"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__facebook"
+        href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:6060/blog/iterator.html"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__pinterest"
+        href="http://pinterest.com/pin/create/button/?url=http://localhost:6060/blog/iterator.html&amp;media=http://localhost:6060/images/post/post-7.jpg&amp;description=iterator"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Pinterest" rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:6060/blog/iterator.html&title=iterator&summary=&source=Vonge"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
+    </li>
+  </ul>
+</div>
+  </article>
+</div>
+<!-- end post -->
+
+<div class="container">
+  <div class="row">
+    <div class="col col-10 col-d-12 push-d-0 push-1">
+      <div class="post__navigation animate">
+  
+  <a class="post__prev" href="/blog/smartpointer.html">
+    <div class="prev__image">
+      <img loading="lazy" src="/images/post/post-5.jpg" alt="iterator">
+    </div>
+    <div class="prev__box">
+      <span class="post__nav post__nav__prev">Prev post</span>
+      <h2 class="post__nav__title">smartPointer</h2>
+    </div>
+  </a>
+  
+
+  
+  <a class="post__next" href="/blog/std.html">
+    <div class="next__box">
+      <span class="post__nav post__nav__next">Next post</span>
+      <h2 class="post__nav__title">std</h2>
+    </div>
+    <div class="next__image">
+      <img loading="lazy" src="/images/post/post-4.jpg" alt="iterator">
+    </div>
+  </a>
+  
+</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- begin related posts -->
+<div class="container">
+  <section class="related-posts is-related animate">
+    <div class="row">
+      <div class="col col-12">
+        <div class="container__inner">
+          <div class="section__info">
+            <div class="section__head">
+              <h2 class="section__title">You may also like</h2>
+              <a class="section__link" href="/blog">
+                
+                
+                  
+                    <!-- <a href="/tags#std" class="section__link related-tag">See all<span> std</span> <i class="ion ion-md-arrow-forward"></i></a> -->
+                  
+                
+                  
+                
+              
+              </a>
+            </div>
+          </div>
+          <div class="row">
+
+          
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/std.html">
+                      <img loading="lazy" src="/images/post/post-4.jpg" alt="std">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/std" class="article__tag">std</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/std.html">std</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      # C++ STL 知识体系深度解析
+
+## 一、容器特性与使用规范
+
+### 1. 实时性约束容器选型
+- **unordered_map 的限制**  
+  在实时性要求极高的场景（如高频交易系统、实时控制系统）中应避免使用 `u...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2025-04-06T14:43:03+08:00">06 Apr 2025</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/smartpointer.html">
+                      <img loading="lazy" src="/images/post/post-5.jpg" alt="smartPointer">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/std" class="article__tag">std</a>
+                      
+                      <a href="/tag/smartpointer" class="article__tag">smartPointer</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/smartpointer.html">smartPointer</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      智能指针
+
+1. concepts
+
+
+  
+    为什么要有智能指针？
+
+    智能指针（Smart Pointer）是 C++中的一种对象，它像原始指针一样可以指向堆上的对象，但是它们有一个额外的特性：当没有任何指针指向一个对...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2025-04-06T14:41:55+08:00">06 Apr 2025</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/container.html">
+                      <img loading="lazy" src="/images/post/post-5.jpg" alt="container">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/std" class="article__tag">std</a>
+                      
+                      <a href="/tag/container" class="article__tag">container</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/container.html">container</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      实现一个 vector？
+是 1.5 还是 2 倍，各有什么优缺点？
+
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2025-04-05T13:45:59+08:00">05 Apr 2025</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+                  
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- end related posts -->
+
+
+
+
+    <!--
+        Bookshop components are accessed using the bookshop tag,
+        using the same syntax as the standard Jekyll include tag.
+    -->
+    <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
+
+<!--bookshop-live end-->
+
+    <div class="top" title="Top"><i class="ion ion-ios-arrow-up"></i></div>
+
+    <!-- begin footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+
+        <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+
+        <ul class="footer_nav list-reset">
+          
+          <li class="footer_nav__item">
+            <a href="/" class="footer_nav__link">Home</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/projects/" class="footer_nav__link">Projects</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/about/" class="footer_nav__link">About</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/blog/" class="footer_nav__link">Blog</a>
+          </li>
+          
+        </ul>
+
+        <div class="copyright"><p> 2021 &copy; <a href="/">Vonge</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
+
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- end footer -->
+
+    <script src="/js/scripts.js"></script>
+    <script src="/js/common.js"></script>
+</body>
+</html>

@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>template_instantiation</title>
+  <meta name='description' content='Marco’s Blog'>
+
+  <link rel="canonical" href="http://localhost:6060/blog/template-instantiation.html">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="template_instantiation – Marco’s Blog">
+  <meta name="twitter:description" content="3. 模板实例化
+">
+  <meta name="twitter:image:src" content="http://localhost:6060/images/post/post-24.jpg">
+
+  <!-- Facebook OpenGraph -->
+  <meta property="og:title" content="template_instantiation – Marco’s Blog">
+  <meta property="og:description" content="3. 模板实例化
+">
+  <meta property="og:image" content="http://localhost:6060/images/post/post-24.jpg">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Ionicons -->
+  <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/main.css">
+</head>
+
+<body>
+
+    
+
+    <!-- begin header -->
+<header class="c-header">
+  <div class="container">
+    <div class="row">
+      <div class="c-header__inner">
+
+        <div class="logo">
+          <a class="logo__link" href="/">
+          
+            <img class="logo__image" src="/images/mc_logo1.ico" alt="Marco’s Blog">
+          
+          </a>
+        </div>
+
+        <nav class="main-nav">
+          <div class="main-nav__box">
+
+            <div class="nav__icon-close">
+              <i class="ion ion-md-close"></i>
+            </div>
+
+            <div class="nav__title">Menu</div>
+
+              <ul class="nav__list list-reset">
+
+              
+                
+                <li class="nav__item">
+                  <a href="/" class="nav__link">Home</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/projects/" class="nav__link">Projects</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/blog/" class="nav__link">Blog</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/about/" class="nav__link">About</a>
+                </li>
+                
+              
+
+            </ul>
+          </div>
+
+          <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+        </nav>
+
+        <div class="nav-button">
+          <i class="nav__icon nav__icon-menu ion ion-md-menu"></i>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+<!-- end header -->
+
+    <div class="post-top">
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="col col-6 col-d-12">
+        <div class="post-image">
+          <img loading="lazy" src="/images/post/post-24.jpg" alt="template_instantiation">
+        </div>
+      </div>
+      
+
+      <div class="col col-6 col-d-12">
+        <div class="post__info">
+
+          
+          <div class="post-tags">
+            
+            <a href="/tag/template" class="post-tags__tag">template</a>
+            
+          </div>
+          
+
+          <h1 class="post__title">template_instantiation</h1>
+
+          <div class="post__meta">
+            <div class="post__author-image">
+              <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+            </div>
+
+            <div class="post__meta-bottom">
+              <div class="post__author">Marco Hwong</div>
+              <time class="post__date" datetime="2025-04-04T10:24:28+08:00">04 Apr 2025</time>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- begin post -->
+<div class="container-with-sidebar animate">
+  <div class="sidebar">
+    <div id="toc"></div>
+  </div>
+
+  <article class="post">
+    <div class="post__content">
+      <h2 id="3-模板实例化">3. 模板实例化</h2>
+
+<p>模板实例化是指将模板转换为具体类型的过程。在 C++ 中，模板实例化有两种主要方式：显式实例化和隐式实例化。模板实例化的时机也非常重要，因为它决定了模板代码何时被编译。</p>
+
+<p>模板实例化是将模板代码转换为具体类型的代码的过程。显式实例化和隐式实例化是两种主要的模板实例化方式。显式实例化通过明确指定模板参数强制编译器生成特定类型的模板实例，而隐式实例化则由编译器在需要使用模板时自动生成模板实例。模板实例化的时机对编译速度和代码膨胀有重要影响。通过理解模板实例化的概念、显式实例化、隐式实例化和模板实例化的时机，可以更好地编写和优化模板代码。</p>
+
+<h3 id="31-模板实例化的概念">3.1 模板实例化的概念</h3>
+
+<p>模板实例化是将模板代码转换为具体类型的代码的过程。模板实例化发生在编译时，编译器会根据模板参数生成具体的函数或类定义。
+模板实例化的结果是一个具体的函数或类，可以在程序中使用。</p>
+
+<h3 id="32-显式实例化">3.2 显式实例化</h3>
+
+<p>显式实例化是指在代码中明确指定模板参数，从而强制编译器生成特定类型的模板实例。显式实例化通常用于提高编译速度或减少代码膨胀。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="n">T</span> <span class="nf">add</span><span class="p">(</span><span class="n">T</span> <span class="n">a</span><span class="p">,</span> <span class="n">T</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// 显式实例化 add 函数模板</span>
+<span class="k">template</span> <span class="kt">int</span> <span class="n">add</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">&gt;(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">);</span>
+<span class="k">template</span> <span class="kt">double</span> <span class="n">add</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">&gt;(</span><span class="kt">double</span><span class="p">,</span> <span class="kt">double</span><span class="p">);</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">result1</span> <span class="o">=</span> <span class="n">add</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span> <span class="c1">// 使用显式实例化的 int 类型的 add 函数</span>
+    <span class="kt">double</span> <span class="n">result2</span> <span class="o">=</span> <span class="n">add</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">);</span> <span class="c1">// 使用显式实例化的 double 类型的 add 函数</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="33-隐式实例化">3.3 隐式实例化</h3>
+
+<p>隐式实例化是指编译器在需要使用模板时自动生成模板实例。隐式实例化通常发生在模板被第一次使用时，编译器会根据模板参数自动生成具体的函数或类定义。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="n">T</span> <span class="nf">add</span><span class="p">(</span><span class="n">T</span> <span class="n">a</span><span class="p">,</span> <span class="n">T</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">result1</span> <span class="o">=</span> <span class="n">add</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span> <span class="c1">// 这里发生了隐式实例化，生成了 int 类型的 add 函数</span>
+    <span class="kt">double</span> <span class="n">result2</span> <span class="o">=</span> <span class="n">add</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">);</span> <span class="c1">// 这里发生了隐式实例化，生成了 double 类型的 add 函数</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="34-模板实例化的时机">3.4 模板实例化的时机</h3>
+
+<p>模板实例化的时机是指模板代码何时被编译器转换为具体类型的代码。模板实例化通常发生在模板被第一次使用时，但也可以通过显式实例化提前进行。模板实例化的时机对编译速度和代码膨胀有重要影响。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="n">T</span> <span class="nf">add</span><span class="p">(</span><span class="n">T</span> <span class="n">a</span><span class="p">,</span> <span class="n">T</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// 显式实例化 add 函数模板</span>
+<span class="k">template</span> <span class="kt">int</span> <span class="n">add</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">&gt;(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">);</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">result1</span> <span class="o">=</span> <span class="n">add</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span> <span class="c1">// 使用显式实例化的 int 类型的 add 函数</span>
+    <span class="kt">double</span> <span class="n">result2</span> <span class="o">=</span> <span class="n">add</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">);</span> <span class="c1">// 这里发生了隐式实例化，生成了 double 类型的 add 函数</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="99-quiz">99. quiz</h3>
+
+<h4 id="1-不同源文件都使用了vectorint这是实例化了几次代码有几次">1. 不同源文件都使用了<code class="language-plaintext highlighter-rouge">vector&lt;int&gt;</code>，这是实例化了几次？代码有几次？</h4>
+
+<p>在 C++ 中，模板实例化的行为取决于编译器和链接器的实现。通常情况下，如果多个源文件都使用了相同的模板实例（例如 vector<int>），编译器会在每个使用该模板实例的源文件中生成一份实例化代码。
+然而，链接器会负责消除重复的实例化代码，只保留一份最终的实例化代码。</int></p>
+
+<p>也就是说不同源文件使用了相同的模板实例就会各自实例化，但是链接器会优化，合并重复实例代码。
+注意，合并了重复的实例代码，只是减轻了代码生成的体积，实例的开销没办法去掉，所以模板用多了，编译会慢一些，开销在于模板实例化。</p>
+
+<h4 id="2-怎么显式实例化减少实例化的次数">2. 怎么显式实例化，减少实例化的次数？</h4>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 在头文件 template_example.h 中</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">MyClass</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="kt">void</span> <span class="n">doSomething</span><span class="p">();</span>
+<span class="p">};</span>
+
+<span class="c1">// 在一个源文件 template_example.cpp 中</span>
+<span class="cp">#include</span> <span class="cpf">"template_example.h"</span><span class="cp">
+</span>
+<span class="c1">// 显式实例化定义（在这个翻译单元中生成实例化代码）</span>
+<span class="k">template</span> <span class="k">class</span> <span class="nc">MyClass</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">&gt;;</span>
+
+<span class="c1">// 在其他源文件中使用时</span>
+<span class="c1">// 显式实例化声明（只声明实例化，避免重复定义）</span>
+<span class="k">extern</span> <span class="k">template</span> <span class="k">class</span> <span class="nc">MyClass</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">&gt;;</span>
+</code></pre></div></div>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// template_example.h</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">MyClass</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="kt">void</span> <span class="n">doSomething</span><span class="p">();</span>
+<span class="p">};</span>
+<span class="k">template</span> <span class="k">class</span> <span class="nc">MyClass</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">&gt;;</span> <span class="c1">// 显式实例化定义</span>
+
+<span class="c1">// template_example.cpp</span>
+<span class="cp">#include</span> <span class="cpf">"template_example.h"</span><span class="cp">
+</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="kt">void</span> <span class="n">MyClass</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">doSomething</span><span class="p">()</span> <span class="p">{}</span>
+
+<span class="c1">// main.cpp</span>
+<span class="cp">#include</span> <span class="cpf">"template_example.h"</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">MyClass</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">obj</span><span class="p">;</span>
+    <span class="n">obj</span><span class="p">.</span><span class="n">doSomething</span><span class="p">();</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<h3 id="2-查找过程的细节">2. 查找过程的细节</h3>
+
+<h2 id="line--">line —————————————————-</h2>
+
+<h2 id="poipoints-of-instantiation">POI（Points of Instantiation）</h2>
+
+<h3 id="1-poi-的基本概念">1. POI 的基本概念</h3>
+
+<p><strong>POI（Points of Instantiation）</strong> 是指编译器在模板实例化过程中，访问模板的声明或定义的某个位置。这时，编译器会在代码中插入相应的模板实例。POI 是编译器实例化模板时的“触发点”，即模板实例化发生的位置。</p>
+
+<h4 id="示例poi-与二阶段查找">示例：POI 与二阶段查找</h4>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">namespace</span> <span class="n">jc</span> <span class="p">{</span>
+
+<span class="k">struct</span> <span class="nc">A</span> <span class="p">{</span>
+  <span class="n">A</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">)</span> <span class="o">:</span> <span class="n">i</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="p">{}</span>
+  <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">A</span> <span class="k">operator</span><span class="o">-</span><span class="p">(</span><span class="k">const</span> <span class="n">A</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">A</span><span class="p">{</span><span class="o">-</span><span class="n">a</span><span class="p">.</span><span class="n">i</span><span class="p">};</span> <span class="p">}</span>
+
+<span class="kt">bool</span> <span class="k">operator</span><span class="o">&lt;</span><span class="p">(</span><span class="k">const</span> <span class="n">A</span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="k">const</span> <span class="n">A</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">lhs</span><span class="p">.</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">rhs</span><span class="p">.</span><span class="n">i</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="k">using</span> <span class="n">Int</span> <span class="o">=</span> <span class="n">A</span><span class="p">;</span>  <span class="c1">// 若使用 int 而不使用 A，则无法使用 ADL 找到 g</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="n">T</span> <span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">g</span><span class="p">(</span><span class="o">-</span><span class="n">i</span><span class="p">);</span>  <span class="c1">// POI: 二阶段查找，T 为 A 时可以使用 ADL，T 为 int 时找不到 g</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">g</span><span class="p">(</span><span class="n">Int</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">// 这里的 g 是 POI</span>
+  <span class="n">f</span><span class="o">&lt;</span><span class="n">Int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span>  <span class="c1">// 调用点</span>
+<span class="p">}</span>
+
+<span class="p">}</span>  <span class="c1">// namespace jc</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{}</span>
+</code></pre></div></div>
+
+<p>在上述代码中，当调用 <code class="language-plaintext highlighter-rouge">f&lt;Int&gt;(42)</code> 时，编译器会在 <code class="language-plaintext highlighter-rouge">f</code> 的调用位置实例化 <code class="language-plaintext highlighter-rouge">f&lt;Int&gt;</code>，这时编译器会查找 <code class="language-plaintext highlighter-rouge">g()</code>。如果 <code class="language-plaintext highlighter-rouge">T</code> 是 <code class="language-plaintext highlighter-rouge">A</code>，则通过 <strong>ADL（Argument-Dependent Lookup）</strong> 找到 <code class="language-plaintext highlighter-rouge">g()</code>，否则无法找到。</p>
+
+<h3 id="2-poi-的位置限制">2. POI 的位置限制</h3>
+
+<p>类模板实例的 POI 位置只能在包含该实例声明或定义之前的最近作用域内。</p>
+
+<h4 id="示例poi-的位置限制">示例：POI 的位置限制</h4>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">namespace</span> <span class="n">jc</span> <span class="p">{</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">struct</span> <span class="nc">A</span> <span class="p">{</span>
+  <span class="n">T</span> <span class="n">x</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// POI 位置</span>
+<span class="kt">int</span> <span class="nf">f</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// 不能作为 POI，因为 A&lt;int&gt; 的定义不能出现在函数作用域内</span>
+  <span class="k">return</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">A</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">);</span>
+  <span class="c1">// 不能作为 POI，因为 sizeof(A&lt;int&gt;) 在函数作用域内无法解析</span>
+<span class="p">}</span>
+
+<span class="p">}</span>  <span class="c1">// namespace jc</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{}</span>
+</code></pre></div></div>
+
+<p>在上面的代码中，<code class="language-plaintext highlighter-rouge">sizeof(A&lt;int&gt;)</code> 无法在 <code class="language-plaintext highlighter-rouge">f()</code> 函数中成为 POI，因为类模板 <code class="language-plaintext highlighter-rouge">A&lt;int&gt;</code> 的定义必须在该位置之前才能正确实例化。</p>
+
+<h3 id="3-模板实例化的连锁效应">3. 模板实例化的连锁效应</h3>
+
+<p>实例化一个模板时，可能会触发其他模板的实例化。这种“连锁”效应会导致多个 POI。</p>
+
+<h4 id="示例模板实例化引发的连锁-poi">示例：模板实例化引发的连锁 POI</h4>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">namespace</span> <span class="n">jc</span> <span class="p">{</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">struct</span> <span class="nc">A</span> <span class="p">{</span>
+  <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="kt">int</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="kt">void</span> <span class="nf">f</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">A</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;::</span><span class="n">type</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">// A&lt;char&gt; 的 POI</span>
+  <span class="k">typename</span> <span class="n">A</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">type</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">// A&lt;T&gt; 的 POI</span>
+<span class="p">}</span>
+
+<span class="p">}</span>  <span class="c1">// namespace jc</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">jc</span><span class="o">::</span><span class="n">f</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">();</span>  <span class="c1">// f&lt;double&gt; 的 POI</span>
+  <span class="c1">// A&lt;double&gt; 的 POI</span>
+  <span class="c1">// f&lt;double&gt; 的 POI</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>在这个例子中，调用 <code class="language-plaintext highlighter-rouge">jc::f&lt;double&gt;()</code> 会导致 <code class="language-plaintext highlighter-rouge">A&lt;double&gt;</code> 和 <code class="language-plaintext highlighter-rouge">A&lt;char&gt;</code> 的实例化。因此，<code class="language-plaintext highlighter-rouge">f&lt;double&gt;</code> 和 <code class="language-plaintext highlighter-rouge">A&lt;double&gt;</code> 的 POI 会在不同的点产生。</p>
+
+<h3 id="4-poi-的重复性与优化">4. POI 的重复性与优化</h3>
+
+<p>一个编译单元通常会包含一个模板实例的多个 POI。然而，对于类模板实例化，通常每个编译单元只会保留首个 POI，其他 POI 会被忽略。对于函数模板和变量模板的实例化，所有 POI 都会被保留。</p>
+
+<h2 id="模板的链接linkage-of-templates">模板的链接（Linkage of Templates）</h2>
+
+<h3 id="1-类模板的名称冲突">1. 类模板的名称冲突</h3>
+
+<p>类模板的名称不能与其他实例的名称冲突。</p>
+
+<h4 id="示例名称冲突">示例：名称冲突</h4>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">namespace</span> <span class="n">jc</span> <span class="p">{</span>
+
+<span class="kt">int</span> <span class="n">A</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">A</span><span class="p">;</span>  <span class="c1">// OK：两者名称在不同的作用域内</span>
+
+<span class="kt">int</span> <span class="n">B</span><span class="p">;</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">struct</span> <span class="nc">B</span><span class="p">;</span>  <span class="c1">// 错误：模板名称与非模板名称冲突</span>
+
+<span class="k">struct</span> <span class="nc">C</span><span class="p">;</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">struct</span> <span class="nc">C</span><span class="p">;</span>  <span class="c1">// 错误：模板名称与非模板名称冲突</span>
+
+<span class="p">}</span>  <span class="c1">// namespace jc</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{}</span>
+</code></pre></div></div>
+
+<p>在上面的代码中，<code class="language-plaintext highlighter-rouge">struct A</code> 和 <code class="language-plaintext highlighter-rouge">int A</code> 的名称冲突会导致编译错误。同样，模板名称 <code class="language-plaintext highlighter-rouge">B</code> 和 <code class="language-plaintext highlighter-rouge">C</code> 与非模板类型冲突也会导致错误。</p>
+
+<h3 id="2-模板不能具有-c-链接">2. 模板不能具有 C 链接</h3>
+
+<p>模板不能与 C 语言的链接规范（C linkage）一起使用。</p>
+
+<h4 id="示例c-链接错误">示例：C 链接错误</h4>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">namespace</span> <span class="n">jc</span> <span class="p">{</span>
+
+<span class="k">extern</span> <span class="s">"C++"</span> <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="kt">void</span> <span class="n">normal</span><span class="p">();</span>  <span class="c1">// 正确：默认 C++ 链接规范</span>
+
+<span class="k">extern</span> <span class="s">"C"</span> <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="kt">void</span> <span class="n">invalid</span><span class="p">();</span>  <span class="c1">// 错误：不能使用 C 链接</span>
+
+<span class="k">extern</span> <span class="s">"Java"</span> <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="kt">void</span> <span class="n">java_link</span><span class="p">();</span>  <span class="c1">// 非标准链接，某些编译器可能支持</span>
+
+<span class="p">}</span>  <span class="c1">// namespace jc</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{}</span>
+</code></pre></div></div>
+
+<p>模板不能使用 C 链接规范（<code class="language-plaintext highlighter-rouge">extern "C"</code>）。如果使用 <code class="language-plaintext highlighter-rouge">extern "C++"</code>，则为默认的 C++ 链接规范。</p>
+
+<h3 id="3-模板的外链接与静态链接">3. 模板的外链接与静态链接</h3>
+
+<p>模板通常具有外链接（<strong>external linkage</strong>）。然而，<strong>静态模板函数</strong>（即加上 <code class="language-plaintext highlighter-rouge">static</code> 关键字的模板函数）会具有内部链接（<strong>internal linkage</strong>），这使得它在当前翻译单元内可见，但在其他翻译单元中不可见。</p>
+
+<h4 id="示例静态与外部链接">示例：静态与外部链接</h4>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>  <span class="c1">// 外部链接</span>
+<span class="kt">void</span> <span class="nf">external</span><span class="p">();</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>  <span class="c1">// 内部链接</span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">internal</span><span class="p">();</span>
+
+<span class="k">namespace</span> <span class="p">{</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span><span class="p">&gt;</span>  <span class="c1">// 内部链接</span>
+<span class="kt">void</span> <span class="n">other_internal</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="k">struct</span> <span class="p">{</span>
+  <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>  <span class="c1">// 无链接：不能被重复声明</span>
+  <span class="kt">void</span> <span class="n">f</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="p">{}</span>
+<span class="p">}</span> <span class="n">x</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{}</span>
+</code></pre></div></div>
+
+<h3 id="4-链接错误">4. 链接错误</h3>
+
+<p>与普通函数不同，如果模板的声明和实现分离，通常会出现链接错误，因为编译器在函数调用处没有看到模板实例化的定义，只会假设在其他地方提供了定义，链接器依赖该引用进行解决。</p>
+
+<h4 id="示例模板声明与实现分离导致链接错误">示例：模板声明与实现分离导致链接错误</h4>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// a.hpp</span>
+<span class="cp">#pragma once
+</span>
+<span class="k">namespace</span> <span class="n">jc</span> <span class="p">{</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">A</span> <span class="p">{</span>
+ <span class="nl">public:</span>
+  <span class="kt">void</span> <span class="n">f</span><span class="p">();</span>
+<span class="p">};</span>
+
+<span class="p">}</span>  <span class="c1">// namespace jc</span>
+
+<span class="c1">// a.cpp</span>
+<span class="cp">#include</span> <span class="cpf">"a.hpp"</span><span class="cp">
+</span>
+<span class="k">namespace</span> <span class="n">jc</span> <span class="p">{</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="kt">void</span> <span class="n">A</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">f</span><span class="p">()</span> <span class="p">{}</span>
+
+<span class="p">}</span>  <span class="c1">// namespace jc</span>
+
+<span class="c1">// main.cpp</span>
+<span class="cp">#include</span> <span class="cpf">"a.hpp"</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">jc</span><span class="o">::</span><span class="n">A</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">{}.</span><span class="n">f</span><span class="p">();</span>  <span class="c1">// 链接错误</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>上面的代码会导致链接错误，因为 <code class="language-plaintext highlighter-rouge">A&lt;int&gt;::f()</code> 的实现只出现在 <code class="language-plaintext highlighter-rouge">a.cpp</code> 中，但在 <code class="language-plaintext highlighter-rouge">main.cpp</code> 中调用时，编译器无法找到该定义。</p>
+
+<h3 id="5-推荐的做法在头文件中实现模板">5. 推荐的做法：在头文件中实现模板</h3>
+
+<p>为了避免链接错误，通常建议在头文件中直接实现模板。</p>
+
+<h4 id="示例头文件中实现模板">示例：头文件中实现模板</h4>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// a.hpp</span>
+<span class="cp">#pragma once
+</span>
+<span class="k">namespace</span> <span class="n">jc</span> <span class="p">{</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">A</span> <span class="p">{</span>
+ <span class="nl">public:</span>
+  <span class="kt">void</span> <span class="n">f</span><span class="p">();</span>
+<span class="p">};</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">A</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">f</span><span class="p">()</span> <span class="p">{}</span>
+
+<span class="p">}</span>  <span class="c1">// namespace jc</span>
+
+<span class="c1">// main.cpp</span>
+<span class="cp">#include</span> <span class="cpf">"a.hpp"</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">jc</span><span class="o">::</span><span class="n">A</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">{}.</span><span class="n">f</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>通过这种方式，模板的实现会在头文件中直接提供，避免了链接错误。</p>
+
+<h2 id="显式实例化explicit-instantiation">显式实例化（Explicit Instantiation）</h2>
+
+<p>显式实例化是手动指定模板实例化特定类型的机制。它允许将模板的定义与实例化分离，并控制哪些模板类型在编译期间被实例化。</p>
+
+<h3 id="1-显式实例化的基本用法">1. 显式实例化的基本用法</h3>
+
+<p>在头文件中使用 <code class="language-plaintext highlighter-rouge">extern</code> 声明显式实例化，告知用户哪些类型的模板被实例化。</p>
+
+<h4 id="示例显式实例化">示例：显式实例化</h4>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// a.hpp</span>
+<span class="cp">#pragma once
+</span>
+<span class="k">namespace</span> <span class="n">jc</span> <span class="p">{</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">A</span> <span class="p">{</span>
+ <span class="nl">public:</span>
+  <span class="kt">void</span> <span class="n">f</span><span class="p">();</span>
+<span class="p">};</span>
+
+<span class="k">extern</span> <span class="k">template</span> <span class="k">class</span> <span class="nc">A</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">&gt;;</span>         <span class="c1">// 声明 A&lt;int&gt; 的显式实例化</span>
+<span class="k">extern</span> <span class="k">template</span> <span class="kt">void</span> <span class="n">A</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">&gt;</span><span class="o">::</span><span class="n">f</span><span class="p">();</span>  <span class="c1">// 声明 A&lt;double&gt;::f() 的显式实例化</span>
+
+<span class="p">}</span>  <span class="c1">// namespace jc</span>
+
+<span class="c1">// a.cpp</span>
+<span class="cp">#include</span> <span class="cpf">"a.hpp"</span><span class="cp">
+</span>
+<span class="k">namespace</span> <span class="n">jc</span> <span class="p">{</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="kt">void</span> <span class="n">A</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">f</span><span class="p">()</span> <span class="p">{}</span>
+
+<span class="k">template</span> <span class="k">class</span> <span class="nc">A</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">&gt;;</span>  <span class="c1">// 实例化 A&lt;int&gt;</span>
+<span class="k">template</span> <span class="kt">void</span> <span class="n">A</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">&gt;</span><span class="o">::</span><span class="n">f</span><span class="p">();</span>  <span class="c1">// 实例化 A&lt;double&gt;::f()</span>
+
+<span class="p">}</span>  <span class="c1">// namespace jc</span>
+
+<span class="c1">// main.cpp</span>
+<span class="cp">#include</span> <span class="cpf">"a.hpp"</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">jc</span><span class="o">::</span><span class="n">A</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">{}.</span><span class="n">f</span><span class="p">();</span>
+  <span class="n">jc</span><span class="o">::</span><span class="n">A</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">{}.</span><span class="n">f</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="2-分离实例化实现">2. 分离实例化实现</h3>
+
+<p>显式实例化可以将实例化过程提取到单独的源文件中，这有助于减小头文件的大小和提高编译效率。</p>
+
+<h4 id="示例分离显式实例化实现">示例：分离显式实例化实现</h4>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// a.hpp</span>
+<span class="cp">#pragma once
+</span>
+<span class="k">namespace</span> <span class="n">jc</span> <span class="p">{</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">A</span> <span class="p">{</span>
+
+
+ <span class="nl">public:</span>
+  <span class="kt">void</span> <span class="n">f</span><span class="p">();</span>
+<span class="p">};</span>
+
+<span class="k">extern</span> <span class="k">template</span> <span class="k">class</span> <span class="nc">A</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">&gt;;</span>
+<span class="k">extern</span> <span class="k">template</span> <span class="kt">void</span> <span class="n">A</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">&gt;</span><span class="o">::</span><span class="n">f</span><span class="p">();</span>
+
+<span class="p">}</span>  <span class="c1">// namespace jc</span>
+
+<span class="c1">// a.cpp</span>
+<span class="cp">#include</span> <span class="cpf">"a.hpp"</span><span class="cp">
+</span>
+<span class="k">namespace</span> <span class="n">jc</span> <span class="p">{</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="kt">void</span> <span class="n">A</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">f</span><span class="p">()</span> <span class="p">{}</span>
+
+<span class="k">template</span> <span class="k">class</span> <span class="nc">A</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">&gt;;</span>
+<span class="k">template</span> <span class="kt">void</span> <span class="n">A</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">&gt;</span><span class="o">::</span><span class="n">f</span><span class="p">();</span>
+
+<span class="p">}</span>  <span class="c1">// namespace jc</span>
+
+<span class="c1">// a_init.cpp</span>
+<span class="cp">#include</span> <span class="cpf">"a.cpp"</span><span class="cp">
+</span>
+<span class="k">namespace</span> <span class="n">jc</span> <span class="p">{</span>
+
+<span class="k">template</span> <span class="k">class</span> <span class="nc">A</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">&gt;;</span>
+<span class="k">template</span> <span class="kt">void</span> <span class="n">A</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">&gt;</span><span class="o">::</span><span class="n">f</span><span class="p">();</span>
+
+<span class="p">}</span>  <span class="c1">// namespace jc</span>
+
+<span class="c1">// main.cpp</span>
+<span class="cp">#include</span> <span class="cpf">"a.hpp"</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">jc</span><span class="o">::</span><span class="n">A</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">{}.</span><span class="n">f</span><span class="p">();</span>
+  <span class="n">jc</span><span class="o">::</span><span class="n">A</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">{}.</span><span class="n">f</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="3-显式实例化不会影响类型推断">3. 显式实例化不会影响类型推断</h3>
+
+<p>显式实例化只影响模板实例化，并不会影响类型推断规则。模板实例化和类型推断始终保持一致。</p>
+
+<h4 id="示例显式实例化与类型推断">示例：显式实例化与类型推断</h4>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">namespace</span> <span class="n">jc</span> <span class="p">{</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="kt">void</span> <span class="n">f</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="k">template</span> <span class="kt">void</span> <span class="n">f</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">&gt;(</span><span class="kt">double</span><span class="p">,</span> <span class="kt">double</span><span class="p">);</span>
+
+<span class="p">}</span>  <span class="c1">// namespace jc</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">jc</span><span class="o">::</span><span class="n">f</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">);</span>  <span class="c1">// OK</span>
+  <span class="n">jc</span><span class="o">::</span><span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">);</span>  <span class="c1">// 错误：推断类型不一致，不存在普通函数 f(double, double)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="4-显式实例化与特化冲突">4. 显式实例化与特化冲突</h3>
+
+<p>显式实例化后，不能为相同的类型定义特化。</p>
+
+<h4 id="示例显式实例化与特化冲突">示例：显式实例化与特化冲突</h4>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">namespace</span> <span class="n">jc</span> <span class="p">{</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">struct</span> <span class="nc">A</span> <span class="p">{</span>
+  <span class="kt">void</span> <span class="n">f</span><span class="p">();</span>
+<span class="p">};</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="kt">void</span> <span class="n">A</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">f</span><span class="p">()</span> <span class="p">{}</span>
+
+<span class="k">template</span> <span class="k">struct</span> <span class="nc">A</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">&gt;;</span>  <span class="c1">// 显式实例化 A&lt;int&gt;</span>
+
+<span class="c1">// 不允许为 A&lt;int&gt; 定义特化</span>
+<span class="c1">// template &lt;&gt;</span>
+<span class="c1">// struct A&lt;int&gt; {};  // 错误</span>
+
+<span class="p">}</span>  <span class="c1">// namespace jc</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{}</span>
+</code></pre></div></div>
+
+<h3 id="5-显式实例化与友元函数">5. 显式实例化与友元函数</h3>
+
+<p>通过显式实例化，可以为已有的类添加友元函数。</p>
+
+<h4 id="示例显式实例化与友元函数">示例：显式实例化与友元函数</h4>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;cassert&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
+</span>
+<span class="k">namespace</span> <span class="n">jc</span> <span class="p">{</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">auto</span><span class="p">&gt;</span>
+<span class="k">struct</span> <span class="nc">A</span><span class="p">;</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">Class</span><span class="p">,</span> <span class="n">T</span> <span class="n">Class</span><span class="o">::*</span><span class="n">Member</span><span class="p">&gt;</span>
+<span class="k">struct</span> <span class="nc">A</span><span class="o">&lt;</span><span class="n">Member</span><span class="o">&gt;</span> <span class="p">{</span>
+  <span class="k">friend</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">get</span><span class="p">(</span><span class="n">Class</span><span class="o">&amp;</span> <span class="n">c</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">c</span><span class="p">.</span><span class="o">*</span><span class="n">Member</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="p">}</span>  <span class="c1">// namespace jc</span>
+
+<span class="k">class</span> <span class="nc">Data</span> <span class="p">{</span>
+ <span class="nl">public:</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">value</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">value_</span><span class="p">;</span> <span class="p">}</span>
+
+ <span class="k">private</span><span class="o">:</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">value_</span> <span class="o">=</span> <span class="s">"downdemo"</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">template</span> <span class="k">struct</span> <span class="nc">jc</span><span class="o">::</span><span class="n">A</span><span class="o">&lt;&amp;</span><span class="n">Data</span><span class="o">::</span><span class="n">value_</span><span class="p">&gt;;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">jc</span><span class="o">::</span><span class="n">get</span><span class="p">(</span><span class="n">Data</span><span class="o">&amp;</span><span class="p">);</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">Data</span> <span class="n">data</span><span class="p">;</span>
+  <span class="n">assert</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">value</span><span class="p">()</span> <span class="o">==</span> <span class="s">"downdemo"</span><span class="p">);</span>
+  <span class="n">jc</span><span class="o">::</span><span class="n">get</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">=</span> <span class="s">"june"</span><span class="p">;</span>
+  <span class="n">assert</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">value</span><span class="p">()</span> <span class="o">==</span> <span class="s">"june"</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>通过显式实例化，<code class="language-plaintext highlighter-rouge">get</code> 成为 <code class="language-plaintext highlighter-rouge">Data</code> 类的友元函数，从而能够访问 <code class="language-plaintext highlighter-rouge">value_</code> 成员。</p>
+
+<h3 id="98-ref">98. ref</h3>
+
+<h4 id="1-什么是adl">1. 什么是ADL？</h4>
+<p>在C++里，ADL（Argument-Dependent Lookup）也被叫做Koenig查找，它是一种在函数调用时确定函数名称查找范围的规则。在普通的名称查找里，编译器会在当前作用域以及包含当前作用域的外层作用域里查找函数名。而ADL会额外在实参所属的命名空间里查找函数名。</p>
+
+<ul>
+  <li>
+    <p><strong>规则</strong>
+当调用一个函数时，如果没有指定命名空间限定符，编译器除了在常规作用域查找函数名外，还会在实参类型所在的命名空间进行查找。这意味着如果函数调用的实参属于某个命名空间，编译器会自动在该命名空间中查找匹配的函数。</p>
+  </li>
+  <li>
+    <p><strong>示例</strong>
+```cpp
+#include <iostream></iostream></p>
+  </li>
+</ul>
+
+<p>namespace MyNamespace {
+    struct MyType {};</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>void myFunction(MyType) {
+    std::cout &lt;&lt; "Function called from MyNamespace" &lt;&lt; std::endl;
+} }
+</code></pre></div></div>
+
+<p>int main() {
+    MyNamespace::MyType obj;
+    // 这里调用 myFunction 时，编译器会通过 ADL 在 MyNamespace 中找到该函数
+    myFunction(obj); 
+    return 0;
+}
+```
+在这个示例里，<code class="language-plaintext highlighter-rouge">myFunction</code> 定义于 <code class="language-plaintext highlighter-rouge">MyNamespace</code> 命名空间中。在 <code class="language-plaintext highlighter-rouge">main</code> 函数里调用 <code class="language-plaintext highlighter-rouge">myFunction</code> 时，并未指定命名空间限定符。不过由于实参 <code class="language-plaintext highlighter-rouge">obj</code> 的类型 <code class="language-plaintext highlighter-rouge">MyType</code> 属于 <code class="language-plaintext highlighter-rouge">MyNamespace</code> 命名空间，所以编译器会通过ADL在 <code class="language-plaintext highlighter-rouge">MyNamespace</code> 中找到 <code class="language-plaintext highlighter-rouge">myFunction</code>。</p>
+
+<ul>
+  <li><strong>优点</strong></li>
+  <li><strong>简化代码</strong>：在使用自定义类型时，无需每次都显式指定命名空间，使代码更加简洁。</li>
+  <li>
+    <p><strong>增强封装性</strong>：允许将函数与类型定义在同一个命名空间中，提高了代码的封装性和可维护性。</p>
+  </li>
+  <li><strong>注意事项</strong></li>
+  <li><strong>命名冲突</strong>：ADL可能会导致命名冲突，特别是在多个命名空间中存在同名函数时。</li>
+  <li><strong>意外调用</strong>：由于ADL会在实参类型所在的命名空间中查找函数，可能会导致意外的函数调用。因此，在编写代码时需要注意命名的选择和作用域的管理。</li>
+</ul>
+
+    </div>
+
+    <div class="post__share">
+  <div class="share__head">
+    <div class="share__title">Share this Post</div>
+  </div>
+  <ul class="share__list list-reset">
+    <li class="share__item">
+      <a class="share__link share__twitter"
+        href="https://twitter.com/intent/tweet?text=template_instantiation&url=http://localhost:6060/blog/template-instantiation.html"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__facebook"
+        href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:6060/blog/template-instantiation.html"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__pinterest"
+        href="http://pinterest.com/pin/create/button/?url=http://localhost:6060/blog/template-instantiation.html&amp;media=http://localhost:6060/images/post/post-24.jpg&amp;description=template_instantiation"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Pinterest" rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:6060/blog/template-instantiation.html&title=template_instantiation&summary=&source=Vonge"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
+    </li>
+  </ul>
+</div>
+  </article>
+</div>
+<!-- end post -->
+
+<div class="container">
+  <div class="row">
+    <div class="col col-10 col-d-12 push-d-0 push-1">
+      <div class="post__navigation animate">
+  
+  <a class="post__prev" href="/blog/template-basic.html">
+    <div class="prev__image">
+      <img loading="lazy" src="/images/post/post-21.jpg" alt="template_instantiation">
+    </div>
+    <div class="prev__box">
+      <span class="post__nav post__nav__prev">Prev post</span>
+      <h2 class="post__nav__title">template_basic</h2>
+    </div>
+  </a>
+  
+
+  
+  <a class="post__next" href="/blog/template-introduction.html">
+    <div class="next__box">
+      <span class="post__nav post__nav__next">Next post</span>
+      <h2 class="post__nav__title">template_introduction</h2>
+    </div>
+    <div class="next__image">
+      <img loading="lazy" src="/images/post/post-28.jpg" alt="template_instantiation">
+    </div>
+  </a>
+  
+</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- begin related posts -->
+<div class="container">
+  <section class="related-posts is-related animate">
+    <div class="row">
+      <div class="col col-12">
+        <div class="container__inner">
+          <div class="section__info">
+            <div class="section__head">
+              <h2 class="section__title">You may also like</h2>
+              <a class="section__link" href="/blog">
+                
+                
+                  
+                    <!-- <a href="/tags#template" class="section__link related-tag">See all<span> template</span> <i class="ion ion-md-arrow-forward"></i></a> -->
+                  
+                
+              
+              </a>
+            </div>
+          </div>
+          <div class="row">
+
+          
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/template-basic.html">
+                      <img loading="lazy" src="/images/post/post-23.jpg" alt="template_basic">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/template" class="article__tag">template</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/template-basic.html">template_basic</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      ## 一：模板基础
+
+### 1.1 什么是模板
+
+* **概念上**
+模板是 C++ 中的一种泛型编程工具，它允许你编写与类型无关的代码。通过使用模板，你可以编写一次代码，然后在不同的上下文中重用它，而不需要为每种类型编写单独的代码...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2025-04-06T14:44:11+08:00">06 Apr 2025</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/template-advanced.html">
+                      <img loading="lazy" src="/images/post/post-21.jpg" alt="template_advanced">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/template" class="article__tag">template</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/template-advanced.html">template_advanced</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      ## 模板-进阶内容
+
+### 7. **C++11/14/17/20 中的模板新特性**
+
+C++11、C++14、C++17 和 C++20 引入了许多新的模板特性，使得模板编程更加灵活和强大。以下是这些新特性的逐条解释：
+
+##...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2025-04-06T14:43:48+08:00">06 Apr 2025</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/template-specialization.html">
+                      <img loading="lazy" src="/images/post/post-27.jpg" alt="template_specialization">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/template" class="article__tag">template</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/template-specialization.html">template_specialization</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      ## 4. 模板特化
+
+模板特化（Template Specialization）是 C++ 模板编程中的一个重要概念，它允许你为特定的模板参数提供特殊的实现。模板特化分为部分特化和全特化。通过模板特化，你可以为特定类型或特定条件提供...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2025-04-04T10:24:28+08:00">04 Apr 2025</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+                  
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- end related posts -->
+
+
+
+
+    <!--
+        Bookshop components are accessed using the bookshop tag,
+        using the same syntax as the standard Jekyll include tag.
+    -->
+    <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
+
+<!--bookshop-live end-->
+
+    <div class="top" title="Top"><i class="ion ion-ios-arrow-up"></i></div>
+
+    <!-- begin footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+
+        <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+
+        <ul class="footer_nav list-reset">
+          
+          <li class="footer_nav__item">
+            <a href="/" class="footer_nav__link">Home</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/projects/" class="footer_nav__link">Projects</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/about/" class="footer_nav__link">About</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/blog/" class="footer_nav__link">Blog</a>
+          </li>
+          
+        </ul>
+
+        <div class="copyright"><p> 2021 &copy; <a href="/">Vonge</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
+
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- end footer -->
+
+    <script src="/js/scripts.js"></script>
+    <script src="/js/common.js"></script>
+</body>
+</html>

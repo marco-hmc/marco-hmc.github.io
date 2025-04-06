@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>cppQuiz</title>
+  <meta name='description' content='Marco’s Blog'>
+
+  <link rel="canonical" href="http://localhost:6060/blog/cppquiz.html">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="cppQuiz – Marco’s Blog">
+  <meta name="twitter:description" content="
+  模板函数实现多态的解决方案是有的，那就是 std::variant + std::visit，但那是更后来出现的函数式设计模式了，今天我们先把面向对象学明白了再说。
+
+">
+  <meta name="twitter:image:src" content="http://localhost:6060/images/post/post-1.jpg">
+
+  <!-- Facebook OpenGraph -->
+  <meta property="og:title" content="cppQuiz – Marco’s Blog">
+  <meta property="og:description" content="
+  模板函数实现多态的解决方案是有的，那就是 std::variant + std::visit，但那是更后来出现的函数式设计模式了，今天我们先把面向对象学明白了再说。
+
+">
+  <meta property="og:image" content="http://localhost:6060/images/post/post-1.jpg">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Ionicons -->
+  <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/main.css">
+</head>
+
+<body>
+
+    
+
+    <!-- begin header -->
+<header class="c-header">
+  <div class="container">
+    <div class="row">
+      <div class="c-header__inner">
+
+        <div class="logo">
+          <a class="logo__link" href="/">
+          
+            <img class="logo__image" src="/images/mc_logo1.ico" alt="Marco’s Blog">
+          
+          </a>
+        </div>
+
+        <nav class="main-nav">
+          <div class="main-nav__box">
+
+            <div class="nav__icon-close">
+              <i class="ion ion-md-close"></i>
+            </div>
+
+            <div class="nav__title">Menu</div>
+
+              <ul class="nav__list list-reset">
+
+              
+                
+                <li class="nav__item">
+                  <a href="/" class="nav__link">Home</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/projects/" class="nav__link">Projects</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/blog/" class="nav__link">Blog</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/about/" class="nav__link">About</a>
+                </li>
+                
+              
+
+            </ul>
+          </div>
+
+          <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+        </nav>
+
+        <div class="nav-button">
+          <i class="nav__icon nav__icon-menu ion ion-md-menu"></i>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+<!-- end header -->
+
+    <div class="post-top">
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="col col-6 col-d-12">
+        <div class="post-image">
+          <img loading="lazy" src="/images/post/post-1.jpg" alt="cppQuiz">
+        </div>
+      </div>
+      
+
+      <div class="col col-6 col-d-12">
+        <div class="post__info">
+
+          
+
+          <h1 class="post__title">cppQuiz</h1>
+
+          <div class="post__meta">
+            <div class="post__author-image">
+              <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+            </div>
+
+            <div class="post__meta-bottom">
+              <div class="post__author">Marco Hwong</div>
+              <time class="post__date" datetime="2025-02-25T22:07:09+08:00">25 Feb 2025</time>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- begin post -->
+<div class="container-with-sidebar animate">
+  <div class="sidebar">
+    <div id="toc"></div>
+  </div>
+
+  <article class="post">
+    <div class="post__content">
+      <blockquote>
+  <p>模板函数实现多态的解决方案是有的，那就是 std::variant + std::visit，但那是更后来出现的函数式设计模式了，今天我们先把面向对象学明白了再说。</p>
+</blockquote>
+
+<h2 id="cpp-quiz">cpp quiz</h2>
+
+<h3 id="1-grammar">1. grammar</h3>
+
+<h4 id="11-c中null和nullptr的区别">1.1 c++中NULL和nullptr的区别</h4>
+
+<ul>
+  <li>
+    <p>在C语言中，NULL通常被定义为：#define NULL ((void *)0)</p>
+  </li>
+  <li>
+    <p>所以NULL实际上是一个空指针，如果在C语言中写入以下代码，编译是没有问题的，因为在<strong>C语言中把空指针赋给int和char指针的时候，发生了隐式类型转换，把void指针转换成了相应类型的指针</strong></p>
+
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span>  <span class="o">*</span><span class="n">pi</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+<span class="kt">char</span> <span class="o">*</span><span class="n">pc</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</code></pre></div>    </div>
+  </li>
+  <li>以上代码如果使用C++编译器来编译则是会出错的，因为C++是强类型语言，void*是不能隐式转换成其他类型的指针的，所以实际上编译器提供的头文件做了相应的处理
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#ifdef __cplusplus
+#define NULL 0
+#else
+#define NULL ((void *)0)
+#endif
+</span></code></pre></div>    </div>
+  </li>
+  <li>但是NULL为0的时候，会出现类型判断错误
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kt">void</span> <span class="nf">foo</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+  <span class="kt">void</span> <span class="nf">foo</span><span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">);</span>
+  <span class="n">foo</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>  <span class="c1">// 调用哪个函数？</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong>一个new出来的指针,被delete两次会怎么样</strong>
+如果一个指针被<code class="language-plaintext highlighter-rouge">delete</code>两次,会导致未定义行为(Undefined Behavior).这是因为在第一次<code class="language-plaintext highlighter-rouge">delete</code>后,该指针已经不再指向有效的内存区域,再次尝试<code class="language-plaintext highlighter-rouge">delete</code>就是对无效内存的操作,这是非法的.</li>
+</ul>
+
+<p>未定义行为可能会导致各种各样的问题,包括但不限于:</p>
+
+<ul>
+  <li>程序崩溃</li>
+  <li>数据损坏</li>
+  <li>难以预测和解释的行为</li>
+</ul>
+
+<p>为了避免这种情况,你应该确保每个<code class="language-plaintext highlighter-rouge">new</code>操作都有一个对应的<code class="language-plaintext highlighter-rouge">delete</code>操作,并且每个<code class="language-plaintext highlighter-rouge">delete</code>操作都只执行一次.在你的代码中,<code class="language-plaintext highlighter-rouge">UniquePtr</code>类就是通过封装<code class="language-plaintext highlighter-rouge">new</code>和<code class="language-plaintext highlighter-rouge">delete</code>操作来确保资源的正确管理,避免了这种问题.</p>
+
+<ul>
+  <li><strong><em>为什么delete之后,都会设置nullptr</em></strong></li>
+</ul>
+
+<p>在C++中,<code class="language-plaintext highlighter-rouge">delete</code>一个指针后,通常会将其设置为<code class="language-plaintext highlighter-rouge">nullptr</code>,主要有以下几个原因:</p>
+
+<ol>
+  <li>
+    <p><strong>避免悬挂指针</strong>:<code class="language-plaintext highlighter-rouge">delete</code>一个指针后,该指针就变成了悬挂指针(Dangling Pointer),它不再指向有效的内存区域,但仍然保留了原来的地址值.如果你试图再次使用这个悬挂指针,就会导致未定义行为.将指针设置为<code class="language-plaintext highlighter-rouge">nullptr</code>可以避免这种情况,因为<code class="language-plaintext highlighter-rouge">nullptr</code>是一个特殊的指针值,表示该指针不指向任何对象.</p>
+  </li>
+  <li>
+    <p><strong>安全地重复<code class="language-plaintext highlighter-rouge">delete</code></strong>:在C++中,<code class="language-plaintext highlighter-rouge">delete</code>一个<code class="language-plaintext highlighter-rouge">nullptr</code>是安全的,不会有任何效果.所以,如果你将一个指针设置为<code class="language-plaintext highlighter-rouge">nullptr</code>,就可以安全地重复<code class="language-plaintext highlighter-rouge">delete</code>它,而不会导致未定义行为.</p>
+  </li>
+  <li>
+    <p><strong>检查指针是否已经被<code class="language-plaintext highlighter-rouge">delete</code></strong>:如果你将一个指针设置为<code class="language-plaintext highlighter-rouge">nullptr</code>,就可以通过检查该指针是否为<code class="language-plaintext highlighter-rouge">nullptr</code>来判断它是否已经被<code class="language-plaintext highlighter-rouge">delete</code>.</p>
+  </li>
+</ol>
+
+<p>所以,<code class="language-plaintext highlighter-rouge">delete</code>一个指针后,通常会将其设置为<code class="language-plaintext highlighter-rouge">nullptr</code>,以提高程序的安全性和稳定性.</p>
+
+<h4 id="15-通过指针访问和直接访问的区别是什么">1.5 通过指针访问和直接访问的区别是什么？</h4>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">struct</span> <span class="nc">Point3d</span><span class="p">{};</span>
+    <span class="n">Point3d</span> <span class="n">origin</span><span class="p">;</span>
+    <span class="o">*</span><span class="n">pt</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">origin</span><span class="p">;</span>
+    <span class="n">origin</span><span class="p">.</span><span class="n">x</span><span class="o">=</span><span class="mf">0.0</span><span class="p">;</span> <span class="c1">// (1)</span>
+    <span class="n">pt</span><span class="o">-&gt;</span><span class="n">x</span><span class="o">=</span><span class="mf">0.0</span><span class="p">;</span> <span class="c1">// (2) </span>
+</code></pre></div></div>
+<p>(1) <code class="language-plaintext highlighter-rouge">origin.x=0.0;</code> 和 (2) <code class="language-plaintext highlighter-rouge">pt-&gt;x=0.0;</code> 这两种方式都是用来设置<code class="language-plaintext highlighter-rouge">Point3d</code>对象<code class="language-plaintext highlighter-rouge">origin</code>的<code class="language-plaintext highlighter-rouge">x</code>成员的值为<code class="language-plaintext highlighter-rouge">0.0</code>.它们的区别在于使用的方式不同,从编译器的角度来看:</p>
+
+<ul>
+  <li>
+    <p>(1) <code class="language-plaintext highlighter-rouge">origin.x=0.0;</code> 这种方式是直接通过对象名和成员名来访问和修改成员的值.编译器在编译时期就能确定<code class="language-plaintext highlighter-rouge">origin</code>的内存地址,然后通过偏移量找到<code class="language-plaintext highlighter-rouge">x</code>成员的位置,直接在这个位置写入<code class="language-plaintext highlighter-rouge">0.0</code>.</p>
+  </li>
+  <li>
+    <p>(2) <code class="language-plaintext highlighter-rouge">pt-&gt;x=0.0;</code> 这种方式是通过一个指向对象的指针来访问和修改成员的值.<code class="language-plaintext highlighter-rouge">pt</code>是一个指向<code class="language-plaintext highlighter-rouge">origin</code>的指针,<code class="language-plaintext highlighter-rouge">pt-&gt;x</code>表示的是<code class="language-plaintext highlighter-rouge">pt</code>所指向的对象的<code class="language-plaintext highlighter-rouge">x</code>成员.在编译时期,编译器并不能确定<code class="language-plaintext highlighter-rouge">pt</code>所指向的内存地址,它需要在运行时期读取<code class="language-plaintext highlighter-rouge">pt</code>的值(也就是<code class="language-plaintext highlighter-rouge">origin</code>的地址),然后通过偏移量找到<code class="language-plaintext highlighter-rouge">x</code>成员的位置,再在这个位置写入<code class="language-plaintext highlighter-rouge">0.0</code>.</p>
+  </li>
+</ul>
+
+<p>总的来说,这两种方式的效果是相同的,它们都会设置<code class="language-plaintext highlighter-rouge">origin</code>的<code class="language-plaintext highlighter-rouge">x</code>成员的值为<code class="language-plaintext highlighter-rouge">0.0</code>.但是从编译器的角度来看,直接访问成员的方式更简单,效率也稍微高一些,因为它不需要在运行时期读取指针的值.然而,通过指针访问成员的方式更灵活,它可以动态地访问不同的对象,这在处理数组和动态内存分配时非常有用.</p>
+
+<p>在第二种情况中,<code class="language-plaintext highlighter-rouge">pt-&gt;x=0.0;</code>,<code class="language-plaintext highlighter-rouge">pt</code>是一个指针,它存储的是<code class="language-plaintext highlighter-rouge">origin</code>对象的内存地址.编译器在编译时期并不能确定<code class="language-plaintext highlighter-rouge">pt</code>所指向的具体内存地址,因为这个地址是在运行时期由操作系统分配的.因此,当你通过<code class="language-plaintext highlighter-rouge">pt</code>来访问<code class="language-plaintext highlighter-rouge">x</code>成员时,编译器需要在运行时期读取<code class="language-plaintext highlighter-rouge">pt</code>的值(也就是<code class="language-plaintext highlighter-rouge">origin</code>的地址),然后通过这个地址和<code class="language-plaintext highlighter-rouge">x</code>成员的偏移量来找到<code class="language-plaintext highlighter-rouge">x</code>成员的具体位置.</p>
+
+<p>这就是为什么在运行期需要读取指针的值.这种机制使得指针可以动态地指向不同的对象,这在处理动态内存分配/数组和数据结构(如链表和树)时非常有用.</p>
+
+<h4 id="16-一般哪些函数可以使用noexcept">1.6 一般哪些函数可以使用noexcept?</h4>
+<p>在C++中,<code class="language-plaintext highlighter-rouge">noexcept</code>关键字用于指定一个函数不会抛出任何异常.这对于提高代码的性能和可靠性非常有用.以下是一些常见的可以使用<code class="language-plaintext highlighter-rouge">noexcept</code>的函数:</p>
+<ol>
+  <li>析构函数:析构函数通常不应抛出任何异常,因为如果在析构函数中抛出异常,可能会导致程序的未定义行为.</li>
+  <li>移动构造函数和移动赋值操作符:这些函数通常应该被标记为<code class="language-plaintext highlighter-rouge">noexcept</code>,因为它们通常只涉及指针和基本类型的转移,不应抛出异常.此外,标记为<code class="language-plaintext highlighter-rouge">noexcept</code>的移动操作可以被标准库容器如<code class="language-plaintext highlighter-rouge">std::vector</code>更有效地使用.</li>
+  <li>交换函数:交换函数(如<code class="language-plaintext highlighter-rouge">std::swap</code>)通常应该被标记为<code class="language-plaintext highlighter-rouge">noexcept</code>,因为它们通常只涉及指针和基本类型的转移,不应抛出异常.</li>
+  <li>其他不会抛出异常的函数:如果你知道一个函数不会抛出异常,你应该使用<code class="language-plaintext highlighter-rouge">noexcept</code>关键字.这可以帮助编译器优化代码,并向其他开发者明确表明该函数不会抛出异常.
+在你提供的代码中,移动构造函数和移动赋值操作符被标记为<code class="language-plaintext highlighter-rouge">noexcept</code>,这是因为它们只涉及指针和基本类型的转移,不应抛出异常.</li>
+</ol>
+
+<h4 id="17-c怎么定义隐式转换规则">1.7 c++怎么定义隐式转换规则</h4>
+<p>在C++中,隐式转换(也称为自动类型转换)是由编译器自动进行的.这些转换规则是由C++语言规定的,例如从int到double的转换,或者从派生类到基类的转换.</p>
+
+<p>然而,你也可以为你的自定义类型定义隐式转换规则.这可以通过定义转换函数来实现.转换函数是一种特殊的成员函数,它可以将一个类的对象转换为其他类型的对象.</p>
+
+<p>例如,假设你有一个名为<code class="language-plaintext highlighter-rouge">MyClass</code>的类,你想让它可以隐式转换为<code class="language-plaintext highlighter-rouge">int</code>类型.你可以在<code class="language-plaintext highlighter-rouge">MyClass</code>中定义一个名为<code class="language-plaintext highlighter-rouge">operator int()</code>的转换函数:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">MyClass</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="k">operator</span> <span class="kt">int</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+        <span class="c1">// 在这里返回一个int值</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>然后你就可以这样使用它:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">MyClass</span> <span class="n">obj</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">obj</span><span class="p">;</span>  <span class="c1">// 隐式转换</span>
+</code></pre></div></div>
+
+<p>需要注意的是,虽然隐式转换看起来很方便,但它也可能导致一些意想不到的问题,因为它可能在你不知情的情况下发生.因此,一般建议尽量避免使用隐式转换,或者至少要确保你清楚地知道它何时会发生以及它的效果是什么.</p>
+
+<h4 id="110-cc是转成汇编语言的-那汇编语言是如何处理自定义类型的">1.10 c/c++是转成汇编语言的. 那汇编语言是如何处理自定义类型的?</h4>
+<p>汇编语言本身并没有自定义类型的概念,它只知道字节和地址.当你在C++中定义一个类型(例如,一个结构体或类),编译器会根据你的定义来决定如何在内存中布局数据,以及如何生成对应的汇编代码来访问这些数据.</p>
+
+<p>例如,如果你定义了一个包含两个整数的结构体:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">MyStruct</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">a</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">b</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>编译器会知道这个结构体需要8个字节的空间(在大多数现代系统上,一个<code class="language-plaintext highlighter-rouge">int</code>需要4个字节).当你创建一个<code class="language-plaintext highlighter-rouge">MyStruct</code>对象并访问它的成员时,编译器会生成对应的汇编代码来读取或写入这些地址.</p>
+
+<p>但是,这个过程是由编译器完成的,汇编语言本身并不知道<code class="language-plaintext highlighter-rouge">MyStruct</code>这个类型,它只知道如何处理字节和地址.这就是为什么在汇编语言中,你需要手动管理所有的内存布局和数据访问.</p>
+
+<h4 id="111-在全局构造函数中访问其他全局或者静态变量会发生什么事情">1.11 在全局构造函数中，访问其他全局或者静态变量，会发生什么事情？</h4>
+
+<p>在C++中，全局构造函数通常指的是全局对象或静态对象的构造函数。这些对象在程序开始执行main函数之前就已经被初始化。</p>
+
+<p>问题在于，C++标准并没有规定全局对象和静态对象的初始化顺序。也就是说，如果一个全局对象或静态对象的构造函数试图访问另一个全局对象或静态对象，那么这个对象可能还没有被初始化，这就会导致不可预知的结果。</p>
+
+<p>例如，假设你有两个全局对象A和B，A的构造函数试图访问B。如果B在A之前被初始化，那么一切都会正常工作。但是，如果A在B之前被初始化，那么A的构造函数就会访问一个未初始化的对象B，这可能会导致程序崩溃或其他错误。</p>
+
+<p>为了避免这种问题，一种常见的解决方案是使用函数内的静态对象，因为这些对象的初始化顺序是确定的：它们在第一次被访问时被初始化。另一种解决方案是避免在全局构造函数中访问其他全局对象或静态对象。</p>
+
+<h4 id="114-什么时候需要使用stdmove">1.14 什么时候需要使用std::move()</h4>
+
+<p>在C++中，<code class="language-plaintext highlighter-rouge">std::move()</code>通常在以下情况下使用：</p>
+
+<ol>
+  <li>
+    <p><strong>当你想避免不必要的拷贝时</strong>：如果你有一个大对象，并且你想将它传递给另一个对象，但你不再需要原始对象，那么你可以使用<code class="language-plaintext highlighter-rouge">std::move()</code>来避免拷贝。这将触发移动构造函数或移动赋值操作符（如果已定义），这通常比拷贝构造函数或拷贝赋值操作符更有效率。</p>
+  </li>
+  <li>
+    <p><strong>当你想返回局部对象时</strong>：如果你的函数需要返回一个局部对象，并且你想避免返回值优化（RVO）或命名返回值优化（NRVO）未发生时的拷贝，那么你可以使用<code class="language-plaintext highlighter-rouge">std::move()</code>。</p>
+  </li>
+  <li>
+    <p><strong>当你需要将左值转换为右值时</strong>：有些函数或方法需要右值引用参数，以便它们可以获取对象的所有权。在这种情况下，你可以使用<code class="language-plaintext highlighter-rouge">std::move()</code>来将左值转换为右值。</p>
+  </li>
+</ol>
+
+<p>请注意，使用<code class="language-plaintext highlighter-rouge">std::move()</code>后，原始对象将处于有效但未定义的状态，你不能再使用它，除非你已经重新赋值或重新初始化它。</p>
+
+<h4 id="115-c的cast有几种分别在什么时候用">1.15 c++的cast有几种？分别在什么时候用？</h4>
+
+<p>C++提供了四种类型转换操作符，分别用于不同的场景：</p>
+
+<ol>
+  <li><strong><code class="language-plaintext highlighter-rouge">static_cast</code></strong>：最常用的类型转换。用于非多态类型的转换。可以用来进行任何隐式转换，比如非const转const，void指针转具体类型指针，以及任何用户定义的类型转换等。
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="kt">float</span> <span class="n">f</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="n">i</span><span class="p">);</span> <span class="c1">// 整型转浮点型</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">dynamic_cast</code></strong>：主要用于处理多态性，安全地将基类指针或引用转换为派生类的指针或引用，而且在转换不成功时能够检测到。只能用于包含虚函数的类之间的转换。
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Base</span><span class="o">*</span> <span class="n">b</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Derived</span><span class="p">;</span>
+<span class="n">Derived</span><span class="o">*</span> <span class="n">d</span> <span class="o">=</span> <span class="k">dynamic_cast</span><span class="o">&lt;</span><span class="n">Derived</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">b</span><span class="p">);</span> <span class="c1">// 基类指针转派生类指针</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* 成功转换 */</span> <span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">const_cast</code></strong>：用于修改类型的const或volatile属性。最常见的用途是去除对象的const性质，以允许对const对象的修改。
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">const</span> <span class="kt">int</span> <span class="n">ci</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="kt">int</span><span class="o">*</span> <span class="n">modifiable</span> <span class="o">=</span> <span class="k">const_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">*&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ci</span><span class="p">);</span>
+<span class="o">*</span><span class="n">modifiable</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span> <span class="c1">// 实际上修改const对象是未定义行为</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">reinterpret_cast</code></strong>：提供了低级别的重新解释类型的能力，可以将任何指针转换成任何其他类型的指针（甚至不相关的类型），也可以将指针转换成足够大的整数类型，反之亦然。使用时需要特别小心，因为它可能会导致平台依赖的代码。
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">long</span> <span class="n">p</span> <span class="o">=</span> <span class="mh">0x12345678</span><span class="p">;</span>
+<span class="kt">char</span><span class="o">*</span> <span class="n">cp</span> <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">*&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">p</span><span class="p">);</span> <span class="c1">// 将long型指针转换为char型指针</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>但是<code class="language-plaintext highlighter-rouge">dynamic_cast</code>因为是运行时提供一种检查能力去做指针类型转换的，部分性能敏感的代码，可能不允许使用这个。
+每种类型转换操作符都有其特定的用途，选择合适的转换操作符可以使代码更安全、更清晰。</p>
+
+<h4 id="116-不使用final怎么实现final效果">1.16 不使用final怎么实现final效果</h4>
+<p>如果希望一个类 B 不可以被继承，首先得让 B 继承自 A，A 的构造函数是私有化，但声明 B 是 A 的友元，因此 B 能够正常构造，但是当 C 继承 B 的时候，C 就不能调用 A 的构造。 从而使得 C 不可被构造。</p>
+
+<h4 id="117-多态场景下调用哪个方法">1.17 多态场景下，调用哪个方法？</h4>
+<p>有两个同名函数 func()，形参分别是 Foo 类型指针和 Bar 类型指针，Bar 类型是 Foo 类型的派生类。如果有一个 Foo *bar = new Bar(); 调用 func(bar)，调用的是那一个方法？</p>
+
+<h4 id="邪恶的-decay-规则造成空悬指针的案例">邪恶的 decay 规则造成空悬指针的案例</h4>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typedef</span> <span class="kt">double</span> <span class="n">arr_t</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span>
+
+<span class="k">auto</span> <span class="nf">func</span><span class="p">(</span><span class="n">arr_t</span> <span class="n">val</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">arr_t</span> <span class="n">ret</span><span class="p">;</span>
+    <span class="n">memcpy</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">arr_t</span><span class="p">));</span>  <span class="c1">// 对 val 做一些运算, 把计算结果保存到 ret</span>
+    <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>     <span class="c1">// 1. 不要随便返回指针</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">arr_t</span> <span class="n">val</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">};</span>
+    <span class="k">auto</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">val</span><span class="p">);</span>             <span class="c1">// 此处 auto 会被推导为 double *</span>
+    <span class="n">print</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">span</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">ret</span> <span class="o">+</span> <span class="mi">10</span><span class="p">));</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="map-中存-string-还是-const-char-">map 中存 string 还是 const char *？</h4>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">map</span><span class="o">&lt;</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*&gt;</span> <span class="n">m</span><span class="p">;</span>
+<span class="n">m</span><span class="p">[</span><span class="s">"hello"</span><span class="p">]</span> <span class="o">=</span> <span class="s">"old"</span><span class="p">;</span>    <span class="c1">// 常量区的 "hello"</span>
+<span class="kt">char</span> <span class="n">key</span><span class="p">[]</span> <span class="o">=</span> <span class="s">"hello"</span><span class="p">;</span>  <span class="c1">// key 的地址在栈上</span>
+<span class="n">print</span><span class="p">(</span><span class="n">key</span> <span class="o">==</span> <span class="s">"hello"</span><span class="p">);</span> <span class="c1">// false</span>
+<span class="n">m</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="s">"new"</span><span class="p">;</span>        <span class="c1">// 栈上变量的 key = "hello"</span>
+<span class="n">print</span><span class="p">(</span><span class="n">m</span><span class="p">);</span>              <span class="c1">// 两个重复的键 "hello"</span>
+</code></pre></div></div>
+
+<p>在 C++ 中，任何时候都务必用 string！别用 C 语言老掉牙的 const char *，太危险了。
+const char * 危险的原因：</p>
+<ol>
+  <li>const char * 的 == 判断的是指针的等，两个 const char * 只要地址不同，即使实际的字符串相同，也不会被视为同一个元素（如上代码案例所示）。导致 map 里会出现重复的键，以及按键查找可能找不到等。</li>
+  <li>保存的是弱引用，如果你把局部的 char [] 或 string.c_str() 返回的 const char * 存入 map，等这些局部释放了，map 中的 const char * 就是一个空悬指针了，会造成 segfault。</li>
+</ol>
+
+<h3 id="2-编译器">2. 编译器</h3>
+
+<h4 id="21-引用是怎么实现的">2.1 引用是怎么实现的?</h4>
+<p>在 C++ 中,当我们说”引用”时,我们通常不会说它被”拷贝”,因为引用本身并不占用任何存储空间,它只是一个别名.当你将一个对象作为引用传递给函数时,实际上并没有发生任何拷贝操作.函数接收的是对原始对象的直接引用,而不是任何形式的拷贝.</p>
+
+<p>然而,从底层实现的角度来看,引用在某种程度上可以被视为一个常量指针.当你创建一个引用并将其初始化为一个对象时,编译器会在底层创建一个指向该对象的常量指针.这个指针在初始化后就不能改变,它将一直指向初始化时的那个对象.因此,当你通过引用访问对象时,实际上是通过这个常量指针访问的.</p>
+
+<p>但是,这并不意味着引用是通过拷贝指针来实现的.引用的实现细节可能因编译器和平台的不同而不同,但是从语言的角度来看,引用并不涉及拷贝操作.</p>
+
+<h4 id="22-c的内存空间">2.2 c++的内存空间</h4>
+
+<ol>
+  <li><strong>代码段(Text Segment)</strong>:也被称为文本区域,这部分空间存储程序的机器代码.</li>
+  <li><strong>数据段(Data Segment)</strong>:这部分空间存储程序中的全局变量和静态变量.</li>
+  <li><strong>堆(Heap)</strong>:堆是用于动态内存分配的区域,如C++中的new操作符和C中的malloc函数分配的内存.</li>
+  <li><strong>栈(Stack)</strong>:栈用于存储局部变量和函数调用的信息.每当一个函数被调用时,一个新的栈帧就会被压入栈中,这个栈帧包含了函数的局部变量和返回地址.</li>
+  <li><strong>常量段(Constant Segment)</strong>:这部分空间存储程序中的常量值.</li>
+  <li><strong>BSS段(Block Started by Symbol)</strong>:这部分空间存储程序中未初始化的全局变量和静态变量.</li>
+</ol>
+
+<p>在多线程环境中,每个线程都有自己的栈空间,但所有线程共享同一个堆空间.
+需要注意的是,这些内存划分是逻辑上的划分,物理内存的实际布局可能会因操作系统和硬件的不同而有所不同.</p>
+
+<h5 id="221-c的对象内存空间">2.2.1 c++的对象内存空间</h5>
+<ul>
+  <li>一个类的成员函数并不是存储在每个类的实例中的.成员函数只有一份代码,它们存储在内存的代码段中,而不是每个对象的内存空间中.</li>
+  <li>每个对象中存储的是数据成员,而成员函数通过隐式参数this来访问这些数据成员.</li>
+  <li>除了数据成员，还有vptr</li>
+</ul>
+
+<h5 id="222-常量段和数据段为什么要分开">2.2.2 常量段和数据段为什么要分开?</h5>
+<p>常量段和数据段被分开主要是出于以下几个原因:</p>
+<ol>
+  <li><strong>保护</strong>:常量段中的数据是只读的,不应被修改.将常量段和数据段分开可以让操作系统设置不同的内存保护权限,防止程序错误地修改常量数据.</li>
+  <li><strong>优化</strong>:编译器和链接器可以对常量数据进行优化.例如,如果一个常量在程序中被多次使用,编译器可以只在常量段中存储一份该常量的副本.</li>
+  <li><strong>内存管理</strong>:在某些系统中,常量段可能被映射到只读的物理内存或者ROM中,这样可以节省可读写的物理内存.
+总的来说,将常量段和数据段分开可以提高程序的安全性和效率,同时也有助于内存管理.</li>
+</ol>
+
+<h5 id="223-bss段和数据段为什么要分开">2.2.3 bss段和数据段为什么要分开?</h5>
+<p>BSS段和数据段被分开主要是出于以下几个原因:</p>
+<ol>
+  <li><strong>初始化</strong>:数据段中的变量在程序开始运行之前就已经被初始化了,而BSS段中的变量则在程序开始运行时被自动初始化为0.将这两种变量分开可以让操作系统和编译器更有效地处理它们.</li>
+  <li><strong>存储优化</strong>:在程序的可执行文件中,BSS段的变量不需要占用任何实际的存储空间,只需要记录它们的位置和大小.这是因为BSS段的变量在程序开始运行时都会被初始化为0,所以没有必要在可执行文件中为它们存储实际的数据.这可以减小可执行文件的大小,节省磁盘空间.</li>
+  <li><strong>内存管理</strong>:将BSS段和数据段分开可以让操作系统更有效地管理内存.例如,操作系统可以将数据段映射到只读的物理内存中,而将BSS段映射到可读写的物理内存中.
+总的来说,将BSS段和数据段分开可以提高程序的效率,减小可执行文件的大小,同时也有助于内存管理.</li>
+</ol>
+
+<h5 id="223-多线程的内存空间是如何管理的">2.2.3. 多线程的内存空间是如何管理的</h5>
+<p>多线程的内存空间是怎么管理的?
+在C++中,每个线程都有自己的栈空间,这个栈空间是在线程创建时由操作系统自动分配的.线程的栈空间通常用于存储线程的局部变量和函数调用的上下文信息.</p>
+
+<p>线程的栈空间通常位于进程的虚拟地址空间中,每个线程的栈空间都是独立的,互不干扰.线程的栈空间大小通常有一个默认值,但是在某些系统和编程环境中,你可以在创建线程时指定栈空间的大小.</p>
+
+<p>需要注意的是,虽然每个线程都有自己的栈空间,但是所有线程共享同一个进程的堆空间.这意味着线程可以通过堆来共享数据,但是需要注意同步和数据一致性的问题.</p>
+
+<h3 id="99-exercise">99. Exercise</h3>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">}</span> <span class="p">};</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="o">*</span><span class="n">a</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="o">*</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="o">--</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">vec</span><span class="p">;</span>
+<span class="n">vec</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">idx</span> <span class="o">=</span> <span class="n">vec</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">idx</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">idx</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"===== </span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">erase</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">vec</span><span class="p">,</span> <span class="kt">int</span> <span class="n">a</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">iter</span> <span class="o">=</span> <span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">iter</span> <span class="o">!=</span> <span class="n">vec</span><span class="p">.</span><span class="n">end</span><span class="p">();)</span> <span class="p">{</span> <span class="c1">// 这个正确</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="n">iter</span> <span class="o">==</span> <span class="n">a</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">iter</span> <span class="o">=</span> <span class="n">vec</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">iter</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="o">++</span><span class="n">iter</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">iter</span> <span class="o">=</span> <span class="n">vec</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">iter</span> <span class="o">!=</span> <span class="n">vec</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">iter</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">// error</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="n">iter</span> <span class="o">==</span> <span class="n">a</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">vec</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">iter</span><span class="p">);</span> <span class="c1">// error</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="100-quiz">100. quiz</h3>
+<p>cc</p>
+
+<h4 id="10-shared_ptr的引用计数是怎么存储的">10. shared_ptr的引用计数是怎么存储的？</h4>
+
+<p><code class="language-plaintext highlighter-rouge">std::shared_ptr</code>通过一个控制块来存储引用计数。这个控制块通常包含两个计数器：一个是用于[<code class="language-plaintext highlighter-rouge">shared_ptr</code>]实例的共享引用计数，另一个是用于<code class="language-plaintext highlighter-rouge">weak_ptr</code>实例的弱引用计数。当创建一个[<code class="language-plaintext highlighter-rouge">shared_ptr</code>]或者将其赋值给另一个[<code class="language-plaintext highlighter-rouge">shared_ptr</code>]时，共享引用计数会增加。当[<code class="language-plaintext highlighter-rouge">shared_ptr</code>]被销毁或者重新赋值时，共享引用计数会减少。当共享引用计数达到0时，[<code class="language-plaintext highlighter-rouge">shared_ptr</code>]所管理的对象会被删除。而弱引用计数则用于管理<code class="language-plaintext highlighter-rouge">weak_ptr</code>的生命周期，不影响对象的生命周期。</p>
+
+<h4 id="12-怎么在vector变量的有效期内释放其中元素所占的内存">12. 怎么在vector变量的有效期内，释放其中元素所占的内存？</h4>
+
+<p>在<code class="language-plaintext highlighter-rouge">vector</code>变量的有效期内释放其中元素所占的内存，可以使用<code class="language-plaintext highlighter-rouge">vector::clear</code>方法清除所有元素，然后通过<code class="language-plaintext highlighter-rouge">vector::shrink_to_fit</code>请求释放未使用的内存。但是，<code class="language-plaintext highlighter-rouge">shrink_to_fit</code>是非强制性的，编译器可能不会释放内存。一个更可靠的方法是使用交换技巧，即创建一个临时空的<code class="language-plaintext highlighter-rouge">vector</code>并与原<code class="language-plaintext highlighter-rouge">vector</code>交换。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">v</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">};</span>
+<span class="n">v</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span> <span class="c1">// 清除所有元素</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">().</span><span class="n">swap</span><span class="p">(</span><span class="n">v</span><span class="p">);</span> <span class="c1">// 释放内存</span>
+</code></pre></div></div>
+
+<h4 id="19-core-dump的原因有哪些">19. core dump的原因有哪些？</h4>
+
+<p>Core dump是程序在运行过程中由于某些原因异常终止，而将其运行时的内存、寄存器状态、打开的文件、执行堆栈等信息保存下来的一种机制。以下是一些可能导致core dump的原因：</p>
+
+<ol>
+  <li>
+    <p><strong>访问非法内存</strong>：当程序试图访问未被分配（或已被释放）的内存时，可能会导致core dump。</p>
+  </li>
+  <li>
+    <p><strong>除以零</strong>：在程序中进行除以零的操作会导致core dump。</p>
+  </li>
+  <li>
+    <p><strong>内存溢出</strong>：当程序使用的内存超过了系统所能提供的内存时，可能会导致core dump。</p>
+  </li>
+  <li>
+    <p><strong>栈溢出</strong>：例如，递归调用深度过深，超过了系统所能提供的栈空间。</p>
+  </li>
+  <li>
+    <p><strong>使用未初始化的变量</strong>：这可能导致不可预测的行为，包括core dump。</p>
+  </li>
+  <li>
+    <p><strong>程序执行了非法指令</strong>：当CPU无法识别或执行程序的指令时，可能会导致core dump。</p>
+  </li>
+  <li>
+    <p><strong>程序在运行时动态链接库出错</strong>：如果程序依赖的动态链接库有问题，如版本不匹配、文件损坏等，可能会导致core dump。</p>
+  </li>
+</ol>
+
+<p>以上只是一些常见的原因，实际上可能导致core dump的原因有很多，具体还需要结合程序的具体情况进行分析。</p>
+
+<h4 id="27-以下四行代码中123是否可以修改">27. 以下四行代码中”123”是否可以修改?</h4>
+<p>const char*a=”123”;
+char *b=”123”;
+const char c[]=”123”;
+char d[]=“123”;
+第1，2行，”123”位于常量区，加不加const效果一样，都无法修改，而第三四行，”123”本来在栈上，但是由于const关键字编译器可能将其优化到常量区。总结:只有第四行可以修改。</p>
+
+<h4 id="29-c如何处理函数返回值">29. C++如何处理函数返回值？</h4>
+<p>生成一个临时变量，将它的引用作为函数输入参数。</p>
+
+<h4 id="30-stl分配器的理解stl的两级分配器的理解">30. stl分配器的理解？stl的两级分配器的理解？</h4>
+
+<p>STL（Standard Template Library，标准模板库）的分配器是一种用于控制内存分配和释放的接口。在STL中，所有的容器类（如<code class="language-plaintext highlighter-rouge">vector</code>、<code class="language-plaintext highlighter-rouge">list</code>、<code class="language-plaintext highlighter-rouge">map</code>等）都接受一个分配器类型作为模板参数，这使得用户可以自定义内存管理策略。</p>
+
+<p>STL的默认分配器<code class="language-plaintext highlighter-rouge">std::allocator</code>直接使用<code class="language-plaintext highlighter-rouge">new</code>和<code class="language-plaintext highlighter-rouge">delete</code>来分配和释放内存。然而，这种方法在处理大量小对象时可能会导致内存碎片和性能问题。</p>
+
+<p>为了解决这个问题，SGI STL（一种广泛使用的STL实现）引入了两级分配器。两级分配器的工作原理如下：</p>
+
+<ol>
+  <li>
+    <p><strong>一级分配器</strong>：当分配的内存大于128字节时，一级分配器直接使用<code class="language-plaintext highlighter-rouge">malloc</code>和<code class="language-plaintext highlighter-rouge">free</code>来分配和释放内存。</p>
+  </li>
+  <li>
+    <p><strong>二级分配器</strong>：当分配的内存小于或等于128字节时，二级分配器使用内存池来管理内存。内存池预先分配一大块内存，然后将其分割为多个小块供程序使用。这种策略可以减少内存分配和释放的开销，以及减少内存碎片。</p>
+  </li>
+</ol>
+
+<p>请注意，这只是SGI STL的实现方式，其他的STL实现可能会使用不同的内存管理策略。</p>
+
+<h4 id="31-c的内存池技术">31. c++的内存池技术</h4>
+
+<h4 id="32-介绍一下c虚拟内存分区">32. 介绍一下C++虚拟内存分区。</h4>
+<p>主要有六大区域：</p>
+<ul>
+  <li>代码段(.text)：保存程序二进制机器码，以及文本常量。</li>
+  <li>bss段(.bss)：又称全局静态变量区，存储全局变量和静态变量。</li>
+  <li>堆区：动态分配的对象，手动申请和释放。</li>
+  <li>文件映射区：存储动态链接库及mmap函数进行文件映射。</li>
+  <li>栈区：存储临时变量和局部变量，系统自动管理内存。</li>
+</ul>
+
+<h4 id="33-什么时候会发生段错误">33. 什么时候会发生段错误</h4>
+<p>段错误（Segmentation Fault）通常发生在以下情况：</p>
+<ol>
+  <li><strong>访问非法内存</strong>：尝试访问未分配给程序的内存地址，包括访问空指针解引用、越界访问数组等。</li>
+  <li><strong>写入只读内存</strong>：尝试修改只读内存区域的内容，如尝试修改字符串常量的值。</li>
+  <li><strong>栈溢出</strong>：函数调用过深，超出了栈的大小限制，导致栈溢出。</li>
+  <li><strong>访问已释放的内存</strong>：对已经调用<code class="language-plaintext highlighter-rouge">delete</code>或<code class="language-plaintext highlighter-rouge">free</code>释放的内存进行访问或操作。
+段错误是一种保护机制，操作系统通过它来防止程序执行非法的内存访问，保护程序的内存空间不被破坏。</li>
+</ol>
+
+<p>如何实现一个线程池?说一下基本思路即可!</p>
+
+<ul>
+  <li><a href="https://github.com/jiayaozhang/OpenVDB_and_TBB">热心观众整理的学习资料</a></li>
+  <li><a href="https://hackingcpp.com/">HackingCpp 图文教程</a></li>
+  <li><a href="http://faculty.cs.niu.edu/~winans/notes/patmc.pdf">Performance Analysis and Tuning on Modern CPUs</a></li>
+  <li><a href="https://www.bookstack.cn/read/Cpp_Concurrency_In_Action/README.md">C++ 并发编程实战</a></li>
+  <li><a href="http://csapp.cs.cmu.edu/">深入理解计算机原理 (CSAPP)</a></li>
+  <li><a href="https://www.bilibili.com/video/av48153629/">并行体系结构与编程 (CMU 15-418)</a></li>
+  <li><a href="https://www.inf.ed.ac.uk/teaching/courses/ppls/TBBtutorial.pdf">因特尔 TBB 编程指南</a></li>
+  <li><a href="https://cppinsights.io">实用网站 CppInsights 解构 C++ 语法糖</a></li>
+  <li><a href="http://godbolt.org">实用网站 GodBolt 查看不同编译器生成的汇编</a></li>
+</ul>
+
+    </div>
+
+    <div class="post__share">
+  <div class="share__head">
+    <div class="share__title">Share this Post</div>
+  </div>
+  <ul class="share__list list-reset">
+    <li class="share__item">
+      <a class="share__link share__twitter"
+        href="https://twitter.com/intent/tweet?text=cppQuiz&url=http://localhost:6060/blog/cppquiz.html"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__facebook"
+        href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:6060/blog/cppquiz.html"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__pinterest"
+        href="http://pinterest.com/pin/create/button/?url=http://localhost:6060/blog/cppquiz.html&amp;media=http://localhost:6060/images/post/post-1.jpg&amp;description=cppQuiz"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Pinterest" rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:6060/blog/cppquiz.html&title=cppQuiz&summary=&source=Vonge"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
+    </li>
+  </ul>
+</div>
+  </article>
+</div>
+<!-- end post -->
+
+<div class="container">
+  <div class="row">
+    <div class="col col-10 col-d-12 push-d-0 push-1">
+      <div class="post__navigation animate">
+  
+  <a class="post__prev" href="/blog/binarycompatbility.html">
+    <div class="prev__image">
+      <img loading="lazy" src="/images/post/post-10.jpg" alt="cppQuiz">
+    </div>
+    <div class="prev__box">
+      <span class="post__nav post__nav__prev">Prev post</span>
+      <h2 class="post__nav__title">binaryCompatbility</h2>
+    </div>
+  </a>
+  
+
+  
+  <a class="post__next" href="/blog/stringandunicode.html">
+    <div class="next__box">
+      <span class="post__nav post__nav__next">Next post</span>
+      <h2 class="post__nav__title">stringAndUnicode</h2>
+    </div>
+    <div class="next__image">
+      <img loading="lazy" src="/images/post/post-6.jpg" alt="cppQuiz">
+    </div>
+  </a>
+  
+</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- begin related posts -->
+<div class="container">
+  <section class="related-posts  animate">
+    <div class="row">
+      <div class="col col-12">
+        <div class="container__inner">
+          <div class="section__info">
+            <div class="section__head">
+              <h2 class="section__title">You may also like</h2>
+              <a class="section__link" href="/blog">
+                
+              </a>
+            </div>
+          </div>
+          <div class="row">
+
+          
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- end related posts -->
+
+
+
+
+    <!--
+        Bookshop components are accessed using the bookshop tag,
+        using the same syntax as the standard Jekyll include tag.
+    -->
+    <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
+
+<!--bookshop-live end-->
+
+    <div class="top" title="Top"><i class="ion ion-ios-arrow-up"></i></div>
+
+    <!-- begin footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+
+        <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+
+        <ul class="footer_nav list-reset">
+          
+          <li class="footer_nav__item">
+            <a href="/" class="footer_nav__link">Home</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/projects/" class="footer_nav__link">Projects</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/about/" class="footer_nav__link">About</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/blog/" class="footer_nav__link">Blog</a>
+          </li>
+          
+        </ul>
+
+        <div class="copyright"><p> 2021 &copy; <a href="/">Vonge</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
+
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- end footer -->
+
+    <script src="/js/scripts.js"></script>
+    <script src="/js/common.js"></script>
+</body>
+</html>

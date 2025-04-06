@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>内存运行</title>
+  <meta name='description' content='Marco’s Blog'>
+
+  <link rel="canonical" href="http://localhost:6060/blog/%E5%86%85%E5%AD%98%E8%BF%90%E8%A1%8C.html">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="内存运行 – Marco’s Blog">
+  <meta name="twitter:description" content="内存运行的基本原理
+">
+  <meta name="twitter:image:src" content="http://localhost:6060/images/post/post-66.jpg">
+
+  <!-- Facebook OpenGraph -->
+  <meta property="og:title" content="内存运行 – Marco’s Blog">
+  <meta property="og:description" content="内存运行的基本原理
+">
+  <meta property="og:image" content="http://localhost:6060/images/post/post-66.jpg">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Ionicons -->
+  <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/main.css">
+</head>
+
+<body>
+
+    
+
+    <!-- begin header -->
+<header class="c-header">
+  <div class="container">
+    <div class="row">
+      <div class="c-header__inner">
+
+        <div class="logo">
+          <a class="logo__link" href="/">
+          
+            <img class="logo__image" src="/images/mc_logo1.ico" alt="Marco’s Blog">
+          
+          </a>
+        </div>
+
+        <nav class="main-nav">
+          <div class="main-nav__box">
+
+            <div class="nav__icon-close">
+              <i class="ion ion-md-close"></i>
+            </div>
+
+            <div class="nav__title">Menu</div>
+
+              <ul class="nav__list list-reset">
+
+              
+                
+                <li class="nav__item">
+                  <a href="/" class="nav__link">Home</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/projects/" class="nav__link">Projects</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/blog/" class="nav__link">Blog</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/about/" class="nav__link">About</a>
+                </li>
+                
+              
+
+            </ul>
+          </div>
+
+          <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+        </nav>
+
+        <div class="nav-button">
+          <i class="nav__icon nav__icon-menu ion ion-md-menu"></i>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+<!-- end header -->
+
+    <div class="post-top">
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="col col-6 col-d-12">
+        <div class="post-image">
+          <img loading="lazy" src="/images/post/post-66.jpg" alt="内存运行">
+        </div>
+      </div>
+      
+
+      <div class="col col-6 col-d-12">
+        <div class="post__info">
+
+          
+
+          <h1 class="post__title">内存运行</h1>
+
+          <div class="post__meta">
+            <div class="post__author-image">
+              <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+            </div>
+
+            <div class="post__meta-bottom">
+              <div class="post__author">Marco Hwong</div>
+              <time class="post__date" datetime="2025-04-04T10:24:29+08:00">04 Apr 2025</time>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- begin post -->
+<div class="container-with-sidebar animate">
+  <div class="sidebar">
+    <div id="toc"></div>
+  </div>
+
+  <article class="post">
+    <div class="post__content">
+      <h2 id="内存运行的基本原理">内存运行的基本原理</h2>
+
+<ul>
+  <li>内存工作原理
+    <ul>
+      <li>内存中的cell按矩阵形排列，每一行和每一列都会有一个对应的行地址线路（正规叫法叫做word line）和列地址线路（正规叫法是bit line），每个具体的cell就挂接在这样的行地址线路和列地址线路上，对应一个唯一的行号和列号，把行号和列号组合在一起，就是内存的地址。</li>
+      <li>[video-内存的工作原理-内存是怎么存数据的？]
+        <ul>
+          <li>电容表示01，一个内存单元格1btye=8bit</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="1-内存的作用">1. 内存的作用</h3>
+
+<ul>
+  <li>
+    <p><strong>为什么要有内存？</strong>
+  程序的运行在内存上。
+  CPU 的处理速度远远快于磁盘，内存的主要作用是缓解 CPU 与硬盘之间的速度矛盾。如果没有内存，CPU 将不得不等待磁盘传输数据，这会浪费 CPU 的性能。</p>
+  </li>
+  <li><strong>程序的本质</strong>：
+    <ul>
+      <li>程序是指挥计算机运行和操作的一系列指令的集合，它包含命令段（指令序列）和数据段（存储程序运行所需的数据）。这些命令和数据本质上都是存储在存储介质中的信息。</li>
+      <li>程序中的命令段负责完成各种操作，如算术运算、逻辑判断、流程控制等，而数据段存储着程序运行过程中需要使用的变量、常量、数组等数据。</li>
+    </ul>
+  </li>
+  <li><strong>为什么内存比硬盘快？</strong>
+内存的速度之所以比硬盘快，是因为它们的存储原理和读取方式不同。硬盘是机械结构，通过磁头的转动读取数据，而内存是通过电存取数据的。
+    <ul>
+      <li>硬盘和内存作为不同的存储介质，具有显著差异。硬盘是基于磁性或固态存储技术，具有大容量但读写速度慢，适合长期存储大量数据；而内存是基于半导体存储技术，读写速度快，但容量相对较小且断电后数据丢失。</li>
+      <li>它们之间可以看作是一种存储容量、价格和 I/O 速度的权衡。硬盘的存储成本低但速度慢，适合存储不常访问的数据，而内存速度快但成本高，用于存储当前正在运行程序所需的指令和数据。</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="2-操作系统需要为内存提供什么能力">2. 操作系统需要为内存提供什么能力？</h3>
+
+<ul>
+  <li>操作系统需要为内存提供这些机制：
+    <ul>
+      <li>内存的装入和链接：
+        <ul>
+          <li>程序从硬盘到内存的过程，其中装入包括绝对装入（编译时已知程序在内存中的位置，按绝对地址装入）、可重定位装入（将逻辑地址在装入时转换为物理地址）、动态装入（将逻辑地址的转换推迟到程序执行时）等；链接包括静态链接（在程序运行前完成所有链接）、动态链接（包括装入时动态链接和运行时动态链接）等。</li>
+        </ul>
+      </li>
+      <li>内存分配与管理：
+        <ul>
+          <li>内存如何分配、回收，包括连续分配（如单一连续分配，将内存分为系统区和用户区，仅适用于单用户/单任务系统；固定分区分配，将用户空间划分为固定大小的分区；动态分区分配，根据进程大小动态建立分区）和非连续分配（如分页，将内存和进程空间划分为相等的页和页框；分段，将地址空间按程序逻辑关系划分为段；段页式，结合分段和分页）等。</li>
+        </ul>
+      </li>
+      <li>高级功能与优化：
+        <ul>
+          <li>虚拟内存：通过将磁盘空间作为物理内存的扩展，为程序提供比实际物理内存更大的虚拟地址空间，解决物理内存不足的问题。</li>
+          <li>内存保护：防止进程之间以及进程与操作系统之间的非法内存访问，确保系统的稳定性和安全性，通常通过硬件和软件结合实现。</li>
+          <li>高速缓存管理：利用高速缓存（Cache）来提高内存访问速度，减少 CPU 等待时间，包括多级缓存结构（如 L1、L2、L3 缓存）和缓存替换策略（如 LRU、FIFO 等）。</li>
+          <li>内存碎片整理：解决内存中出现的碎片问题，提高内存的利用率，包括内部碎片（如分页时页内未使用部分）和外部碎片（如动态分区分配产生的小空闲分区），可采用紧凑技术等。</li>
+          <li>共享内存：允许多个进程共享部分内存，以实现进程间的数据共享和通信，提高系统资源的利用率。</li>
+          <li>内存映射：将文件映射到内存，提高文件的访问效率，可用于大文件操作和进程间通信等。</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>小结</strong>
+    <ul>
+      <li>程序的本质上是存储介质的信息，是指挥计算机运行和操作的一系列指令的集合；</li>
+      <li>内存存在的意义是因为 cpu 速度和硬盘（存储介质）的速度不匹配；</li>
+      <li>内存的存储对象就是程序；</li>
+    </ul>
+  </li>
+</ul>
+
+
+    </div>
+
+    <div class="post__share">
+  <div class="share__head">
+    <div class="share__title">Share this Post</div>
+  </div>
+  <ul class="share__list list-reset">
+    <li class="share__item">
+      <a class="share__link share__twitter"
+        href="https://twitter.com/intent/tweet?text=%E5%86%85%E5%AD%98%E8%BF%90%E8%A1%8C&url=http://localhost:6060/blog/%E5%86%85%E5%AD%98%E8%BF%90%E8%A1%8C.html"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__facebook"
+        href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:6060/blog/%E5%86%85%E5%AD%98%E8%BF%90%E8%A1%8C.html"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__pinterest"
+        href="http://pinterest.com/pin/create/button/?url=http://localhost:6060/blog/%E5%86%85%E5%AD%98%E8%BF%90%E8%A1%8C.html&amp;media=http://localhost:6060/images/post/post-66.jpg&amp;description=%E5%86%85%E5%AD%98%E8%BF%90%E8%A1%8C"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Pinterest" rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:6060/blog/%E5%86%85%E5%AD%98%E8%BF%90%E8%A1%8C.html&title=%E5%86%85%E5%AD%98%E8%BF%90%E8%A1%8C&summary=&source=Vonge"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
+    </li>
+  </ul>
+</div>
+  </article>
+</div>
+<!-- end post -->
+
+<div class="container">
+  <div class="row">
+    <div class="col col-10 col-d-12 push-d-0 push-1">
+      <div class="post__navigation animate">
+  
+  <a class="post__prev" href="/blog/pc-arichtecture.html">
+    <div class="prev__image">
+      <img loading="lazy" src="/images/post/post-72.jpg" alt="内存运行">
+    </div>
+    <div class="prev__box">
+      <span class="post__nav post__nav__prev">Prev post</span>
+      <h2 class="post__nav__title">pc_arichtecture</h2>
+    </div>
+  </a>
+  
+
+  
+  <a class="post__next" href="/blog/%E5%86%85%E5%AD%98%E9%93%BE%E6%8E%A5%E4%B8%8E%E5%86%85%E5%AD%98%E8%A3%85%E5%85%A5.html">
+    <div class="next__box">
+      <span class="post__nav post__nav__next">Next post</span>
+      <h2 class="post__nav__title">内存链接与内存装入</h2>
+    </div>
+    <div class="next__image">
+      <img loading="lazy" src="/images/post/post-60.jpg" alt="内存运行">
+    </div>
+  </a>
+  
+</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- begin related posts -->
+<div class="container">
+  <section class="related-posts  animate">
+    <div class="row">
+      <div class="col col-12">
+        <div class="container__inner">
+          <div class="section__info">
+            <div class="section__head">
+              <h2 class="section__title">You may also like</h2>
+              <a class="section__link" href="/blog">
+                
+              </a>
+            </div>
+          </div>
+          <div class="row">
+
+          
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- end related posts -->
+
+
+
+
+    <!--
+        Bookshop components are accessed using the bookshop tag,
+        using the same syntax as the standard Jekyll include tag.
+    -->
+    <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
+
+<!--bookshop-live end-->
+
+    <div class="top" title="Top"><i class="ion ion-ios-arrow-up"></i></div>
+
+    <!-- begin footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+
+        <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+
+        <ul class="footer_nav list-reset">
+          
+          <li class="footer_nav__item">
+            <a href="/" class="footer_nav__link">Home</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/projects/" class="footer_nav__link">Projects</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/about/" class="footer_nav__link">About</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/blog/" class="footer_nav__link">Blog</a>
+          </li>
+          
+        </ul>
+
+        <div class="copyright"><p> 2021 &copy; <a href="/">Vonge</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
+
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- end footer -->
+
+    <script src="/js/scripts.js"></script>
+    <script src="/js/common.js"></script>
+</body>
+</html>

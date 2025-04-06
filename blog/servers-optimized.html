@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>servers_optimized</title>
+  <meta name='description' content='Marco’s Blog'>
+
+  <link rel="canonical" href="http://localhost:6060/blog/servers-optimized.html">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="servers_optimized – Marco’s Blog">
+  <meta name="twitter:description" content="系统性能优化
+">
+  <meta name="twitter:image:src" content="http://localhost:6060/images/post/post-55.jpg">
+
+  <!-- Facebook OpenGraph -->
+  <meta property="og:title" content="servers_optimized – Marco’s Blog">
+  <meta property="og:description" content="系统性能优化
+">
+  <meta property="og:image" content="http://localhost:6060/images/post/post-55.jpg">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Ionicons -->
+  <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/main.css">
+</head>
+
+<body>
+
+    
+
+    <!-- begin header -->
+<header class="c-header">
+  <div class="container">
+    <div class="row">
+      <div class="c-header__inner">
+
+        <div class="logo">
+          <a class="logo__link" href="/">
+          
+            <img class="logo__image" src="/images/mc_logo1.ico" alt="Marco’s Blog">
+          
+          </a>
+        </div>
+
+        <nav class="main-nav">
+          <div class="main-nav__box">
+
+            <div class="nav__icon-close">
+              <i class="ion ion-md-close"></i>
+            </div>
+
+            <div class="nav__title">Menu</div>
+
+              <ul class="nav__list list-reset">
+
+              
+                
+                <li class="nav__item">
+                  <a href="/" class="nav__link">Home</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/projects/" class="nav__link">Projects</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/blog/" class="nav__link">Blog</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/about/" class="nav__link">About</a>
+                </li>
+                
+              
+
+            </ul>
+          </div>
+
+          <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+        </nav>
+
+        <div class="nav-button">
+          <i class="nav__icon nav__icon-menu ion ion-md-menu"></i>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+<!-- end header -->
+
+    <div class="post-top">
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="col col-6 col-d-12">
+        <div class="post-image">
+          <img loading="lazy" src="/images/post/post-55.jpg" alt="servers_optimized">
+        </div>
+      </div>
+      
+
+      <div class="col col-6 col-d-12">
+        <div class="post__info">
+
+          
+
+          <h1 class="post__title">servers_optimized</h1>
+
+          <div class="post__meta">
+            <div class="post__author-image">
+              <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+            </div>
+
+            <div class="post__meta-bottom">
+              <div class="post__author">Marco Hwong</div>
+              <time class="post__date" datetime="2025-02-25T22:07:21+08:00">25 Feb 2025</time>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- begin post -->
+<div class="container-with-sidebar animate">
+  <div class="sidebar">
+    <div id="toc"></div>
+  </div>
+
+  <article class="post">
+    <div class="post__content">
+      <h1 id="系统性能优化">系统性能优化</h1>
+
+<h2 id="性能优化现象和判断">性能优化现象和判断</h2>
+
+<ul>
+  <li>提出性能优化现象
+    <ul>
+      <li>前台访问很慢，请帮忙分析优化</li>
+      <li>用户对性能很不满意，再不解决就要投诉</li>
+      <li>数据库负载很重，请帮忙分析一下</li>
+      <li>xxx功能打开需要1分钟，请帮忙分析一下</li>
+    </ul>
+  </li>
+  <li>在接到这些性能优化的时候，运维工程师希望能够了解下面的信息以判断问题的类型：
+    <ul>
+      <li>系统性问题：<strong>比如CPU利用率，SWAP利用率，或者IO过高导致的整体性能下降</strong></li>
+      <li>功能性问题：整体性能良好，个别功能时延很长</li>
+      <li>新出现问题：什么时候开始的？之前系统有哪些变动？（升级或者管理的资源大量增加）</li>
+      <li>不规律问题：有时候快，有时候慢，没有特定的规律</li>
+      <li>性能快慢的衡量标准是什么？原来多少秒，现在多少秒，目标是多少秒？</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="性能分析目的">性能分析目的</h2>
+
+<ul>
+  <li>Linux性能分析的目的
+    <ul>
+      <li>找出系统性能瓶颈（包括硬件瓶颈和软件瓶颈）</li>
+      <li>提供性能优化方案（升级硬件？改进系统结构？）</li>
+      <li>达到合理的硬件和软件配置</li>
+      <li>使系统资源使用达到最大的平衡</li>
+    </ul>
+  </li>
+  <li>一般情况下系统良好运行的时候恰恰各项资源达到了一个平衡状态，任何一项资源的过度使用都会造成平衡体系破坏，从而造成系统负载极高或者响应迟缓</li>
+  <li><strong>比如cpu过度使用会造成大量进程等待cpu资源，系统响应变慢，等待会造成进程数增加，进程增加又会造成内存使用增加，内存耗尽又会造成虚拟内存使用，使用虚拟内存又会造成磁盘IO增加和cpu开销增加</strong></li>
+</ul>
+
+<h2 id="性能分析步骤">性能分析步骤</h2>
+
+<h3 id="需要系统监控工具和性能分析工具">需要系统监控工具和性能分析工具</h3>
+
+<ul>
+  <li>对资源使用状况进行长期的监控和数据采集（nagios、cacti、ganglia、zabbix）</li>
+  <li>使用常见的性能分析工具（<strong>vmstat</strong>、<strong>top</strong>、htop、<strong>iotop</strong>、<strong>free</strong>、<strong>iostat</strong>、<strong>ifstat</strong>等）</li>
+  <li>实战技能和经验积累</li>
+</ul>
+
+<h3 id="出现性能问题的可能原因">出现性能问题的可能原因</h3>
+
+<ul>
+  <li>应用程序设计的缺陷和数据库查询的滥用最可能导致性能问题</li>
+  <li>性能瓶颈可能使因为程序差、内存不足、磁盘瓶颈，但最终表现出的结构就是cpu耗尽，系统负载极高，响应迟缓，甚至暂时失去响应</li>
+  <li>物理内存不够时会使用交换内存，使用swap会带来磁盘io和cpu的开销</li>
+  <li>可能造成cpu瓶颈的问题：频繁执行perl，php，java程序生成动态web；数据库查询大量where子句、order by、group by排序等</li>
+  <li>可能造成内存瓶颈的问题：高并发用户访问、系统进程多、java内存泄漏等</li>
+  <li>可能造成磁盘io瓶颈的问题：生成cache文件，数据库频繁更新，或者查询大表等</li>
+</ul>
+
+<h2 id="影响linux性能的因素">影响linux性能的因素</h2>
+
+<ul>
+  <li>cpu
+    <ul>
+      <li>cpu使操作系统稳定运行的根本，cpu的速度与性能在很大程度上决定了系统整体的性能，因此，cpu数量越多、主频越高，服务器性能就相对越好，但事实并非如此</li>
+      <li>目前大vu分cpu在同一时间内只能运行一个进程，超线程的处理器可以在同一时间运行多个线程，因此可以利用处理器的超线程特性提高系统性能。另外，linux内核会把多核的处理器当作多个单独的cpu来识别，例如两个4核的cpu，在linux系统中会被当做8个单核cpu。但是从cpu性能角度来说，两个4核的cpu喝8个单核的cpu并不完全等价，根据权威部门得出的测试结论，前者的整体性能要比后者低25%~30%</li>
+      <li>可能出现cpu性能瓶颈的应用有邮件服务器、动态web服务器等，对于这列应用，要把cpu的配置和性能放在主要位置</li>
+    </ul>
+  </li>
+  <li>内存
+    <ul>
+      <li>内存的大小也是影响linux性能的一个重要因素，内存太小，系统进程将被阻塞，应用也会变得缓慢，甚至失去响应；内存太大，导致资源浪费。linux系统采用了物理内存和虚拟内存两种方式，虚拟内存虽然可以缓解物理内存的不足，但是占用过多的虚拟内存，应用程序的性能将明显下降，要保证应用程序的高性能运行，物理内存一定要够大</li>
+      <li>可能出现内存性能瓶颈的应用有redis内存数据库服务器、cache服务器、静态web服务器等，对于这类应用要把内存大小放在主要位置</li>
+    </ul>
+  </li>
+  <li>磁盘IO性能
+    <ul>
+      <li>磁盘的io性能直接影响应用程序的性能，在一个有频繁读写的应用中，如果磁盘io性能得不到满足，就会导致应用停滞。好在如今的磁盘都采用了很多方法来提高io性能，比如常见的磁盘RAID技术</li>
+      <li>根据磁盘组合方式的不同，RAID可以分为RAID0、RAID1、RAID2、RAID3、RAID4、RAID5、RAID6、RAID7、RAID0+1、RAID10等级别，常用的RAID级别有RAID0、RAID1、RAID5、RAID0+1</li>
+      <li>RAID0：这种方式成本低，没有容错和数据修复功能，因而只能用在对数据安全性要求不高的环境中</li>
+      <li>RAID1：也就是磁盘镜像，通过把一个磁盘的数据镜像到另一个磁盘上，最大限度地保证磁盘数据的可靠性和可修复性，具有很高的数据冗余能力，但磁盘利用率只有50%，因而，成本最高，多用在保存重要数据的场合</li>
+      <li>RAID5：采用了磁盘分段加奇偶校验技术，从而提高了系统可靠性，RAID5读出效率很高，写入效率一般，至少需要3块盘。允许一块磁盘  故障，而不影响数据的可用性</li>
+      <li>RAID0+1：把RAID0和RAID1技术结合起来就成了RAID0+1，至少需要4个硬盘。此种方式的数据除了分布在多个盘上外，每个磁盘都有其镜像盘，提供全冗余能力，同时允许一个磁盘故障，而不影响数据可用性，并具有快速读、写能力</li>
+      <li>通过了解各个RAID级别的性能，可以根据应用的不同特性，选择适合自身的RAID级别，从而保证应用程序在磁盘方面达到最优性能</li>
+      <li>目前常用的磁盘类型有STAT、SAS、SSD磁盘，STAT、SAS使普通磁盘，读写效率一般，如果要保证高性能的写操作，可以采用SSD固态磁盘，读写速度可达600MB/s</li>
+    </ul>
+  </li>
+  <li>网络带宽
+    <ul>
+      <li>网络带宽也是影响性能的一个重要因素，低俗的、不稳定的网络将导致网络应用程序的访问阻塞，而稳定、高速的网络带宽，可以保证应用程序在网络上畅通无阻地运行。幸运地是，现在网络一般都是千兆带宽或光纤网络，带宽问题对应用程序性能造成的影响也在逐步降低</li>
+      <li>组件网络时，如果局域网内有大量数据传输需求（hadoop大数据业务、数据库业务），可采用千兆、万兆网络接口，针对每个服务器，如果单网卡效率不够，可采用双网卡绑定技术，提高网卡数据传输带宽和性能</li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="数据库瓶颈问题">数据库瓶颈问题</h1>
+
+<ul>
+  <li>
+    <p>上层业务逻辑大并发访问数据库，数据库服务器无法短时间内处理所有请求</p>
+  </li>
+  <li>
+    <p>解决办法(中间加一层)：</p>
+
+    <ul>
+      <li>队列+连接池，建立数据库连接池，将所有请求入队，数据库服务器按本身处理速度从队列中取请求执行</li>
+      <li>主要业务逻辑计算挪到应用服务器处理，数据库直左辅助查询业务处理</li>
+      <li>
+        <p>缓存：如redis等能扛高并发的中间件缓存，先查询缓存，再查询数据库，这又会引起缓存同步问题</p>
+      </li>
+      <li>数据库读写分离、负载均衡：数据库读操作»写操作</li>
+      <li>数据分区(分库、分表)
+        <ul>
+          <li>分库：数据库可以按照一定的逻辑，把表分散到不同的数据库，也称垂直分区</li>
+          <li>分表：将一个表的数据分到多个表存储，查询时按照某种规则(如hash)定位数据所在表进行查询，也称为水平分区</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>应用服务器负载均衡</p>
+    <ul>
+      <li>增加一个任务服务器(如nginx)实现，任务服务器可以监视应用服务器的负载，检测其是cpu负载高，还是IO、并发、内存换页高</li>
+      <li>查询到这些信息后，选取负载最低的服务器分配任务</li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="服务器性能四大杀手">服务器性能四大杀手</h1>
+
+<ul>
+  <li>数据拷贝：使用缓存机制，指的是服务器内部的缓存，如内核空间到用户空间的缓存</li>
+  <li>
+    <p>环境切换：线程切换开销，理性创建线程</p>
+  </li>
+  <li>内存分配：内存池，减少内存分配，向操作系统申请内存</li>
+  <li>锁竞争：避免锁使用</li>
+</ul>
+
+<h1 id="大型网站架构演变过程">大型网站架构演变过程</h1>
+
+<h2 id="web服务器与数据库分离">Web服务器与数据库分离</h2>
+
+<ul>
+  <li>将Web服务器与数据库服务部署到不同的物理服务器上，避免造成二者互相影响性能</li>
+</ul>
+
+<h2 id="web动静资源分离">Web动静资源分离</h2>
+
+<ul>
+  <li>静态资源：html、js、css、images等</li>
+  <li>动态资源：jsp、php等</li>
+  <li>静态服务器：Apache、Nginx等</li>
+  <li>动态(应用)服务器：Tomcat、Jetty等</li>
+  <li>静态页面可以缓存在前端(静态)服务器中，动态请求则转发到后端(动态应用)服务器处理业务逻辑，实现动静分离</li>
+</ul>
+
+<h2 id="缓存处理">缓存处理</h2>
+
+<ul>
+  <li>客户端(浏览器)缓存</li>
+  <li>前端页面缓存(squid)</li>
+  <li>页面片段缓存ESI(Edge Side Includes)</li>
+  <li>本地数据缓存</li>
+  <li>数据库缓存</li>
+  <li>…</li>
+</ul>
+
+<h2 id="web-server集群读写分离">Web Server集群+读写分离</h2>
+
+<p><img src="imgs/important_tech/cluster_read_write_split.png" alt="cluster_read_write_split" style="zoom:67%;" /></p>
+
+<h2 id="cdn分布式缓存分库分表">CDN、分布式缓存、分库分表</h2>
+
+<ul>
+  <li>CDN</li>
+</ul>
+
+<p><img src="imgs/important_tech/cdn.png" alt="cdn" style="zoom:67%;" /></p>
+
+<ul>
+  <li>
+    <p>分布式缓存</p>
+
+    <p><img src="imgs/important_tech/dist_cache.png" alt="dist_cache" style="zoom:67%;" /></p>
+  </li>
+  <li>
+    <p>垂直分区</p>
+
+    <p><img src="imgs/important_tech/vertical_split.png" alt="vertical_split" style="zoom:67%;" /></p>
+  </li>
+  <li>
+    <p>水平分区</p>
+
+    <p><img src="imgs/important_tech/horizontal_split.png" alt="horizontal_split" style="zoom:67%;" /></p>
+  </li>
+</ul>
+
+<h2 id="多数据中心分布式存储与计算">多数据中心+分布式存储与计算</h2>
+
+<p><img src="imgs/important_tech/dist_data.png" alt="dist_data" style="zoom:80%;" /></p>
+
+<h4 id="33-单条记录高并发访问的优化">(33) 单条记录高并发访问的优化</h4>
+<p>服务器端:</p>
+<ul>
+  <li>使用缓存,如redis等</li>
+  <li>使用分布式架构进行处理</li>
+  <li>将静态页面和静态资源存储在静态资源服务器,需要处理的数据使用服务器进行计算后返回</li>
+  <li>将静态资源尽可能在客户端进行缓存</li>
+  <li>采用ngnix进行负载均衡 (nginx读作恩静埃克斯 = Engine X)</li>
+</ul>
+
+<p>数据库端:</p>
+<ul>
+  <li>数据库采用主从赋值,读写分离措施</li>
+  <li>建立适当的索引</li>
+  <li>分库分表</li>
+</ul>
+
+    </div>
+
+    <div class="post__share">
+  <div class="share__head">
+    <div class="share__title">Share this Post</div>
+  </div>
+  <ul class="share__list list-reset">
+    <li class="share__item">
+      <a class="share__link share__twitter"
+        href="https://twitter.com/intent/tweet?text=servers_optimized&url=http://localhost:6060/blog/servers-optimized.html"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__facebook"
+        href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:6060/blog/servers-optimized.html"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__pinterest"
+        href="http://pinterest.com/pin/create/button/?url=http://localhost:6060/blog/servers-optimized.html&amp;media=http://localhost:6060/images/post/post-55.jpg&amp;description=servers_optimized"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Pinterest" rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:6060/blog/servers-optimized.html&title=servers_optimized&summary=&source=Vonge"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
+    </li>
+  </ul>
+</div>
+  </article>
+</div>
+<!-- end post -->
+
+<div class="container">
+  <div class="row">
+    <div class="col col-10 col-d-12 push-d-0 push-1">
+      <div class="post__navigation animate">
+  
+  <a class="post__prev" href="/blog/select.html">
+    <div class="prev__image">
+      <img loading="lazy" src="/images/post/post-51.jpg" alt="servers_optimized">
+    </div>
+    <div class="prev__box">
+      <span class="post__nav post__nav__prev">Prev post</span>
+      <h2 class="post__nav__title">select</h2>
+    </div>
+  </a>
+  
+
+  
+  <a class="post__next" href="/blog/socket.html">
+    <div class="next__box">
+      <span class="post__nav post__nav__next">Next post</span>
+      <h2 class="post__nav__title">socket</h2>
+    </div>
+    <div class="next__image">
+      <img loading="lazy" src="/images/post/post-50.jpg" alt="servers_optimized">
+    </div>
+  </a>
+  
+</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- begin related posts -->
+<div class="container">
+  <section class="related-posts  animate">
+    <div class="row">
+      <div class="col col-12">
+        <div class="container__inner">
+          <div class="section__info">
+            <div class="section__head">
+              <h2 class="section__title">You may also like</h2>
+              <a class="section__link" href="/blog">
+                
+              </a>
+            </div>
+          </div>
+          <div class="row">
+
+          
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- end related posts -->
+
+
+
+
+    <!--
+        Bookshop components are accessed using the bookshop tag,
+        using the same syntax as the standard Jekyll include tag.
+    -->
+    <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
+
+<!--bookshop-live end-->
+
+    <div class="top" title="Top"><i class="ion ion-ios-arrow-up"></i></div>
+
+    <!-- begin footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+
+        <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+
+        <ul class="footer_nav list-reset">
+          
+          <li class="footer_nav__item">
+            <a href="/" class="footer_nav__link">Home</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/projects/" class="footer_nav__link">Projects</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/about/" class="footer_nav__link">About</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/blog/" class="footer_nav__link">Blog</a>
+          </li>
+          
+        </ul>
+
+        <div class="copyright"><p> 2021 &copy; <a href="/">Vonge</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
+
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- end footer -->
+
+    <script src="/js/scripts.js"></script>
+    <script src="/js/common.js"></script>
+</body>
+</html>

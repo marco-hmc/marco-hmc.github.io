@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>template_advanced</title>
+  <meta name='description' content='Marco’s Blog'>
+
+  <link rel="canonical" href="http://localhost:6060/blog/template-advanced.html">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="template_advanced – Marco’s Blog">
+  <meta name="twitter:description" content="模板-进阶内容
+">
+  <meta name="twitter:image:src" content="http://localhost:6060/images/post/post-21.jpg">
+
+  <!-- Facebook OpenGraph -->
+  <meta property="og:title" content="template_advanced – Marco’s Blog">
+  <meta property="og:description" content="模板-进阶内容
+">
+  <meta property="og:image" content="http://localhost:6060/images/post/post-21.jpg">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Ionicons -->
+  <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/main.css">
+</head>
+
+<body>
+
+    
+
+    <!-- begin header -->
+<header class="c-header">
+  <div class="container">
+    <div class="row">
+      <div class="c-header__inner">
+
+        <div class="logo">
+          <a class="logo__link" href="/">
+          
+            <img class="logo__image" src="/images/mc_logo1.ico" alt="Marco’s Blog">
+          
+          </a>
+        </div>
+
+        <nav class="main-nav">
+          <div class="main-nav__box">
+
+            <div class="nav__icon-close">
+              <i class="ion ion-md-close"></i>
+            </div>
+
+            <div class="nav__title">Menu</div>
+
+              <ul class="nav__list list-reset">
+
+              
+                
+                <li class="nav__item">
+                  <a href="/" class="nav__link">Home</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/projects/" class="nav__link">Projects</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/blog/" class="nav__link">Blog</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/about/" class="nav__link">About</a>
+                </li>
+                
+              
+
+            </ul>
+          </div>
+
+          <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+        </nav>
+
+        <div class="nav-button">
+          <i class="nav__icon nav__icon-menu ion ion-md-menu"></i>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+<!-- end header -->
+
+    <div class="post-top">
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="col col-6 col-d-12">
+        <div class="post-image">
+          <img loading="lazy" src="/images/post/post-21.jpg" alt="template_advanced">
+        </div>
+      </div>
+      
+
+      <div class="col col-6 col-d-12">
+        <div class="post__info">
+
+          
+          <div class="post-tags">
+            
+            <a href="/tag/template" class="post-tags__tag">template</a>
+            
+          </div>
+          
+
+          <h1 class="post__title">template_advanced</h1>
+
+          <div class="post__meta">
+            <div class="post__author-image">
+              <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+            </div>
+
+            <div class="post__meta-bottom">
+              <div class="post__author">Marco Hwong</div>
+              <time class="post__date" datetime="2025-04-06T14:43:48+08:00">06 Apr 2025</time>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- begin post -->
+<div class="container-with-sidebar animate">
+  <div class="sidebar">
+    <div id="toc"></div>
+  </div>
+
+  <article class="post">
+    <div class="post__content">
+      <h2 id="模板-进阶内容">模板-进阶内容</h2>
+
+<h3 id="7-c11141720-中的模板新特性">7. <strong>C++11/14/17/20 中的模板新特性</strong></h3>
+
+<p>C++11、C++14、C++17 和 C++20 引入了许多新的模板特性，使得模板编程更加灵活和强大。以下是这些新特性的逐条解释：</p>
+
+<h3 id="71-c11-中的模板新特性">7.1 C++11 中的模板新特性</h3>
+
+<h4 id="711-变参模板variadic-templates">7.1.1 变参模板（Variadic Templates）</h4>
+
+<p>变参模板允许模板接受任意数量的模板参数。这使得编写泛型代码更加灵活，特别是在处理不定数量的参数时。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="kt">void</span> <span class="nf">print</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"End of recursion"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span><span class="o">...</span> <span class="nc">Args</span><span class="p">&gt;</span>
+<span class="kt">void</span> <span class="nf">print</span><span class="p">(</span><span class="n">T</span> <span class="n">first</span><span class="p">,</span> <span class="n">Args</span><span class="p">...</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">first</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">print</span><span class="p">(</span><span class="n">args</span><span class="p">...);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">print</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="s">"Hello"</span><span class="p">,</span> <span class="sc">'c'</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="73-c17-中的模板新特性">7.3 C++17 中的模板新特性</h3>
+
+<h4 id="731-折叠表达式fold-expressions">7.3.1 折叠表达式（Fold Expressions）</h4>
+
+<p>折叠表达式是 C++17 引入的一种语法，用于简化变参模板中的递归操作。折叠表达式可以对参数包进行折叠，生成一个单一的表达式。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span><span class="o">...</span> <span class="nc">Args</span><span class="p">&gt;</span>
+<span class="k">auto</span> <span class="nf">sum</span><span class="p">(</span><span class="n">Args</span><span class="p">...</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">args</span> <span class="o">+</span> <span class="p">...);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>类型擦除
+表达式模板</p>
+
+<h2 id="表达式模板expression-template">表达式模板（Expression Template）</h2>
+
+<h3 id="表达式模板支持对数组像内置类型一样进行数值运算并且不会产生临时对象">表达式模板支持对数组像内置类型一样进行数值运算，并且不会产生临时对象</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;cassert&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;cstddef&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;type_traits&gt;</span><span class="cp">
+</span>
+<span class="k">namespace</span> <span class="n">jc</span> <span class="p">{</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">SArray</span> <span class="p">{</span>
+ <span class="nl">public:</span>
+  <span class="k">explicit</span> <span class="n">SArray</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">sz</span><span class="p">)</span> <span class="o">:</span> <span class="n">data_</span><span class="p">(</span><span class="k">new</span> <span class="n">T</span><span class="p">[</span><span class="n">sz</span><span class="p">]),</span> <span class="n">sz_</span><span class="p">(</span><span class="n">sz</span><span class="p">)</span> <span class="p">{</span> <span class="n">init</span><span class="p">();</span> <span class="p">}</span>
+
+  <span class="n">SArray</span><span class="p">(</span><span class="k">const</span> <span class="n">SArray</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span> <span class="n">rhs</span><span class="p">)</span> <span class="o">:</span> <span class="n">data_</span><span class="p">(</span><span class="k">new</span> <span class="n">T</span><span class="p">[</span><span class="n">rhs</span><span class="p">.</span><span class="n">sz_</span><span class="p">]),</span> <span class="n">sz_</span><span class="p">(</span><span class="n">rhs</span><span class="p">.</span><span class="n">sz_</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">copy</span><span class="p">(</span><span class="n">rhs</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="n">SArray</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">SArray</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span> <span class="n">rhs</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">rhs</span> <span class="o">!=</span> <span class="k">this</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">copy</span><span class="p">(</span><span class="n">rhs</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="o">~</span><span class="n">SArray</span><span class="p">()</span> <span class="p">{</span> <span class="k">delete</span><span class="p">[]</span> <span class="n">data_</span><span class="p">;</span> <span class="p">}</span>
+
+  <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">size</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">sz_</span><span class="p">;</span> <span class="p">}</span>
+
+  <span class="n">T</span><span class="o">&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">data_</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="p">}</span>
+
+  <span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">data_</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="p">}</span>
+
+  <span class="n">SArray</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span> <span class="k">operator</span><span class="o">+=</span><span class="p">(</span><span class="k">const</span> <span class="n">SArray</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span> <span class="n">rhs</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">sz_</span> <span class="o">==</span> <span class="n">rhs</span><span class="p">.</span><span class="n">sz_</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">sz_</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+      <span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">)[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">rhs</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="n">SArray</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span> <span class="k">operator</span><span class="o">*=</span><span class="p">(</span><span class="k">const</span> <span class="n">SArray</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span> <span class="n">rhs</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">sz_</span> <span class="o">==</span> <span class="n">rhs</span><span class="p">.</span><span class="n">sz_</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">sz_</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+      <span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">)[</span><span class="n">i</span><span class="p">]</span> <span class="o">*=</span> <span class="n">rhs</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="n">SArray</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span> <span class="k">operator</span><span class="o">*=</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">sz_</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+      <span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">)[</span><span class="n">i</span><span class="p">]</span> <span class="o">*=</span> <span class="n">rhs</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+  <span class="p">}</span>
+
+ <span class="k">protected</span><span class="o">:</span>
+  <span class="kt">void</span> <span class="nf">init</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">sz_</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">data_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">T</span><span class="p">{};</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="kt">void</span> <span class="nf">copy</span><span class="p">(</span><span class="k">const</span> <span class="n">SArray</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span> <span class="n">rhs</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">sz_</span> <span class="o">==</span> <span class="n">rhs</span><span class="p">.</span><span class="n">sz_</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">sz_</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">data_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">rhs</span><span class="p">.</span><span class="n">data_</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+ <span class="k">private</span><span class="o">:</span>
+  <span class="n">T</span><span class="o">*</span> <span class="n">data_</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">sz_</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="n">SArray</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="k">operator</span><span class="o">+</span><span class="p">(</span><span class="k">const</span> <span class="n">SArray</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="k">const</span> <span class="n">SArray</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span> <span class="n">rhs</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">assert</span><span class="p">(</span><span class="n">lhs</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="n">rhs</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+  <span class="n">SArray</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">res</span><span class="p">{</span><span class="n">lhs</span><span class="p">.</span><span class="n">size</span><span class="p">()};</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">lhs</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">lhs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">rhs</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="n">res</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="n">SArray</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="k">operator</span><span class="o">*</span><span class="p">(</span><span class="k">const</span> <span class="n">SArray</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="k">const</span> <span class="n">SArray</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span> <span class="n">rhs</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">assert</span><span class="p">(</span><span class="n">lhs</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="n">rhs</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+  <span class="n">SArray</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">res</span><span class="p">{</span><span class="n">lhs</span><span class="p">.</span><span class="n">size</span><span class="p">()};</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">lhs</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">lhs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">rhs</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="n">res</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="n">SArray</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="k">operator</span><span class="o">*</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="k">const</span> <span class="n">SArray</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span> <span class="n">rhs</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">SArray</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">res</span><span class="p">{</span><span class="n">rhs</span><span class="p">.</span><span class="n">size</span><span class="p">()};</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">rhs</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">lhs</span> <span class="o">*</span> <span class="n">rhs</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="n">res</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">A_Scalar</span> <span class="p">{</span>
+ <span class="nl">public:</span>
+  <span class="k">constexpr</span> <span class="n">A_Scalar</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="o">:</span> <span class="n">value_</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="p">{}</span>
+
+  <span class="k">constexpr</span> <span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">value_</span><span class="p">;</span> <span class="p">}</span>
+
+  <span class="k">constexpr</span> <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">size</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span> <span class="p">};</span>
+
+ <span class="k">private</span><span class="o">:</span>
+  <span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">value_</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">struct</span> <span class="nc">A_Traits</span> <span class="p">{</span>
+  <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">struct</span> <span class="nc">A_Traits</span><span class="o">&lt;</span><span class="n">A_Scalar</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span> <span class="p">{</span>
+  <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="n">A_Scalar</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">OP1</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">OP2</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">A_Add</span> <span class="p">{</span>
+ <span class="nl">public:</span>
+  <span class="n">A_Add</span><span class="p">(</span><span class="k">const</span> <span class="n">OP1</span><span class="o">&amp;</span> <span class="n">op1</span><span class="p">,</span> <span class="k">const</span> <span class="n">OP2</span><span class="o">&amp;</span> <span class="n">op2</span><span class="p">)</span> <span class="o">:</span> <span class="n">op1_</span><span class="p">(</span><span class="n">op1</span><span class="p">),</span> <span class="n">op2_</span><span class="p">(</span><span class="n">op2</span><span class="p">)</span> <span class="p">{}</span>
+
+  <span class="n">T</span> <span class="k">operator</span><span class="p">[](</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">op1_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">op2_</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="p">}</span>
+
+  <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="nf">size</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">op1_</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">op2_</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">op1_</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="n">op2_</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+    <span class="k">return</span> <span class="n">op1_</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span> <span class="o">?</span> <span class="n">op1_</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">:</span> <span class="n">op2_</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+  <span class="p">}</span>
+
+ <span class="k">private</span><span class="o">:</span>
+  <span class="k">typename</span> <span class="n">A_Traits</span><span class="o">&lt;</span><span class="n">OP1</span><span class="o">&gt;::</span><span class="n">type</span> <span class="n">op1_</span><span class="p">;</span>
+  <span class="k">typename</span> <span class="n">A_Traits</span><span class="o">&lt;</span><span class="n">OP2</span><span class="o">&gt;::</span><span class="n">type</span> <span class="n">op2_</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">OP1</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">OP2</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">A_Mult</span> <span class="p">{</span>
+ <span class="nl">public:</span>
+  <span class="n">A_Mult</span><span class="p">(</span><span class="k">const</span> <span class="n">OP1</span><span class="o">&amp;</span> <span class="n">op1</span><span class="p">,</span> <span class="k">const</span> <span class="n">OP2</span><span class="o">&amp;</span> <span class="n">op2</span><span class="p">)</span> <span class="o">:</span> <span class="n">op1_</span><span class="p">(</span><span class="n">op1</span><span class="p">),</span> <span class="n">op2_</span><span class="p">(</span><span class="n">op2</span><span class="p">)</span> <span class="p">{}</span>
+
+  <span class="n">T</span> <span class="k">operator</span><span class="p">[](</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">op1_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">op2_</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="p">}</span>
+
+  <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="nf">size</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">op1_</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">op2_</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">op1_</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="n">op2_</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+    <span class="k">return</span> <span class="n">op1_</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span> <span class="o">?</span> <span class="n">op1_</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">:</span> <span class="n">op2_</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+  <span class="p">}</span>
+
+ <span class="k">private</span><span class="o">:</span>
+  <span class="k">typename</span> <span class="n">A_Traits</span><span class="o">&lt;</span><span class="n">OP1</span><span class="o">&gt;::</span><span class="n">type</span> <span class="n">op1_</span><span class="p">;</span>
+  <span class="k">typename</span> <span class="n">A_Traits</span><span class="o">&lt;</span><span class="n">OP2</span><span class="o">&gt;::</span><span class="n">type</span> <span class="n">op2_</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">A1</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">A2</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">A_Subscript</span> <span class="p">{</span>
+ <span class="nl">public:</span>
+  <span class="n">A_Subscript</span><span class="p">(</span><span class="k">const</span> <span class="n">A1</span><span class="o">&amp;</span> <span class="n">a1</span><span class="p">,</span> <span class="k">const</span> <span class="n">A2</span><span class="o">&amp;</span> <span class="n">a2</span><span class="p">)</span> <span class="o">:</span> <span class="n">a1_</span><span class="p">(</span><span class="n">a1</span><span class="p">),</span> <span class="n">a2_</span><span class="p">(</span><span class="n">a2</span><span class="p">)</span> <span class="p">{}</span>
+
+  <span class="n">T</span><span class="o">&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">const_cast</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&amp;&gt;</span><span class="p">(</span><span class="n">a1_</span><span class="p">[</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">a2_</span><span class="p">[</span><span class="n">i</span><span class="p">])]);</span>
+  <span class="p">}</span>
+
+  <span class="k">decltype</span><span class="p">(</span><span class="k">auto</span><span class="p">)</span> <span class="k">operator</span><span class="p">[](</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">a1_</span><span class="p">[</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">a2_</span><span class="p">[</span><span class="n">i</span><span class="p">])];</span>
+  <span class="p">}</span>
+
+  <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="nf">size</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">a2_</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="p">}</span>
+
+ <span class="k">private</span><span class="o">:</span>
+  <span class="k">const</span> <span class="n">A1</span><span class="o">&amp;</span> <span class="n">a1_</span><span class="p">;</span>
+  <span class="k">const</span> <span class="n">A2</span><span class="o">&amp;</span> <span class="n">a2_</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="p">}</span>  <span class="c1">// namespace jc</span>
+
+<span class="k">namespace</span> <span class="n">jc</span><span class="o">::</span><span class="n">test</span> <span class="p">{</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">Rep</span> <span class="o">=</span> <span class="n">SArray</span><span class="o">&lt;</span><span class="n">T</span><span class="p">&gt;</span><span class="o">&gt;</span>
+<span class="k">class</span> <span class="nc">Array</span> <span class="p">{</span>
+ <span class="nl">public:</span>
+  <span class="k">explicit</span> <span class="n">Array</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">)</span> <span class="o">:</span> <span class="n">r_</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="p">{}</span>
+
+  <span class="n">Array</span><span class="p">(</span><span class="k">const</span> <span class="n">Rep</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">)</span> <span class="o">:</span> <span class="n">r_</span><span class="p">(</span><span class="n">rhs</span><span class="p">)</span> <span class="p">{}</span>
+
+  <span class="n">Array</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">Array</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="n">rhs</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">rhs</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">r_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">rhs</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T2</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">Rep2</span><span class="p">&gt;</span>
+  <span class="n">Array</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">Array</span><span class="o">&lt;</span><span class="n">T2</span><span class="p">,</span> <span class="n">Rep2</span><span class="o">&gt;&amp;</span> <span class="n">rhs</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="n">rhs</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">rhs</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">r_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">rhs</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="nf">size</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">r_</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="p">}</span>
+
+  <span class="n">T</span><span class="o">&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">());</span>
+    <span class="k">return</span> <span class="n">r_</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+  <span class="p">}</span>
+
+  <span class="k">decltype</span><span class="p">(</span><span class="k">auto</span><span class="p">)</span> <span class="k">operator</span><span class="p">[](</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">());</span>
+    <span class="k">return</span> <span class="n">r_</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+  <span class="p">}</span>
+
+  <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T2</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">Rep2</span><span class="p">&gt;</span>
+  <span class="n">Array</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">A_Subscript</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">Rep</span><span class="p">,</span> <span class="n">Rep2</span><span class="o">&gt;&gt;</span> <span class="k">operator</span><span class="p">[](</span><span class="k">const</span> <span class="n">Array</span><span class="o">&lt;</span><span class="n">T2</span><span class="p">,</span> <span class="n">Rep2</span><span class="o">&gt;&amp;</span> <span class="n">rhs</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">Array</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">A_Subscript</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">Rep</span><span class="p">,</span> <span class="n">Rep2</span><span class="o">&gt;&gt;</span><span class="p">{</span>
+        <span class="n">A_Subscript</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">Rep</span><span class="p">,</span> <span class="n">Rep2</span><span class="o">&gt;</span><span class="p">{</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">rep</span><span class="p">(),</span> <span class="n">rhs</span><span class="p">.</span><span class="n">rep</span><span class="p">()}};</span>
+  <span class="p">}</span>
+
+  <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T2</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">Rep2</span><span class="p">&gt;</span>
+  <span class="k">decltype</span><span class="p">(</span><span class="k">auto</span><span class="p">)</span> <span class="k">operator</span><span class="p">[](</span><span class="k">const</span> <span class="n">Array</span><span class="o">&lt;</span><span class="n">T2</span><span class="p">,</span> <span class="n">Rep2</span><span class="o">&gt;&amp;</span> <span class="n">rhs</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">Array</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">A_Subscript</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">Rep</span><span class="p">,</span> <span class="n">Rep2</span><span class="o">&gt;&gt;</span><span class="p">{</span>
+        <span class="n">A_Subscript</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">Rep</span><span class="p">,</span> <span class="n">Rep2</span><span class="o">&gt;</span><span class="p">{</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">rep</span><span class="p">(),</span> <span class="n">rhs</span><span class="p">.</span><span class="n">rep</span><span class="p">()}};</span>
+  <span class="p">}</span>
+
+  <span class="n">Rep</span><span class="o">&amp;</span> <span class="n">rep</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">r_</span><span class="p">;</span> <span class="p">}</span>
+
+  <span class="k">const</span> <span class="n">Rep</span><span class="o">&amp;</span> <span class="n">rep</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">r_</span><span class="p">;</span> <span class="p">}</span>
+
+ <span class="k">private</span><span class="o">:</span>
+  <span class="n">Rep</span> <span class="n">r_</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">R1</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">R2</span><span class="p">&gt;</span>
+<span class="n">Array</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">A_Add</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">R1</span><span class="p">,</span> <span class="n">R2</span><span class="o">&gt;&gt;</span> <span class="k">operator</span><span class="o">+</span><span class="p">(</span><span class="k">const</span> <span class="n">Array</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">R1</span><span class="o">&gt;&amp;</span> <span class="n">lhs</span><span class="p">,</span>
+                                     <span class="k">const</span> <span class="n">Array</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">R2</span><span class="o">&gt;&amp;</span> <span class="n">rhs</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="n">Array</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">A_Add</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">R1</span><span class="p">,</span> <span class="n">R2</span><span class="o">&gt;&gt;</span><span class="p">{</span><span class="n">A_Add</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">R1</span><span class="p">,</span> <span class="n">R2</span><span class="o">&gt;</span><span class="p">{</span><span class="n">lhs</span><span class="p">.</span><span class="n">rep</span><span class="p">(),</span> <span class="n">rhs</span><span class="p">.</span><span class="n">rep</span><span class="p">()}};</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">R1</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">R2</span><span class="p">&gt;</span>
+<span class="n">Array</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">A_Mult</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">R1</span><span class="p">,</span> <span class="n">R2</span><span class="o">&gt;&gt;</span> <span class="k">operator</span><span class="o">*</span><span class="p">(</span><span class="k">const</span> <span class="n">Array</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">R1</span><span class="o">&gt;&amp;</span> <span class="n">lhs</span><span class="p">,</span>
+                                      <span class="k">const</span> <span class="n">Array</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">R2</span><span class="o">&gt;&amp;</span> <span class="n">rhs</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="n">Array</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">A_Mult</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">R1</span><span class="p">,</span> <span class="n">R2</span><span class="o">&gt;&gt;</span><span class="p">{</span><span class="n">A_Mult</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">R1</span><span class="p">,</span> <span class="n">R2</span><span class="o">&gt;</span><span class="p">{</span><span class="n">lhs</span><span class="p">.</span><span class="n">rep</span><span class="p">(),</span> <span class="n">rhs</span><span class="p">.</span><span class="n">rep</span><span class="p">()}};</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">R2</span><span class="p">&gt;</span>
+<span class="n">Array</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">A_Mult</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">A_Scalar</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">R2</span><span class="o">&gt;&gt;</span> <span class="k">operator</span><span class="o">*</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">,</span>
+                                               <span class="k">const</span> <span class="n">Array</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">R2</span><span class="o">&gt;&amp;</span> <span class="n">rhs</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="n">Array</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">A_Mult</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">A_Scalar</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">R2</span><span class="o">&gt;&gt;</span><span class="p">{</span>
+      <span class="n">A_Mult</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">A_Scalar</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">R2</span><span class="o">&gt;</span><span class="p">{</span><span class="n">A_Scalar</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">lhs</span><span class="p">),</span> <span class="n">rhs</span><span class="p">.</span><span class="n">rep</span><span class="p">()}};</span>
+<span class="p">}</span>
+
+<span class="p">}</span>  <span class="c1">// namespace jc::test</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">constexpr</span> <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">sz</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">;</span>
+  <span class="k">constexpr</span> <span class="kt">double</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+  <span class="k">constexpr</span> <span class="kt">double</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+  <span class="n">jc</span><span class="o">::</span><span class="n">test</span><span class="o">::</span><span class="n">Array</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">x</span><span class="p">{</span><span class="n">sz</span><span class="p">};</span>
+  <span class="n">jc</span><span class="o">::</span><span class="n">test</span><span class="o">::</span><span class="n">Array</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">y</span><span class="p">{</span><span class="n">sz</span><span class="p">};</span>
+  <span class="n">assert</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="n">sz</span><span class="p">);</span>
+  <span class="n">assert</span><span class="p">(</span><span class="n">y</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="n">sz</span><span class="p">);</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">sz</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+    <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="n">x</span> <span class="o">=</span> <span class="mf">1.2</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">;</span>
+  <span class="k">static_assert</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">is_same_v</span><span class="o">&lt;</span>
+                <span class="k">decltype</span><span class="p">(</span><span class="mf">1.2</span> <span class="o">*</span> <span class="n">x</span><span class="p">),</span>
+                <span class="n">jc</span><span class="o">::</span><span class="n">test</span><span class="o">::</span><span class="n">Array</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span> <span class="n">jc</span><span class="o">::</span><span class="n">A_Mult</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span> <span class="n">jc</span><span class="o">::</span><span class="n">A_Scalar</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">,</span>
+                                                   <span class="n">jc</span><span class="o">::</span><span class="n">SArray</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&gt;&gt;&gt;</span><span class="p">);</span>
+  <span class="k">static_assert</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">is_same_v</span><span class="o">&lt;</span>
+                <span class="k">decltype</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">),</span>
+                <span class="n">jc</span><span class="o">::</span><span class="n">test</span><span class="o">::</span><span class="n">Array</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span> <span class="n">jc</span><span class="o">::</span><span class="n">A_Mult</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span> <span class="n">jc</span><span class="o">::</span><span class="n">SArray</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">,</span>
+                                                   <span class="n">jc</span><span class="o">::</span><span class="n">SArray</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&gt;&gt;&gt;</span><span class="p">);</span>
+
+  <span class="k">static_assert</span><span class="p">(</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">is_same_v</span><span class="o">&lt;</span>
+          <span class="k">decltype</span><span class="p">(</span><span class="mf">1.2</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">),</span>
+          <span class="n">jc</span><span class="o">::</span><span class="n">test</span><span class="o">::</span><span class="n">Array</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span>
+                          <span class="n">jc</span><span class="o">::</span><span class="n">A_Add</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span>
+                                    <span class="n">jc</span><span class="o">::</span><span class="n">A_Mult</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span> <span class="n">jc</span><span class="o">::</span><span class="n">A_Scalar</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">,</span>
+                                               <span class="n">jc</span><span class="o">::</span><span class="n">SArray</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&gt;</span><span class="p">,</span>
+                                    <span class="n">jc</span><span class="o">::</span><span class="n">A_Mult</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span> <span class="n">jc</span><span class="o">::</span><span class="n">SArray</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">,</span>
+                                               <span class="n">jc</span><span class="o">::</span><span class="n">SArray</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&gt;&gt;&gt;&gt;</span><span class="p">);</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">sz</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mf">1.2</span> <span class="o">*</span> <span class="n">a</span> <span class="o">+</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span><span class="p">);</span>
+    <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="cm">/*
+   * x[y] = 2.0 * x[y] equals to:
+   * for (std::size_t i = 0; i &lt; y.size(); ++i) {
+   *   x[y[i]] = 2 * x[y[i]];
+   * }
+   */</span>
+  <span class="n">x</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="n">y</span><span class="p">];</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">sz</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.2</span> <span class="o">*</span> <span class="n">a</span> <span class="o">+</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span><span class="p">));</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+
+    </div>
+
+    <div class="post__share">
+  <div class="share__head">
+    <div class="share__title">Share this Post</div>
+  </div>
+  <ul class="share__list list-reset">
+    <li class="share__item">
+      <a class="share__link share__twitter"
+        href="https://twitter.com/intent/tweet?text=template_advanced&url=http://localhost:6060/blog/template-advanced.html"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__facebook"
+        href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:6060/blog/template-advanced.html"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__pinterest"
+        href="http://pinterest.com/pin/create/button/?url=http://localhost:6060/blog/template-advanced.html&amp;media=http://localhost:6060/images/post/post-21.jpg&amp;description=template_advanced"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Pinterest" rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:6060/blog/template-advanced.html&title=template_advanced&summary=&source=Vonge"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
+    </li>
+  </ul>
+</div>
+  </article>
+</div>
+<!-- end post -->
+
+<div class="container">
+  <div class="row">
+    <div class="col col-10 col-d-12 push-d-0 push-1">
+      <div class="post__navigation animate">
+  
+  <a class="post__prev" href="/blog/lambda-calculus.html">
+    <div class="prev__image">
+      <img loading="lazy" src="/images/post/post-9.jpg" alt="template_advanced">
+    </div>
+    <div class="prev__box">
+      <span class="post__nav post__nav__prev">Prev post</span>
+      <h2 class="post__nav__title">lambda_calculus</h2>
+    </div>
+  </a>
+  
+
+  
+  <a class="post__next" href="/blog/template-basic.html">
+    <div class="next__box">
+      <span class="post__nav post__nav__next">Next post</span>
+      <h2 class="post__nav__title">template_basic</h2>
+    </div>
+    <div class="next__image">
+      <img loading="lazy" src="/images/post/post-23.jpg" alt="template_advanced">
+    </div>
+  </a>
+  
+</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- begin related posts -->
+<div class="container">
+  <section class="related-posts is-related animate">
+    <div class="row">
+      <div class="col col-12">
+        <div class="container__inner">
+          <div class="section__info">
+            <div class="section__head">
+              <h2 class="section__title">You may also like</h2>
+              <a class="section__link" href="/blog">
+                
+                
+                  
+                    <!-- <a href="/tags#template" class="section__link related-tag">See all<span> template</span> <i class="ion ion-md-arrow-forward"></i></a> -->
+                  
+                
+              
+              </a>
+            </div>
+          </div>
+          <div class="row">
+
+          
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/template-basic.html">
+                      <img loading="lazy" src="/images/post/post-23.jpg" alt="template_basic">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/template" class="article__tag">template</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/template-basic.html">template_basic</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      ## 一：模板基础
+
+### 1.1 什么是模板
+
+* **概念上**
+模板是 C++ 中的一种泛型编程工具，它允许你编写与类型无关的代码。通过使用模板，你可以编写一次代码，然后在不同的上下文中重用它，而不需要为每种类型编写单独的代码...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2025-04-06T14:44:11+08:00">06 Apr 2025</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/template-specialization.html">
+                      <img loading="lazy" src="/images/post/post-27.jpg" alt="template_specialization">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/template" class="article__tag">template</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/template-specialization.html">template_specialization</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      4. 模板特化
+
+模板特化（Template Specialization）是 C++ 模板编程中的一个重要概念，它允许你为特定的模板参数提供特殊的实现。模板特化分为部分特化和全特化。通过模板特化，你可以为特定类型或特定条件提供优化的...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2025-04-04T10:24:28+08:00">04 Apr 2025</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/template-introduction.html">
+                      <img loading="lazy" src="/images/post/post-28.jpg" alt="template_introduction">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/template" class="article__tag">template</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/template-introduction.html">template_introduction</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      模板
+
+├── 1. 模板基础
+│   ├── 1.1 什么是模板
+│   ├── 1.2 模板的基本语法
+├── 2. 模板参数
+│   ├── 2.1 类型模板参数
+│   ├── 2.2 非类型模板参数
+│   └── 2.3 ...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2025-04-04T10:24:28+08:00">04 Apr 2025</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+                  
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- end related posts -->
+
+
+
+
+    <!--
+        Bookshop components are accessed using the bookshop tag,
+        using the same syntax as the standard Jekyll include tag.
+    -->
+    <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
+
+<!--bookshop-live end-->
+
+    <div class="top" title="Top"><i class="ion ion-ios-arrow-up"></i></div>
+
+    <!-- begin footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+
+        <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+
+        <ul class="footer_nav list-reset">
+          
+          <li class="footer_nav__item">
+            <a href="/" class="footer_nav__link">Home</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/projects/" class="footer_nav__link">Projects</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/about/" class="footer_nav__link">About</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/blog/" class="footer_nav__link">Blog</a>
+          </li>
+          
+        </ul>
+
+        <div class="copyright"><p> 2021 &copy; <a href="/">Vonge</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
+
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- end footer -->
+
+    <script src="/js/scripts.js"></script>
+    <script src="/js/common.js"></script>
+</body>
+</html>

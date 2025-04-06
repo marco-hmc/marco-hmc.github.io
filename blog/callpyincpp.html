@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>callPyIncpp</title>
+  <meta name='description' content='Marco’s Blog'>
+
+  <link rel="canonical" href="http://localhost:6060/blog/callpyincpp.html">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="callPyIncpp – Marco’s Blog">
+  <meta name="twitter:description" content="python: caller.py
+cpp: String.cpp
+">
+  <meta name="twitter:image:src" content="http://localhost:6060/images/post/post-8.jpg">
+
+  <!-- Facebook OpenGraph -->
+  <meta property="og:title" content="callPyIncpp – Marco’s Blog">
+  <meta property="og:description" content="python: caller.py
+cpp: String.cpp
+">
+  <meta property="og:image" content="http://localhost:6060/images/post/post-8.jpg">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Ionicons -->
+  <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/main.css">
+</head>
+
+<body>
+
+    
+
+    <!-- begin header -->
+<header class="c-header">
+  <div class="container">
+    <div class="row">
+      <div class="c-header__inner">
+
+        <div class="logo">
+          <a class="logo__link" href="/">
+          
+            <img class="logo__image" src="/images/mc_logo1.ico" alt="Marco’s Blog">
+          
+          </a>
+        </div>
+
+        <nav class="main-nav">
+          <div class="main-nav__box">
+
+            <div class="nav__icon-close">
+              <i class="ion ion-md-close"></i>
+            </div>
+
+            <div class="nav__title">Menu</div>
+
+              <ul class="nav__list list-reset">
+
+              
+                
+                <li class="nav__item">
+                  <a href="/" class="nav__link">Home</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/projects/" class="nav__link">Projects</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/blog/" class="nav__link">Blog</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/about/" class="nav__link">About</a>
+                </li>
+                
+              
+
+            </ul>
+          </div>
+
+          <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+        </nav>
+
+        <div class="nav-button">
+          <i class="nav__icon nav__icon-menu ion ion-md-menu"></i>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+<!-- end header -->
+
+    <div class="post-top">
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="col col-6 col-d-12">
+        <div class="post-image">
+          <img loading="lazy" src="/images/post/post-8.jpg" alt="callPyIncpp">
+        </div>
+      </div>
+      
+
+      <div class="col col-6 col-d-12">
+        <div class="post__info">
+
+          
+          <div class="post-tags">
+            
+            <a href="/tag/跨语言调用" class="post-tags__tag">跨语言调用</a>
+            
+          </div>
+          
+
+          <h1 class="post__title">callPyIncpp</h1>
+
+          <div class="post__meta">
+            <div class="post__author-image">
+              <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+            </div>
+
+            <div class="post__meta-bottom">
+              <div class="post__author">Marco Hwong</div>
+              <time class="post__date" datetime="2025-04-04T10:27:01+08:00">04 Apr 2025</time>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- begin post -->
+<div class="container-with-sidebar animate">
+  <div class="sidebar">
+    <div id="toc"></div>
+  </div>
+
+  <article class="post">
+    <div class="post__content">
+      <p>python: caller.py
+cpp: String.cpp</p>
+
+<h2 id="python如何调用cpp代码用于测试">python如何调用cpp代码用于测试？</h2>
+
+<h3 id="1-什么是swig">1. 什么是swig</h3>
+<p>SWIG（Simplified Wrapper and Interface Generator）是一个软件开发工具，它可以将 C 和 C++ 代码与各种高级编程语言连接起来，包括 Python、Java、Ruby、Perl 等。</p>
+
+<p>SWIG 主要用于创建语言绑定，让你可以在 Python 这样的高级语言中调用 C 或 C++ 编写的代码。这对于那些需要性能优化的项目非常有用，因为 C 和 C++ 通常比 Python 运行得更快。</p>
+
+<p>在你给出的 <code class="language-plaintext highlighter-rouge">caller.py</code> 文件中，可能使用了 SWIG 来调用 <code class="language-plaintext highlighter-rouge">String.cpp</code> 中的 C++ 代码。你可以在 <code class="language-plaintext highlighter-rouge">caller.py</code> 文件中查找 <code class="language-plaintext highlighter-rouge">import</code> 语句，看看是否有导入由 SWIG 生成的模块。</p>
+
+<h4 id="11">1.1</h4>
+<p>SWIG（Simplified Wrapper and Interface Generator）是一个软件开发工具，它可以帮助你创建跨语言的接口。以下是使用 SWIG 的基本步骤：</p>
+
+<ol>
+  <li><strong>创建接口文件</strong>：首先，你需要创建一个 SWIG 接口文件（通常以 <code class="language-plaintext highlighter-rouge">.i</code> 结尾），在这个文件中，你需要声明你想要从其他语言中访问的 C/C++ 函数和类。例如：</li>
+</ol>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span><span class="k">module</span> <span class="n">example</span>
+<span class="o">%</span><span class="p">{</span>
+<span class="cp">#include</span> <span class="cpf">"example.h"</span><span class="cp">
+</span><span class="o">%</span><span class="p">}</span>
+
+<span class="o">%</span><span class="n">include</span> <span class="s">"example.h"</span>
+</code></pre></div></div>
+
+<ol>
+  <li><strong>运行 SWIG</strong>：然后，你可以运行 SWIG 来生成包装代码。例如，如果你想生成 Python 的包装代码，你可以运行以下命令：</li>
+</ol>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>swig <span class="nt">-python</span> example.i
+</code></pre></div></div>
+
+<p>这将生成两个文件：<code class="language-plaintext highlighter-rouge">example_wrap.c</code>（或 <code class="language-plaintext highlighter-rouge">example_wrap.cxx</code>，如果你的源代码是 C++）和 <code class="language-plaintext highlighter-rouge">example.py</code>。</p>
+
+<ol>
+  <li><strong>编译包装代码</strong>：最后，你需要编译生成的包装代码为一个动态链接库（在 Windows 上是 <code class="language-plaintext highlighter-rouge">.dll</code> 文件，在 Unix/Linux 上是 <code class="language-plaintext highlighter-rouge">.so</code> 文件）。例如，如果你在 Unix/Linux 上，你可以运行以下命令：</li>
+</ol>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcc <span class="nt">-shared</span> example_wrap.c <span class="nt">-o</span> _example.so
+</code></pre></div></div>
+
+<ol>
+  <li><strong>使用生成的模块</strong>：现在，你可以在 Python 中导入和使用 <code class="language-plaintext highlighter-rouge">example</code> 模块了：</li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">example</span>
+
+<span class="c1"># 现在你可以调用 example.h 中定义的函数和类了
+</span></code></pre></div></div>
+
+<p>以上步骤可能需要根据你的实际情况进行一些修改。例如，你可能需要修改编译命令以适应你的编译环境，或者修改 SWIG 接口文件以适应你的 C/C++ 代码。</p>
+
+<h3 id="2-字符">2. 字符</h3>
+
+<h4 id="21-数据类型">2.1 数据类型</h4>
+<p>在编程语言中，字符的数据类型决定了可以存储哪些字符以及如何存储这些字符。
+在 C 和 C++ 中，有两种主要字符类型</p>
+<ul>
+  <li>char
+  主要用于ASCII</li>
+  <li>wchar_t
+  主要用于Unicode</li>
+  <li>char16_t
+  c11引入，用于存储utf16</li>
+  <li>char32_t
+  c11引入，用于存储utf32</li>
+</ul>
+
+<h4 id="22-unicode标准">2.2 unicode标准</h4>
+<blockquote>
+  <p>简单来说，就是世界上所有主流字符的集合。
+Unicode 是一个国际标准，用于为世界上所有的字符、符号和表情符号分配一个唯一的数字。这个数字被称为字符的 Unicode 码点。Unicode 的目标是能够表示所有的写作系统，包括拉丁字母、希腊字母、阿拉伯字母、汉字、象形文字等。</p>
+</blockquote>
+
+<p>Unicode 标准定义了一系列的字符集，每个字符集包含一组字符和它们对应的码点。例如，基本多语言平面（Basic Multilingual Plane，BMP）是最常用的字符集，它包含了大多数现代语言的字符，以及许多符号和标点符号。</p>
+
+<p>Unicode 标准还定义了一些编码方案，如 UTF-8、UTF-16 和 UTF-32，这些编码方案定义了如何将字符的码点转换为字节序列。这使得 Unicode 字符可以被存储在文件中，或者在网络上进行传输。</p>
+
+<p>总的来说，Unicode 标准是一个全球通用的字符编码系统，它使得我们可以在电脑上使用任何语言进行写作和阅读。</p>
+
+<h4 id="22-字符编码">2.2 字符编码</h4>
+<p>字符编码是一种规则，它定义了如何将字符转换为字节序列。</p>
+<ul>
+  <li>ASCII
+    <ul>
+      <li>控制字符：ASCII 的前 32 个字符（0-31）被定义为控制字符，如换行符（ASCII 10，表示为 \n）、回车符（ASCII 13，表示为 \r）等。这些字符主要用于控制设备，而不是表示可视的字符。</li>
+      <li>可打印字符：ASCII 的后 95 个字符（32-126）被定义为可打印字符，包括英文大小写字母、数字、标点符号和一些特殊字符。</li>
+      <li>ASCII 标准本身只定义了 0 到 127 的字符集，这些字符占用 7 位。然而，许多系统和编码标准会使用 8 位（一个字节）来存储字符，这就留下了 128 到 255 的空间可以用于其他字符。</li>
+      <li>这个 128 到 255 的范围通常被用于存储特殊字符，例如各种符号、非英语字母等。具体的字符集取决于使用的编码标准。例如，在 ISO 8859-1（也被称为 Latin-1）编码中，这个范围被用于存储西欧语言中的特殊字符，如 á, ñ, ô 等。</li>
+      <li>然而，需要注意的是，这个 128 到 255 的范围并不是 ASCII 标准的一部分，而是由其他编码标准定义的。在不同的编码标准中，这个范围可能代表不同的字符集。</li>
+    </ul>
+  </li>
+  <li>UTF-8
+    <ul>
+      <li>在UTF-8编码中，一个字符可能由1到4个字节组成。对于多字节的字符（即2、3、4字节），除了第一个字节外，其余字节的开头都是10。这是UTF-8编码的特性，用于区分多字节字符中的首字节和后续字节。</li>
+      <li>如果第一个字节的最高位是 1，那么你可以通过计算这个字节开头的连续 1 的个数来确定这个字符的字节长度。例如，如果第一个字节是 110xxxxx，那么这个字符就是两个字节长；如果第一个字节是 1110xxxx，那么这个字符就是三个字节长；如果第一个字节是 11110xxx，那么这个字符就是四个字节长。</li>
+      <li>所以UTF-8可以兼容ascii，同时可以支持unicode标准。</li>
+      <li>对于英文字符为大多数的时候，utf8大部分时候都是一个字节的，省空间；因为浪费了比较多的bit去做状态位，而非数据位。在非英文字符为主要内容的时候，经常都是三字节或者四字节的。</li>
+    </ul>
+  </li>
+  <li>UTF-16
+    <ul>
+      <li>可以用两个字节或者四个字节表示一个字符。</li>
+      <li>具体的编码规则不研究了，应该就是补utf-8的弱点设计的。即控制位太多，容易三四字节，使得主要字符都是两个字节表示，一些不常用的才是四字节；而不是常用的，在UTF-8也是三四字节。</li>
+    </ul>
+  </li>
+  <li>UTF-32
+    <ul>
+      <li>统一四个字节表示每一个字符。</li>
+      <li>字符处理：由于 UTF-32 对每个字符使用固定的 4 个字节，所以在处理字符时，可以直接通过索引来访问字符串中的任何字符，而不需要像处理 UTF-8 或 UTF-16 字符串那样进行复杂的计算。这使得 UTF-32 在需要频繁访问或修改字符串中的字符时非常有用。</li>
+      <li>内存空间不是问题：UTF-32 使用的存储空间比 UTF-8 和 UTF-16 多，所以如果内存空间不是问题，而且需要进行大量的字符处理，那么 UTF-32 可能是一个好的选择。</li>
+      <li>兼容性：有些系统或应用可能需要使用 UTF-32 来确保与某些特定的软件或硬件的兼容性。</li>
+    </ul>
+  </li>
+</ul>
+
+    </div>
+
+    <div class="post__share">
+  <div class="share__head">
+    <div class="share__title">Share this Post</div>
+  </div>
+  <ul class="share__list list-reset">
+    <li class="share__item">
+      <a class="share__link share__twitter"
+        href="https://twitter.com/intent/tweet?text=callPyIncpp&url=http://localhost:6060/blog/callpyincpp.html"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__facebook"
+        href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:6060/blog/callpyincpp.html"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__pinterest"
+        href="http://pinterest.com/pin/create/button/?url=http://localhost:6060/blog/callpyincpp.html&amp;media=http://localhost:6060/images/post/post-8.jpg&amp;description=callPyIncpp"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Pinterest" rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:6060/blog/callpyincpp.html&title=callPyIncpp&summary=&source=Vonge"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
+    </li>
+  </ul>
+</div>
+  </article>
+</div>
+<!-- end post -->
+
+<div class="container">
+  <div class="row">
+    <div class="col col-10 col-d-12 push-d-0 push-1">
+      <div class="post__navigation animate">
+  
+  <a class="post__prev" href="/blog/%E6%80%BB%E7%BA%BF.html">
+    <div class="prev__image">
+      <img loading="lazy" src="/images/post/post-70.jpg" alt="callPyIncpp">
+    </div>
+    <div class="prev__box">
+      <span class="post__nav post__nav__prev">Prev post</span>
+      <h2 class="post__nav__title">总线</h2>
+    </div>
+  </a>
+  
+
+  
+  <a class="post__next" href="/blog/crosslanguageinvocation.html">
+    <div class="next__box">
+      <span class="post__nav post__nav__next">Next post</span>
+      <h2 class="post__nav__title">crossLanguageInvocation</h2>
+    </div>
+    <div class="next__image">
+      <img loading="lazy" src="/images/post/post-7.jpg" alt="callPyIncpp">
+    </div>
+  </a>
+  
+</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- begin related posts -->
+<div class="container">
+  <section class="related-posts is-related animate">
+    <div class="row">
+      <div class="col col-12">
+        <div class="container__inner">
+          <div class="section__info">
+            <div class="section__head">
+              <h2 class="section__title">You may also like</h2>
+              <a class="section__link" href="/blog">
+                
+                
+                  
+                    <!-- <a href="/tags#跨语言调用" class="section__link related-tag">See all<span> 跨语言调用</span> <i class="ion ion-md-arrow-forward"></i></a> -->
+                  
+                
+              
+              </a>
+            </div>
+          </div>
+          <div class="row">
+
+          
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/crosslanguageinvocation.html">
+                      <img loading="lazy" src="/images/post/post-7.jpg" alt="crossLanguageInvocation">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/跨语言调用" class="article__tag">跨语言调用</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/crosslanguageinvocation.html">crossLanguageInvocation</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      #### 1. extern"C"里面可以使用C++语法吗？有什么限制？
+extern“C”{}只是让C++按照C语言的函数调用约定去生成汇编，C语言的函数调用约定无法实现成员函数的调用，模板的使用，重载函数，以及异常的抛出，而其他的...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2025-04-04T10:27:01+08:00">04 Apr 2025</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- end related posts -->
+
+
+
+
+    <!--
+        Bookshop components are accessed using the bookshop tag,
+        using the same syntax as the standard Jekyll include tag.
+    -->
+    <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
+
+<!--bookshop-live end-->
+
+    <div class="top" title="Top"><i class="ion ion-ios-arrow-up"></i></div>
+
+    <!-- begin footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+
+        <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+
+        <ul class="footer_nav list-reset">
+          
+          <li class="footer_nav__item">
+            <a href="/" class="footer_nav__link">Home</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/projects/" class="footer_nav__link">Projects</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/about/" class="footer_nav__link">About</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/blog/" class="footer_nav__link">Blog</a>
+          </li>
+          
+        </ul>
+
+        <div class="copyright"><p> 2021 &copy; <a href="/">Vonge</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
+
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- end footer -->
+
+    <script src="/js/scripts.js"></script>
+    <script src="/js/common.js"></script>
+</body>
+</html>

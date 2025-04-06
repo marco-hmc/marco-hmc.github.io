@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>networks</title>
+  <meta name='description' content='Marco’s Blog'>
+
+  <link rel="canonical" href="http://localhost:6060/blog/networks.html">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="networks – Marco’s Blog">
+  <meta name="twitter:description" content="计算机网络
+">
+  <meta name="twitter:image:src" content="http://localhost:6060/images/post/post-41.jpg">
+
+  <!-- Facebook OpenGraph -->
+  <meta property="og:title" content="networks – Marco’s Blog">
+  <meta property="og:description" content="计算机网络
+">
+  <meta property="og:image" content="http://localhost:6060/images/post/post-41.jpg">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Ionicons -->
+  <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/main.css">
+</head>
+
+<body>
+
+    
+
+    <!-- begin header -->
+<header class="c-header">
+  <div class="container">
+    <div class="row">
+      <div class="c-header__inner">
+
+        <div class="logo">
+          <a class="logo__link" href="/">
+          
+            <img class="logo__image" src="/images/mc_logo1.ico" alt="Marco’s Blog">
+          
+          </a>
+        </div>
+
+        <nav class="main-nav">
+          <div class="main-nav__box">
+
+            <div class="nav__icon-close">
+              <i class="ion ion-md-close"></i>
+            </div>
+
+            <div class="nav__title">Menu</div>
+
+              <ul class="nav__list list-reset">
+
+              
+                
+                <li class="nav__item">
+                  <a href="/" class="nav__link">Home</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/projects/" class="nav__link">Projects</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/blog/" class="nav__link">Blog</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/about/" class="nav__link">About</a>
+                </li>
+                
+              
+
+            </ul>
+          </div>
+
+          <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+        </nav>
+
+        <div class="nav-button">
+          <i class="nav__icon nav__icon-menu ion ion-md-menu"></i>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+<!-- end header -->
+
+    <div class="post-top">
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="col col-6 col-d-12">
+        <div class="post-image">
+          <img loading="lazy" src="/images/post/post-41.jpg" alt="networks">
+        </div>
+      </div>
+      
+
+      <div class="col col-6 col-d-12">
+        <div class="post__info">
+
+          
+
+          <h1 class="post__title">networks</h1>
+
+          <div class="post__meta">
+            <div class="post__author-image">
+              <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+            </div>
+
+            <div class="post__meta-bottom">
+              <div class="post__author">Marco Hwong</div>
+              <time class="post__date" datetime="2025-02-25T22:07:19+08:00">25 Feb 2025</time>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- begin post -->
+<div class="container-with-sidebar animate">
+  <div class="sidebar">
+    <div id="toc"></div>
+  </div>
+
+  <article class="post">
+    <div class="post__content">
+      <h2 id="计算机网络">计算机网络</h2>
+
+<p><img src="imgs/image-2.png" alt="完整报文结构" /></p>
+
+<h3 id="1-基本概念">1. 基本概念</h3>
+
+<ul>
+  <li><strong><em>计算机网络有哪几层?</em></strong>
+    <ul>
+      <li>应用层：
+        <ul>
+          <li>负责向用户提供应用程序，应用层为操作系统或网络应用程序提供访问网络服务的接口，比如HTTP/FTP/Telnet/DNS/SMTP等</li>
+        </ul>
+      </li>
+      <li>传输层：
+        <ul>
+          <li>负责对报文进行分组和重组</li>
+          <li>传输层是第一个端到端，即主机到主机的层次</li>
+          <li>传输层负责将上层数据分段,并提供端到端的传输，</li>
+          <li>传输层还要处理端到端的差错控制,和流量控制问题。</li>
+          <li>数据的单位称为数据段(segment)，并以TCP或UDP协议格式封装报文</li>
+          <li>传输层提供了进程间的逻辑通信，传输层向高层用户屏蔽了下面网络层的核心细节，使应用程序看起来像是在两个传输层实体之间有一条端到端的逻辑通信信道.</li>
+        </ul>
+      </li>
+      <li>网络层：
+        <ul>
+          <li>负责路由以及把分组报文发送给目标网络或主机，</li>
+          <li>网络层负责对子网间的数据包进行路由选择，</li>
+          <li>还可以实现拥塞控制/网际互连等功能，</li>
+          <li>数据的单位称为数据包(packet)</li>
+          <li>网络层只把分组发送到目的主机，但是真正通信的并不是主机而是主机中的进程.</li>
+        </ul>
+      </li>
+      <li>链路层：
+        <ul>
+          <li>负责封装和解封装IP报文，</li>
+          <li>物理地址寻址/数据的成帧/流量控制/数据的检错/重发等，</li>
+          <li>发送和接受ARP/RARP报文等</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><strong><em>网络为什么要分层?</em></strong>
+网络分层的主要原因是为了降低网络设计的复杂性，提高网络的可扩展性和可维护性.以下是一些具体的原因:</p>
+
+    <ol>
+      <li><strong>模块化设计</strong>：每一层都有特定的功能，这使得设计和实现网络协议变得更加简单.如果需要改进或替换某一层的协议，只需要修改那一层，而不会影响到其他层.</li>
+      <li><strong>易于理解和教学</strong>：分层模型使得网络的工作原理更容易理解和教学.每一层都有明确的职责，可以单独学习和理解.</li>
+      <li><strong>兼容性和互操作性</strong>：分层模型使得不同的硬件和网络协议可以一起工作.只要每一层都遵循相同的接口和协议，就可以在不同的网络环境中互相通信.</li>
+      <li><strong>可扩展性</strong>：分层模型使得网络可以更容易地扩展和适应新的技术.例如，当新的传输协议被开发出来时，只需要在传输层实现这个新协议，而不需要改变其他层.</li>
+      <li><strong>错误隔离</strong>：如果某一层出现问题，分层模型可以帮助隔离错误，防止错误影响到其他层.</li>
+    </ol>
+
+    <p>一个网络数据包，必须是一个健全的数据包，跑起来才能快过刘翔.数据包无论经过那个设备都必须是完整，所以当一个请求从终端发起的时候(应用层)发起的时候，例如http请求.
+应用层：这个请求的正文就会被包上一个http头;
+传输层：然后就会给到下一层传输层，传输层就会给数据包上tcp的头，tcp就会记录下源端口号和目的端口号.
+网络层：紧接着发给ip层(网络层)网络层就会给你包上ip头，记录源ip地址和目标ip地址.
+链路层：紧接着就会发到mac层(数据链路层)，mac层就会给数据包包上mac头，记录源mac地址和目的mac地址.(还要看目标mac地址是不是知道的，知道就直接加上去，不知道就吼一下(通过一定的协议处理).)</p>
+
+    <p>所以通过上面我们知道，每一层都需要工作，而且这是一个复杂的程序，每一层都有不同的处理方式，所以这是一个层层封装的概念，如果没有层层封装，整个数据包我们认为是不完整的.</p>
+  </li>
+</ul>
+
+<h3 id="2-应用层">2. 应用层</h3>
+
+<ul>
+  <li>
+    <p><strong><em>应用层有哪些?</em></strong></p>
+
+    <p>计算机网络的应用层有许多协议，常见的包括:</p>
+
+    <ul>
+      <li>HTTP(超文本传输协议):用于在Web浏览器和Web服务器之间传输超文本文档.</li>
+      <li>FTP(文件传输协议):用于在客户端和服务器之间传输文件.</li>
+      <li>SMTP(简单邮件传输协议):用于在邮件客户端和邮件服务器之间传输电子邮件.</li>
+      <li>DNS(域名系统):用于将域名解析为IP地址.</li>
+      <li>SSH(安全外壳协议):用于在网络上安全地远程登录到远程计算机.</li>
+      <li>Telnet(远程终端协议):用于在网络上远程登录到远程计算机.</li>
+      <li>POP3(邮局协议版本3):用于从邮件服务器接收电子邮件.</li>
+      <li>IMAP(互联网消息访问协议):用于从邮件服务器接收和管理电子邮件.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="3-传输层">3. 传输层</h3>
+
+<ul>
+  <li>
+    <p><strong><em>传输层有哪些协议?</em></strong>
+计算机网络的传输层主要有以下几种协议:</p>
+
+    <ul>
+      <li>TCP(传输控制协议):它是一种面向连接的/可靠的/基于字节流的传输层通信协议.TCP确保了数据包按照其发送顺序到达.</li>
+      <li>UDP(用户数据报协议):它是一种无连接的/不可靠的/基于数据报的传输层协议.UDP不保证数据包的到达顺序，因此它的速度通常比TCP快.</li>
+      <li>SCTP(流控制传输协议):它提供了TCP所缺少的一些特性，例如多流传输和多路径传输.</li>
+      <li>DCCP(数据报拥塞控制协议):它是一种面向消息的传输协议，提供了UDP的一些特性，同时还提供了拥塞控制.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="4-网络层">4. 网络层</h3>
+
+<ul>
+  <li>
+    <p><strong><em>网络层有哪些协议?</em></strong>
+网络层和链路层协议主要是由运营商和通信设备制造商来考虑和实现的。这些协议涉及到数据在网络中的传输和路由选择。</p>
+
+    <ul>
+      <li>IP(互联网协议):它是网络层的主要协议，负责将数据包从源主机发送到目标主机.IP协议有两个版本，IPv4和IPv6.</li>
+      <li>ICMP(互联网控制消息协议):它用于在IP主机和路由器之间传输控制消息.</li>
+      <li>IGMP(互联网组管理协议):它用于在局域网内实现多播.</li>
+      <li>ARP(地址解析协议):它用于将网络层的IP地址映射到数据链路层的物理地址.</li>
+      <li>RARP(反向地址解析协议):它用于将数据链路层的物理地址映射到网络层的IP地址.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="5-链路层">5. 链路层</h3>
+
+<ul>
+  <li>
+    <p><strong><em>链路层有哪些协议?</em></strong>
+网络层和链路层协议主要是由运营商和通信设备制造商来考虑和实现的。协议主要涉及在物理网络上的数据帧传输和链路管理。</p>
+
+    <ul>
+      <li>ARP(地址解析协议):这是一种用于将IP地址映射到MAC地址的协议.</li>
+      <li>Ethernet(以太网协议):这是最常见的局域网技术，使用MAC地址进行通信.</li>
+      <li>Wi-Fi(无线局域网协议):这是一种无线网络协议，基于IEEE 802.11标准.</li>
+      <li>PPP(点对点协议):这是一种用于建立直接连接的协议，常用于拨号和DSL连接.</li>
+      <li>VLAN(虚拟局域网协议):这是一种在物理网络上创建逻辑网络的协议.</li>
+      <li>Frame Relay(帧中继协议):这是一种高性能的WAN协议.</li>
+      <li>ATM(异步传输模式):这是一种用于电话和数据网络的协议.</li>
+    </ul>
+  </li>
+</ul>
+
+
+    </div>
+
+    <div class="post__share">
+  <div class="share__head">
+    <div class="share__title">Share this Post</div>
+  </div>
+  <ul class="share__list list-reset">
+    <li class="share__item">
+      <a class="share__link share__twitter"
+        href="https://twitter.com/intent/tweet?text=networks&url=http://localhost:6060/blog/networks.html"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__facebook"
+        href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:6060/blog/networks.html"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__pinterest"
+        href="http://pinterest.com/pin/create/button/?url=http://localhost:6060/blog/networks.html&amp;media=http://localhost:6060/images/post/post-41.jpg&amp;description=networks"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Pinterest" rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:6060/blog/networks.html&title=networks&summary=&source=Vonge"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
+    </li>
+  </ul>
+</div>
+  </article>
+</div>
+<!-- end post -->
+
+<div class="container">
+  <div class="row">
+    <div class="col col-10 col-d-12 push-d-0 push-1">
+      <div class="post__navigation animate">
+  
+  <a class="post__prev" href="/blog/https.html">
+    <div class="prev__image">
+      <img loading="lazy" src="/images/post/post-32.jpg" alt="networks">
+    </div>
+    <div class="prev__box">
+      <span class="post__nav post__nav__prev">Prev post</span>
+      <h2 class="post__nav__title">https</h2>
+    </div>
+  </a>
+  
+
+  
+  <a class="post__next" href="/blog/%E4%BC%A0%E8%BE%93%E5%B1%82.html">
+    <div class="next__box">
+      <span class="post__nav post__nav__next">Next post</span>
+      <h2 class="post__nav__title">传输层</h2>
+    </div>
+    <div class="next__image">
+      <img loading="lazy" src="/images/post/post-38.jpg" alt="networks">
+    </div>
+  </a>
+  
+</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- begin related posts -->
+<div class="container">
+  <section class="related-posts  animate">
+    <div class="row">
+      <div class="col col-12">
+        <div class="container__inner">
+          <div class="section__info">
+            <div class="section__head">
+              <h2 class="section__title">You may also like</h2>
+              <a class="section__link" href="/blog">
+                
+              </a>
+            </div>
+          </div>
+          <div class="row">
+
+          
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- end related posts -->
+
+
+
+
+    <!--
+        Bookshop components are accessed using the bookshop tag,
+        using the same syntax as the standard Jekyll include tag.
+    -->
+    <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
+
+<!--bookshop-live end-->
+
+    <div class="top" title="Top"><i class="ion ion-ios-arrow-up"></i></div>
+
+    <!-- begin footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+
+        <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+
+        <ul class="footer_nav list-reset">
+          
+          <li class="footer_nav__item">
+            <a href="/" class="footer_nav__link">Home</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/projects/" class="footer_nav__link">Projects</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/about/" class="footer_nav__link">About</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/blog/" class="footer_nav__link">Blog</a>
+          </li>
+          
+        </ul>
+
+        <div class="copyright"><p> 2021 &copy; <a href="/">Vonge</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
+
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- end footer -->
+
+    <script src="/js/scripts.js"></script>
+    <script src="/js/common.js"></script>
+</body>
+</html>

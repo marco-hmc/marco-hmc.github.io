@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>atomic</title>
+  <meta name='description' content='Marco’s Blog'>
+
+  <link rel="canonical" href="http://localhost:6060/blog/atomic.html">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="atomic – Marco’s Blog">
+  <meta name="twitter:description" content="atomic
+">
+  <meta name="twitter:image:src" content="http://localhost:6060/images/post/post-3.jpg">
+
+  <!-- Facebook OpenGraph -->
+  <meta property="og:title" content="atomic – Marco’s Blog">
+  <meta property="og:description" content="atomic
+">
+  <meta property="og:image" content="http://localhost:6060/images/post/post-3.jpg">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Ionicons -->
+  <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/main.css">
+</head>
+
+<body>
+
+    
+
+    <!-- begin header -->
+<header class="c-header">
+  <div class="container">
+    <div class="row">
+      <div class="c-header__inner">
+
+        <div class="logo">
+          <a class="logo__link" href="/">
+          
+            <img class="logo__image" src="/images/mc_logo1.ico" alt="Marco’s Blog">
+          
+          </a>
+        </div>
+
+        <nav class="main-nav">
+          <div class="main-nav__box">
+
+            <div class="nav__icon-close">
+              <i class="ion ion-md-close"></i>
+            </div>
+
+            <div class="nav__title">Menu</div>
+
+              <ul class="nav__list list-reset">
+
+              
+                
+                <li class="nav__item">
+                  <a href="/" class="nav__link">Home</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/projects/" class="nav__link">Projects</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/blog/" class="nav__link">Blog</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/about/" class="nav__link">About</a>
+                </li>
+                
+              
+
+            </ul>
+          </div>
+
+          <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+        </nav>
+
+        <div class="nav-button">
+          <i class="nav__icon nav__icon-menu ion ion-md-menu"></i>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+<!-- end header -->
+
+    <div class="post-top">
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="col col-6 col-d-12">
+        <div class="post-image">
+          <img loading="lazy" src="/images/post/post-3.jpg" alt="atomic">
+        </div>
+      </div>
+      
+
+      <div class="col col-6 col-d-12">
+        <div class="post__info">
+
+          
+          <div class="post-tags">
+            
+            <a href="/tag/并发编程" class="post-tags__tag">并发编程</a>
+            
+            <a href="/tag/multithread" class="post-tags__tag">multiThread</a>
+            
+            <a href="/tag/code" class="post-tags__tag">code</a>
+            
+            <a href="/tag/threadsmanage" class="post-tags__tag">threadsManage</a>
+            
+            <a href="/tag/atomic" class="post-tags__tag">atomic</a>
+            
+          </div>
+          
+
+          <h1 class="post__title">atomic</h1>
+
+          <div class="post__meta">
+            <div class="post__author-image">
+              <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+            </div>
+
+            <div class="post__meta-bottom">
+              <div class="post__author">Marco Hwong</div>
+              <time class="post__date" datetime="2025-03-26T20:37:28+08:00">26 Mar 2025</time>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- begin post -->
+<div class="container-with-sidebar animate">
+  <div class="sidebar">
+    <div id="toc"></div>
+  </div>
+
+  <article class="post">
+    <div class="post__content">
+      <h2 id="atomic">atomic</h2>
+
+<h3 id="1-atomic的主要成员函数">1. atomic的主要成员函数</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>操作</th>
+      <th>对应函数（接口）</th>
+      <th>对应操作符</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>读取</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">T load(memory_order order = memory_order_seq_cst) const noexcept;</code></td>
+      <td>转换操作符：<code class="language-plaintext highlighter-rouge">operator T() noexcept;</code></td>
+    </tr>
+    <tr>
+      <td><strong>存储</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">void store(T desired, memory_order order = memory_order_seq_cst) noexcept;</code></td>
+      <td>赋值操作符：<code class="language-plaintext highlighter-rouge">operator=(T desired) noexcept;</code></td>
+    </tr>
+    <tr>
+      <td><strong>加法/自增</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">T fetch_add(T arg, memory_order order = memory_order_seq_cst) noexcept;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">operator+=(T arg) noexcept;</code><br />后置自增 <code class="language-plaintext highlighter-rouge">operator++(int)</code></td>
+    </tr>
+    <tr>
+      <td><strong>减法/自减</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">T fetch_sub(T arg, memory_order order = memory_order_seq_cst) noexcept;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">operator-=(T arg) noexcept;</code><br />后置自减 <code class="language-plaintext highlighter-rouge">operator--(int)</code></td>
+    </tr>
+    <tr>
+      <td><strong>按位与</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">T fetch_and(T arg, memory_order order = memory_order_seq_cst) noexcept;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">operator&amp;=(T arg) noexcept;</code></td>
+    </tr>
+    <tr>
+      <td><strong>按位或</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">T fetch_or(T arg, memory_order order = memory_order_seq_cst) noexcept;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">operator\|=(T arg) noexcept;</code></td>
+    </tr>
+    <tr>
+      <td><strong>按位异或</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">T fetch_xor(T arg, memory_order order = memory_order_seq_cst) noexcept;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">operator^=(T arg) noexcept;</code></td>
+    </tr>
+    <tr>
+      <td><strong>交换</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">T exchange(T desired, memory_order order = memory_order_seq_cst) noexcept;</code></td>
+      <td>——（无对应操作符）</td>
+    </tr>
+    <tr>
+      <td><strong>比较交换（弱）</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">bool compare_exchange_weak(T&amp; expected, T desired, memory_order success, memory_order failure) noexcept;</code></td>
+      <td>——（无对应操作符）</td>
+    </tr>
+    <tr>
+      <td><strong>比较交换（强）</strong></td>
+      <td><code class="language-plaintext highlighter-rouge">bool compare_exchange_strong(T&amp; expected, T desired, memory_order success, memory_order failure) noexcept;</code></td>
+      <td>——（无对应操作符）</td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li><strong>为什么同时提供函数接口？</strong>
+    <ol>
+      <li><strong>内存序控制</strong><br />
+  操作符（如赋值和类型转换）默认使用顺序一致性（<code class="language-plaintext highlighter-rouge">memory_order_seq_cst</code>），而函数版本允许开发者根据具体场景指定其他内存序（例如 relaxed、acquire/release），以便进行更细粒度的性能调优。</li>
+    </ol>
+  </li>
+</ul>
+
+<h4 id="13-exchange">1.3 exchange</h4>
+<p>exchange 是 std::atomic 提供的一个成员函数，用于将原子对象的值设置为新值，并返回旧值。这个操作是原子的，保证了在多线程环境中操作的安全性。</p>
+
+<h3 id="2-atomic_flag">2. atomic_flag</h3>
+
+<h4 id="1-atomic_flag和atomic_bool有什么区别">1. atomic_flag和atomic_bool有什么区别？</h4>
+
+<h4 id="2-test_and_setclear怎么用">2. test_and_set()/clear()怎么用？</h4>
+<p>test_and_set() 是 std::atomic_flag 和 std::atomic_bool 提供的一个成员函数，用于设置标志为 true，并返回之前的值。这个操作是原子的，通常用于实现简单的锁机制。</p>
+
+<h2 id="原子变量原理">原子变量原理</h2>
+<p>原子变量（Atomic Variables）是指在多线程环境下，对其操作是原子性的，即不可分割的。这意味着当一个线程在修改原子变量时，其他线程不能同时进行修改，这样可以避免竞态条件和数据不一致的问题。原子变量的实现原理通常依赖于硬件支持的原子指令和编译器内存屏障（Memory Barrier）的合理使用。</p>
+
+<p>以下是原子变量实现的一些关键点：</p>
+
+<h3 id="1-硬件支持的原子指令">1. 硬件支持的原子指令</h3>
+
+<p>现代处理器提供了一些原子指令，这些指令可以保证某些操作的原子性。例如：</p>
+
+<ul>
+  <li><strong>CMPXCHG</strong>：比较并交换指令，用于实现原子的比较和设置操作。</li>
+  <li><strong>XCHG</strong>：交换指令，用于实现简单的原子交换操作。</li>
+  <li><strong>LOCK</strong>：一个前缀，用于在x86架构上确保紧随其后的指令是原子执行的。</li>
+  <li><strong>Load-Acquire</strong> 和 <strong>Store-Release</strong>：这些指令分别确保数据的加载和存储操作对其他处理器可见，它们是实现原子操作的一部分。</li>
+</ul>
+
+<h3 id="2-内存屏障memory-barrier">2. 内存屏障（Memory Barrier）</h3>
+
+<p>内存屏障（也称为内存栅栏）是一种CPU指令，它确保屏障之前的所有操作完成后才执行屏障之后的操作。内存屏障可以防止编译器和处理器对指令重排序。</p>
+
+<ul>
+  <li><strong>Load Barrier</strong>：加载屏障，确保所有在屏障前的读操作完成后，才执行屏障后的读操作。</li>
+  <li><strong>Store Barrier</strong>：存储屏障，确保所有在屏障前的写操作完成后，才执行屏障后的写操作。</li>
+  <li><strong>Full Barrier</strong>：全屏障，同时具有加载屏障和存储屏障的功能。</li>
+</ul>
+
+<h3 id="3-原子操作的实现">3. 原子操作的实现</h3>
+
+<p>原子操作通常通过组合上述硬件支持的原子指令和内存屏障来实现。以下是一些常见的原子操作及其实现原理：</p>
+
+<ul>
+  <li><strong>原子读/写</strong>：直接通过处理器的原子指令来保证读/写操作的原子性。</li>
+  <li><strong>原子比较并设置（CAS）</strong>：使用CMPXCHG指令实现，它允许只有一个线程能成功地将变量更新为新值，如果值匹配，则替换为新值，否则不做更改。</li>
+  <li><strong>原子增加/减少</strong>：可以通过XCHG指令或者ADD指令配合LOCK前缀来实现。</li>
+  <li><strong>原子交换（Swap）</strong>：通过XCHG指令实现，直接交换两个值。</li>
+</ul>
+
+<h3 id="4-避免伪共享">4. 避免伪共享</h3>
+
+<p>在多核处理器系统中，多个核心可能共享同一缓存行。如果原子变量频繁地被不同的核心访问和修改，就可能发生伪共享（False Sharing），这会导致缓存一致性流量增加，降低性能。为了避免伪共享，可以在原子变量周围添加填充（Padding），使得每个核心访问的变量在不同的缓存行中。</p>
+
+<h3 id="5-平台无关性">5. 平台无关性</h3>
+
+<p>为了实现跨平台的原子操作，一些编程语言和库提供了平台无关的原子操作接口。例如，C++11标准库中的<code class="language-plaintext highlighter-rouge">std::atomic</code>，Java中的<code class="language-plaintext highlighter-rouge">java.util.concurrent.atomic</code>包，它们在底层会根据不同的平台和处理器架构选择合适的原子指令和内存屏障。</p>
+
+<p>总结来说，原子变量的实现依赖于硬件提供的原子指令和内存屏障，通过这些机制来保证在多线程环境中的操作是安全的、不可分割的。</p>
+
+    </div>
+
+    <div class="post__share">
+  <div class="share__head">
+    <div class="share__title">Share this Post</div>
+  </div>
+  <ul class="share__list list-reset">
+    <li class="share__item">
+      <a class="share__link share__twitter"
+        href="https://twitter.com/intent/tweet?text=atomic&url=http://localhost:6060/blog/atomic.html"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__facebook"
+        href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:6060/blog/atomic.html"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__pinterest"
+        href="http://pinterest.com/pin/create/button/?url=http://localhost:6060/blog/atomic.html&amp;media=http://localhost:6060/images/post/post-3.jpg&amp;description=atomic"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Pinterest" rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:6060/blog/atomic.html&title=atomic&summary=&source=Vonge"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
+    </li>
+  </ul>
+</div>
+  </article>
+</div>
+<!-- end post -->
+
+<div class="container">
+  <div class="row">
+    <div class="col col-10 col-d-12 push-d-0 push-1">
+      <div class="post__navigation animate">
+  
+  <a class="post__prev" href="/blog/multethreadquiz.html">
+    <div class="prev__image">
+      <img loading="lazy" src="/images/post/post-4.jpg" alt="atomic">
+    </div>
+    <div class="prev__box">
+      <span class="post__nav post__nav__prev">Prev post</span>
+      <h2 class="post__nav__title">multeThreadQuiz</h2>
+    </div>
+  </a>
+  
+
+  
+  <a class="post__next" href="/blog/cpp-lawyer.html">
+    <div class="next__box">
+      <span class="post__nav post__nav__next">Next post</span>
+      <h2 class="post__nav__title">cpp_lawyer</h2>
+    </div>
+    <div class="next__image">
+      <img loading="lazy" src="/images/post/post-13.jpg" alt="atomic">
+    </div>
+  </a>
+  
+</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- begin related posts -->
+<div class="container">
+  <section class="related-posts is-related animate">
+    <div class="row">
+      <div class="col col-12">
+        <div class="container__inner">
+          <div class="section__info">
+            <div class="section__head">
+              <h2 class="section__title">You may also like</h2>
+              <a class="section__link" href="/blog">
+                
+                
+                  
+                    <!-- <a href="/tags#并发编程" class="section__link related-tag">See all<span> 并发编程</span> <i class="ion ion-md-arrow-forward"></i></a> -->
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+              
+              </a>
+            </div>
+          </div>
+          <div class="row">
+
+          
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/multethreadquiz.html">
+                      <img loading="lazy" src="/images/post/post-4.jpg" alt="multeThreadQuiz">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/并发编程" class="article__tag">并发编程</a>
+                      
+                      <a href="/tag/multithread" class="article__tag">multiThread</a>
+                      
+                      <a href="/tag/code" class="article__tag">code</a>
+                      
+                      <a href="/tag/threadsquiz" class="article__tag">threadsQuiz</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/multethreadquiz.html">multeThreadQuiz</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      C++写一个线程池框架(list/queue/conditional),多线程操作,C++面向对象建模和多态以及单元测试
+CPU之间的负载调度/做异步编程/非阻塞线程的拓展思路/非阻塞线程与可阻塞线程之间死锁关系.
+
+生产者消费者消息...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2025-03-09T11:06:04+08:00">09 Mar 2025</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/coroutine.html">
+                      <img loading="lazy" src="/images/post/post-2.jpg" alt="coroutine">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/并发编程" class="article__tag">并发编程</a>
+                      
+                      <a href="/tag/coroutine" class="article__tag">coroutine</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/coroutine.html">coroutine</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      coroutine了解
+
+1. 基础概念
+
+
+  函数怎么提前返回？
+  怎么手动模拟函数调用？
+  函数参数到底怎么传？
+  函数如何能跨调用层次返回？
+  怎么能获取 EIP/RIP？
+  函数怎么跳转到特定地址执行？
+  函数怎...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2025-03-06T19:35:19+08:00">06 Mar 2025</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- end related posts -->
+
+
+
+
+    <!--
+        Bookshop components are accessed using the bookshop tag,
+        using the same syntax as the standard Jekyll include tag.
+    -->
+    <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
+
+<!--bookshop-live end-->
+
+    <div class="top" title="Top"><i class="ion ion-ios-arrow-up"></i></div>
+
+    <!-- begin footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+
+        <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+
+        <ul class="footer_nav list-reset">
+          
+          <li class="footer_nav__item">
+            <a href="/" class="footer_nav__link">Home</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/projects/" class="footer_nav__link">Projects</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/about/" class="footer_nav__link">About</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/blog/" class="footer_nav__link">Blog</a>
+          </li>
+          
+        </ul>
+
+        <div class="copyright"><p> 2021 &copy; <a href="/">Vonge</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
+
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- end footer -->
+
+    <script src="/js/scripts.js"></script>
+    <script src="/js/common.js"></script>
+</body>
+</html>

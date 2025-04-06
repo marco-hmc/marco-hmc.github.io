@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>template_basic</title>
+  <meta name='description' content='Marco’s Blog'>
+
+  <link rel="canonical" href="http://localhost:6060/blog/template-basic.html">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="template_basic – Marco’s Blog">
+  <meta name="twitter:description" content="一：模板基础
+">
+  <meta name="twitter:image:src" content="http://localhost:6060/images/post/post-23.jpg">
+
+  <!-- Facebook OpenGraph -->
+  <meta property="og:title" content="template_basic – Marco’s Blog">
+  <meta property="og:description" content="一：模板基础
+">
+  <meta property="og:image" content="http://localhost:6060/images/post/post-23.jpg">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Ionicons -->
+  <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/main.css">
+</head>
+
+<body>
+
+    
+
+    <!-- begin header -->
+<header class="c-header">
+  <div class="container">
+    <div class="row">
+      <div class="c-header__inner">
+
+        <div class="logo">
+          <a class="logo__link" href="/">
+          
+            <img class="logo__image" src="/images/mc_logo1.ico" alt="Marco’s Blog">
+          
+          </a>
+        </div>
+
+        <nav class="main-nav">
+          <div class="main-nav__box">
+
+            <div class="nav__icon-close">
+              <i class="ion ion-md-close"></i>
+            </div>
+
+            <div class="nav__title">Menu</div>
+
+              <ul class="nav__list list-reset">
+
+              
+                
+                <li class="nav__item">
+                  <a href="/" class="nav__link">Home</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/projects/" class="nav__link">Projects</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/blog/" class="nav__link">Blog</a>
+                </li>
+                
+              
+                
+                <li class="nav__item">
+                  <a href="/about/" class="nav__link">About</a>
+                </li>
+                
+              
+
+            </ul>
+          </div>
+
+          <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+        </nav>
+
+        <div class="nav-button">
+          <i class="nav__icon nav__icon-menu ion ion-md-menu"></i>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+<!-- end header -->
+
+    <div class="post-top">
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="col col-6 col-d-12">
+        <div class="post-image">
+          <img loading="lazy" src="/images/post/post-23.jpg" alt="template_basic">
+        </div>
+      </div>
+      
+
+      <div class="col col-6 col-d-12">
+        <div class="post__info">
+
+          
+          <div class="post-tags">
+            
+            <a href="/tag/template" class="post-tags__tag">template</a>
+            
+          </div>
+          
+
+          <h1 class="post__title">template_basic</h1>
+
+          <div class="post__meta">
+            <div class="post__author-image">
+              <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+            </div>
+
+            <div class="post__meta-bottom">
+              <div class="post__author">Marco Hwong</div>
+              <time class="post__date" datetime="2025-04-06T14:44:11+08:00">06 Apr 2025</time>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- begin post -->
+<div class="container-with-sidebar animate">
+  <div class="sidebar">
+    <div id="toc"></div>
+  </div>
+
+  <article class="post">
+    <div class="post__content">
+      <h2 id="一模板基础">一：模板基础</h2>
+
+<h3 id="11-什么是模板">1.1 什么是模板</h3>
+
+<ul>
+  <li><strong>概念上</strong>
+模板是 C++ 中的一种泛型编程工具，它允许你编写与类型无关的代码。通过使用模板，你可以编写一次代码，然后在不同的上下文中重用它，而不需要为每种类型编写单独的代码。
+如果从概念上理解，对于编译器来说模板可以看成是基于类型的编程，或者称之为面向类型编程。</li>
+</ul>
+
+<p>而所谓模板实例化，其实对应的是类型的声明；模板特化，其实是对于类型做 if-else判断；模板的递归，其实就对类型做循环。因此模板实际上是能够做到存在变量的概念，if-else 能力，loop 能力，且这些能力的实现与一般c++开发不相同，因此会有人觉得c++的模板是非常接近一门单独的语言的。而这种语言的编程就是模板元编程。</p>
+
+<p>那模板编程的好处是什么呢？</p>
+<ul>
+  <li>如果单单从狭义的泛型编程来看，正如前面提到的，因为写的是类型无关的代码，当声明了类型，完成了模板实例化的时候，就可以复用代码了。</li>
+  <li>而如果从狭义的面向类型编程角度出发，有什么好处呢？首先，要知道的是对于 c++语言来说，类型不是运行时必要的信息，类型更多是编译时的概念。因此面向类型的编程的耗时都是在编译期间完成的。但是类型确定是编码期间要确定的，把开销挪到编译时只能局限于非常小的范围。</li>
+  <li>
+    <p>还有什么好处呢？永永提升了泛型编程的能力，比如说实现一个容器对象，容器对象的<code class="language-plaintext highlighter-rouge">clear()</code>，即清除容器内所有元素的函数。这个函数对于 POD 类型（plain old data，可简单理解为默认类型）和自定义类型来说是有两种实现要求的。如果是 POD 类型，不会管理资源，其析构函数概念弱，不强调，直接<code class="language-plaintext highlighter-rouge">memset(0)</code>就好了；而自定义类型是可能管理资源，当调用<code class="language-plaintext highlighter-rouge">clear()</code>的时候是需要对元素逐个调用其析构函数的。这个时候就需要强调对类型有 if-else 的能力了。</p>
+  </li>
+  <li><strong>模板内容划分</strong>
+从用法来看，C++ 模板可以归类粗浅归为以下两种，入门和进阶两种：
+    <ol>
+      <li><strong>入门使用-简单泛型编程（Generic Programming）</strong>：</li>
+    </ol>
+    <ul>
+      <li><strong>函数模板</strong>：函数模板允许编写与类型无关的函数，通过类型参数化实现函数的泛型。例如，<code class="language-plaintext highlighter-rouge">std::sort</code> 可以对任何类型的容器进行排序。</li>
+      <li><strong>类模板</strong>：类模板允许编写与类型无关的类，通过类型参数化实现类的泛型。例如，<code class="language-plaintext highlighter-rouge">std::map&lt;Key, Value&gt;</code> 可以存储任何类型的键值对。</li>
+      <li><strong>变量模板</strong>：主要是用于模板元编程，类型特征那套，也可以用于表示<code class="language-plaintext highlighter-rouge">pi</code>在不同类型下的大小吧，比如说精度要求不高，可以<code class="language-plaintext highlighter-rouge">float</code>和<code class="language-plaintext highlighter-rouge">double</code>各定义一个<code class="language-plaintext highlighter-rouge">pi</code>吧。</li>
+      <li><strong>模板参数</strong>：模板允许编写与类型无关的代码，通过类型参数化实现代码复用。例如，<code class="language-plaintext highlighter-rouge">std::vector&lt;T&gt;</code> 可以存储任何类型的元素。</li>
+      <li><strong>模板特化</strong>：模板特化允许为特定类型提供特殊的实现，从而优化特定类型的操作。例如，<code class="language-plaintext highlighter-rouge">std::hash</code> 可以为不同类型提供不同的哈希函数。</li>
+    </ul>
+  </li>
+</ul>
+
+<ol>
+  <li><strong>进阶使用-模板元编程（Template Metaprogramming）</strong>：
+    <ul>
+      <li><strong>类型特征（Type Traits）</strong>：通过模板元编程，可以实现类型特征，用于在编译期检查和操作类型。进一步地，可以认为是一种函数。其参数为类型或者字面量。例如，<code class="language-plaintext highlighter-rouge">std::is_integral</code> 可以用于检查一个类型是否是整型。</li>
+      <li><strong>递归模板</strong>：模板元编程通常使用递归模板来实现复杂的编译期计算。例如，计算编译期常量、生成类型列表等。</li>
+      <li><strong>条件编译</strong>：通过模板元编程，可以实现条件编译，根据不同的模板参数生成不同的代码。而SAFINAE是模板元编程，利用type traits实现条件编译的一种常见手段。</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="12-模板的基本语法">1.2 模板的基本语法</h3>
+
+<p>模板的基本语法包括模板声明、模板定义和模板实例化。模板声明和定义使用 <code class="language-plaintext highlighter-rouge">template</code> 关键字，后跟模板参数列表。模板参数列表可以包含类型参数和非类型参数。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 函数模板</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="n">T</span> <span class="nf">functionName</span><span class="p">(</span><span class="n">T</span> <span class="n">parameter</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 函数体</span>
+<span class="p">}</span>
+
+<span class="c1">// 类模板</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">ClassName</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">T</span> <span class="n">memberFunction</span><span class="p">(</span><span class="n">T</span> <span class="n">parameter</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 函数体</span>
+    <span class="p">}</span>
+<span class="k">private</span><span class="o">:</span>
+    <span class="n">T</span> <span class="n">memberVariable</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<h3 id="13-注入类名">1.3 注入类名</h3>
+
+<p>在C++中，类模板的注入类名（Injected class name）是指在类模板内部，类模板名可以被用作一个类型名，并且这个名字会隐式地被替换为当前实例化的模板类型。下面详细介绍其含义和使用场景。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">MyClass</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="c1">// ctor里面的MyClass能直接使用，不需要再考虑模板实例化，这个就是注入类名</span>
+    <span class="n">MyClass</span><span class="p">(</span><span class="k">const</span> <span class="n">MyClass</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Copy constructor called."</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">MyClass</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">clone</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">static</span> <span class="n">MyClass</span> <span class="nf">createInstance</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">MyClass</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+</code></pre></div></div>
+
+<ul>
+  <li>注入类名主要用于类模板内部，简化代码书写。</li>
+  <li>在类模板外部，使用类模板名时通常需要显式指定模板参数。</li>
+  <li>注入类名可以提高代码的可读性和可维护性，特别是在复杂的模板类中。</li>
+</ul>
+
+<h3 id="14-依赖名称和typename">1.4 依赖名称和typename</h3>
+
+<p>依赖名称是指在模板定义中，其含义依赖于模板参数的名称。也就是说，这些名称的类型或值在模板实例化时才能确定。</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">Container</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="k">class</span> <span class="nc">Iterator</span> <span class="p">{</span>
+    <span class="nl">public:</span>
+        <span class="kt">void</span> <span class="n">print</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Iterator print"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+
+    <span class="n">Iterator</span> <span class="nf">getIterator</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">Iterator</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// Container&lt;T&gt;也是依赖名称</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="kt">void</span> <span class="nf">process</span><span class="p">(</span><span class="n">Container</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span> <span class="n">container</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Container&lt;T&gt;::Iterator也是依赖名称</span>
+    <span class="k">typename</span> <span class="n">Container</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">Iterator</span> <span class="n">it</span> <span class="o">=</span> <span class="n">container</span><span class="p">.</span><span class="n">getIterator</span><span class="p">();</span>
+    <span class="n">it</span><span class="p">.</span><span class="n">print</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>简单来说需要实例化的类型的，都是依赖名称的。</li>
+  <li>编译器读到 <code class="language-plaintext highlighter-rouge">Container&lt;T&gt;::Iterator</code> 时，无法知道这是一个类型；因为还没有实例。</li>
+  <li>因此需要使用 <code class="language-plaintext highlighter-rouge">typename</code> 关键字显式告诉编译器这是一个类型。</li>
+  <li>在函数签名的时候，编译器还能推断出来这是一个类型，因此可写可不写。</li>
+  <li>在声明变量的时候，编译器没办法确定是不是一个方法，因此需要加上<code class="language-plaintext highlighter-rouge">typename</code>。</li>
+</ul>
+
+<h3 id="15-依赖名称和template">1.5 依赖名称和template</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">Container</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">U</span><span class="p">&gt;</span>
+    <span class="kt">void</span> <span class="n">print</span><span class="p">(</span><span class="n">U</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Value: "</span> <span class="o">&lt;&lt;</span> <span class="n">value</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="kt">void</span> <span class="nf">test</span><span class="p">(</span><span class="n">Container</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span> <span class="n">c</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 在实例化模板的时候，如果还有一个嵌套的模板</span>
+    <span class="c1">// 编译器需要知道print也是一个模板函数，还需要接着实例化</span>
+    <span class="c1">// 因此要用template</span>
+    <span class="n">c</span><span class="p">.</span><span class="k">template</span> <span class="n">print</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">&gt;(</span><span class="mi">42</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">Container</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">c</span><span class="p">;</span>
+    <span class="n">test</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+    </div>
+
+    <div class="post__share">
+  <div class="share__head">
+    <div class="share__title">Share this Post</div>
+  </div>
+  <ul class="share__list list-reset">
+    <li class="share__item">
+      <a class="share__link share__twitter"
+        href="https://twitter.com/intent/tweet?text=template_basic&url=http://localhost:6060/blog/template-basic.html"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Twitter" rel="nofollow"><i class="ion ion-logo-twitter"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__facebook"
+        href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:6060/blog/template-basic.html"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Facebook" rel="nofollow"><i class="ion ion-logo-facebook"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__pinterest"
+        href="http://pinterest.com/pin/create/button/?url=http://localhost:6060/blog/template-basic.html&amp;media=http://localhost:6060/images/post/post-23.jpg&amp;description=template_basic"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on Pinterest" rel="nofollow"><i class="ion ion-logo-pinterest"></i></a>
+    </li>
+    <li class="share__item">
+      <a class="share__link share__linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:6060/blog/template-basic.html&title=template_basic&summary=&source=Vonge"
+        onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+        title="Share on LinkedIn" rel="nofollow"><i class="ion ion-logo-linkedin"></i></a>
+    </li>
+  </ul>
+</div>
+  </article>
+</div>
+<!-- end post -->
+
+<div class="container">
+  <div class="row">
+    <div class="col col-10 col-d-12 push-d-0 push-1">
+      <div class="post__navigation animate">
+  
+  <a class="post__prev" href="/blog/template-advanced.html">
+    <div class="prev__image">
+      <img loading="lazy" src="/images/post/post-21.jpg" alt="template_basic">
+    </div>
+    <div class="prev__box">
+      <span class="post__nav post__nav__prev">Prev post</span>
+      <h2 class="post__nav__title">template_advanced</h2>
+    </div>
+  </a>
+  
+
+  
+</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- begin related posts -->
+<div class="container">
+  <section class="related-posts is-related animate">
+    <div class="row">
+      <div class="col col-12">
+        <div class="container__inner">
+          <div class="section__info">
+            <div class="section__head">
+              <h2 class="section__title">You may also like</h2>
+              <a class="section__link" href="/blog">
+                
+                
+                  
+                    <!-- <a href="/tags#template" class="section__link related-tag">See all<span> template</span> <i class="ion ion-md-arrow-forward"></i></a> -->
+                  
+                
+              
+              </a>
+            </div>
+          </div>
+          <div class="row">
+
+          
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/template-advanced.html">
+                      <img loading="lazy" src="/images/post/post-21.jpg" alt="template_advanced">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/template" class="article__tag">template</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/template-advanced.html">template_advanced</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      模板-进阶内容
+
+7. C++11/14/17/20 中的模板新特性
+
+C++11、C++14、C++17 和 C++20 引入了许多新的模板特性，使得模板编程更加灵活和强大。以下是这些新特性的逐条解释：
+
+7.1 C++11 中的模...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2025-04-06T14:43:48+08:00">06 Apr 2025</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/template-specialization.html">
+                      <img loading="lazy" src="/images/post/post-27.jpg" alt="template_specialization">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/template" class="article__tag">template</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/template-specialization.html">template_specialization</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      4. 模板特化
+
+模板特化（Template Specialization）是 C++ 模板编程中的一个重要概念，它允许你为特定的模板参数提供特殊的实现。模板特化分为部分特化和全特化。通过模板特化，你可以为特定类型或特定条件提供优化的...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2025-04-04T10:24:28+08:00">04 Apr 2025</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+              
+            
+            
+            
+      
+            
+      
+            
+
+              <div class="article col col-4 col-d-6 col-t-12">
+                <div class="article__inner">
+              
+                  
+                  <div class="image-wrap">
+                    <a class="article__image" href="/blog/template-introduction.html">
+                      <img loading="lazy" src="/images/post/post-28.jpg" alt="template_introduction">
+                    </a>
+                  </div>
+                  
+              
+                  <div class="article__content">
+              
+                    
+                    <div class="article-tags__box">
+                      
+                      <a href="/tag/template" class="article__tag">template</a>
+                      
+                    </div>
+                    
+              
+                    <h2 class="article__title">
+                      <a href="/blog/template-introduction.html">template_introduction</a>
+                    </h2>
+              
+                    <p class="article__excerpt">
+                      模板
+
+├── 1. 模板基础
+│   ├── 1.1 什么是模板
+│   ├── 1.2 模板的基本语法
+├── 2. 模板参数
+│   ├── 2.1 类型模板参数
+│   ├── 2.2 非类型模板参数
+│   └── 2.3 ...
+                    </p>
+              
+                    <div class="article__meta">
+                      <div class="article__author-image">
+                        <img loading="lazy" src="/images/avatar_2.jpg" alt="Marco Hwong">
+                      </div>
+                      <div class="article-info">
+                        <div class="article__author-name">Marco Hwong</div>
+                        <span class="article__date"><time datetime="2025-04-04T10:24:28+08:00">04 Apr 2025</time></span>
+                      </div>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+            
+                
+                  
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- end related posts -->
+
+
+
+
+    <!--
+        Bookshop components are accessed using the bookshop tag,
+        using the same syntax as the standard Jekyll include tag.
+    -->
+    <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(page.jekyll.html) params(content_blocks=page.content_blocks page_theme=page.page_theme) context() -->
+
+<!--bookshop-live end-->
+
+    <div class="top" title="Top"><i class="ion ion-ios-arrow-up"></i></div>
+
+    <!-- begin footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+
+        <!--bookshop-live meta(version="3.9.0" baseurl="" title="Vonge") -->
+<!--bookshop-live name(social-link.jekyll.html) params() context() -->
+
+<div class="social">
+  <ul class="social__list list-reset">
+    
+    <li class="social__item">
+      <a class="social__link" href="https://github.com/marco-hmc/" target="_blank" rel="noopener" aria-label="github icon"><i class="ion ion-logo-github"></i></a>
+    </li>
+    
+  </ul>
+</div>
+
+<!--bookshop-live end-->
+
+        <ul class="footer_nav list-reset">
+          
+          <li class="footer_nav__item">
+            <a href="/" class="footer_nav__link">Home</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/projects/" class="footer_nav__link">Projects</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/about/" class="footer_nav__link">About</a>
+          </li>
+          
+          <li class="footer_nav__item">
+            <a href="/blog/" class="footer_nav__link">Blog</a>
+          </li>
+          
+        </ul>
+
+        <div class="copyright"><p> 2021 &copy; <a href="/">Vonge</a>. Template by <a href="https://cloudcannon.com/">CloudCannon</a>.</p></div>
+
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- end footer -->
+
+    <script src="/js/scripts.js"></script>
+    <script src="/js/common.js"></script>
+</body>
+</html>
