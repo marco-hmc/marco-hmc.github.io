@@ -5,9 +5,9 @@ menu__settings:
     - title: 'Home'
       url: '/'
     - title: 'Projects'
-      url: '/projects/'
+      url: '/projects.html'
     - title: 'Blog'
-      url: '/blog/'
+      url: '/blog.html'
     # - title: 'Pages'
     #   submenu:
     #   - url: '/about/'
@@ -15,4 +15,4 @@ menu__settings:
       # - url: '/elements/'
       #   title: 'Elements'
     - title: 'About'
-      url: '/about/'
+      url: '/about.html'
