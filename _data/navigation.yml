@@ -1,0 +1,18 @@
+logo_image: '/images/mc_logo1.ico' # You can add own logo. For example '/images/logo.png'.
+
+menu__settings:
+  menu__items:
+    - title: 'Home'
+      url: '/'
+    - title: 'Projects'
+      url: '/projects.html'
+    - title: 'Blog'
+      url: '/blog.html'
+    # - title: 'Pages'
+    #   submenu:
+    #   - url: '/about/'
+    #     title: 'About'
+      # - url: '/elements/'
+      #   title: 'Elements'
+    - title: 'About'
+      url: '/about.html'
