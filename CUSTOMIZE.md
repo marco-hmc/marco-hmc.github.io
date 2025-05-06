@@ -25,17 +25,14 @@ Here we will give you some tips on how to customize the website. One important t
   - [Adding a newsletter](#adding-a-newsletter)
   - [Removing content](#removing-content)
     - [Removing the blog page](#removing-the-blog-page)
-    - [Removing the news section](#removing-the-news-section)
     - [Removing the projects page](#removing-the-projects-page)
-    - [Removing the publications page](#removing-the-publications-page)
     - [Removing the repositories page](#removing-the-repositories-page)
   - [Adding Token for Lighthouse Badger](#adding-token-for-lighthouse-badger)
     - [Personal Access Token (fine-grained) Permissions for Lighthouse Badger:](#personal-access-token-fine-grained-permissions-for-lighthouse-badger)
   - [Customizing fonts, spacing, and more](#customizing-fonts-spacing-and-more)
   - [Scheduled Posts](#scheduled-posts)
-  _ [Name Format](#name-format)
-  _ [Important Notes](#important-notes)
-  <!--te-->
+    - [Name Format](#name-format)
+    - [Important Notes](#important-notes)
 
 ## Project structure
 
@@ -230,15 +227,6 @@ You can also:
 - remove the `jekyll-archives-v2` gem from the [Gemfile](Gemfile) and the `plugins` section in [\_config.yml](_config.yml) (unless you have a custom collection that uses it)
 - remove the `classifier-reborn` gem from the [Gemfile](Gemfile)
 
-### Removing the news section
-
-To remove the news section, you can:
-
-- delete the [\_news](_news/) directory
-- delete the file [\_includes/news.liquid](_includes/news.liquid) and the references to it in the [\_pages/about.md](_pages/about.md)
-- remove the `announcements` part in [\_pages/about.md](_pages/about.md)
-- remove the news part in the `Collections` section in the [\_config.yml](_config.yml) file
-
 ### Removing the projects page
 
 To remove the projects, you can:
@@ -252,26 +240,6 @@ You can also:
 
 - delete [\_includes/projects_horizontal.liquid](_includes/projects_horizontal.liquid)
 - delete [\_includes/projects.liquid](_includes/projects.liquid)
-
-### Removing the publications page
-
-To remove the publications, you can:
-
-- delete the [\_bibliography](_bibliography/) directory
-- delete the publications page [\_pages/publications.md](_pages/publications.md)
-- remove reference to publications page in our [\_pages/dropdown.md](_pages/dropdown.md)
-- remove `Jekyll Scholar` section in the [\_config.yml](_config.yml) file
-
-You can also:
-
-- delete the [\_layouts/bib.liquid](_layouts/bib.liquid) file
-- delete [\_includes/bib_search.liquid](_includes/bib_search.liquid)
-- delete [\_includes/citation.liquid](_includes/citation.liquid)
-- delete [\_includes/selected_papers.liquid](_includes/selected_papers.liquid)
-- delete [\_plugins/google-scholar-citations.rb](_plugins/google-scholar-citations.rb)
-- delete [\_plugins/hide-custom-bibtex.rb](_plugins/hide-custom-bibtex.rb)
-- delete [\_plugins/inspirehep-citations.rb](_plugins/inspirehep-citations.rb)
-- remove the `jekyll-scholar` gem from the [Gemfile](Gemfile) and the `plugins` section in [\_config.yml](_config.yml)
 
 ### Removing the repositories page
 

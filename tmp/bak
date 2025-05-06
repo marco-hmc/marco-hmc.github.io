@@ -9,20 +9,20 @@
   "education": [
     {
       "institution": "South China University of Technology",
-      "area": "Computer, AI, Multimodal Recognition",
+      "area": "multimodal recognition",
       "studyType": "Master",
       "startDate": "2020-09-01",
       "endDate": "2023-06-01"
     }
   ],
-  "work": [
+  "career": [
     {
-      "name": "A modeling software company",
-      "position": "C++ developer",
+      "company": "Privacy",
+      "Position": "C++ developer",
+      "summary": "Platform function development of modeling software, such as view, validation, model reference and other business development; with multi-threaded debugging, memory crash location, performance optimization experience.",
+      "highlights": ["Multi-threads", "Performance Optimization"],
       "startDate": "2023-06",
-      "endDate": "Present",
-      "summary": "Platform function development of modeling software, such as view, data validation, model reference and other business development; with multi-threaded debugging, memory crash location, performance optimization experience.",
-      "highlights": ["Multi-threads", "Performance Optimization"]
+      "endDate": "Present"
     }
   ],
   "publications": [
@@ -38,13 +38,23 @@
       "name": "C++",
       "level": "Master",
       "icon": "fa-solid fa-hashtag",
-      "keywords": ["Performance Optimization", "Meta Programming", "Computational Geometry", "Parallel Programming", "Design Patterns"]
+      "keywords": [
+        "Performance Optimization",
+        "Meta Programming",
+        "Computational Geometry",
+        "Parallel Programming",
+        "Design Patterns"
+      ]
     },
     {
       "name": "AI",
       "level": "Master",
       "icon": "fa-solid fa-hashtag",
-      "keywords": ["Multimodal Recognition", "Model fine-tuning", "RAG"]
+      "keywords": [
+        "Multimodal Recognition",
+        "Model fine-tuning",
+        "RAG"
+      ]
     }
   ]
 }
