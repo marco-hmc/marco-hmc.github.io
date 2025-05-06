@@ -80,32 +80,32 @@
 </code></pre></div></div> <p>Eta 归约（Eta Reduction）是 Lambda 演算中的一种基本操作，用于简化 Lambda 表达式。Eta 归约通过移除不必要的 Lambda 抽象来实现，使得表达式在形式上更简洁但在语义上等价。</p> <ul> <li> <strong>主要特点：</strong> <ol> <li> <strong>简化表达式</strong>：Eta 归约用于简化 Lambda 表达式，使得表达式在形式上更简洁。</li> <li> <strong>保持语义不变</strong>：Eta 归约不会改变表达式的计算结果，只是简化了表达式的形式。</li> <li> <strong>移除不必要的抽象</strong>：Eta 归约通过移除不必要的 Lambda 抽象来实现。</li> </ol> </li> </ul> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>λx.(f x)       // Eta 归约，结果是 f
 λx.(λy.(x y))  // Eta 归约，结果是 x
 λx.(λy.(f y))  // Eta 归约，结果是 f
-</code></pre></div></div> <h4 id="37-归约策略">3.7 归约策略</h4> <p>归约策略（Reduction Strategy）是指在 Lambda 演算中选择归约规则和归约顺序的策略。不同的归约策略会影响表达式的计算过程和效率。常见的归约策略包括正常顺序归约（Normal Order Reduction）和应用顺序归约（Applicative Order Reduction）。</p> <ul> <li> <p><strong>主要特点：</strong></p> <ol> <li> <strong>选择归约规则</strong>：归约策略决定在计算过程中选择哪种归约规则（如 Beta 归约或 Eta 归约）。</li> <li> <strong>确定归约顺序</strong>：归约策略决定在计算过程中按照什么顺序进行归约操作。</li> <li> <strong>影响计算效率</strong>：不同的归约策略会影响表达式的计算过程和效率。</li> </ol> </li> <li> <p><strong>常见归约策略：</strong></p> <ol> <li> <strong>正常顺序归约（Normal Order Reduction）</strong>：总是优先归约最左边的最外层表达式。正常顺序归约保证了如果表达式有一个正常形式（即无法再归约的形式），那么正常顺序归约一定能找到它。 <ul> <li>示例：对于表达式 (λx.(λy.y) z) w，正常顺序归约会先归约 (λx.(λy.y) z) w。</li> </ul> </li> <li> <strong>应用顺序归约（Applicative Order Reduction）</strong>：总是优先归约最内层的表达式。应用顺序归约通常用于实现严格求值的编程语言。 <ul> <li>示例：对于表达式 (λx.(λy.y) z) w，应用顺序归约会先归约 (λy.y) z。</li> </ul> </li> </ol> </li> </ul> <h3 id="4-常用-lambda-算子">4. 常用 lambda 算子</h3> <h4 id="示例-1恒等函数">示例 1：恒等函数</h4> <p>恒等函数是最简单的 Lambda 表达式之一，表示为 <code class="language-plaintext highlighter-rouge">λx.x</code>。它的作用是返回其输入。</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  I = λx.x
-  I 5
-  =&gt; (λx.x) 5
-  =&gt; 5
-</code></pre></div></div> <h4 id="示例-2自应用函数">示例 2：自应用函数</h4> <p>自应用函数是一个将自身作为参数应用的函数，表示为 <code class="language-plaintext highlighter-rouge">λx.xx</code>。这个计算过程是无限递归的，因为每次应用都会生成一个新的自应用函数。</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   S = λx.xx
-   S S
-   =&gt; (λx.xx) (λx.xx)
-   =&gt; (λx.xx) (λx.xx)
-</code></pre></div></div> <h4 id="示例-3布尔值和逻辑运算">示例 3：布尔值和逻辑运算</h4> <p>在 Lambda 演算中，可以使用布尔值和逻辑运算。以下是布尔值 <code class="language-plaintext highlighter-rouge">true</code> 和 <code class="language-plaintext highlighter-rouge">false</code> 以及逻辑运算 <code class="language-plaintext highlighter-rouge">and</code> 的定义和计算过程。 计算 <code class="language-plaintext highlighter-rouge">true and false</code>：</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   true  = λx.λy.x
-   false = λx.λy.y
-   and = λp.λq.(p q false)
-   AND = λp.λq.p q p`
-  - **OR**: `OR = λp.λq.p p q`
-  - **NOT**: `NOT = λp.λa.λb.p b a`
+</code></pre></div></div> <h4 id="37-归约策略">3.7 归约策略</h4> <p>归约策略（Reduction Strategy）是指在 Lambda 演算中选择归约规则和归约顺序的策略。不同的归约策略会影响表达式的计算过程和效率。常见的归约策略包括正常顺序归约（Normal Order Reduction）和应用顺序归约（Applicative Order Reduction）。</p> <ul> <li> <p><strong>主要特点：</strong></p> <ol> <li> <strong>选择归约规则</strong>：归约策略决定在计算过程中选择哪种归约规则（如 Beta 归约或 Eta 归约）。</li> <li> <strong>确定归约顺序</strong>：归约策略决定在计算过程中按照什么顺序进行归约操作。</li> <li> <strong>影响计算效率</strong>：不同的归约策略会影响表达式的计算过程和效率。</li> </ol> </li> <li> <p><strong>常见归约策略：</strong></p> <ol> <li> <strong>正常顺序归约（Normal Order Reduction）</strong>：总是优先归约最左边的最外层表达式。正常顺序归约保证了如果表达式有一个正常形式（即无法再归约的形式），那么正常顺序归约一定能找到它。 <ul> <li>示例：对于表达式 (λx.(λy.y) z) w，正常顺序归约会先归约 (λx.(λy.y) z) w。</li> </ul> </li> <li> <strong>应用顺序归约（Applicative Order Reduction）</strong>：总是优先归约最内层的表达式。应用顺序归约通常用于实现严格求值的编程语言。 <ul> <li>示例：对于表达式 (λx.(λy.y) z) w，应用顺序归约会先归约 (λy.y) z。</li> </ul> </li> </ol> </li> </ul> <h3 id="4-常用-lambda-算子">4. 常用 lambda 算子</h3> <h4 id="示例-1恒等函数">示例 1：恒等函数</h4> <p>恒等函数是最简单的 Lambda 表达式之一，表示为 <code class="language-plaintext highlighter-rouge">λx.x</code>。它的作用是返回其输入。</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>I = λx.x
+I 5
+=&gt; (λx.x) 5
+=&gt; 5
+</code></pre></div></div> <h4 id="示例-2自应用函数">示例 2：自应用函数</h4> <p>自应用函数是一个将自身作为参数应用的函数，表示为 <code class="language-plaintext highlighter-rouge">λx.xx</code>。这个计算过程是无限递归的，因为每次应用都会生成一个新的自应用函数。</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>S = λx.xx
+S S
+=&gt; (λx.xx) (λx.xx)
+=&gt; (λx.xx) (λx.xx)
+</code></pre></div></div> <h4 id="示例-3布尔值和逻辑运算">示例 3：布尔值和逻辑运算</h4> <p>在 Lambda 演算中，可以使用布尔值和逻辑运算。以下是布尔值 <code class="language-plaintext highlighter-rouge">true</code> 和 <code class="language-plaintext highlighter-rouge">false</code> 以及逻辑运算 <code class="language-plaintext highlighter-rouge">and</code> 的定义和计算过程。 计算 <code class="language-plaintext highlighter-rouge">true and false</code>：</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>true  = λx.λy.x
+false = λx.λy.y
+and = λp.λq.(p q false)
+AND = λp.λq.p q p`
+- **OR**: `OR = λp.λq.p p q`
+- **NOT**: `NOT = λp.λa.λb.p b a`
 
-  true  = λx.λy.x
-   false = λx.λy.y
-   and = λp.λq.(p q false)
+true  = λx.λy.x
+false = λx.λy.y
+and = λp.λq.(p q false)
 
-   and true false
-   (λp.λq.(p q false)) true false
-   =&gt; (λq.(true q false)) false
-   =&gt; (true false false)
-   =&gt; (λx.λy.x) false false
-   =&gt; (λy.false)
-   =&gt; false
+and true false
+(λp.λq.(p q false)) true false
+=&gt; (λq.(true q false)) false
+=&gt; (true false false)
+=&gt; (λx.λy.x) false false
+=&gt; (λy.false)
+=&gt; false
 </code></pre></div></div> <h4 id="示例-4自然数和加法">示例 4：自然数和加法</h4> <p>在 Lambda 演算中，可以使用 Church 数字表示自然数，并定义加法运算。</p> <ol> <li> <p>定义自然数 <code class="language-plaintext highlighter-rouge">0</code> 和 <code class="language-plaintext highlighter-rouge">1</code>：</p> <div class="language-plaintext highlighter-rouge"> <div class="highlight"><pre class="highlight"><code>0 = λf.λx.x
 1 = λf.λx.(f x)
 add = λm.λn.λf.λx.(m f (n f x))
@@ -118,10 +118,10 @@ add 1 1
 =&gt; (λf.λx.(f (1 f x)))
 =&gt; (λf.λx.(f ((λf.λx.(f x)) f x)))
 =&gt; (λf.λx.(f (f x)))
-</code></pre></div> </div> <p>结果是 <code class="language-plaintext highlighter-rouge">2</code>，表示为 <code class="language-plaintext highlighter-rouge">λf.λx.(f (f x))</code>。</p> </li> </ol> <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  0 = λf.λx.x
-  1 = λf.λx.f x
-  2 = λf.λx.f (f x)
-  n = λf.λx.f^n x
+</code></pre></div> </div> <p>结果是 <code class="language-plaintext highlighter-rouge">2</code>，表示为 <code class="language-plaintext highlighter-rouge">λf.λx.(f (f x))</code>。</p> </li> </ol> <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0 = λf.λx.x
+1 = λf.λx.f x
+2 = λf.λx.f (f x)
+n = λf.λx.f^n x
 </code></pre></div></div> <ul> <li> <strong>算术运算</strong>： <ul> <li> <strong>加法</strong>: <code class="language-plaintext highlighter-rouge">ADD = λm.λn.λf.λx.m f (n f x)</code> </li> <li> <strong>乘法</strong>: <code class="language-plaintext highlighter-rouge">MUL = λm.λn.λf.m (n f)</code> </li> <li> <strong>指数</strong>: <code class="language-plaintext highlighter-rouge">EXP = λm.λn.n m</code> </li> </ul> </li> </ul> <h4 id="条件语句"><strong>条件语句</strong></h4> <p>条件语句基于布尔值： 如果 <code class="language-plaintext highlighter-rouge">p = TRUE</code>，返回 <code class="language-plaintext highlighter-rouge">a</code>，否则返回 <code class="language-plaintext highlighter-rouge">b</code>。</p> <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>IF = λp.λa.λb.p a b
 </code></pre></div></div> <h4 id="固定点算子"><strong>固定点算子</strong></h4> <p>递归在 Lambda 演算中无法直接定义，因为没有命名。然而，固定点算子（如 Y 组合子）允许我们间接实现递归。</p> <ul> <li> <strong>Y 组合子</strong>： <div class="language-text highlighter-rouge"> <div class="highlight"><pre class="highlight"><code>Y = λf.(λx.f (x x)) (λx.f (x x))
 </code></pre></div> </div> <p>它的作用是找到函数的<strong>不动点</strong>，即 <code class="language-plaintext highlighter-rouge">Y f = f (Y f)</code>。</p> </li> </ul> <p>以阶乘函数为例：</p> <ol> <li>未递归的阶乘函数： <div class="language-text highlighter-rouge"> <div class="highlight"><pre class="highlight"><code>FACT = λf.λn.IF (IS_ZERO n) 1 (MUL n (f (PRED n)))
