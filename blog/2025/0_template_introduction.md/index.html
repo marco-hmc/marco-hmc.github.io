@@ -1,0 +1,410 @@
+<!DOCTYPE html> <html lang="cn"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> 模板的入门使用 | Marco's blog </title> <meta name="author" content="Marco Huang"> <meta name="description" content="A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design. "> <meta name="keywords" content="jekyll, jekyll-theme, blog"> <link rel="stylesheet" href="/assets/css/bootstrap.min.css?a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/assets/css/academicons.min.css?f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" href="/assets/css/scholar-icons.css?62b2ac103a88034e6882a5be5f3e2772"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link defer href="/assets/css/bootstrap-toc.min.css?6f5af0bb9aab25d79b2448143cbeaa88" rel="stylesheet"> <link rel="shortcut icon" href="/assets/img/mc_logo.ico?cf243b61f6c6d75747808b3ae8298c5b"> <link rel="stylesheet" href="/assets/css/main.css?d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://marco-hmc.github.io/blog/2025/0_template_introduction.md/"> <script src="/assets/js/theme.js?a81d82887dd692e91686b43de4542f18"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> Marco's blog </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">about </a> </li> <li class="nav-item active"> <a class="nav-link" href="/blog/">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/">projects </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/">cv </a> </li> <li class="nav-item"> <button id="search-toggle" title="Search" onclick="openSearchModal()"> <span class="nav-link">ctrl k <i class="ti ti-search"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="ti ti-sun-moon" id="light-toggle-system"></i> <i class="ti ti-moon-filled" id="light-toggle-dark"></i> <i class="ti ti-sun-filled" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="row"> <div class="col-sm-3"> <nav id="toc-sidebar" class="sticky-top"></nav> </div> <div class="col-sm-9"> <div class="post"> <header class="post-header"> <h1 class="post-title">模板的入门使用</h1> <p class="post-meta"> Created on April 25, 2025 </p> <p class="post-tags"> <a href="/blog/2025"> <i class="fa-solid fa-calendar fa-sm"></i> 2025 </a>   ·   <a href="/blog/tag/cpp"> <i class="fa-solid fa-hashtag fa-sm"></i> cpp</a>   <a href="/blog/tag/template"> <i class="fa-solid fa-hashtag fa-sm"></i> template</a>   ·   <a href="/blog/category/language"> <i class="fa-solid fa-tag fa-sm"></i> language</a> </p> </header> <article class="post-content"> <div id="markdown-content"> <h1 id="模板的入门使用">模板的入门使用</h1> <blockquote> <p>Marco</p> </blockquote> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">├──</span> <span class="mf">1.</span> <span class="err">模板基础</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="mf">1.1</span> <span class="err">什么是模板（函数模板</span><span class="o">/</span><span class="err">类模板</span><span class="o">/</span><span class="err">变量模板）</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="mf">1.2</span> <span class="err">模板的基本语法</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mf">1.2.1</span> <span class="err">注入类名</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mf">1.2.2</span> <span class="err">依赖名称</span>
+<span class="err">├──</span> <span class="mf">2.</span> <span class="err">模板参数</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="mf">2.1</span> <span class="err">类型模板参数</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="mf">2.2</span> <span class="err">非类型模板参数</span>
+<span class="err">│</span>   <span class="err">└──</span> <span class="mf">2.3</span> <span class="err">模板模板参数</span>
+<span class="err">├──</span> <span class="mf">3.</span> <span class="err">模板实例化</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="mf">3.1</span> <span class="err">隐式实例化</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="mf">3.2</span> <span class="err">显式实例化</span>
+<span class="err">│</span>   <span class="err">└──</span> <span class="mf">3.3</span> <span class="err">模板链接</span>
+<span class="err">├──</span> <span class="mf">4.</span> <span class="err">模板特化</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="mf">4.1</span> <span class="err">模板特化</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="mf">4.2</span> <span class="err">模板偏特化</span>
+<span class="err">│</span>   <span class="err">└──</span> <span class="mf">4.3</span> <span class="err">特化的推断规则</span>
+</code></pre></div></div> <ol> <li> <strong>模板基础</strong>：介绍模板的基本概念和语法，包括函数模板和类模板的定义和使用。</li> <li> <strong>模板参数</strong>：详细讲解模板参数的类型，包括类型模板参数、非类型模板参数和模板模板参数。</li> <li> <strong>模板实例化</strong>：解释模板实例化的概念和时机，包括显式实例化和隐式实例化。</li> <li> <strong>模板特化</strong>：介绍模板特化的概念和应用场景，包括部分特化和全特化。</li> <li> <strong>模板的高级用法</strong>：深入探讨模板的高级用法，包括模板的递归、偏特化、SFINAE 和模板元编程。</li> <li> <strong>模板与继承</strong>：讨论模板类的继承关系，包括 CRTP 模式和模板与多态的结合。</li> <li> <strong>C++11/14/17/20 中的模板新特性</strong>：介绍 C++11、C++14、C++17 和 C++20 中引入的模板新特性，如变参模板、类型别名模板、变量模板、折叠表达式、概念和约束。</li> <li> <strong>模板的常见问题</strong>：分析模板代码膨胀、编译错误和调试等常见问题。</li> </ol> <h2 id="1-模板基础">1. 模板基础</h2> <h3 id="11-什么是模板">1.1 什么是模板</h3> <ul> <li> <strong>概念上</strong> 模板是 C++ 中的一种泛型编程工具，它允许你编写与类型无关的代码。通过使用模板，你可以编写一次代码，然后在不同的上下文中重用它，而不需要为每种类型编写单独的代码。 如果从概念上理解，对于编译器来说模板可以看成是基于类型的编程，或者称之为面向类型编程。</li> </ul> <p>模板的值对象，其实就是类型和常量；模板特化，其实就是是对于类型做 if-else判断；模板的递归，其实就对通过模板不停实例化展开。也就是说模板实际上是能够做到存在变量的概念，if-else 能力，loop 能力，且这些能力的实现与一般c++开发不相同，因此会有人觉得c++的模板是非常接近一门单独的语言的。而这种语言的编程就是模板元编程。</p> <p>那模板编程的好处是什么呢？</p> <ul> <li>如果单单从狭义的泛型编程来看，正如前面提到的，因为写的是类型无关的代码，当声明了类型，完成了模板实例化的时候，就可以复用代码了。</li> <li> <p>还有什么好处呢？远远提升了泛型编程的能力，比如说实现一个容器对象，容器对象的<code class="language-plaintext highlighter-rouge">clear()</code>，即清除容器内所有元素的函数。这个函数对于 POD 类型（plain old data，可简单理解为默认类型）和自定义类型来说是有两种实现要求的。如果是 POD 类型，不会管理资源，其析构函数概念弱，不强调，直接<code class="language-plaintext highlighter-rouge">memset(0)</code>就好了；而自定义类型是可能管理资源，当调用<code class="language-plaintext highlighter-rouge">clear()</code>的时候是需要对元素逐个调用其析构函数的。这个时候就需要强调对类型有 if-else 的能力了。</p> </li> <li> <strong>模板内容划分</strong> 从用法来看，C++ 模板可以归类粗浅归为以下两种，入门和进阶两种： <ol> <li> <strong>入门使用-简单泛型编程（Generic Programming）</strong>：</li> </ol> <ul> <li> <strong>函数模板</strong>：函数模板允许编写与类型无关的函数，通过类型参数化实现函数的泛型。例如，<code class="language-plaintext highlighter-rouge">std::sort</code> 可以对任何类型的容器进行排序。</li> <li> <strong>类模板</strong>：类模板允许编写与类型无关的类，通过类型参数化实现类的泛型。例如，<code class="language-plaintext highlighter-rouge">std::map&lt;Key, Value&gt;</code> 可以存储任何类型的键值对。</li> <li> <strong>变量模板</strong>：主要是用于模板元编程，类型特征那套，也可以用于表示<code class="language-plaintext highlighter-rouge">pi</code>在不同类型下的大小吧，比如说精度要求不高，可以<code class="language-plaintext highlighter-rouge">float</code>和<code class="language-plaintext highlighter-rouge">double</code>各定义一个<code class="language-plaintext highlighter-rouge">pi</code>吧。</li> <li> <strong>模板参数</strong>：模板允许编写与类型无关的代码，通过类型参数化实现代码复用。例如，<code class="language-plaintext highlighter-rouge">std::vector&lt;T&gt;</code> 可以存储任何类型的元素。</li> <li> <strong>模板特化</strong>：模板特化允许为特定类型提供特殊的实现，从而优化特定类型的操作。例如，<code class="language-plaintext highlighter-rouge">std::hash</code> 可以为不同类型提供不同的哈希函数。</li> </ul> </li> </ul> <ol> <li> <strong>进阶使用-模板元编程（Template Metaprogramming）</strong>： <ul> <li> <strong>类型特征（Type Traits）</strong>：通过模板元编程，可以实现类型特征，用于在编译期检查和操作类型。进一步地，可以认为是一种函数。其参数为类型或者字面量。例如，<code class="language-plaintext highlighter-rouge">std::is_integral</code> 可以用于检查一个类型是否是整型。</li> <li> <strong>递归模板</strong>：模板元编程通常使用递归模板来实现复杂的编译期计算。例如，计算编译期常量、生成类型列表等。</li> <li> <strong>条件编译</strong>：通过模板元编程，可以实现条件编译，根据不同的模板参数生成不同的代码。而SAFINAE是模板元编程，利用type traits实现条件编译的一种常见手段。</li> </ul> </li> </ol> <h3 id="12-模板的基本语法">1.2 模板的基本语法</h3> <p>模板的基本语法包括模板声明、模板定义和模板实例化。模板声明和定义使用 <code class="language-plaintext highlighter-rouge">template</code> 关键字，后跟模板参数列表。模板参数列表可以包含类型参数和非类型参数。</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 函数模板</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="n">T</span> <span class="nf">functionName</span><span class="p">(</span><span class="n">T</span> <span class="n">parameter</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 函数体</span>
+<span class="p">}</span>
+
+<span class="c1">// 类模板</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">ClassName</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">T</span> <span class="n">memberFunction</span><span class="p">(</span><span class="n">T</span> <span class="n">parameter</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 函数体</span>
+    <span class="p">}</span>
+<span class="k">private</span><span class="o">:</span>
+    <span class="n">T</span> <span class="n">memberVariable</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div> <h4 id="121-注入类名">1.2.1 注入类名</h4> <p>在C++中，类模板的注入类名（Injected class name）是指在类模板内部，类模板名可以被用作一个类型名，并且这个名字会隐式地被替换为当前实例化的模板类型。下面详细介绍其含义和使用场景。</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">MyClass</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="c1">// ctor里面的MyClass能直接使用，不需要再考虑模板实例化，这个就是注入类名</span>
+    <span class="n">MyClass</span><span class="p">(</span><span class="k">const</span> <span class="n">MyClass</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Copy constructor called."</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">MyClass</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">clone</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">static</span> <span class="n">MyClass</span> <span class="nf">createInstance</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">MyClass</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+</code></pre></div></div> <ul> <li>注入类名主要用于类模板内部，简化代码书写。</li> <li>在类模板外部，使用类模板名时通常需要显式指定模板参数。</li> <li>注入类名可以提高代码的可读性和可维护性，特别是在复杂的模板类中。</li> </ul> <h4 id="122-依赖名称">1.2.2 依赖名称</h4> <ul> <li><strong>依赖名称和typename</strong></li> </ul> <p>依赖名称是指在模板定义中，其含义依赖于模板参数的名称。也就是说，这些名称的类型或值在模板实例化时才能确定。</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">Container</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="k">class</span> <span class="nc">Iterator</span> <span class="p">{</span>
+    <span class="nl">public:</span>
+        <span class="kt">void</span> <span class="n">print</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Iterator print"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+
+    <span class="n">Iterator</span> <span class="nf">getIterator</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">Iterator</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// Container&lt;T&gt;也是依赖名称</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="kt">void</span> <span class="nf">process</span><span class="p">(</span><span class="n">Container</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span> <span class="n">container</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Container&lt;T&gt;::Iterator也是依赖名称</span>
+    <span class="k">typename</span> <span class="n">Container</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">Iterator</span> <span class="n">it</span> <span class="o">=</span> <span class="n">container</span><span class="p">.</span><span class="n">getIterator</span><span class="p">();</span>
+    <span class="n">it</span><span class="p">.</span><span class="n">print</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div> <ul> <li>简单来说需要实例化的类型的，都是依赖名称的。</li> <li>编译器读到 <code class="language-plaintext highlighter-rouge">Container&lt;T&gt;::Iterator</code> 时，无法知道这是一个类型；因为还没有实例。</li> <li>因此需要使用 <code class="language-plaintext highlighter-rouge">typename</code> 关键字显式告诉编译器这是一个类型。</li> <li>在函数签名的时候，编译器还能推断出来这是一个类型，因此可写可不写。</li> <li> <p>在声明变量的时候，编译器没办法确定是不是一个方法，因此需要加上<code class="language-plaintext highlighter-rouge">typename</code>。</p> </li> <li><strong>依赖名称和template</strong></li> </ul> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">Container</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">U</span><span class="p">&gt;</span>
+    <span class="kt">void</span> <span class="n">print</span><span class="p">(</span><span class="n">U</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Value: "</span> <span class="o">&lt;&lt;</span> <span class="n">value</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="kt">void</span> <span class="nf">test</span><span class="p">(</span><span class="n">Container</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span> <span class="n">c</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 在实例化模板的时候，如果还有一个嵌套的模板</span>
+    <span class="c1">// 编译器需要知道print也是一个模板函数，还需要接着实例化</span>
+    <span class="c1">// 因此要用template</span>
+    <span class="n">c</span><span class="p">.</span><span class="k">template</span> <span class="n">print</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">&gt;(</span><span class="mi">42</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">Container</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">c</span><span class="p">;</span>
+    <span class="n">test</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div> <h2 id="2-模板参数">2. 模板参数</h2> <h3 id="21-类型模板参数">2.1 类型模板参数</h3> <p>类型是模板参数的一种，用于指定模板的类型。类型模板参数允许你编写与类型无关的代码，从而提高代码的重用性和灵活性。类型模板参数通常使用 <code class="language-plaintext highlighter-rouge">typename</code> 或 <code class="language-plaintext highlighter-rouge">class</code> 关键字来声明。</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 函数模板示例</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="n">T</span> <span class="nf">add</span><span class="p">(</span><span class="n">T</span> <span class="n">a</span><span class="p">,</span> <span class="n">T</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// 类模板示例</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">Pair</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">Pair</span><span class="p">(</span><span class="n">T</span> <span class="n">first</span><span class="p">,</span> <span class="n">T</span> <span class="n">second</span><span class="p">)</span> <span class="o">:</span> <span class="n">first</span><span class="p">(</span><span class="n">first</span><span class="p">),</span> <span class="n">second</span><span class="p">(</span><span class="n">second</span><span class="p">)</span> <span class="p">{}</span>
+    <span class="n">T</span> <span class="n">getFirst</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">first</span><span class="p">;</span> <span class="p">}</span>
+    <span class="n">T</span> <span class="n">getSecond</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">second</span><span class="p">;</span> <span class="p">}</span>
+<span class="k">private</span><span class="o">:</span>
+    <span class="n">T</span> <span class="n">first</span><span class="p">;</span>
+    <span class="n">T</span> <span class="n">second</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">result1</span> <span class="o">=</span> <span class="n">add</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+    <span class="kt">double</span> <span class="n">result2</span> <span class="o">=</span> <span class="n">add</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">);</span>
+
+    <span class="n">Pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">intPair</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+    <span class="n">Pair</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">doublePair</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div> <h3 id="22-非类型模板参数">2.2 非类型模板参数</h3> <p>简单来说就是模板参数是非类型参数，或者说常量。</p> <p>非类型模板参数是模板参数的一种，用于指定模板的常量值。非类型模板参数可以是整数、枚举、指针或引用等。非类型模板参数允许你在模板中使用常量值，从而提高代码的灵活性。</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 函数模板示例</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="kt">int</span> <span class="n">N</span><span class="p">&gt;</span>
+<span class="n">T</span> <span class="nf">arraySum</span><span class="p">(</span><span class="n">T</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">arr</span><span class="p">)[</span><span class="n">N</span><span class="p">])</span> <span class="p">{</span>
+    <span class="n">T</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">sum</span> <span class="o">+=</span> <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">sum</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// 类模板示例</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="kt">int</span> <span class="n">N</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">Array</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">T</span><span class="o">&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">int</span> <span class="n">index</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">int</span> <span class="n">index</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="k">private</span><span class="o">:</span>
+    <span class="n">T</span> <span class="n">data</span><span class="p">[</span><span class="n">N</span><span class="p">];</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">arr</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">};</span>
+    <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="n">arraySum</span><span class="p">(</span><span class="n">arr</span><span class="p">);</span>
+    <span class="n">Array</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="mi">10</span><span class="o">&gt;</span> <span class="n">intArray</span><span class="p">;</span>
+    <span class="n">intArray</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div> <h3 id="23-模板模板参数">2.3 模板模板参数</h3> <p>模板本身也可以是模板参数的一种，用于指定模板的模板参数。模板模板参数允许你编写接受其他模板作为参数的模板，从而提高代码的灵活性和重用性。</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 类模板示例</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">Container</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="kt">void</span> <span class="n">add</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">data</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">get</span><span class="p">(</span><span class="kt">int</span> <span class="n">index</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="k">private</span><span class="o">:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">data</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// 模板参数还是模板的示例</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span><span class="p">&gt;</span> <span class="k">class</span> <span class="nc">ContainerType</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">Wrapper</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="kt">void</span> <span class="n">add</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">container</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">get</span><span class="p">(</span><span class="kt">int</span> <span class="n">index</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">container</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">index</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="k">private</span><span class="o">:</span>
+    <span class="n">ContainerType</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">container</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">Wrapper</span><span class="o">&lt;</span><span class="n">Container</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">intWrapper</span><span class="p">;</span>
+    <span class="n">intWrapper</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span>
+    <span class="kt">int</span> <span class="n">value</span> <span class="o">=</span> <span class="n">intWrapper</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div> <p>其实实际上模板也可以看成是一种类型，只是一种编译时才能确定的类型。</p> <h2 id="3-模板实例化">3. 模板实例化</h2> <p>模板实例化是指将模板转换为具体类型的过程。在 C++ 中，模板实例化有两种主要方式：显式实例化和隐式实例化。模板实例化的时机也非常重要，因为它决定了模板代码何时被编译。</p> <p>模板实例化是将模板代码转换为具体类型的代码的过程。显式实例化和隐式实例化是两种主要的模板实例化方式。显式实例化通过明确指定模板参数强制编译器生成特定类型的模板实例，而隐式实例化则由编译器在需要使用模板时自动生成模板实例。模板实例化的时机对编译速度和代码膨胀有重要影响。通过理解模板实例化的概念、显式实例化、隐式实例化和模板实例化的时机，可以更好地编写和优化模板代码。</p> <p>模板实例化是将模板代码转换为具体类型的代码的过程。模板实例化发生在编译时，编译器会根据模板参数生成具体的函数或类定义。 模板实例化的结果是一个具体的函数或类，可以在程序中使用。</p> <h3 id="31-隐式实例化">3.1 隐式实例化</h3> <p>隐式实例化是指编译器在需要使用模板时自动生成模板实例。隐式实例化通常发生在模板被第一次使用时，编译器会根据模板参数自动生成具体的函数或类定义。</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="n">T</span> <span class="nf">add</span><span class="p">(</span><span class="n">T</span> <span class="n">a</span><span class="p">,</span> <span class="n">T</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">result1</span> <span class="o">=</span> <span class="n">add</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span> <span class="c1">// 这里发生了隐式实例化</span>
+    <span class="kt">double</span> <span class="n">result2</span> <span class="o">=</span> <span class="n">add</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">);</span> <span class="c1">// 这里发生了隐式实例化</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div> <h3 id="32-显式实例化">3.2 显式实例化</h3> <p>显式实例化是指在代码中明确指定模板参数，从而强制编译器生成特定类型的模板实例。显式实例化通常用于提高编译速度或减少代码膨胀。</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="n">T</span> <span class="nf">add</span><span class="p">(</span><span class="n">T</span> <span class="n">a</span><span class="p">,</span> <span class="n">T</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// 显式实例化 add 函数模板</span>
+<span class="k">template</span> <span class="kt">int</span> <span class="n">add</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">&gt;(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">);</span>
+<span class="k">template</span> <span class="kt">double</span> <span class="n">add</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">&gt;(</span><span class="kt">double</span><span class="p">,</span> <span class="kt">double</span><span class="p">);</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">result1</span> <span class="o">=</span> <span class="n">add</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span> <span class="c1">// 使用显式实例化的 int 类型的 add 函数</span>
+    <span class="kt">double</span> <span class="n">result2</span> <span class="o">=</span> <span class="n">add</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">);</span> <span class="c1">// 使用显式实例化的 double 类型的 add 函数</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div> <ul> <li> <strong>显式实例化怎么做？</strong> ```cpp /* ——– a.hpp ——— */ #pragma once</li> </ul> <p>template <typename t=""> class A { public: void f(); } extern template class A<int>; // 声明 A<int> 的显式实例化 extern template void A<double>::f(); // 声明 A<double>::f() 的显式实例化</double></double></int></int></typename></p> <p>/* ——– a.cpp ——— */ #include “a.hpp”</p> <p>template <typename t=""> void A<t>::f() {}</t></typename></p> <p>template class A<int>; // 实例化 A<int> template void A<double>::f(); // 实例化 A<double>::f()</double></double></int></int></p> <p>/* ——– main.cpp ——— */ #include “a.hpp”</p> <p>int main() { A<int>{}.f(); A<double>{}.f(); }</double></int></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+### 3.3 模板链接
+
+#### 3.3.1 模板实现不能放在.cpp
+odr问题。
+
+#### 3.3.2 模板不能具有 C 链接
+模板不能与 C 语言的链接规范（C linkage）一起使用。
+
+```cpp
+namespace jc {
+    extern "C++" template &lt;typename T&gt;
+    void normal();  // 正确：默认 C++ 链接规范
+
+    extern "C" template &lt;typename T&gt;
+    void invalid();  // 错误：不能使用 C 链接
+}  // namespace jc
+
+int main() {}
+</code></pre></div></div> <p>模板不能使用 C 链接规范（<code class="language-plaintext highlighter-rouge">extern "C"</code>）。如果使用 <code class="language-plaintext highlighter-rouge">extern "C++"</code>，则为默认的 C++ 链接规范。</p> <h4 id="333-模板的外链接与静态链接">3.3.3 模板的外链接与静态链接</h4> <p>模板通常具有外链接（<strong>external linkage</strong>）。然而，<strong>静态模板函数</strong>（即加上 <code class="language-plaintext highlighter-rouge">static</code> 关键字的模板函数）会具有内部链接（<strong>internal linkage</strong>），这使得它在当前翻译单元内可见，但在其他翻译单元中不可见。</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>  <span class="c1">// 外部链接</span>
+<span class="kt">void</span> <span class="nf">external</span><span class="p">();</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>  <span class="c1">// 内部链接</span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">internal</span><span class="p">();</span>
+
+<span class="k">namespace</span> <span class="p">{</span>
+    <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span><span class="p">&gt;</span>  <span class="c1">// 内部链接</span>
+    <span class="kt">void</span> <span class="n">other_internal</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="k">struct</span> <span class="p">{</span>
+    <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>  <span class="c1">// 无链接：不能被重复声明</span>
+    <span class="kt">void</span> <span class="n">f</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="p">{}</span>
+<span class="p">}</span> <span class="n">x</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{}</span>
+</code></pre></div></div> <h2 id="4-模板特化">4. 模板特化</h2> <p>模板特化（Template Specialization）是 C++ 模板编程中的一个重要概念，它允许你为特定的模板参数提供特殊的实现。模板特化分为部分特化和全特化。通过模板特化，你可以为特定类型或特定条件提供优化的实现，从而提高代码的灵活性和性能。</p> <p>模板特化在以下场景中非常有用：</p> <ol> <li> <strong>优化特定类型</strong>：为特定类型提供优化的实现。例如，为 <code class="language-plaintext highlighter-rouge">int</code> 类型提供特殊的实现，以提高性能。</li> <li> <strong>处理特殊情况</strong>：处理特定类型或条件下的特殊情况。例如，为指针类型提供特殊的实现，以处理指针的解引用和内存管理。</li> <li> <strong>实现类型特征</strong>：实现类型特征（type traits），用于在编译时检查类型属性。例如，检查类型是否为指针类型、是否为整数类型等。</li> </ol> <p>模板特化是 C++ 模板编程中的一个重要概念，它允许你为特定的模板参数提供特殊的实现。模板特化分为部分特化和全特化。部分特化用于为模板的某些特定参数提供特殊的实现，而全特化用于为模板的所有参数提供特殊的实现。通过模板特化，你可以为特定类型或特定条件提供优化的实现，从而提高代码的灵活性和性能。模板特化在优化特定类型、处理特殊情况和实现类型特征等场景中非常有用。</p> <h3 id="41-模板特化">4.1 模板特化</h3> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="k">namespace</span> <span class="n">FullSpecialization</span> <span class="p">{</span>
+    <span class="c1">// 主模板</span>
+    <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+    <span class="k">class</span> <span class="nc">MyClass</span> <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="kt">void</span> <span class="n">print</span><span class="p">()</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Primary template"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="p">}</span>
+    <span class="p">};</span>
+
+    <span class="c1">// 模板特化</span>
+    <span class="k">template</span> <span class="o">&lt;</span><span class="p">&gt;</span>
+    <span class="k">class</span> <span class="nc">MyClass</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="kt">void</span> <span class="n">print</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Full specialization for int"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+<span class="p">}</span>  <span class="c1">// namespace FullSpecialization</span>
+
+</code></pre></div></div> <h3 id="42-模板偏特化">4.2 模板偏特化</h3> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">namespace</span> <span class="n">PartialSpecialization</span> <span class="p">{</span>
+    <span class="c1">// 主模板</span>
+    <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">U</span><span class="p">&gt;</span>
+    <span class="k">class</span> <span class="nc">MyClass</span> <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="kt">void</span> <span class="n">print</span><span class="p">()</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Primary template"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="p">}</span>
+    <span class="p">};</span>
+
+    <span class="c1">// 偏特化-部分模板参数特化</span>
+    <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+    <span class="k">class</span> <span class="nc">MyClass</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="kt">void</span> <span class="n">print</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Partial specialization: second parameter is int"</span>
+                      <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+<span class="p">}</span>  <span class="c1">// namespace PartialSpecialization</span>
+</code></pre></div></div> <h3 id="43-特化的推断规则">4.3 特化的推断规则</h3> <p>当多个模板匹配时，编译器通过偏序规则选择更特化的模板；若无法比较特化程度，则报歧义错误。 普遍资料都是说会选择更特化的模板，但对何为更特化的定义说的不是很清楚。这里我给出我的理解： 如果模板参数能匹配两个模板，这两个模板只有在一个会是另一个模板的真子集的时候才能编译通过，并且最终会匹配真子集那一个模板；如果不是真子集关系，同时能匹配多个模板的时候就会出现编译器错误。</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;cassert&gt;</span><span class="cp">
+</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="kt">int</span> <span class="nf">f</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="kt">int</span> <span class="nf">f</span><span class="p">(</span><span class="n">T</span><span class="o">*</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="mi">2</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="kt">int</span> <span class="nf">f</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">*</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">// 3</span>
+    <span class="k">return</span> <span class="mi">3</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">);</span>  <span class="c1">// 0 推断为 int，匹配第一个模板</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="nb">nullptr</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">);</span>
+
+    <span class="kt">int</span><span class="o">*</span> <span class="n">p</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">);</span>  <span class="c1">// 两个模板均匹配，第二个模板更特殊。T*是T的真子集</span>
+
+    <span class="k">const</span> <span class="kt">int</span><span class="o">*</span> <span class="n">pp</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">pp</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">);</span> <span class="c1">// 两个模板均匹配，第三个模板更特殊。const T*是T和T*的真子集</span>
+<span class="p">}</span>
+</code></pre></div></div> <h2 id="99-quiz">99. quiz</h2> <h3 id="1-不同源文件都使用了vectorint有没有违反odr原则实例化了几次代码里面会有多少vectorint的定义">1. 不同源文件都使用了<code class="language-plaintext highlighter-rouge">vector&lt;int&gt;</code>，有没有违反odr原则？实例化了几次？代码里面会有多少<code class="language-plaintext highlighter-rouge">vector&lt;int&gt;</code>的定义？</h3> <p>在 C++ 中，模板实例化的行为取决于编译器和链接器的实现。 通常情况下，如果多个源文件都使用了相同的模板实例（例如 vector<int>），编译器会在每个使用该模板实例的源文件中生成一份实例化代码。 然而，链接器会负责消除重复的实例化代码，只保留一份最终的实例化代码。</int></p> <p>也就是说不同源文件使用了相同的模板实例就会各自实例化，但是链接器会优化，合并重复实例代码。 注意，合并了重复的实例代码，只是减轻了代码生成的体积，实例的开销没办法去掉，所以模板用多了，编译会慢一些，开销在于模板实例化。</p> <h3 id="2-怎么显式实例化显式实例化的好处是什么">2. 怎么显式实例化？显式实例化的好处是什么？</h3> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* -------- a.hpp --------- */</span>
+<span class="cp">#pragma once
+</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">A</span> <span class="p">{</span>
+ <span class="nl">public:</span>
+  <span class="kt">void</span> <span class="n">f</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="k">extern</span> <span class="k">template</span> <span class="k">class</span> <span class="nc">A</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">&gt;;</span>         <span class="c1">// 声明 A&lt;int&gt; 的显式实例化</span>
+<span class="k">extern</span> <span class="k">template</span> <span class="kt">void</span> <span class="n">A</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">&gt;</span><span class="o">::</span><span class="n">f</span><span class="p">();</span>  <span class="c1">// 声明 A&lt;double&gt;::f() 的显式实例化</span>
+
+<span class="cm">/* -------- a.cpp --------- */</span>
+<span class="cp">#include</span> <span class="cpf">"a.hpp"</span><span class="cp">
+</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="kt">void</span> <span class="n">A</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">f</span><span class="p">()</span> <span class="p">{}</span>
+
+<span class="k">template</span> <span class="k">class</span> <span class="nc">A</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">&gt;;</span>  <span class="c1">// 实例化 A&lt;int&gt;</span>
+<span class="k">template</span> <span class="kt">void</span> <span class="n">A</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">&gt;</span><span class="o">::</span><span class="n">f</span><span class="p">();</span>  <span class="c1">// 实例化 A&lt;double&gt;::f()</span>
+
+<span class="cm">/* -------- main.cpp --------- */</span>
+<span class="cp">#include</span> <span class="cpf">"a.hpp"</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">A</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">{}.</span><span class="n">f</span><span class="p">();</span>
+  <span class="n">A</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">{}.</span><span class="n">f</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div> <h3 id="3-什么是adl">3. 什么是ADL？</h3> <p>在C++里，ADL（Argument-Dependent Lookup）也被叫做Koenig查找，它是一种在函数调用时确定函数名称查找范围的规则。在普通的名称查找里，编译器会在当前作用域以及包含当前作用域的外层作用域里查找函数名。而ADL会额外在实参所属的命名空间里查找函数名。</p> <ul> <li> <p><strong>规则</strong> 当调用一个函数时，如果没有指定命名空间限定符，编译器除了在常规作用域查找函数名外，还会在实参类型所在的命名空间进行查找。这意味着如果函数调用的实参属于某个命名空间，编译器会自动在该命名空间中查找匹配的函数。</p> </li> <li> <p><strong>示例</strong> ```cpp #include <iostream></iostream></p> </li> </ul> <p>namespace MyNamespace { struct MyType {};</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>void myFunction(MyType) {
+    std::cout &lt;&lt; "Function called from MyNamespace" &lt;&lt; std::endl;
+} }
+</code></pre></div></div> <p>int main() { MyNamespace::MyType obj; // 这里调用 myFunction 时，编译器会通过 ADL 在 MyNamespace 中找到该函数 myFunction(obj); return 0; }</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>在这个示例里，`myFunction` 定义于 `MyNamespace` 命名空间中。在 `main` 函数里调用 `myFunction` 时，并未指定命名空间限定符。不过由于实参 `obj` 的类型 `MyType` 属于 `MyNamespace` 命名空间，所以编译器会通过ADL在 `MyNamespace` 中找到 `myFunction`。
+
+* **优点**
+- **简化代码**：在使用自定义类型时，无需每次都显式指定命名空间，使代码更加简洁。
+- **增强封装性**：允许将函数与类型定义在同一个命名空间中，提高了代码的封装性和可维护性。
+
+* **注意事项**
+- **命名冲突**：ADL可能会导致命名冲突，特别是在多个命名空间中存在同名函数时。
+- **意外调用**：由于ADL会在实参类型所在的命名空间中查找函数，可能会导致意外的函数调用。因此，在编写代码时需要注意命名的选择和作用域的管理。 
+
+
+### 4. 下面这些代码的注释处为什么不行？
+```c++
+namespace StringLinkErrorTpl {
+
+    template &lt;const char* s&gt;
+    class S {
+      public:
+        void print() { std::cout &lt;&lt; s &lt;&lt; std::endl; }
+    };
+
+    const char str[] = "abc";  // external linked object
+    void syntax_literal_string_ok_example() {
+        S&lt;str&gt; i;
+        i.print();
+    }
+
+    void syntax_literal_string_fail_example() {
+        const char str[] = "abc";  // running linked object
+        // S&lt;str&gt; i; // not ok
+        // i.print();
+    }
+
+    void task() {
+        syntax_literal_string_ok_example();
+        syntax_literal_string_fail_example();
+    }
+}  // namespace StringLinkErrorTpl
+
+namespace PtrLinkErrorTpl {
+    template &lt;int* buf&gt;
+    struct ArrPtr {};
+
+    template &lt;int (*fun)()&gt;
+    struct FuncPtr {};
+
+    void task() {
+        static int buffer[5] = {1, 2, 3, 4, 5};
+        ArrPtr&lt;buffer&gt; arrPtr;
+
+        // int buffer2[5] = {1, 2, 3, 4, 5};  // not ok
+        // ArrPtr&lt;buffer2&gt; arrPtr2;
+
+        auto func = []() -&gt; int { return 42; };
+        FuncPtr&lt;func&gt; funcPtr;
+    }
+}  // namespace PtrLinkErrorTpl
+</code></pre></div></div> </div> </article> <br> <hr> <br> <ul class="list-disc pl-8"></ul> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/3_%E6%80%BB%E7%BA%BF.md/">总线</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/3_coroutine.md/">coroutine了解</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/2_process.md/">进程</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/2_io.md/">磁盘结构</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/1_threads.md/">c++的多线程</a> </li> </div> </div> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2025 Marco Huang. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. </div> </footer> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script defer src="/assets/js/bootstrap-toc.min.js?c82ff4de8b0955d6ff14f5b05eed7eb6"></script> <script src="/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/assets/js/common.js?e0514a05c5c95ac1a93a8dfd5249b92e"></script> <script defer src="/assets/js/copy_code.js?c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/js/mathjax-setup.js?a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/assets/js/progress-bar.js?2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script src="/assets/js/vanilla-back-to-top.min.js?f40d453793ff4f64e238e420181a1d17"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/assets/js/search/ninja-keys.min.js?a3446f084dcaecc5f75aa1757d087dcf"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/js/search-setup.js?6c304f7b1992d4b60f7a07956e52f04a"></script> <script src="/assets/js/search-data.js"></script> <script src="/assets/js/shortcut-key.js?6f508d74becd347268a7f822bca7309d"></script> </body> </html>

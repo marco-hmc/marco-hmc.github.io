@@ -1,0 +1,143 @@
+<!DOCTYPE html> <html lang="cn"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Lambda 演算 | Marco's blog </title> <meta name="author" content="Marco Huang"> <meta name="description" content="A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design. "> <meta name="keywords" content="jekyll, jekyll-theme, blog"> <link rel="stylesheet" href="/assets/css/bootstrap.min.css?a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/assets/css/academicons.min.css?f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" href="/assets/css/scholar-icons.css?62b2ac103a88034e6882a5be5f3e2772"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link defer href="/assets/css/bootstrap-toc.min.css?6f5af0bb9aab25d79b2448143cbeaa88" rel="stylesheet"> <link rel="shortcut icon" href="/assets/img/mc_logo.ico?cf243b61f6c6d75747808b3ae8298c5b"> <link rel="stylesheet" href="/assets/css/main.css?d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://marco-hmc.github.io/blog/2025/1_lambda_calculus.md/"> <script src="/assets/js/theme.js?a81d82887dd692e91686b43de4542f18"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> Marco's blog </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">about </a> </li> <li class="nav-item active"> <a class="nav-link" href="/blog/">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/">projects </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/">cv </a> </li> <li class="nav-item"> <button id="search-toggle" title="Search" onclick="openSearchModal()"> <span class="nav-link">ctrl k <i class="ti ti-search"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="ti ti-sun-moon" id="light-toggle-system"></i> <i class="ti ti-moon-filled" id="light-toggle-dark"></i> <i class="ti ti-sun-filled" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="row"> <div class="col-sm-3"> <nav id="toc-sidebar" class="sticky-top"></nav> </div> <div class="col-sm-9"> <div class="post"> <header class="post-header"> <h1 class="post-title">Lambda 演算</h1> <p class="post-meta"> Created on April 06, 2025 </p> <p class="post-tags"> <a href="/blog/2025"> <i class="fa-solid fa-calendar fa-sm"></i> 2025 </a>   ·   <a href="/blog/tag/cpp"> <i class="fa-solid fa-hashtag fa-sm"></i> cpp</a>   <a href="/blog/tag/functional"> <i class="fa-solid fa-hashtag fa-sm"></i> functional</a>   ·   <a href="/blog/category/language"> <i class="fa-solid fa-tag fa-sm"></i> language</a> </p> </header> <article class="post-content"> <div id="markdown-content"> <h2 id="lambda-演算">Lambda 演算</h2> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Lambda 演算
+├── 1. 引言
+│   ├── 1.1 什么是 Lambda 演算
+│   └── 1.2 Lambda 演算的应用领域
+├── 2. Lambda 演算的基本概念
+│   ├── 2.1 Lambda 表达式
+│   ├── 2.2 自由变量和绑定变量
+│   ├── 2.3 变量替换
+│   ├── 2.4 Alpha 等价
+│   ├── 2.5 Beta 归约
+│   └── 2.6 Eta 归约
+├── 3. Lambda 演算的语法
+│   ├── 3.1 Lambda 表达式的定义
+│   ├── 3.2 Lambda 表达式的语法规则
+│   └── 3.3 Lambda 表达式的表示方法
+├── 4. Lambda 演算的语义
+│   ├── 4.1 语义的基本概念
+│   ├── 4.2 语义的形式化定义
+│   └── 4.3 语义的解释和应用
+├── 5. Lambda 演算的计算规则
+│   ├── 5.1 Alpha 变换
+│   ├── 5.2 Beta 归约
+│   ├── 5.3 Eta 归约
+│   └── 5.4 归约策略
+├── 6. Lambda 演算的扩展
+│   ├── 6.1 类型 Lambda 演算
+│   ├── 6.2 多态 Lambda 演算
+│   └── 6.3 依赖类型 Lambda 演算
+├── 7. Lambda 演算与计算机科学
+│   ├── 7.1 Lambda 演算与函数式编程
+│   ├── 7.2 Lambda 演算与编程语言设计
+│   └── 7.3 Lambda 演算与计算理论
+└── 8. Lambda 演算的应用
+    ├── 8.1 Lambda 演算在编译器中的应用
+    ├── 8.2 Lambda 演算在程序验证中的应用
+    └── 8.3 Lambda 演算在人工智能中的应用
+</code></pre></div></div> <h3 id="1-引言">1. 引言</h3> <h4 id="11-什么是-lambda-演算">1.1 什么是 Lambda 演算</h4> <p>Lambda 演算（Lambda Calculus）是一种形式系统，用于研究函数定义、函数应用和递归。它是现代计算理论的基础之一，对计算机科学的发展具有深远的影响。它由阿隆佐·邱奇（Alonzo Church）在 1930 年代提出，是计算机科学和数学中的一个重要概念。Lambda 演算提供了一种简洁而强大的方式来描述和操作函数，是函数式编程语言的理论基础。</p> <p>Lambda 演算通过极少的规则和构造，能表达逻辑、算术和递归等复杂计算。固定算子（如 Y 组合子）是实现递归的核心，而恰奇数、布尔值和条件语句则为基本计算提供支持。</p> <ul> <li> <p><strong>主要特点：</strong></p> <ol> <li> <strong>函数定义</strong>：Lambda 演算允许定义匿名函数（即没有名字的函数），使用 λ 符号表示。例如，λx.x 表示一个接受参数 x 并返回 x 的函数。</li> <li> <strong>函数应用</strong>：Lambda 演算允许将函数应用于参数，使用空格表示函数应用。例如，(λx.x) y 表示将函数 λx.x 应用于参数 y。</li> <li> <strong>递归</strong>：Lambda 演算可以表示递归函数，通过固定点组合子（如 Y 组合子）实现递归。</li> </ol> </li> <li> <p><strong>发展历程：</strong></p> <ol> <li> <strong>1930 年代</strong>：阿隆佐·邱奇提出 Lambda 演算，作为一种形式化的数学逻辑系统，用于研究函数和计算。</li> <li> <strong>1940 年代</strong>：Lambda 演算被用于研究可计算性和递归函数，成为图灵机理论的基础之一。</li> <li> <strong>1950 年代</strong>：Lambda 演算的概念被引入到编程语言设计中，成为函数式编程语言的理论基础。</li> <li> <strong>现代</strong>：Lambda 演算在计算机科学、数学和逻辑学中得到了广泛应用，成为研究计算和编程语言的重要工具。</li> </ol> </li> <li> <p><strong>影响：</strong></p> <ol> <li> <strong>计算理论</strong>：Lambda 演算为计算理论提供了一个强大的工具，用于研究可计算性和递归函数。</li> <li> <strong>编程语言</strong>：Lambda 演算是函数式编程语言的理论基础，对现代编程语言的设计和实现具有重要影响。</li> <li> <strong>数学和逻辑</strong>：Lambda 演算在数学和逻辑学中得到了广泛应用，用于研究函数和计算的形式化表示。</li> </ol> </li> </ul> <h4 id="12-lambda-演算的应用领域">1.2 Lambda 演算的应用领域</h4> <p>Lambda 演算在计算机科学、数学和逻辑学中有广泛的应用。它为研究函数和计算提供了一种简洁而强大的工具，是函数式编程语言的理论基础。</p> <ul> <li> <strong>主要应用领域：</strong> <ol> <li> <strong>函数式编程</strong>：Lambda 演算是函数式编程语言的理论基础，用于定义和操作函数。许多现代编程语言（如 Haskell、Scala 和 JavaScript）都受到了 Lambda 演算的影响。</li> <li> <strong>编程语言设计</strong>：Lambda 演算为编程语言的设计和实现提供了理论基础，用于研究函数和计算的形式化表示。</li> <li> <strong>计算理论</strong>：Lambda 演算在计算理论中用于研究可计算性和递归函数，是图灵机理论的基础之一。</li> <li> <strong>数学和逻辑</strong>：Lambda 演算在数学和逻辑学中用于研究函数和计算的形式化表示，为研究函数和计算提供了一种强大的工具。</li> <li> <strong>编译器和解释器</strong>：Lambda 演算在编译器和解释器的设计和实现中得到了广泛应用，用于优化和转换代码。</li> <li> <strong>程序验证和证明</strong>：Lambda 演算在程序验证和证明中用于形式化表示和验证程序的正确性，为研究程序的形式化验证提供了一种强大的工具。</li> </ol> </li> </ul> <h4 id="13-lambda-演算与函数式编程">1.3 Lambda 演算与函数式编程</h4> <p>Lambda 演算是函数式编程的理论基础。函数式编程是一种编程范式，它强调使用函数和不可变数据来构建程序。Lambda 演算提供了一种简洁而强大的方式来定义和操作函数，使得函数式编程语言能够以数学上严格的方式处理函数和计算。</p> <ul> <li> <strong>主要特点：</strong> <ol> <li> <strong>匿名函数</strong>：Lambda 演算允许定义匿名函数，即没有名字的函数。这使得函数式编程语言能够灵活地创建和使用函数。</li> <li> <strong>高阶函数</strong>：Lambda 演算支持高阶函数，即可以接受函数作为参数或返回函数的函数。这是函数式编程语言的一个重要特性。</li> <li> <strong>不可变数据</strong>：函数式编程强调使用不可变数据，Lambda 演算中的变量一旦绑定就不能改变，这与函数式编程的理念一致。</li> <li> <strong>递归和组合</strong>：Lambda 演算支持递归和函数组合，使得函数式编程语言能够以简洁的方式表达复杂的计算。</li> </ol> </li> </ul> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>λx.x       // 恒等函数，接受一个参数并返回它自己
+λx.λy.x    // 常量函数，接受两个参数并返回第一个参数
+(λx.x) y   // 将恒等函数应用于 y，结果是 y
+</code></pre></div></div> <h4 id="14-lambda-演算与编程语言设计">1.4 Lambda 演算与编程语言设计</h4> <p>Lambda 演算在编程语言设计中起着重要作用。许多现代编程语言（如 Haskell、Scala 和 JavaScript）都受到了 Lambda 演算的影响。Lambda 演算为编程语言提供了一种形式化的基础，使得语言设计者能够以数学上严格的方式定义和操作函数。</p> <ul> <li> <strong>主要特点：</strong> <ol> <li> <strong>形式化基础</strong>：Lambda 演算为编程语言提供了一种形式化的基础，使得语言设计者能够以数学上严格的方式定义和操作函数。</li> <li> <strong>函数抽象</strong>：Lambda 演算支持函数抽象，使得编程语言能够以简洁的方式定义和使用函数。</li> <li> <strong>类型系统</strong>：Lambda 演算的扩展（如类型 Lambda 演算）为编程语言引入了类型系统，确保表达式的类型安全性。</li> <li> <strong>高阶函数</strong>：Lambda 演算支持高阶函数，使得编程语言能够灵活地处理函数和计算。</li> </ol> </li> </ul> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>λx.x       // 恒等函数，接受一个参数并返回它自己
+λx.λy.x    // 常量函数，接受两个参数并返回第一个参数
+(λx.x) y   // 将恒等函数应用于 y，结果是 y
+</code></pre></div></div> <h4 id="15-lambda-演算与计算理论">1.5 Lambda 演算与计算理论</h4> <p>Lambda 演算在计算理论中具有重要地位。它为研究可计算性和递归函数提供了一种简洁而强大的工具。Lambda 演算与图灵机理论一起构成了现代计算理论的基础，为理解计算的本质和限制提供了理论支持。</p> <ul> <li> <strong>主要特点：</strong> <ol> <li> <strong>可计算性</strong>：Lambda 演算为研究可计算性提供了一种形式化的工具，使得我们能够定义和分析可计算函数。</li> <li> <strong>递归函数</strong>：Lambda 演算支持递归函数，使得我们能够以简洁的方式定义和操作递归计算。</li> <li> <strong>计算模型</strong>：Lambda 演算与图灵机理论一起构成了现代计算理论的基础，为理解计算的本质和限制提供了理论支持。</li> <li> <strong>形式化证明</strong>：Lambda 演算为形式化证明提供了一种强大的工具，使得我们能够以数学上严格的方式验证程序的正确性。</li> </ol> </li> </ul> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>λx.x       // 恒等函数，接受一个参数并返回它自己
+λx.λy.x    // 常量函数，接受两个参数并返回第一个参数
+(λx.x) y   // 将恒等函数应用于 y，结果是 y
+</code></pre></div></div> <h4 id="16-lambda-演算在编译器中的应用">1.6 Lambda 演算在编译器中的应用</h4> <p>Lambda 演算在编译器设计中有着广泛的应用。编译器是将高级编程语言转换为机器代码的工具，而 Lambda 演算提供了一种形式化的方法来表示和操作函数，使得编译器能够更有效地进行代码优化和转换。</p> <ul> <li> <strong>主要应用：</strong> <ol> <li> <strong>中间表示</strong>：Lambda 演算可以作为编译器的中间表示（Intermediate Representation, IR），用于表示程序的结构和行为。通过使用 Lambda 表达式，编译器可以更容易地进行代码优化和转换。</li> <li> <strong>代码优化</strong>：Lambda 演算的归约规则（如 Beta 归约和 Eta 归约）可以用于编译器的代码优化过程。通过应用这些归约规则，编译器可以消除冗余代码，提高程序的执行效率。</li> <li> <strong>函数内联</strong>：Lambda 演算支持函数内联，即将函数调用替换为函数体本身。编译器可以利用这一特性，将小函数内联到调用点，从而减少函数调用的开销。</li> <li> <strong>类型检查</strong>：类型 Lambda 演算可以用于编译器的类型检查过程，确保程序的类型安全性。通过类型推导和类型检查，编译器可以验证程序的类型正确性，防止类型错误。</li> </ol> </li> </ul> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>λx.x       // 恒等函数，作为中间表示
+(λx.x) y   // Beta 归约，用于代码优化
+λx.(f x)   // Eta 归约，用于代码优化
+</code></pre></div></div> <h3 id="2-lambda-演算的基本概念">2. Lambda 演算的基本概念</h3> <h4 id="21-lambda-表达式">2.1 Lambda 表达式</h4> <p>Lambda 表达式是 Lambda 演算的基本构造块，用于定义匿名函数。Lambda 表达式由三个部分组成：λ 符号、参数和函数体。Lambda 表达式的语法形式为 λx.M，其中 x 是参数，M 是函数体。</p> <ul> <li> <strong>形式定义：</strong> <ul> <li> <strong>λ 符号</strong>：表示 Lambda 抽象，用于定义匿名函数。</li> <li> <strong>参数</strong>：函数的输入变量，可以是一个或多个。</li> <li> <strong>函数体</strong>：函数的定义部分，描述了如何处理输入参数。</li> </ul> </li> </ul> <p>Lambda 表达式是 Lambda 演算的基本构造块，用于定义匿名函数。 Lambda 表达式由三个部分组成：λ 符号、参数和函数体。 Lambda 表达式的语法形式为 λx.M，其中 x 是参数，M 是函数体。</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>λx.x       // 恒等函数，接受一个参数并返回它自己
+λx.λy.x    // 常量函数，接受两个参数并返回第一个参数
+λx.(x x)   // 自应用函数，接受一个参数并将其应用于自身
+</code></pre></div></div> <p>Lambda 表达式的语法规则定义了如何构造合法的 Lambda 表达式。Lambda 表达式的语法规则包括变量、抽象和应用。</p> <ul> <li> <strong>语法规则：</strong> <ol> <li> <strong>变量</strong>：一个变量本身是一个合法的 Lambda 表达式。 <ul> <li>示例：x, y, z</li> </ul> </li> <li> <strong>抽象</strong>：使用 λ 符号表示抽象，后跟参数和函数体。如果 M 是一个合法的 Lambda 表达式，且 x 是一个变量，那么 λx.M 也是一个合法的 Lambda 表达式。 <ul> <li>示例：λx.x, λy.(y y)</li> </ul> </li> <li> <strong>应用</strong>：使用空格表示应用，函数和参数之间用空格分隔。 <ul> <li>示例：(λx.x) y, (λx.(x x)) (λx.(x x))</li> </ul> </li> <li> <strong>括号</strong>：使用括号表示优先级，确保表达式的正确解析。 <ul> <li>示例：(λx.x) y, λx.(λy.x)</li> </ul> </li> </ol> </li> </ul> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>x           // 变量
+λx.x        // 抽象
+(λx.x) y    // 应用
+λx.(λy.x)   // 嵌套抽象
+(λx.x) (λy.y) // 嵌套应用
+</code></pre></div></div> <h4 id="22-自由变量和绑定变量">2.2 自由变量和绑定变量</h4> <p>在 Lambda 表达式中，变量可以是自由变量或绑定变量。自由变量是在表达式中未被绑定的变量，而绑定变量是在表达式中被绑定的变量。</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>λx.x       // x 是绑定变量
+λx.y       // y 是自由变量，x 是绑定变量
+λx.λy.x    // x 和 y 都是绑定变量
+</code></pre></div></div> <h3 id="3-lambda-演算">3. lambda 演算</h3> <h4 id="33-变量替换">3.3 变量替换</h4> <p>变量替换是将 Lambda 表达式中的变量替换为另一个表达式的过程。变量替换的规则是将所有出现的变量替换为新的表达式，同时避免变量捕获。</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(λx.x) y       // 将 x 替换为 y，结果是 y
+(λx.λy.x) z    // 将 x 替换为 z，结果是 λy.z
+(λx.x y) z     // 将 x 替换为 z，结果是 z y
+</code></pre></div></div> <h4 id="34-alpha-等价">3.4 Alpha 等价</h4> <p>Alpha 等价是指两个 Lambda 表达式在变量名不同但结构相同的情况下是等价的。Alpha 等价通过重命名绑定变量来实现。</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>λx.x       // 原始表达式
+λy.y       // Alpha 等价表达式，重命名绑定变量 x 为 y
+λz.z       // Alpha 等价表达式，重命名绑定变量 x 为 z
+</code></pre></div></div> <p>Alpha 变换（Alpha Conversion）是 Lambda 演算中的一种基本操作，用于重命名 Lambda 表达式中的绑定变量。Alpha 变换的目的是避免变量名冲突，使得表达式在形式上不同但在语义上等价。</p> <ul> <li> <strong>主要特点：</strong> <ol> <li> <strong>重命名绑定变量</strong>：Alpha 变换通过重命名绑定变量，使得表达式在形式上不同但在语义上等价。</li> <li> <strong>保持语义不变</strong>：Alpha 变换不会改变表达式的计算结果，只是改变了变量的名称。</li> <li> <strong>避免变量捕获</strong>：Alpha 变换可以避免变量名冲突，防止变量捕获问题。</li> </ol> </li> </ul> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>λx.x       // 原始表达式
+λy.y       // Alpha 变换，重命名绑定变量 x 为 y
+λz.z       // Alpha 变换，重命名绑定变量 x 为 z
+</code></pre></div></div> <p><strong>α-变换</strong>：改变绑定变量的名称，例如 <code class="language-plaintext highlighter-rouge">λx.x</code> 等价于 <code class="language-plaintext highlighter-rouge">λy.y</code>。</p> <h4 id="35-beta-归约">3.5 Beta 归约</h4> <p><strong>β-规约</strong>：函数应用，例如 <code class="language-plaintext highlighter-rouge">(λx.x) y</code> 规约为 <code class="language-plaintext highlighter-rouge">y</code>。</p> <p>Beta 归约是将 Lambda 表达式应用于参数的过程。Beta 归约通过将参数替换为函数体中的绑定变量来实现。</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(λx.x) y       // Beta 归约，结果是 y
+(λx.λy.x) z    // Beta 归约，结果是 λy.z
+(λx.x x) (λx.x) // Beta 归约，结果是 (λx.x) (λx.x)
+</code></pre></div></div> <p>Beta 归约（Beta Reduction）是 Lambda 演算中的一种基本操作，用于将 Lambda 表达式应用于参数。Beta 归约通过将参数替换为函数体中的绑定变量来实现，是 Lambda 演算中的主要计算规则。</p> <ul> <li> <strong>主要特点：</strong> <ol> <li> <strong>函数应用</strong>：Beta 归约用于将 Lambda 表达式应用于参数，执行函数调用。</li> <li> <strong>变量替换</strong>：Beta 归约通过将参数替换为函数体中的绑定变量来实现。</li> <li> <strong>计算过程</strong>：Beta 归约是 Lambda 演算中的主要计算规则，用于执行表达式的计算。</li> </ol> </li> </ul> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(λx.x) y       // Beta 归约，结果是 y
+(λx.λy.x) z    // Beta 归约，结果是 λy.z
+(λx.x x) (λx.x) // Beta 归约，结果是 (λx.x) (λx.x)
+</code></pre></div></div> <h4 id="36-eta-归约">3.6 Eta 归约</h4> <p><strong>η-变换</strong>：简化函数表达式，例如 <code class="language-plaintext highlighter-rouge">λx.(f x)</code> 等价于 <code class="language-plaintext highlighter-rouge">f</code>（前提是 <code class="language-plaintext highlighter-rouge">x</code> 不在 <code class="language-plaintext highlighter-rouge">f</code> 自由变量中）。</p> <p>Eta 归约是将 Lambda 表达式简化为等价表达式的过程。Eta 归约通过移除不必要的 Lambda 抽象来实现。</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>λx.(f x)       // Eta 归约，结果是 f
+λx.(λy.(x y))  // Eta 归约，结果是 x
+λx.(λy.(f y))  // Eta 归约，结果是 f
+</code></pre></div></div> <p>Eta 归约（Eta Reduction）是 Lambda 演算中的一种基本操作，用于简化 Lambda 表达式。Eta 归约通过移除不必要的 Lambda 抽象来实现，使得表达式在形式上更简洁但在语义上等价。</p> <ul> <li> <strong>主要特点：</strong> <ol> <li> <strong>简化表达式</strong>：Eta 归约用于简化 Lambda 表达式，使得表达式在形式上更简洁。</li> <li> <strong>保持语义不变</strong>：Eta 归约不会改变表达式的计算结果，只是简化了表达式的形式。</li> <li> <strong>移除不必要的抽象</strong>：Eta 归约通过移除不必要的 Lambda 抽象来实现。</li> </ol> </li> </ul> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>λx.(f x)       // Eta 归约，结果是 f
+λx.(λy.(x y))  // Eta 归约，结果是 x
+λx.(λy.(f y))  // Eta 归约，结果是 f
+</code></pre></div></div> <h4 id="37-归约策略">3.7 归约策略</h4> <p>归约策略（Reduction Strategy）是指在 Lambda 演算中选择归约规则和归约顺序的策略。不同的归约策略会影响表达式的计算过程和效率。常见的归约策略包括正常顺序归约（Normal Order Reduction）和应用顺序归约（Applicative Order Reduction）。</p> <ul> <li> <p><strong>主要特点：</strong></p> <ol> <li> <strong>选择归约规则</strong>：归约策略决定在计算过程中选择哪种归约规则（如 Beta 归约或 Eta 归约）。</li> <li> <strong>确定归约顺序</strong>：归约策略决定在计算过程中按照什么顺序进行归约操作。</li> <li> <strong>影响计算效率</strong>：不同的归约策略会影响表达式的计算过程和效率。</li> </ol> </li> <li> <p><strong>常见归约策略：</strong></p> <ol> <li> <strong>正常顺序归约（Normal Order Reduction）</strong>：总是优先归约最左边的最外层表达式。正常顺序归约保证了如果表达式有一个正常形式（即无法再归约的形式），那么正常顺序归约一定能找到它。 <ul> <li>示例：对于表达式 (λx.(λy.y) z) w，正常顺序归约会先归约 (λx.(λy.y) z) w。</li> </ul> </li> <li> <strong>应用顺序归约（Applicative Order Reduction）</strong>：总是优先归约最内层的表达式。应用顺序归约通常用于实现严格求值的编程语言。 <ul> <li>示例：对于表达式 (λx.(λy.y) z) w，应用顺序归约会先归约 (λy.y) z。</li> </ul> </li> </ol> </li> </ul> <h3 id="4-常用-lambda-算子">4. 常用 lambda 算子</h3> <h4 id="示例-1恒等函数">示例 1：恒等函数</h4> <p>恒等函数是最简单的 Lambda 表达式之一，表示为 <code class="language-plaintext highlighter-rouge">λx.x</code>。它的作用是返回其输入。</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  I = λx.x
+  I 5
+  =&gt; (λx.x) 5
+  =&gt; 5
+</code></pre></div></div> <h4 id="示例-2自应用函数">示例 2：自应用函数</h4> <p>自应用函数是一个将自身作为参数应用的函数，表示为 <code class="language-plaintext highlighter-rouge">λx.xx</code>。这个计算过程是无限递归的，因为每次应用都会生成一个新的自应用函数。</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   S = λx.xx
+   S S
+   =&gt; (λx.xx) (λx.xx)
+   =&gt; (λx.xx) (λx.xx)
+</code></pre></div></div> <h4 id="示例-3布尔值和逻辑运算">示例 3：布尔值和逻辑运算</h4> <p>在 Lambda 演算中，可以使用布尔值和逻辑运算。以下是布尔值 <code class="language-plaintext highlighter-rouge">true</code> 和 <code class="language-plaintext highlighter-rouge">false</code> 以及逻辑运算 <code class="language-plaintext highlighter-rouge">and</code> 的定义和计算过程。 计算 <code class="language-plaintext highlighter-rouge">true and false</code>：</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   true  = λx.λy.x
+   false = λx.λy.y
+   and = λp.λq.(p q false)
+   AND = λp.λq.p q p`
+  - **OR**: `OR = λp.λq.p p q`
+  - **NOT**: `NOT = λp.λa.λb.p b a`
+
+  true  = λx.λy.x
+   false = λx.λy.y
+   and = λp.λq.(p q false)
+
+   and true false
+   (λp.λq.(p q false)) true false
+   =&gt; (λq.(true q false)) false
+   =&gt; (true false false)
+   =&gt; (λx.λy.x) false false
+   =&gt; (λy.false)
+   =&gt; false
+</code></pre></div></div> <h4 id="示例-4自然数和加法">示例 4：自然数和加法</h4> <p>在 Lambda 演算中，可以使用 Church 数字表示自然数，并定义加法运算。</p> <ol> <li> <p>定义自然数 <code class="language-plaintext highlighter-rouge">0</code> 和 <code class="language-plaintext highlighter-rouge">1</code>：</p> <div class="language-plaintext highlighter-rouge"> <div class="highlight"><pre class="highlight"><code>0 = λf.λx.x
+1 = λf.λx.(f x)
+add = λm.λn.λf.λx.(m f (n f x))
+
+add 1 1
+(λm.λn.λf.λx.(m f (n f x))) 1 1
+=&gt; (λn.λf.λx.(1 f (n f x))) 1
+=&gt; (λf.λx.(1 f (1 f x)))
+=&gt; (λf.λx.((λf.λx.(f x)) f (1 f x)))
+=&gt; (λf.λx.(f (1 f x)))
+=&gt; (λf.λx.(f ((λf.λx.(f x)) f x)))
+=&gt; (λf.λx.(f (f x)))
+</code></pre></div> </div> <p>结果是 <code class="language-plaintext highlighter-rouge">2</code>，表示为 <code class="language-plaintext highlighter-rouge">λf.λx.(f (f x))</code>。</p> </li> </ol> <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  0 = λf.λx.x
+  1 = λf.λx.f x
+  2 = λf.λx.f (f x)
+  n = λf.λx.f^n x
+</code></pre></div></div> <ul> <li> <strong>算术运算</strong>： <ul> <li> <strong>加法</strong>: <code class="language-plaintext highlighter-rouge">ADD = λm.λn.λf.λx.m f (n f x)</code> </li> <li> <strong>乘法</strong>: <code class="language-plaintext highlighter-rouge">MUL = λm.λn.λf.m (n f)</code> </li> <li> <strong>指数</strong>: <code class="language-plaintext highlighter-rouge">EXP = λm.λn.n m</code> </li> </ul> </li> </ul> <h4 id="条件语句"><strong>条件语句</strong></h4> <p>条件语句基于布尔值： 如果 <code class="language-plaintext highlighter-rouge">p = TRUE</code>，返回 <code class="language-plaintext highlighter-rouge">a</code>，否则返回 <code class="language-plaintext highlighter-rouge">b</code>。</p> <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>IF = λp.λa.λb.p a b
+</code></pre></div></div> <h4 id="固定点算子"><strong>固定点算子</strong></h4> <p>递归在 Lambda 演算中无法直接定义，因为没有命名。然而，固定点算子（如 Y 组合子）允许我们间接实现递归。</p> <ul> <li> <strong>Y 组合子</strong>： <div class="language-text highlighter-rouge"> <div class="highlight"><pre class="highlight"><code>Y = λf.(λx.f (x x)) (λx.f (x x))
+</code></pre></div> </div> <p>它的作用是找到函数的<strong>不动点</strong>，即 <code class="language-plaintext highlighter-rouge">Y f = f (Y f)</code>。</p> </li> </ul> <p>以阶乘函数为例：</p> <ol> <li>未递归的阶乘函数： <div class="language-text highlighter-rouge"> <div class="highlight"><pre class="highlight"><code>FACT = λf.λn.IF (IS_ZERO n) 1 (MUL n (f (PRED n)))
+</code></pre></div> </div> </li> <li>使用 Y 组合子定义递归： <div class="language-text highlighter-rouge"> <div class="highlight"><pre class="highlight"><code>FACT = Y (λf.λn.IF (IS_ZERO n) 1 (MUL n (f (PRED n))))
+</code></pre></div> </div> </li> </ol> <hr> <h4 id="投影算子"><strong>投影算子</strong></h4> <ul> <li> <strong>投影第一个元素</strong>： <div class="language-text highlighter-rouge"> <div class="highlight"><pre class="highlight"><code>FST = λp.p (λx.λy.x)
+SND = λp.p (λx.λy.y)
+</code></pre></div> </div> </li> </ul> <h4 id="对偶pairs"><strong>对偶（Pairs）</strong></h4> <ul> <li> <strong>对的构造</strong>： <div class="language-text highlighter-rouge"> <div class="highlight"><pre class="highlight"><code>PAIR = λx.λy.λf.f x y
+</code></pre></div> </div> </li> <li> <strong>解构 Pair</strong>： <ul> <li>第一元素：<code class="language-plaintext highlighter-rouge">FST = λp.p (λx.λy.x)</code> </li> <li>第二元素：<code class="language-plaintext highlighter-rouge">SND = λp.p (λx.λy.y)</code> </li> </ul> </li> </ul> <h3 id="6-lambda-演算的扩展">6. Lambda 演算的扩展</h3> <h4 id="61-类型-lambda-演算">6.1 类型 Lambda 演算</h4> <p>类型 Lambda 演算（Typed Lambda Calculus）是 Lambda 演算的一种扩展，它为 Lambda 表达式引入了类型系统。类型 Lambda 演算通过为每个变量和表达式分配类型，确保表达式的类型安全性，防止类型错误。</p> <ul> <li><strong>主要特点：</strong></li> </ul> <ol> <li> <strong>类型系统</strong>：类型 Lambda 演算为每个变量和表达式分配类型，确保表达式的类型安全性。</li> <li> <strong>类型检查</strong>：在类型 Lambda 演算中，可以通过类型检查来验证表达式的类型正确性，防止类型错误。</li> <li> <strong>类型推导</strong>：类型 Lambda 演算可以通过类型推导来自动确定表达式的类型，简化类型标注。</li> </ol> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>λx: Int. x       // 类型为 Int -&gt; Int 的恒等函数
+λx: Int. λy: Int. x + y  // 类型为 Int -&gt; (Int -&gt; Int) 的加法函数
+(λx: Int. x) 42  // 类型为 Int 的应用
+</code></pre></div></div> <h4 id="62-多态-lambda-演算">6.2 多态 Lambda 演算</h4> <p>多态 Lambda 演算（Polymorphic Lambda Calculus），也称为系统 F（System F），是类型 Lambda 演算的一种扩展，它允许函数和表达式具有多种类型。多态 Lambda 演算通过引入类型变量，实现了更高的灵活性和泛型编程能力。</p> <ul> <li><strong>主要特点：</strong></li> </ul> <ol> <li> <strong>类型变量</strong>：多态 Lambda 演算引入了类型变量，使得函数和表达式可以具有多种类型。</li> <li> <strong>泛型编程</strong>：多态 Lambda 演算支持泛型编程，可以编写与类型无关的通用函数和表达式。</li> <li> <strong>类型抽象</strong>：多态 Lambda 演算允许对类型进行抽象，使得函数和表达式可以在不同的类型上下文中使用。</li> </ol> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ΛX. λx: X. x       // 多态恒等函数，类型为 ∀X. X -&gt; X
+ΛX. λx: X. λy: X. (x, y)  // 多态对偶函数，类型为 ∀X. X -&gt; X -&gt; (X, X)
+(ΛX. λx: X. x) [Int] 42  // 应用多态恒等函数，类型为 Int
+</code></pre></div></div> <h4 id="63-依赖类型-lambda-演算">6.3 依赖类型 Lambda 演算</h4> <p>依赖类型 Lambda 演算（Dependent Type Lambda Calculus）是类型 Lambda 演算的一种扩展，它允许类型依赖于值。依赖类型 Lambda 演算通过引入依赖类型，实现了更强的表达能力和类型安全性。</p> <ul> <li><strong>主要特点：</strong></li> </ul> <ol> <li> <strong>依赖类型</strong>：依赖类型 Lambda 演算允许类型依赖于值，使得类型系统更加灵活和强大。</li> <li> <strong>类型安全性</strong>：依赖类型 Lambda 演算通过引入依赖类型，确保表达式的类型安全性，防止类型错误。</li> <li> <strong>表达能力</strong>：依赖类型 Lambda 演算具有更强的表达能力，可以表示更复杂的类型和约束。</li> </ol> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Π(n: Nat). Vec n Int  // 依赖类型，表示长度为 n 的整数向量
+λ(n: Nat). λ(v: Vec n Int). length v  // 依赖类型函数，类型为 Π(n: Nat). Vec n Int -&gt; Nat
+(λ(n: Nat). λ(v: Vec n Int). length v) 3 [1, 2, 3]  // 应用依赖类型函数，类型为 Nat
+</code></pre></div></div> </div> </article> <br> <hr> <br> <ul class="list-disc pl-8"></ul> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/3_%E6%80%BB%E7%BA%BF.md/">总线</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/3_coroutine.md/">coroutine了解</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/2_process.md/">进程</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/2_io.md/">磁盘结构</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/1_threads.md/">c++的多线程</a> </li> </div> </div> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2025 Marco Huang. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. </div> </footer> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script defer src="/assets/js/bootstrap-toc.min.js?c82ff4de8b0955d6ff14f5b05eed7eb6"></script> <script src="/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/assets/js/common.js?e0514a05c5c95ac1a93a8dfd5249b92e"></script> <script defer src="/assets/js/copy_code.js?c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/js/mathjax-setup.js?a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/assets/js/progress-bar.js?2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script src="/assets/js/vanilla-back-to-top.min.js?f40d453793ff4f64e238e420181a1d17"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/assets/js/search/ninja-keys.min.js?a3446f084dcaecc5f75aa1757d087dcf"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/js/search-setup.js?6c304f7b1992d4b60f7a07956e52f04a"></script> <script src="/assets/js/search-data.js"></script> <script src="/assets/js/shortcut-key.js?6f508d74becd347268a7f822bca7309d"></script> </body> </html>

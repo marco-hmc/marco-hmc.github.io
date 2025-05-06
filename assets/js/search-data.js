@@ -18,411 +18,639 @@ ninja.data = [{
           },
         },{id: "nav-projects",
           title: "projects",
-          description: "A growing collection of your cool projects.",
+          description: "A growing collection of my cool projects.",
           section: "Navigation",
           handler: () => {
             window.location.href = "/projects/";
           },
-        },{id: "nav-repositories",
-          title: "repositories",
-          description: "Edit the `_data/repositories.yml` and change the `github_users` and `github_repos` lists to include your own GitHub profile and repositories.",
-          section: "Navigation",
-          handler: () => {
-            window.location.href = "/repositories/";
-          },
         },{id: "nav-cv",
           title: "cv",
-          description: "This is a description of the page. You can modify it in &#39;_pages/cv.md&#39;. You can also change or remove the top pdf download button.",
+          description: "Just something about me.",
           section: "Navigation",
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "post-a-post-with-plotly-js",
+        },{id: "post-总线",
         
-          title: "a post with plotly.js",
+          title: "总线",
         
-        description: "this is what included plotly.js code could look like",
+        description: "",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2025/plotly/";
+            window.location.href = "/blog/2025/3_%E6%80%BB%E7%BA%BF.md/";
           
         },
-      },{id: "post-a-post-with-image-galleries",
+      },{id: "post-coroutine了解",
         
-          title: "a post with image galleries",
+          title: "coroutine了解",
         
-        description: "this is what included image galleries could look like",
+        description: "",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2024/photo-gallery/";
+            window.location.href = "/blog/2025/3_coroutine.md/";
           
         },
-      },{id: "post-a-post-with-tabs",
+      },{id: "post-进程",
         
-          title: "a post with tabs",
+          title: "进程",
         
-        description: "this is what included tabs in a post could look like",
+        description: "",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2024/tabs/";
+            window.location.href = "/blog/2025/2_process.md/";
           
         },
-      },{id: "post-a-post-with-typograms",
+      },{id: "post-磁盘结构",
         
-          title: "a post with typograms",
+          title: "磁盘结构",
         
-        description: "this is what included typograms code could look like",
+        description: "",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2024/typograms/";
+            window.location.href = "/blog/2025/2_io.md/";
           
         },
-      },{id: "post-a-post-that-can-be-cited",
+      },{id: "post-c-的多线程",
         
-          title: "a post that can be cited",
+          title: "c++的多线程",
         
-        description: "this is what a post that can be cited looks like",
+        description: "",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2024/post-citation/";
+            window.location.href = "/blog/2025/1_threads.md/";
           
         },
-      },{id: "post-a-post-with-pseudo-code",
+      },{id: "post-指针",
         
-          title: "a post with pseudo code",
+          title: "指针",
         
-        description: "this is what included pseudo code could look like",
+        description: "",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2024/pseudocode/";
+            window.location.href = "/blog/2025/0_pointer.md/";
           
         },
-      },{id: "post-a-post-with-code-diff",
+      },{id: "post-内存的链接方式",
         
-          title: "a post with code diff",
+          title: "内存的链接方式",
         
-        description: "this is how you can display code diffs",
+        description: "",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2024/code-diff/";
+            window.location.href = "/blog/2025/1_%E5%86%85%E5%AD%98%E9%93%BE%E6%8E%A5%E4%B8%8E%E5%86%85%E5%AD%98%E8%A3%85%E5%85%A5.md/";
           
         },
-      },{id: "post-a-post-with-advanced-image-components",
+      },{id: "post-c-guideline",
         
-          title: "a post with advanced image components",
+          title: "c++ guideline",
         
-        description: "this is what advanced image components could look like",
+        description: "",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2024/advanced-images/";
+            window.location.href = "/blog/2025/0_cpp_guideLine.md/";
           
         },
-      },{id: "post-a-post-with-vega-lite",
+      },{id: "post-关于网络的一些quiz",
         
-          title: "a post with vega lite",
+          title: "关于网络的一些quiz",
         
-        description: "this is what included vega lite code could look like",
+        description: "",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2024/vega-lite/";
+            window.location.href = "/blog/2025/99_network_quiz.md/";
           
         },
-      },{id: "post-a-post-with-geojson",
+      },{id: "post-网络安全",
         
-          title: "a post with geojson",
+          title: "网络安全",
         
-        description: "this is what included geojson code could look like",
+        description: "",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2024/geojson-map/";
+            window.location.href = "/blog/2025/6_%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8.md/";
           
         },
-      },{id: "post-a-post-with-echarts",
+      },{id: "post-l5-应用层",
         
-          title: "a post with echarts",
+          title: "L5-应用层",
         
-        description: "this is what included echarts code could look like",
+        description: "",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2024/echarts/";
+            window.location.href = "/blog/2025/5_%E5%BA%94%E7%94%A8%E5%B1%82.md/";
           
         },
-      },{id: "post-a-post-with-chart-js",
+      },{id: "post-l5-cdn",
         
-          title: "a post with chart.js",
+          title: "L5-CDN",
         
-        description: "this is what included chart.js code could look like",
+        description: "",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2024/chartjs/";
+            window.location.href = "/blog/2025/5.5_CDN.md/";
           
         },
-      },{id: "post-a-post-with-tikzjax",
+      },{id: "post-l5-dns",
         
-          title: "a post with TikZJax",
+          title: "L5-DNS",
         
-        description: "this is what included TikZ code could look like",
+        description: "",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2023/tikzjax/";
+            window.location.href = "/blog/2025/5.2_DNS%E5%8D%8F%E8%AE%AE.md/";
           
         },
-      },{id: "post-a-post-with-bibliography",
+      },{id: "post-l5-http",
         
-          title: "a post with bibliography",
+          title: "L5-http",
         
-        description: "an example of a blog post with bibliography",
+        description: "",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2023/post-bibliography/";
+            window.location.href = "/blog/2025/5.1_HTTP_HTTPS.md/";
           
         },
-      },{id: "post-a-post-with-jupyter-notebook",
+      },{id: "post-l4-传输层",
         
-          title: "a post with jupyter notebook",
+          title: "L4-传输层",
         
-        description: "an example of a blog post with jupyter notebook",
+        description: "",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2023/jupyter-notebook/";
+            window.location.href = "/blog/2025/4_%E4%BC%A0%E8%BE%93%E5%B1%82.md/";
           
         },
-      },{id: "post-a-post-with-custom-blockquotes",
+      },{id: "post-l4-udp",
         
-          title: "a post with custom blockquotes",
+          title: "L4-UDP",
         
-        description: "an example of a blog post with custom blockquotes",
+        description: "",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2023/custom-blockquotes/";
+            window.location.href = "/blog/2025/4.2_UDP.md/";
           
         },
-      },{id: "post-a-post-with-table-of-contents-on-a-sidebar",
+      },{id: "post-l4-tcp",
         
-          title: "a post with table of contents on a sidebar",
+          title: "L4-TCP",
         
-        description: "an example of a blog post with table of contents on a sidebar",
+        description: "",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2023/sidebar-table-of-contents/";
+            window.location.href = "/blog/2025/4.1_TCP.md/";
           
         },
-      },{id: "post-a-post-with-audios",
+      },{id: "post-l3-网络层",
         
-          title: "a post with audios",
+          title: "L3-网络层",
         
-        description: "this is what included audios could look like",
+        description: "",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2023/audios/";
+            window.location.href = "/blog/2025/3_%E7%BD%91%E7%BB%9C%E5%B1%82.md/";
           
         },
-      },{id: "post-a-post-with-videos",
+      },{id: "post-l2-链路层",
         
-          title: "a post with videos",
+          title: "L2-链路层",
         
-        description: "this is what included videos could look like",
+        description: "",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2023/videos/";
+            window.location.href = "/blog/2025/2_%E9%93%BE%E8%B7%AF%E5%B1%82.md/";
           
         },
-      },{id: "post-displaying-beautiful-tables-with-bootstrap-tables",
+      },{id: "post-系统和程序的交互",
         
-          title: "displaying beautiful tables with Bootstrap Tables",
+          title: "系统和程序的交互",
         
-        description: "an example of how to use Bootstrap Tables",
+        description: "",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2023/tables/";
+            window.location.href = "/blog/2025/2_interaction.md/";
           
         },
-      },{id: "post-a-post-with-table-of-contents",
+      },{id: "post-l1-物理层",
         
-          title: "a post with table of contents",
+          title: "L1-物理层",
         
-        description: "an example of a blog post with table of contents",
+        description: "",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2023/table-of-contents/";
+            window.location.href = "/blog/2025/1_%E7%89%A9%E7%90%86%E5%B1%82.md/";
           
         },
-      },{id: "post-a-post-with-giscus-comments",
+      },{id: "post-1-signal-md",
         
-          title: "a post with giscus comments",
+          title: "1_signal.md",
         
-        description: "an example of a blog post with giscus comments",
+        description: "",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2022/giscus-comments/";
+            window.location.href = "/blog/2025/1_signal.md/";
           
         },
-      },{id: "post-a-post-with-redirect",
+      },{id: "post-引用",
         
-          title: "a post with redirect",
+          title: "引用",
         
-        description: "you can also redirect to assets like pdf",
+        description: "",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/assets/pdf/example_pdf.pdf";
+            window.location.href = "/blog/2025/1_reference.md/";
           
         },
-      },{id: "post-a-post-with-diagrams",
+      },{id: "post-计算机系统中的开发需知",
         
-          title: "a post with diagrams",
+          title: "计算机系统中的开发需知",
         
-        description: "an example of a blog post with diagrams",
+        description: "",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2021/diagrams/";
+            window.location.href = "/blog/2025/0_os.md/";
           
         },
-      },{id: "post-a-distill-style-blog-post",
+      },{id: "post-内存交换和虚拟内存",
         
-          title: "a distill-style blog post",
+          title: "内存交换和虚拟内存",
         
-        description: "an example of a distill-style blog post and main elements",
+        description: "",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2021/distill/";
+            window.location.href = "/blog/2025/3_%E5%86%85%E5%AD%98%E4%BA%A4%E6%8D%A2%E4%B8%8E%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98.md/";
           
         },
-      },{id: "post-a-post-with-twitter",
+      },{id: "post-模板的进阶使用",
         
-          title: "a post with twitter",
+          title: "模板的进阶使用",
         
-        description: "an example of a blog post with twitter",
+        description: "",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2020/twitter/";
+            window.location.href = "/blog/2025/1_template_advanced.md/";
           
         },
-      },{id: "post-a-post-with-disqus-comments",
+      },{id: "post-cpu-工作原理",
         
-          title: "a post with disqus comments",
+          title: "CPU 工作原理",
         
-        description: "an example of a blog post with disqus comments",
+        description: "",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2015/disqus-comments/";
+            window.location.href = "/blog/2025/1_cpu.md/";
           
         },
-      },{id: "post-a-post-with-math",
+      },{id: "post-内存高级功能与优化",
         
-          title: "a post with math",
+          title: "内存高级功能与优化",
         
-        description: "an example of a blog post with some math",
+        description: "",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2015/math/";
+            window.location.href = "/blog/2025/4_%E5%86%85%E5%AD%98%E9%AB%98%E7%BA%A7%E5%8A%9F%E8%83%BD%E4%B8%8E%E4%BC%98%E5%8C%96.md/";
           
         },
-      },{id: "post-a-post-with-code",
+      },{id: "post-内存分配管理",
         
-          title: "a post with code",
+          title: "内存分配管理",
         
-        description: "an example of a blog post with some code",
+        description: "",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2015/code/";
+            window.location.href = "/blog/2025/2_%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E4%B8%8E%E7%AE%A1%E7%90%86.md/";
           
         },
-      },{id: "post-a-post-with-images",
+      },{id: "post-编译过程与原理",
         
-          title: "a post with images",
+          title: "编译过程与原理",
         
-        description: "this is what included images could look like",
+        description: "",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2015/images/";
+            window.location.href = "/blog/2025/1_compile.md/";
           
         },
-      },{id: "post-a-post-with-formatting-and-links",
+      },{id: "post-内存运行的基本原理",
         
-          title: "a post with formatting and links",
+          title: "内存运行的基本原理",
         
-        description: "march &amp; april, looking forward to summer",
+        description: "",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2015/formatting-and-links/";
+            window.location.href = "/blog/2025/0_%E5%86%85%E5%AD%98%E8%BF%90%E8%A1%8C.md/";
           
         },
-      },{id: "projects-project-1",
-          title: 'project 1',
-          description: "with background image",
+      },{id: "post-性能优化",
+        
+          title: "性能优化",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/0_optimize.md/";
+          
+        },
+      },{id: "post-c-数据内存布局-amp-amp-内存分配",
+        
+          title: "c++ 数据内存布局 &amp;&amp; 内存分配",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/3_cppData.md/";
+          
+        },
+      },{id: "post-行为型设计模式",
+        
+          title: "行为型设计模式",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/3_behaviouralPatterns.md/";
+          
+        },
+      },{id: "post-结构型模式",
+        
+          title: "结构型模式",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/2_structuralPatterns.md/";
+          
+        },
+      },{id: "post-创建型模式",
+        
+          title: "创建型模式",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/1_creationalPatterns.md/";
+          
+        },
+      },{id: "post-系统设计",
+        
+          title: "系统设计",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/0_systemDesign.md/";
+          
+        },
+      },{id: "post-cpp设计模式-入门",
+        
+          title: "cpp设计模式-入门",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/0_designPattern.md/";
+          
+        },
+      },{id: "post-设计",
+        
+          title: "设计",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/0_design.md/";
+          
+        },
+      },{id: "post-c-中的不定长参数",
+        
+          title: "c++ 中的不定长参数",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/2_template_ellipsis.md/";
+          
+        },
+      },{id: "post-模板的入门使用",
+        
+          title: "模板的入门使用",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/0_template_introduction.md/";
+          
+        },
+      },{id: "post-计算机网络",
+        
+          title: "计算机网络",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/0_networks.md/";
+          
+        },
+      },{id: "post-迈向c-语言律师指路",
+        
+          title: "迈向c++语言律师指路",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/0_cppQuiz.md/";
+          
+        },
+      },{id: "post-特殊成员函数",
+        
+          title: "特殊成员函数",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/2_cppMemFunc.md/";
+          
+        },
+      },{id: "post-类的继承和多态",
+        
+          title: "类的继承和多态",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/1_cppVirtual.md/";
+          
+        },
+      },{id: "post-openmp",
+        
+          title: "openmp",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/0_openmp.md/";
+          
+        },
+      },{id: "post-并发编程",
+        
+          title: "并发编程",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/0_multiThread_multiProcess.md/";
+          
+        },
+      },{id: "post-c-对象的内存模型设计",
+        
+          title: "C++对象的内存模型设计",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/0_cppMemModel.md/";
+          
+        },
+      },{id: "post-lambda-演算",
+        
+          title: "Lambda 演算",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/1_lambda_calculus.md/";
+          
+        },
+      },{id: "post-函数对象和函数式编程",
+        
+          title: "函数对象和函数式编程",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/0_functionalProgamming.md/";
+          
+        },
+      },{id: "post-4-pc-arichtecture-md",
+        
+          title: "4_pc_arichtecture.md",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/4_pc_arichtecture.md/";
+          
+        },
+      },{id: "post-c-函数调用方式与栈原理",
+        
+          title: "C 函数调用方式与栈原理",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/1_%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E6%96%B9%E5%BC%8F%E4%B8%8E%E6%A0%88%E5%8E%9F%E7%90%86.md/";
+          
+        },
+      },{id: "post-汇编",
+        
+          title: "汇编",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/0_assembly.md/";
+          
+        },
+      },{id: "post-错误码和异常处理",
+        
+          title: "错误码和异常处理",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/2_exceptionAndFaultCode.md/";
+          
+        },
+      },{id: "post-二进制兼容和-abi-兼容",
+        
+          title: "二进制兼容和 abi 兼容",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/1_binaryCompatbility.md/";
+          
+        },
+      },{id: "post-计算机组成",
+        
+          title: "计算机组成",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/0_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86.md/";
+          
+        },
+      },{id: "projects-2025-annual-goat",
+          title: '2025 Annual Goat',
+          description: "Updating from to to time...",
           section: "Projects",handler: () => {
-              window.location.href = "/projects/1_project/";
-            },},{id: "projects-project-2",
-          title: 'project 2',
-          description: "a project with a background image and giscus comments",
-          section: "Projects",handler: () => {
-              window.location.href = "/projects/2_project/";
-            },},{id: "projects-project-3-with-very-long-name",
-          title: 'project 3 with very long name',
-          description: "a project that redirects to another website",
-          section: "Projects",handler: () => {
-              window.location.href = "/projects/3_project/";
-            },},{id: "projects-project-4",
-          title: 'project 4',
-          description: "another without an image",
-          section: "Projects",handler: () => {
-              window.location.href = "/projects/4_project/";
-            },},{id: "projects-project-5",
-          title: 'project 5',
-          description: "a project with a background image",
-          section: "Projects",handler: () => {
-              window.location.href = "/projects/5_project/";
-            },},{id: "projects-project-6",
-          title: 'project 6',
-          description: "a project with no image",
-          section: "Projects",handler: () => {
-              window.location.href = "/projects/6_project/";
-            },},{id: "projects-project-7",
-          title: 'project 7',
-          description: "with background image",
-          section: "Projects",handler: () => {
-              window.location.href = "/projects/7_project/";
-            },},{id: "projects-project-8",
-          title: 'project 8',
-          description: "an other project with a background image and giscus comments",
-          section: "Projects",handler: () => {
-              window.location.href = "/projects/8_project/";
-            },},{id: "projects-project-9",
-          title: 'project 9',
-          description: "another project with an image 🎉",
-          section: "Projects",handler: () => {
-              window.location.href = "/projects/9_project/";
+              window.location.href = "/projects/2025_annual_project/";
             },},{
         id: 'social-email',
         title: 'email',
