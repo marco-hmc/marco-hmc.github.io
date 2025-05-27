@@ -243,8 +243,8 @@ jekyll-archives:
   books:
     enabled: [year, tags, categories] # enables year, tag and category archives (remove if you need to disable one of them).
 
-display_tags: ["cpp", "并发编程"] # these tags will be displayed on the front page of your blog
-display_categories: ["language", "计算机网络", "计算机系统", "编译原理", "计算机组成", "程序设计"] # these categories will be displayed on the front page of your blog
+display_tags: ["cpp", "template", "threads", "class"] # these tags will be displayed on the front page of your blog
+display_categories: ["cpp", "计算机网络"] # these categories will be displayed on the front page of your blog
 
 # -----------------------------------------------------------------------------
 # Jekyll Link Attributes
