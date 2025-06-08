@@ -5,7 +5,7 @@ categories: cpp
 related_posts: True
 tags: cpp template
 toc:
-  sidebar: left
+  sidebar: right
 ---
 
 ## （二）模板那些事儿：模板元

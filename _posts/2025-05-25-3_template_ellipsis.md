@@ -5,7 +5,7 @@ categories: cpp
 related_posts: True
 tags: cpp template
 toc:
-  sidebar: left
+  sidebar: right
 ---
 
 ## （三）模板那些事儿：不定长参数

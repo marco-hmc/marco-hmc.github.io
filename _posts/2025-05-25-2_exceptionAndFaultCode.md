@@ -5,7 +5,7 @@ categories: cpp
 related_posts: True
 tags: cpp
 toc:
-  sidebar: left
+  sidebar: right
 ---
 
 ## 错误码和异常处理

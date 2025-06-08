@@ -5,7 +5,7 @@ categories: cpp
 related_posts: True
 tags: cpp threads
 toc:
-  sidebar: left
+  sidebar: right
 ---
 
 ## （三）多线程那些事儿：怎么用好

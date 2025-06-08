@@ -5,7 +5,7 @@ categories: cpp
 related_posts: True
 tags: cpp class
 toc:
-  sidebar: left
+  sidebar: right
 ---
 
 ## （二）C++对象内存模型那些事儿：类的继承和多态

@@ -5,7 +5,7 @@ categories: cpp
 related_posts: True
 tags: cpp class
 toc:
-  sidebar: left
+  sidebar: right
 ---
 
 ## （三）C++对象内存模型那些事儿：特殊成员函数

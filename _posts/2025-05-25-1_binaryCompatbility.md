@@ -5,7 +5,7 @@ categories: cpp
 related_posts: True
 tags: cpp
 toc:
-  sidebar: left
+  sidebar: right
 ---
 
 ## 二进制兼容和 abi 兼容

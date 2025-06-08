@@ -5,7 +5,7 @@ categories: cpp
 related_posts: True
 tags: cpp template doing
 toc:
-  sidebar: left
+  sidebar: right
 ---
 
 ## （六）模板那些事儿：类型擦除
