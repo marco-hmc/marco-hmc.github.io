@@ -129,61 +129,6 @@ ninja.data = [{
             window.location.href = "/blog/2025/0_assembly.md/";
           
         },
-      },{id: "post-五-qt-那些事儿-资源管理",
-        
-          title: "（五）Qt 那些事儿：资源管理",
-        
-        description: "",
-        section: "Posts",
-        handler: () => {
-          
-            window.location.href = "/blog/2025/5_resources.md/";
-          
-        },
-      },{id: "post-四-qt-那些事儿-gui-编程",
-        
-          title: "（四）Qt 那些事儿：GUI 编程",
-        
-        description: "",
-        section: "Posts",
-        handler: () => {
-          
-            window.location.href = "/blog/2025/4_qt_gui.md/";
-          
-        },
-      },{id: "post-三-qt-那些事儿-qt的核心机制",
-        
-          title: "（三）Qt 那些事儿：Qt的核心机制",
-        
-        description: "",
-        section: "Posts",
-        handler: () => {
-          
-            window.location.href = "/blog/2025/3_qt_mechanisim.md/";
-          
-        },
-      },{id: "post-二-qt-那些事儿-事件循环机制",
-        
-          title: "（二）Qt 那些事儿：事件循环机制",
-        
-        description: "",
-        section: "Posts",
-        handler: () => {
-          
-            window.location.href = "/blog/2025/2_qt_event.md/";
-          
-        },
-      },{id: "post-一-qt-那些事儿-关于qt",
-        
-          title: "（一）Qt 那些事儿：关于Qt",
-        
-        description: "",
-        section: "Posts",
-        handler: () => {
-          
-            window.location.href = "/blog/2025/1_qt_introduction.md/";
-          
-        },
       },{id: "post-0-designpattern-md",
         
           title: "0_designpattern.md",
@@ -248,6 +193,61 @@ ninja.data = [{
         handler: () => {
           
             window.location.href = "/blog/2025/0_%E5%86%85%E5%AD%98%E8%BF%90%E8%A1%8C.md/";
+          
+        },
+      },{id: "post-五-qt-那些事儿-资源管理",
+        
+          title: "（五）Qt 那些事儿：资源管理",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/5_resources.md/";
+          
+        },
+      },{id: "post-四-qt-那些事儿-gui-编程",
+        
+          title: "（四）Qt 那些事儿：GUI 编程",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/4_qt_gui.md/";
+          
+        },
+      },{id: "post-三-qt-那些事儿-qt的核心机制",
+        
+          title: "（三）Qt 那些事儿：Qt的核心机制",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/3_qt_mechanisim.md/";
+          
+        },
+      },{id: "post-二-qt-那些事儿-事件循环机制",
+        
+          title: "（二）Qt 那些事儿：事件循环机制",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/2_qt_event.md/";
+          
+        },
+      },{id: "post-一-qt-那些事儿-关于qt",
+        
+          title: "（一）Qt 那些事儿：关于Qt",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/1_qt_introduction.md/";
           
         },
       },{id: "post-六-模板那些事儿-类型擦除",
@@ -448,12 +448,7 @@ ninja.data = [{
             window.location.href = "/blog/2025/0_cppMemModel.md/";
           
         },
-      },{id: "projects-2025-annual-plan",
-          title: '2025 Annual Plan',
-          description: "Updating from to to time...",
-          section: "Projects",handler: () => {
-              window.location.href = "/projects/2025_annual_project/";
-            },},{id: "projects-gallery",
+      },{id: "projects-gallery",
           title: 'Gallery',
           description: "Updating from to to time...",
           section: "Projects",handler: () => {
