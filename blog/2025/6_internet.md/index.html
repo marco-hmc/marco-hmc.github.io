@@ -35,51 +35,51 @@ iptables <span class="nt">-A</span> INPUT <span class="nt">-p</span> tcp <span c
 <span class="n">epoll_ctl</span><span class="p">(</span><span class="n">epfd</span><span class="p">,</span> <span class="n">EPOLL_CTL_ADD</span><span class="p">,</span> <span class="n">sockfd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ev</span><span class="p">);</span>
 <span class="kt">int</span> <span class="n">nfds</span> <span class="o">=</span> <span class="n">epoll_wait</span><span class="p">(</span><span class="n">epfd</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="n">MAX_EVENTS</span><span class="p">,</span> <span class="n">timeout</span><span class="p">);</span>
 </code></pre></div></div> <p><strong>性能对比</strong>：</p> <ul> <li> <strong>select/poll</strong>：O(n) 时间复杂度，适合少量连接</li> <li> <strong>epoll</strong>：O(1) 时间复杂度，适合大量连接（C10K 问题的解决方案）</li> </ul> <hr> <h2 id="1-数据包从网卡进来之后的流程">1. 数据包从网卡进来之后的流程</h2> <p>我们以 Linux 为例，从硬件到应用层描述数据包进入的完整路径：</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[物理介质] -&gt; [网卡硬件] -&gt; [网卡驱动] -&gt; [内核协议栈] -&gt; [Socket缓冲区] -&gt; [用户进程]
-</code></pre></div></div> <h3 id="详细处理流程"> <strong>详细处理流程</strong>：</h3> <h4 id="第一阶段硬件层面的数据接收"><strong>第一阶段：硬件层面的数据接收</strong></h4> <ol> <li> <strong>物理信号转换</strong> <ul> <li>网线/无线电波携带的模拟信号到达网卡</li> <li>网卡的 PHY 芯片将模拟信号转换为数字信号</li> <li>MAC 控制器从数字信号中提取以太网帧</li> </ul> </li> <li> <strong>硬件过滤与校验</strong> <ul> <li> <strong>MAC 地址过滤</strong>：检查目标 MAC 地址是否匹配</li> <li> <strong>CRC 校验</strong>：验证帧完整性，丢弃错误帧</li> <li> <strong>VLAN 标签处理</strong>：解析 VLAN 信息（如果存在）</li> </ul> </li> </ol> <h4 id="第二阶段中断与驱动处理"><strong>第二阶段：中断与驱动处理</strong></h4> <ol> <li> <strong>中断触发机制</strong> <div class="language-c highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="c1">// 网卡驱动中断处理函数示例</span>
+</code></pre></div></div> <h3 id="详细处理流程"> <strong>详细处理流程</strong>：</h3> <h4 id="第一阶段硬件层面的数据接收"><strong>第一阶段：硬件层面的数据接收</strong></h4> <ol> <li> <p><strong>物理信号转换</strong></p> <ul> <li>网线/无线电波携带的模拟信号到达网卡</li> <li>网卡的 PHY 芯片将模拟信号转换为数字信号</li> <li>MAC 控制器从数字信号中提取以太网帧</li> </ul> </li> <li> <p><strong>硬件过滤与校验</strong></p> <ul> <li> <strong>MAC 地址过滤</strong>：检查目标 MAC 地址是否匹配</li> <li> <strong>CRC 校验</strong>：验证帧完整性，丢弃错误帧</li> <li> <strong>VLAN 标签处理</strong>：解析 VLAN 信息（如果存在）</li> </ul> </li> </ol> <h4 id="第二阶段中断与驱动处理"><strong>第二阶段：中断与驱动处理</strong></h4> <ol> <li> <p><strong>中断触发机制</strong></p> <div class="language-c highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="c1">// 网卡驱动中断处理函数示例</span>
 <span class="k">static</span> <span class="n">irqreturn_t</span> <span class="nf">ethernet_interrupt</span><span class="p">(</span><span class="kt">int</span> <span class="n">irq</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">dev_id</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">struct</span> <span class="n">net_device</span> <span class="o">*</span><span class="n">dev</span> <span class="o">=</span> <span class="n">dev_id</span><span class="p">;</span>
     <span class="k">struct</span> <span class="n">private_data</span> <span class="o">*</span><span class="n">priv</span> <span class="o">=</span> <span class="n">netdev_priv</span><span class="p">(</span><span class="n">dev</span><span class="p">);</span>
-       
+
     <span class="c1">// 禁用网卡中断，避免中断风暴</span>
     <span class="n">disable_irq_nosync</span><span class="p">(</span><span class="n">dev</span><span class="o">-&gt;</span><span class="n">irq</span><span class="p">);</span>
-       
+
     <span class="c1">// 调度软中断进行数据包处理</span>
     <span class="n">napi_schedule</span><span class="p">(</span><span class="o">&amp;</span><span class="n">priv</span><span class="o">-&gt;</span><span class="n">napi</span><span class="p">);</span>
-       
+
     <span class="k">return</span> <span class="n">IRQ_HANDLED</span><span class="p">;</span>
 <span class="p">}</span>
-</code></pre></div> </div> </li> <li> <strong>NAPI 轮询处理</strong> <div class="language-c highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="c1">// NAPI 轮询函数示例</span>
+</code></pre></div> </div> </li> <li> <p><strong>NAPI 轮询处理</strong></p> <div class="language-c highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="c1">// NAPI 轮询函数示例</span>
 <span class="k">static</span> <span class="kt">int</span> <span class="nf">ethernet_poll</span><span class="p">(</span><span class="k">struct</span> <span class="n">napi_struct</span> <span class="o">*</span><span class="n">napi</span><span class="p">,</span> <span class="kt">int</span> <span class="n">budget</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">struct</span> <span class="n">private_data</span> <span class="o">*</span><span class="n">priv</span> <span class="o">=</span> <span class="n">container_of</span><span class="p">(</span><span class="n">napi</span><span class="p">,</span> <span class="k">struct</span> <span class="n">private_data</span><span class="p">,</span> <span class="n">napi</span><span class="p">);</span>
     <span class="kt">int</span> <span class="n">work_done</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-       
+
     <span class="k">while</span> <span class="p">(</span><span class="n">work_done</span> <span class="o">&lt;</span> <span class="n">budget</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">struct</span> <span class="n">sk_buff</span> <span class="o">*</span><span class="n">skb</span> <span class="o">=</span> <span class="n">receive_packet</span><span class="p">(</span><span class="n">priv</span><span class="p">);</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">skb</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
-           
+
         <span class="c1">// 将数据包传递给协议栈</span>
         <span class="n">netif_receive_skb</span><span class="p">(</span><span class="n">skb</span><span class="p">);</span>
         <span class="n">work_done</span><span class="o">++</span><span class="p">;</span>
     <span class="p">}</span>
-       
+
     <span class="k">if</span> <span class="p">(</span><span class="n">work_done</span> <span class="o">&lt;</span> <span class="n">budget</span><span class="p">)</span> <span class="p">{</span>
         <span class="c1">// 处理完所有包，重新启用中断</span>
         <span class="n">napi_complete</span><span class="p">(</span><span class="n">napi</span><span class="p">);</span>
         <span class="n">enable_irq</span><span class="p">(</span><span class="n">priv</span><span class="o">-&gt;</span><span class="n">dev</span><span class="o">-&gt;</span><span class="n">irq</span><span class="p">);</span>
     <span class="p">}</span>
-       
+
     <span class="k">return</span> <span class="n">work_done</span><span class="p">;</span>
 <span class="p">}</span>
-</code></pre></div> </div> </li> </ol> <h4 id="第三阶段内核协议栈处理"><strong>第三阶段：内核协议栈处理</strong></h4> <ol> <li> <strong>链路层处理（L2）</strong> <div class="language-c highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="c1">// 以太网帧处理</span>
+</code></pre></div> </div> </li> </ol> <h4 id="第三阶段内核协议栈处理"><strong>第三阶段：内核协议栈处理</strong></h4> <ol> <li> <p><strong>链路层处理（L2）</strong></p> <div class="language-c highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="c1">// 以太网帧处理</span>
 <span class="kt">int</span> <span class="nf">eth_type_trans</span><span class="p">(</span><span class="k">struct</span> <span class="n">sk_buff</span> <span class="o">*</span><span class="n">skb</span><span class="p">,</span> <span class="k">struct</span> <span class="n">net_device</span> <span class="o">*</span><span class="n">dev</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">struct</span> <span class="n">ethhdr</span> <span class="o">*</span><span class="n">eth</span> <span class="o">=</span> <span class="p">(</span><span class="k">struct</span> <span class="n">ethhdr</span> <span class="o">*</span><span class="p">)</span><span class="n">skb</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">;</span>
-       
+
     <span class="c1">// 移除以太网头部</span>
     <span class="n">skb_pull</span><span class="p">(</span><span class="n">skb</span><span class="p">,</span> <span class="n">ETH_HLEN</span><span class="p">);</span>
-       
+
     <span class="c1">// 根据 EtherType 确定上层协议</span>
     <span class="k">switch</span> <span class="p">(</span><span class="n">ntohs</span><span class="p">(</span><span class="n">eth</span><span class="o">-&gt;</span><span class="n">h_proto</span><span class="p">))</span> <span class="p">{</span>
         <span class="k">case</span> <span class="n">ETH_P_IP</span><span class="p">:</span>   <span class="k">return</span> <span class="n">ETH_P_IP</span><span class="p">;</span>      <span class="c1">// IPv4</span>
@@ -88,66 +88,66 @@ iptables <span class="nt">-A</span> INPUT <span class="nt">-p</span> tcp <span c
         <span class="nl">default:</span>         <span class="k">return</span> <span class="n">ETH_P_802_3</span><span class="p">;</span>   <span class="c1">// 其他</span>
     <span class="p">}</span>
 <span class="p">}</span>
-</code></pre></div> </div> </li> <li> <strong>网络层处理（L3 - IP）</strong> <div class="language-c highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="c1">// IP 包处理流程</span>
+</code></pre></div> </div> </li> <li> <p><strong>网络层处理（L3 - IP）</strong></p> <div class="language-c highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="c1">// IP 包处理流程</span>
 <span class="kt">int</span> <span class="nf">ip_rcv</span><span class="p">(</span><span class="k">struct</span> <span class="n">sk_buff</span> <span class="o">*</span><span class="n">skb</span><span class="p">,</span> <span class="k">struct</span> <span class="n">net_device</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span>
            <span class="k">struct</span> <span class="n">packet_type</span> <span class="o">*</span><span class="n">pt</span><span class="p">,</span> <span class="k">struct</span> <span class="n">net_device</span> <span class="o">*</span><span class="n">orig_dev</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">struct</span> <span class="n">iphdr</span> <span class="o">*</span><span class="n">iph</span> <span class="o">=</span> <span class="n">ip_hdr</span><span class="p">(</span><span class="n">skb</span><span class="p">);</span>
-       
+
     <span class="c1">// IP 头部校验</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">iph</span><span class="o">-&gt;</span><span class="n">version</span> <span class="o">!=</span> <span class="mi">4</span> <span class="o">||</span> <span class="n">ip_fast_csum</span><span class="p">((</span><span class="n">u8</span><span class="o">*</span><span class="p">)</span><span class="n">iph</span><span class="p">,</span> <span class="n">iph</span><span class="o">-&gt;</span><span class="n">ihl</span><span class="p">))</span>
         <span class="k">goto</span> <span class="n">drop</span><span class="p">;</span>
-       
+
     <span class="c1">// TTL 检查</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">iph</span><span class="o">-&gt;</span><span class="n">ttl</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">goto</span> <span class="n">drop</span><span class="p">;</span>
-       
+
     <span class="c1">// 路由决策</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">ip_route_input</span><span class="p">(</span><span class="n">skb</span><span class="p">,</span> <span class="n">iph</span><span class="o">-&gt;</span><span class="n">daddr</span><span class="p">,</span> <span class="n">iph</span><span class="o">-&gt;</span><span class="n">saddr</span><span class="p">,</span> <span class="n">iph</span><span class="o">-&gt;</span><span class="n">tos</span><span class="p">,</span> <span class="n">dev</span><span class="p">))</span>
         <span class="k">goto</span> <span class="n">drop</span><span class="p">;</span>
-       
+
     <span class="c1">// 分片重组（如果需要）</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">iph</span><span class="o">-&gt;</span><span class="n">frag_off</span> <span class="o">&amp;</span> <span class="n">htons</span><span class="p">(</span><span class="n">IP_MF</span> <span class="o">|</span> <span class="n">IP_OFFSET</span><span class="p">))</span> <span class="p">{</span>
         <span class="n">skb</span> <span class="o">=</span> <span class="n">ip_defrag</span><span class="p">(</span><span class="n">skb</span><span class="p">,</span> <span class="n">IP_DEFRAG_LOCAL_DELIVER</span><span class="p">);</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">skb</span><span class="p">)</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
     <span class="p">}</span>
-       
+
     <span class="c1">// 传递给传输层</span>
     <span class="k">return</span> <span class="n">ip_local_deliver</span><span class="p">(</span><span class="n">skb</span><span class="p">);</span>
-   
+
 <span class="nl">drop:</span>
     <span class="n">kfree_skb</span><span class="p">(</span><span class="n">skb</span><span class="p">);</span>
     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
-</code></pre></div> </div> </li> <li> <strong>传输层处理（L4 - TCP/UDP）</strong> <div class="language-c highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="c1">// TCP 包处理</span>
+</code></pre></div> </div> </li> <li> <p><strong>传输层处理（L4 - TCP/UDP）</strong></p> <div class="language-c highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="c1">// TCP 包处理</span>
 <span class="kt">int</span> <span class="nf">tcp_v4_rcv</span><span class="p">(</span><span class="k">struct</span> <span class="n">sk_buff</span> <span class="o">*</span><span class="n">skb</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">struct</span> <span class="n">tcphdr</span> <span class="o">*</span><span class="n">th</span> <span class="o">=</span> <span class="n">tcp_hdr</span><span class="p">(</span><span class="n">skb</span><span class="p">);</span>
     <span class="k">struct</span> <span class="n">sock</span> <span class="o">*</span><span class="n">sk</span><span class="p">;</span>
-       
+
     <span class="c1">// 查找对应的 socket</span>
     <span class="n">sk</span> <span class="o">=</span> <span class="n">__inet_lookup_skb</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tcp_hashinfo</span><span class="p">,</span> <span class="n">skb</span><span class="p">,</span> <span class="n">th</span><span class="o">-&gt;</span><span class="n">source</span><span class="p">,</span> <span class="n">th</span><span class="o">-&gt;</span><span class="n">dest</span><span class="p">);</span>
     <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">sk</span><span class="p">)</span>
         <span class="k">goto</span> <span class="n">no_tcp_socket</span><span class="p">;</span>
-       
+
     <span class="c1">// 检查 socket 状态</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">sk</span><span class="o">-&gt;</span><span class="n">sk_state</span> <span class="o">==</span> <span class="n">TCP_TIME_WAIT</span><span class="p">)</span>
         <span class="k">goto</span> <span class="n">do_time_wait</span><span class="p">;</span>
-       
+
     <span class="c1">// 将数据包添加到 socket 接收队列</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">tcp_prequeue</span><span class="p">(</span><span class="n">sk</span><span class="p">,</span> <span class="n">skb</span><span class="p">))</span>
         <span class="k">goto</span> <span class="n">discard_and_relse</span><span class="p">;</span>
-       
+
     <span class="c1">// 处理 TCP 状态机</span>
     <span class="n">tcp_v4_do_rcv</span><span class="p">(</span><span class="n">sk</span><span class="p">,</span> <span class="n">skb</span><span class="p">);</span>
     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-   
+
 <span class="nl">no_tcp_socket:</span>
     <span class="c1">// 发送 RST 包</span>
     <span class="n">tcp_v4_send_reset</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">skb</span><span class="p">);</span>
     <span class="k">goto</span> <span class="n">discard_it</span><span class="p">;</span>
 <span class="p">}</span>
-</code></pre></div> </div> </li> </ol> <h4 id="第四阶段socket-层与应用层交互"><strong>第四阶段：Socket 层与应用层交互</strong></h4> <ol> <li> <strong>Socket 缓冲区管理</strong> <div class="language-c highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="c1">// 将数据添加到 socket 接收队列</span>
+</code></pre></div> </div> </li> </ol> <h4 id="第四阶段socket-层与应用层交互"><strong>第四阶段：Socket 层与应用层交互</strong></h4> <ol> <li> <p><strong>Socket 缓冲区管理</strong></p> <div class="language-c highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="c1">// 将数据添加到 socket 接收队列</span>
 <span class="k">static</span> <span class="kt">int</span> <span class="nf">tcp_queue_rcv</span><span class="p">(</span><span class="k">struct</span> <span class="n">sock</span> <span class="o">*</span><span class="n">sk</span><span class="p">,</span> <span class="k">struct</span> <span class="n">sk_buff</span> <span class="o">*</span><span class="n">skb</span><span class="p">,</span> <span class="kt">int</span> <span class="n">hdrlen</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="c1">// 检查接收缓冲区是否有空间</span>
@@ -155,16 +155,16 @@ iptables <span class="nt">-A</span> INPUT <span class="nt">-p</span> tcp <span c
         <span class="n">__kfree_skb</span><span class="p">(</span><span class="n">skb</span><span class="p">);</span>
         <span class="k">return</span> <span class="o">-</span><span class="n">ENOMEM</span><span class="p">;</span>
     <span class="p">}</span>
-       
+
     <span class="c1">// 将数据包链接到接收队列</span>
     <span class="n">__skb_queue_tail</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sk</span><span class="o">-&gt;</span><span class="n">sk_receive_queue</span><span class="p">,</span> <span class="n">skb</span><span class="p">);</span>
     <span class="n">sk</span><span class="o">-&gt;</span><span class="n">sk_rmem_alloc</span> <span class="o">+=</span> <span class="n">skb</span><span class="o">-&gt;</span><span class="n">truesize</span><span class="p">;</span>
-       
+
     <span class="c1">// 唤醒等待数据的进程</span>
     <span class="n">sk</span><span class="o">-&gt;</span><span class="n">sk_data_ready</span><span class="p">(</span><span class="n">sk</span><span class="p">,</span> <span class="n">skb</span><span class="o">-&gt;</span><span class="n">len</span><span class="p">);</span>
     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
-</code></pre></div> </div> </li> <li> <strong>唤醒阻塞进程</strong> <div class="language-c highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="c1">// 数据就绪回调函数</span>
+</code></pre></div> </div> </li> <li> <p><strong>唤醒阻塞进程</strong></p> <div class="language-c highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="c1">// 数据就绪回调函数</span>
 <span class="k">static</span> <span class="kt">void</span> <span class="nf">sock_def_readable</span><span class="p">(</span><span class="k">struct</span> <span class="n">sock</span> <span class="o">*</span><span class="n">sk</span><span class="p">,</span> <span class="kt">int</span> <span class="n">len</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="n">read_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sk</span><span class="o">-&gt;</span><span class="n">sk_callback_lock</span><span class="p">);</span>
@@ -173,20 +173,20 @@ iptables <span class="nt">-A</span> INPUT <span class="nt">-p</span> tcp <span c
     <span class="n">sk_wake_async</span><span class="p">(</span><span class="n">sk</span><span class="p">,</span> <span class="n">SOCK_WAKE_WAITD</span><span class="p">,</span> <span class="n">POLL_IN</span><span class="p">);</span>
     <span class="n">read_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sk</span><span class="o">-&gt;</span><span class="n">sk_callback_lock</span><span class="p">);</span>
 <span class="p">}</span>
-</code></pre></div> </div> </li> <li> <strong>用户空间数据读取</strong> <div class="language-c highlighter-rouge"> <div class="highlight"><pre class="highlight"><code>   <span class="c1">// 用户程序通过 recv() 系统调用读取数据</span>
-   <span class="kt">ssize_t</span> <span class="nf">sock_recvmsg</span><span class="p">(</span><span class="k">struct</span> <span class="n">socket</span> <span class="o">*</span><span class="n">sock</span><span class="p">,</span> <span class="k">struct</span> <span class="n">msghdr</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">int</span> <span class="n">flags</span><span class="p">)</span>
-   <span class="p">{</span>
-   <span class="k">struct</span> <span class="n">sock</span> <span class="o">*</span><span class="n">sk</span> <span class="o">=</span> <span class="n">sock</span><span class="o">-&gt;</span><span class="n">sk</span><span class="p">;</span>
-   <span class="kt">int</span> <span class="n">addr_len</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-   <span class="kt">int</span> <span class="n">err</span><span class="p">;</span>
-       
-   <span class="c1">// 从 socket 接收队列复制数据到用户缓冲区</span>
-   <span class="n">err</span> <span class="o">=</span> <span class="n">sk</span><span class="o">-&gt;</span><span class="n">sk_prot</span><span class="o">-&gt;</span><span class="n">recvmsg</span><span class="p">(</span><span class="n">sk</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">flags</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">addr_len</span><span class="p">);</span>
-   <span class="k">if</span> <span class="p">(</span><span class="n">err</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
-       <span class="n">msg</span><span class="o">-&gt;</span><span class="n">msg_namelen</span> <span class="o">=</span> <span class="n">addr_len</span><span class="p">;</span>
-   <span class="k">return</span> <span class="n">err</span><span class="p">;</span>
-   <span class="p">}</span>
-</code></pre></div> </div> </li> </ol> <h3 id="完整流程图"> <strong>完整流程图</strong>：</h3> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌─────────────────┐
+</code></pre></div> </div> </li> <li> <p><strong>用户空间数据读取</strong></p> </li> </ol> <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 用户程序通过 recv() 系统调用读取数据</span>
+<span class="kt">ssize_t</span> <span class="nf">sock_recvmsg</span><span class="p">(</span><span class="k">struct</span> <span class="n">socket</span> <span class="o">*</span><span class="n">sock</span><span class="p">,</span> <span class="k">struct</span> <span class="n">msghdr</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">int</span> <span class="n">flags</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">struct</span> <span class="n">sock</span> <span class="o">*</span><span class="n">sk</span> <span class="o">=</span> <span class="n">sock</span><span class="o">-&gt;</span><span class="n">sk</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">addr_len</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">err</span><span class="p">;</span>
+
+    <span class="c1">// 从 socket 接收队列复制数据到用户缓冲区</span>
+    <span class="n">err</span> <span class="o">=</span> <span class="n">sk</span><span class="o">-&gt;</span><span class="n">sk_prot</span><span class="o">-&gt;</span><span class="n">recvmsg</span><span class="p">(</span><span class="n">sk</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">flags</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">addr_len</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">err</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">msg</span><span class="o">-&gt;</span><span class="n">msg_namelen</span> <span class="o">=</span> <span class="n">addr_len</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">err</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div> <h3 id="完整流程图"> <strong>完整流程图</strong>：</h3> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌─────────────────┐
 │   物理介质      │ ← 电信号/光信号/无线电波
 │ (网线/无线)     │
 └────────┬────────┘
@@ -229,15 +229,15 @@ iptables <span class="nt">-A</span> INPUT <span class="nt">-p</span> tcp <span c
     <span class="k">struct</span> <span class="n">socket</span> <span class="o">*</span><span class="n">sock</span><span class="p">;</span>
     <span class="k">struct</span> <span class="n">sockaddr_storage</span> <span class="n">address</span><span class="p">;</span>
     <span class="kt">int</span> <span class="n">err</span><span class="p">;</span>
-    
+
     <span class="c1">// 获取 socket 对象</span>
     <span class="n">sock</span> <span class="o">=</span> <span class="n">sockfd_lookup_light</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">err</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">fput_needed</span><span class="p">);</span>
     <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">sock</span><span class="p">)</span>
         <span class="k">goto</span> <span class="n">out</span><span class="p">;</span>
-    
+
     <span class="c1">// 调用协议族的发送函数</span>
     <span class="n">err</span> <span class="o">=</span> <span class="n">sock_sendmsg</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">msg</span><span class="p">,</span> <span class="n">len</span><span class="p">);</span>
-    
+
     <span class="n">sockfd_put_light</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="n">fput_needed</span><span class="p">);</span>
 <span class="nl">out:</span>
     <span class="k">return</span> <span class="n">err</span><span class="p">;</span>
@@ -248,25 +248,25 @@ iptables <span class="nt">-A</span> INPUT <span class="nt">-p</span> tcp <span c
     <span class="k">struct</span> <span class="n">tcp_sock</span> <span class="o">*</span><span class="n">tp</span> <span class="o">=</span> <span class="n">tcp_sk</span><span class="p">(</span><span class="n">sk</span><span class="p">);</span>
     <span class="k">struct</span> <span class="n">sk_buff</span> <span class="o">*</span><span class="n">skb</span><span class="p">;</span>
     <span class="kt">int</span> <span class="n">flags</span><span class="p">,</span> <span class="n">err</span><span class="p">;</span>
-    
+
     <span class="c1">// 检查连接状态</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">sk</span><span class="o">-&gt;</span><span class="n">sk_state</span> <span class="o">!=</span> <span class="n">TCP_ESTABLISHED</span><span class="p">)</span>
         <span class="k">return</span> <span class="o">-</span><span class="n">EPIPE</span><span class="p">;</span>
-    
+
     <span class="c1">// 分配 sk_buff</span>
     <span class="n">skb</span> <span class="o">=</span> <span class="n">sk_stream_alloc_skb</span><span class="p">(</span><span class="n">sk</span><span class="p">,</span> <span class="n">select_size</span><span class="p">(</span><span class="n">sk</span><span class="p">),</span> <span class="n">sk</span><span class="o">-&gt;</span><span class="n">sk_allocation</span><span class="p">);</span>
     <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">skb</span><span class="p">)</span>
         <span class="k">return</span> <span class="o">-</span><span class="n">ENOMEM</span><span class="p">;</span>
-    
+
     <span class="c1">// 复制用户数据到内核缓冲区</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">skb_add_data</span><span class="p">(</span><span class="n">skb</span><span class="p">,</span> <span class="n">from</span><span class="p">,</span> <span class="n">copy</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">__kfree_skb</span><span class="p">(</span><span class="n">skb</span><span class="p">);</span>
         <span class="k">return</span> <span class="o">-</span><span class="n">EFAULT</span><span class="p">;</span>
     <span class="p">}</span>
-    
+
     <span class="c1">// 添加到发送队列</span>
     <span class="n">tcp_push</span><span class="p">(</span><span class="n">sk</span><span class="p">,</span> <span class="n">flags</span><span class="p">,</span> <span class="n">mss_now</span><span class="p">,</span> <span class="n">tp</span><span class="o">-&gt;</span><span class="n">nonagle</span><span class="p">);</span>
-    
+
     <span class="k">return</span> <span class="n">size</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div></div> <h4 id="ip-层路由与封装"><strong>IP 层路由与封装</strong></h4> <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// IP 层发送</span>
@@ -275,12 +275,12 @@ iptables <span class="nt">-A</span> INPUT <span class="nt">-p</span> tcp <span c
     <span class="k">struct</span> <span class="n">sock</span> <span class="o">*</span><span class="n">sk</span> <span class="o">=</span> <span class="n">skb</span><span class="o">-&gt;</span><span class="n">sk</span><span class="p">;</span>
     <span class="k">struct</span> <span class="n">rtable</span> <span class="o">*</span><span class="n">rt</span><span class="p">;</span>
     <span class="k">struct</span> <span class="n">iphdr</span> <span class="o">*</span><span class="n">iph</span><span class="p">;</span>
-    
+
     <span class="c1">// 路由查找</span>
     <span class="n">rt</span> <span class="o">=</span> <span class="n">ip_route_output_flow</span><span class="p">(</span><span class="o">&amp;</span><span class="n">init_net</span><span class="p">,</span> <span class="n">fl</span><span class="p">,</span> <span class="n">sk</span><span class="p">);</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">IS_ERR</span><span class="p">(</span><span class="n">rt</span><span class="p">))</span>
         <span class="k">goto</span> <span class="n">no_route</span><span class="p">;</span>
-    
+
     <span class="c1">// 构建 IP 头部</span>
     <span class="n">skb_push</span><span class="p">(</span><span class="n">skb</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">iphdr</span><span class="p">));</span>
     <span class="n">iph</span> <span class="o">=</span> <span class="n">ip_hdr</span><span class="p">(</span><span class="n">skb</span><span class="p">);</span>
@@ -296,7 +296,7 @@ iptables <span class="nt">-A</span> INPUT <span class="nt">-p</span> tcp <span c
     <span class="n">iph</span><span class="o">-&gt;</span><span class="n">daddr</span> <span class="o">=</span> <span class="n">fl</span><span class="o">-&gt;</span><span class="n">fl4_dst</span><span class="p">;</span>
     <span class="n">iph</span><span class="o">-&gt;</span><span class="n">check</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="n">iph</span><span class="o">-&gt;</span><span class="n">check</span> <span class="o">=</span> <span class="n">ip_fast_csum</span><span class="p">((</span><span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="n">iph</span><span class="p">,</span> <span class="n">iph</span><span class="o">-&gt;</span><span class="n">ihl</span><span class="p">);</span>
-    
+
     <span class="c1">// 传递给网络设备层</span>
     <span class="k">return</span> <span class="n">dst_output</span><span class="p">(</span><span class="n">skb</span><span class="p">);</span>
 <span class="p">}</span>
@@ -305,16 +305,16 @@ iptables <span class="nt">-A</span> INPUT <span class="nt">-p</span> tcp <span c
 <span class="p">{</span>
     <span class="k">struct</span> <span class="n">net_device</span> <span class="o">*</span><span class="n">dev</span> <span class="o">=</span> <span class="n">skb</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">;</span>
     <span class="k">struct</span> <span class="n">netdev_queue</span> <span class="o">*</span><span class="n">txq</span><span class="p">;</span>
-    
+
     <span class="c1">// 选择发送队列</span>
     <span class="n">txq</span> <span class="o">=</span> <span class="n">netdev_pick_tx</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">skb</span><span class="p">);</span>
-    
+
     <span class="c1">// 检查设备状态</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">dev</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">IFF_UP</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">kfree_skb</span><span class="p">(</span><span class="n">skb</span><span class="p">);</span>
         <span class="k">return</span> <span class="o">-</span><span class="n">ENETDOWN</span><span class="p">;</span>
     <span class="p">}</span>
-    
+
     <span class="c1">// 调用驱动程序发送函数</span>
     <span class="k">return</span> <span class="n">dev_hard_start_xmit</span><span class="p">(</span><span class="n">skb</span><span class="p">,</span> <span class="n">dev</span><span class="p">,</span> <span class="n">txq</span><span class="p">);</span>
 <span class="p">}</span>
@@ -340,29 +340,29 @@ iptables <span class="nt">-A</span> INPUT <span class="nt">-p</span> tcp <span c
 <span class="p">{</span>
     <span class="kt">void</span> <span class="o">*</span><span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)(</span><span class="kt">long</span><span class="p">)</span><span class="n">skb</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">;</span>
     <span class="kt">void</span> <span class="o">*</span><span class="n">data_end</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)(</span><span class="kt">long</span><span class="p">)</span><span class="n">skb</span><span class="o">-&gt;</span><span class="n">data_end</span><span class="p">;</span>
-    
+
     <span class="k">struct</span> <span class="n">ethhdr</span> <span class="o">*</span><span class="n">eth</span> <span class="o">=</span> <span class="n">data</span><span class="p">;</span>
     <span class="k">if</span> <span class="p">((</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="n">eth</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">eth</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">data_end</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">XDP_PASS</span><span class="p">;</span>
-    
+
     <span class="k">if</span> <span class="p">(</span><span class="n">eth</span><span class="o">-&gt;</span><span class="n">h_proto</span> <span class="o">!=</span> <span class="n">htons</span><span class="p">(</span><span class="n">ETH_P_IP</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">XDP_PASS</span><span class="p">;</span>
-    
+
     <span class="k">struct</span> <span class="n">iphdr</span> <span class="o">*</span><span class="n">ip</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="n">eth</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">eth</span><span class="p">);</span>
     <span class="k">if</span> <span class="p">((</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="n">ip</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">ip</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">data_end</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">XDP_PASS</span><span class="p">;</span>
-    
+
     <span class="k">if</span> <span class="p">(</span><span class="n">ip</span><span class="o">-&gt;</span><span class="n">protocol</span> <span class="o">!=</span> <span class="n">IPPROTO_TCP</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">XDP_PASS</span><span class="p">;</span>
-    
+
     <span class="k">struct</span> <span class="n">tcphdr</span> <span class="o">*</span><span class="n">tcp</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="n">ip</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">ip</span><span class="p">);</span>
     <span class="k">if</span> <span class="p">((</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="n">tcp</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">tcp</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">data_end</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">XDP_PASS</span><span class="p">;</span>
-    
+
     <span class="c1">// 丢弃目标端口为 8080 的包</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">ntohs</span><span class="p">(</span><span class="n">tcp</span><span class="o">-&gt;</span><span class="n">dest</span><span class="p">)</span> <span class="o">==</span> <span class="mi">8080</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">XDP_DROP</span><span class="p">;</span>
-    
+
     <span class="k">return</span> <span class="n">XDP_PASS</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div></div> <h4 id="xdpexpress-data-path"><strong>XDP（eXpress Data Path）</strong></h4> <p>XDP 在驱动层直接处理网络包，实现最低延迟的包处理：</p> <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// XDP 程序：简单的负载均衡</span>
@@ -371,17 +371,17 @@ iptables <span class="nt">-A</span> INPUT <span class="nt">-p</span> tcp <span c
 <span class="p">{</span>
     <span class="kt">void</span> <span class="o">*</span><span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)(</span><span class="kt">long</span><span class="p">)</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">;</span>
     <span class="kt">void</span> <span class="o">*</span><span class="n">data_end</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)(</span><span class="kt">long</span><span class="p">)</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">data_end</span><span class="p">;</span>
-    
+
     <span class="k">struct</span> <span class="n">ethhdr</span> <span class="o">*</span><span class="n">eth</span> <span class="o">=</span> <span class="n">data</span><span class="p">;</span>
     <span class="k">struct</span> <span class="n">iphdr</span> <span class="o">*</span><span class="n">ip</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="n">eth</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">eth</span><span class="p">);</span>
-    
+
     <span class="c1">// 边界检查</span>
     <span class="k">if</span> <span class="p">((</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="n">ip</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">ip</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">data_end</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">XDP_PASS</span><span class="p">;</span>
-    
+
     <span class="c1">// 基于源 IP 的简单哈希负载均衡</span>
     <span class="n">__u32</span> <span class="n">hash</span> <span class="o">=</span> <span class="n">ip</span><span class="o">-&gt;</span><span class="n">saddr</span> <span class="o">%</span> <span class="mi">4</span><span class="p">;</span>
-    
+
     <span class="k">switch</span> <span class="p">(</span><span class="n">hash</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">case</span> <span class="mi">0</span><span class="p">:</span>
             <span class="c1">// 转发到服务器 1</span>
@@ -407,43 +407,43 @@ iptables <span class="nt">-A</span> INPUT <span class="nt">-p</span> tcp <span c
 <span class="p">{</span>
     <span class="k">struct</span> <span class="n">rte_mempool</span> <span class="o">*</span><span class="n">mbuf_pool</span><span class="p">;</span>
     <span class="kt">uint16_t</span> <span class="n">portid</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    
+
     <span class="c1">// 初始化 EAL</span>
     <span class="kt">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">rte_eal_init</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
         <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">"Error with EAL initialization</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
-    
+
     <span class="c1">// 创建内存池</span>
     <span class="n">mbuf_pool</span> <span class="o">=</span> <span class="n">rte_pktmbuf_pool_create</span><span class="p">(</span><span class="s">"MBUF_POOL"</span><span class="p">,</span> <span class="n">NUM_MBUFS</span><span class="p">,</span>
         <span class="n">MBUF_CACHE_SIZE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">RTE_MBUF_DEFAULT_BUF_SIZE</span><span class="p">,</span> <span class="n">rte_socket_id</span><span class="p">());</span>
-    
+
     <span class="c1">// 配置网络端口</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">port_init</span><span class="p">(</span><span class="n">portid</span><span class="p">,</span> <span class="n">mbuf_pool</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
         <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">"Cannot init port %"</span><span class="n">PRIu16</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">portid</span><span class="p">);</span>
-    
+
     <span class="c1">// 主循环：接收和处理包</span>
     <span class="k">for</span> <span class="p">(;;)</span> <span class="p">{</span>
         <span class="k">struct</span> <span class="n">rte_mbuf</span> <span class="o">*</span><span class="n">bufs</span><span class="p">[</span><span class="n">BURST_SIZE</span><span class="p">];</span>
         <span class="k">const</span> <span class="kt">uint16_t</span> <span class="n">nb_rx</span> <span class="o">=</span> <span class="n">rte_eth_rx_burst</span><span class="p">(</span><span class="n">portid</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">bufs</span><span class="p">,</span> <span class="n">BURST_SIZE</span><span class="p">);</span>
-        
+
         <span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">nb_rx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span>
             <span class="k">continue</span><span class="p">;</span>
-        
+
         <span class="c1">// 处理接收到的包</span>
         <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nb_rx</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
             <span class="n">process_packet</span><span class="p">(</span><span class="n">bufs</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
         <span class="p">}</span>
-        
+
         <span class="c1">// 发送处理后的包</span>
         <span class="k">const</span> <span class="kt">uint16_t</span> <span class="n">nb_tx</span> <span class="o">=</span> <span class="n">rte_eth_tx_burst</span><span class="p">(</span><span class="n">portid</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">bufs</span><span class="p">,</span> <span class="n">nb_rx</span><span class="p">);</span>
-        
+
         <span class="c1">// 释放未发送的包</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">nb_tx</span> <span class="o">&lt;</span> <span class="n">nb_rx</span><span class="p">))</span> <span class="p">{</span>
             <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">nb_tx</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nb_rx</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
                 <span class="n">rte_pktmbuf_free</span><span class="p">(</span><span class="n">bufs</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
         <span class="p">}</span>
     <span class="p">}</span>
-    
+
     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div></div> <p><strong>DPDK 优势</strong>：</p> <ul> <li>绕过内核协议栈，减少上下文切换</li> <li>轮询模式，避免中断开销</li> <li>大页内存，减少 TLB 缺失</li> <li>CPU 亲和性，避免缓存颠簸</li> <li>零拷贝，直接在用户空间处理包</li> </ul> <hr> <h2 id="4-实际应用场景">4. 实际应用场景</h2> <h3 id="高性能-web-服务器"><strong>高性能 Web 服务器</strong></h3> <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 使用 epoll 的高性能服务器示例</span>
@@ -457,35 +457,35 @@ iptables <span class="nt">-A</span> INPUT <span class="nt">-p</span> tcp <span c
     <span class="kt">int</span> <span class="n">server_fd</span><span class="p">,</span> <span class="n">epoll_fd</span><span class="p">;</span>
     <span class="k">struct</span> <span class="n">epoll_event</span> <span class="n">ev</span><span class="p">,</span> <span class="n">events</span><span class="p">[</span><span class="n">MAX_EVENTS</span><span class="p">];</span>
     <span class="k">struct</span> <span class="n">sockaddr_in</span> <span class="n">address</span><span class="p">;</span>
-    
+
     <span class="c1">// 创建服务器 socket</span>
     <span class="n">server_fd</span> <span class="o">=</span> <span class="n">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">SOCK_STREAM</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    
+
     <span class="c1">// 设置非阻塞</span>
     <span class="kt">int</span> <span class="n">flags</span> <span class="o">=</span> <span class="n">fcntl</span><span class="p">(</span><span class="n">server_fd</span><span class="p">,</span> <span class="n">F_GETFL</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
     <span class="n">fcntl</span><span class="p">(</span><span class="n">server_fd</span><span class="p">,</span> <span class="n">F_SETFL</span><span class="p">,</span> <span class="n">flags</span> <span class="o">|</span> <span class="n">O_NONBLOCK</span><span class="p">);</span>
-    
+
     <span class="c1">// 绑定地址</span>
     <span class="n">address</span><span class="p">.</span><span class="n">sin_family</span> <span class="o">=</span> <span class="n">AF_INET</span><span class="p">;</span>
     <span class="n">address</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">.</span><span class="n">s_addr</span> <span class="o">=</span> <span class="n">INADDR_ANY</span><span class="p">;</span>
     <span class="n">address</span><span class="p">.</span><span class="n">sin_port</span> <span class="o">=</span> <span class="n">htons</span><span class="p">(</span><span class="mi">8080</span><span class="p">);</span>
     <span class="n">bind</span><span class="p">(</span><span class="n">server_fd</span><span class="p">,</span> <span class="p">(</span><span class="k">struct</span> <span class="n">sockaddr</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">address</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">address</span><span class="p">));</span>
-    
+
     <span class="c1">// 监听连接</span>
     <span class="n">listen</span><span class="p">(</span><span class="n">server_fd</span><span class="p">,</span> <span class="n">SOMAXCONN</span><span class="p">);</span>
-    
+
     <span class="c1">// 创建 epoll 实例</span>
     <span class="n">epoll_fd</span> <span class="o">=</span> <span class="n">epoll_create1</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-    
+
     <span class="c1">// 添加服务器 socket 到 epoll</span>
     <span class="n">ev</span><span class="p">.</span><span class="n">events</span> <span class="o">=</span> <span class="n">EPOLLIN</span><span class="p">;</span>
     <span class="n">ev</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">fd</span> <span class="o">=</span> <span class="n">server_fd</span><span class="p">;</span>
     <span class="n">epoll_ctl</span><span class="p">(</span><span class="n">epoll_fd</span><span class="p">,</span> <span class="n">EPOLL_CTL_ADD</span><span class="p">,</span> <span class="n">server_fd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ev</span><span class="p">);</span>
-    
+
     <span class="c1">// 主事件循环</span>
     <span class="k">for</span> <span class="p">(;;)</span> <span class="p">{</span>
         <span class="kt">int</span> <span class="n">nfds</span> <span class="o">=</span> <span class="n">epoll_wait</span><span class="p">(</span><span class="n">epoll_fd</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="n">MAX_EVENTS</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
-        
+
         <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">nfds</span><span class="p">;</span> <span class="o">++</span><span class="n">n</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">events</span><span class="p">[</span><span class="n">n</span><span class="p">].</span><span class="n">data</span><span class="p">.</span><span class="n">fd</span> <span class="o">==</span> <span class="n">server_fd</span><span class="p">)</span> <span class="p">{</span>
                 <span class="c1">// 新连接</span>
@@ -494,7 +494,7 @@ iptables <span class="nt">-A</span> INPUT <span class="nt">-p</span> tcp <span c
                     <span class="c1">// 设置非阻塞</span>
                     <span class="kt">int</span> <span class="n">flags</span> <span class="o">=</span> <span class="n">fcntl</span><span class="p">(</span><span class="n">client_fd</span><span class="p">,</span> <span class="n">F_GETFL</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
                     <span class="n">fcntl</span><span class="p">(</span><span class="n">client_fd</span><span class="p">,</span> <span class="n">F_SETFL</span><span class="p">,</span> <span class="n">flags</span> <span class="o">|</span> <span class="n">O_NONBLOCK</span><span class="p">);</span>
-                    
+
                     <span class="c1">// 添加到 epoll</span>
                     <span class="n">ev</span><span class="p">.</span><span class="n">events</span> <span class="o">=</span> <span class="n">EPOLLIN</span> <span class="o">|</span> <span class="n">EPOLLET</span><span class="p">;</span>  <span class="c1">// 边缘触发</span>
                     <span class="n">ev</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">fd</span> <span class="o">=</span> <span class="n">client_fd</span><span class="p">;</span>
@@ -504,7 +504,7 @@ iptables <span class="nt">-A</span> INPUT <span class="nt">-p</span> tcp <span c
                 <span class="c1">// 客户端数据</span>
                 <span class="kt">int</span> <span class="n">client_fd</span> <span class="o">=</span> <span class="n">events</span><span class="p">[</span><span class="n">n</span><span class="p">].</span><span class="n">data</span><span class="p">.</span><span class="n">fd</span><span class="p">;</span>
                 <span class="kt">char</span> <span class="n">buffer</span><span class="p">[</span><span class="n">BUFFER_SIZE</span><span class="p">];</span>
-                
+
                 <span class="kt">ssize_t</span> <span class="n">bytes</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="n">client_fd</span><span class="p">,</span> <span class="n">buffer</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buffer</span><span class="p">));</span>
                 <span class="k">if</span> <span class="p">(</span><span class="n">bytes</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
                     <span class="c1">// 处理请求并发送响应</span>
@@ -517,7 +517,7 @@ iptables <span class="nt">-A</span> INPUT <span class="nt">-p</span> tcp <span c
             <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">}</span>
-    
+
     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div></div> <h3 id="网络监控与分析"><strong>网络监控与分析</strong></h3> <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 使用原始套接字进行网络监控</span>
@@ -530,14 +530,14 @@ iptables <span class="nt">-A</span> INPUT <span class="nt">-p</span> tcp <span c
     <span class="kt">char</span> <span class="n">buffer</span><span class="p">[</span><span class="mi">65536</span><span class="p">];</span>
     <span class="k">struct</span> <span class="n">sockaddr</span> <span class="n">saddr</span><span class="p">;</span>
     <span class="kt">int</span> <span class="n">saddr_len</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">saddr</span><span class="p">);</span>
-    
+
     <span class="c1">// 创建原始套接字</span>
     <span class="n">sock_fd</span> <span class="o">=</span> <span class="n">socket</span><span class="p">(</span><span class="n">AF_PACKET</span><span class="p">,</span> <span class="n">SOCK_RAW</span><span class="p">,</span> <span class="n">htons</span><span class="p">(</span><span class="n">ETH_P_ALL</span><span class="p">));</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">sock_fd</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">perror</span><span class="p">(</span><span class="s">"Socket Error"</span><span class="p">);</span>
         <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
     <span class="p">}</span>
-    
+
     <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
         <span class="c1">// 接收数据包</span>
         <span class="kt">ssize_t</span> <span class="n">data_size</span> <span class="o">=</span> <span class="n">recvfrom</span><span class="p">(</span><span class="n">sock_fd</span><span class="p">,</span> <span class="n">buffer</span><span class="p">,</span> <span class="mi">65536</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">saddr</span><span class="p">,</span> <span class="p">(</span><span class="n">socklen_t</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">saddr_len</span><span class="p">);</span>
@@ -545,28 +545,28 @@ iptables <span class="nt">-A</span> INPUT <span class="nt">-p</span> tcp <span c
             <span class="n">perror</span><span class="p">(</span><span class="s">"Recvfrom error"</span><span class="p">);</span>
             <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
         <span class="p">}</span>
-        
+
         <span class="c1">// 解析以太网头部</span>
         <span class="k">struct</span> <span class="n">ethhdr</span> <span class="o">*</span><span class="n">eth</span> <span class="o">=</span> <span class="p">(</span><span class="k">struct</span> <span class="n">ethhdr</span> <span class="o">*</span><span class="p">)</span><span class="n">buffer</span><span class="p">;</span>
-        
+
         <span class="k">if</span> <span class="p">(</span><span class="n">ntohs</span><span class="p">(</span><span class="n">eth</span><span class="o">-&gt;</span><span class="n">h_proto</span><span class="p">)</span> <span class="o">==</span> <span class="n">ETH_P_IP</span><span class="p">)</span> <span class="p">{</span>
             <span class="c1">// 解析 IP 头部</span>
             <span class="k">struct</span> <span class="n">iphdr</span> <span class="o">*</span><span class="n">iph</span> <span class="o">=</span> <span class="p">(</span><span class="k">struct</span> <span class="n">iphdr</span><span class="o">*</span><span class="p">)(</span><span class="n">buffer</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">ethhdr</span><span class="p">));</span>
-            
+
             <span class="n">printf</span><span class="p">(</span><span class="s">"IP Packet: %s -&gt; "</span><span class="p">,</span> <span class="n">inet_ntoa</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="k">struct</span> <span class="n">in_addr</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">iph</span><span class="o">-&gt;</span><span class="n">saddr</span><span class="p">));</span>
             <span class="n">printf</span><span class="p">(</span><span class="s">"%s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">inet_ntoa</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="k">struct</span> <span class="n">in_addr</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">iph</span><span class="o">-&gt;</span><span class="n">daddr</span><span class="p">));</span>
-            
+
             <span class="k">if</span> <span class="p">(</span><span class="n">iph</span><span class="o">-&gt;</span><span class="n">protocol</span> <span class="o">==</span> <span class="n">IPPROTO_TCP</span><span class="p">)</span> <span class="p">{</span>
                 <span class="c1">// 解析 TCP 头部</span>
                 <span class="k">struct</span> <span class="n">tcphdr</span> <span class="o">*</span><span class="n">tcph</span> <span class="o">=</span> <span class="p">(</span><span class="k">struct</span> <span class="n">tcphdr</span><span class="o">*</span><span class="p">)(</span><span class="n">buffer</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">ethhdr</span><span class="p">)</span> <span class="o">+</span> <span class="n">iph</span><span class="o">-&gt;</span><span class="n">ihl</span><span class="o">*</span><span class="mi">4</span><span class="p">);</span>
                 <span class="n">printf</span><span class="p">(</span><span class="s">"TCP Packet: Port %d -&gt; %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">ntohs</span><span class="p">(</span><span class="n">tcph</span><span class="o">-&gt;</span><span class="n">source</span><span class="p">),</span> <span class="n">ntohs</span><span class="p">(</span><span class="n">tcph</span><span class="o">-&gt;</span><span class="n">dest</span><span class="p">));</span>
-                
+
                 <span class="c1">// 进行流量统计、异常检测等</span>
                 <span class="n">analyze_tcp_packet</span><span class="p">(</span><span class="n">iph</span><span class="p">,</span> <span class="n">tcph</span><span class="p">);</span>
             <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">}</span>
-    
+
     <span class="n">close</span><span class="p">(</span><span class="n">sock_fd</span><span class="p">);</span>
     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
@@ -586,22 +586,22 @@ iptables <span class="nt">-A</span> INPUT <span class="nt">-p</span> tcp <span c
 <span class="p">{</span>
     <span class="k">struct</span> <span class="n">iphdr</span> <span class="o">*</span><span class="n">iph</span> <span class="o">=</span> <span class="n">ip_hdr</span><span class="p">(</span><span class="n">skb</span><span class="p">);</span>
     <span class="k">struct</span> <span class="n">tcphdr</span> <span class="o">*</span><span class="n">tcph</span><span class="p">;</span>
-    
+
     <span class="k">if</span> <span class="p">(</span><span class="n">iph</span><span class="o">-&gt;</span><span class="n">protocol</span> <span class="o">!=</span> <span class="n">IPPROTO_TCP</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">NF_ACCEPT</span><span class="p">;</span>
-    
+
     <span class="n">tcph</span> <span class="o">=</span> <span class="n">tcp_hdr</span><span class="p">(</span><span class="n">skb</span><span class="p">);</span>
-    
+
     <span class="c1">// 检查是否为 SYN 包</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">tcph</span><span class="o">-&gt;</span><span class="n">syn</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">tcph</span><span class="o">-&gt;</span><span class="n">ack</span><span class="p">)</span> <span class="p">{</span>
         <span class="kt">int</span> <span class="n">hash</span> <span class="o">=</span> <span class="n">iph</span><span class="o">-&gt;</span><span class="n">saddr</span> <span class="o">%</span> <span class="n">SYN_TABLE_SIZE</span><span class="p">;</span>
         <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">now</span> <span class="o">=</span> <span class="n">jiffies</span><span class="p">;</span>
-        
+
         <span class="c1">// 检查频率</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">syn_table</span><span class="p">[</span><span class="n">hash</span><span class="p">].</span><span class="n">src_ip</span> <span class="o">==</span> <span class="n">iph</span><span class="o">-&gt;</span><span class="n">saddr</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">time_before</span><span class="p">(</span><span class="n">now</span><span class="p">,</span> <span class="n">syn_table</span><span class="p">[</span><span class="n">hash</span><span class="p">].</span><span class="n">timestamp</span> <span class="o">+</span> <span class="n">HZ</span><span class="p">))</span> <span class="p">{</span>
                 <span class="n">syn_table</span><span class="p">[</span><span class="n">hash</span><span class="p">].</span><span class="n">count</span><span class="o">++</span><span class="p">;</span>
-                
+
                 <span class="c1">// 超过阈值，丢弃包</span>
                 <span class="k">if</span> <span class="p">(</span><span class="n">syn_table</span><span class="p">[</span><span class="n">hash</span><span class="p">].</span><span class="n">count</span> <span class="o">&gt;</span> <span class="n">SYN_THRESHOLD</span><span class="p">)</span> <span class="p">{</span>
                     <span class="n">printk</span><span class="p">(</span><span class="n">KERN_INFO</span> <span class="s">"SYN flood detected from %pI4</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">iph</span><span class="o">-&gt;</span><span class="n">saddr</span><span class="p">);</span>
@@ -619,7 +619,7 @@ iptables <span class="nt">-A</span> INPUT <span class="nt">-p</span> tcp <span c
             <span class="n">syn_table</span><span class="p">[</span><span class="n">hash</span><span class="p">].</span><span class="n">timestamp</span> <span class="o">=</span> <span class="n">now</span><span class="p">;</span>
         <span class="p">}</span>
     <span class="p">}</span>
-    
+
     <span class="k">return</span> <span class="n">NF_ACCEPT</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div></div> <h3 id="流量整形与-qos"><strong>流量整形与 QoS</strong></h3> <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 使用 tc (traffic control) 配置 QoS</span>
@@ -669,7 +669,7 @@ sysctl <span class="nt">-p</span>
 
 <span class="c"># 查看 TCP 连接状态</span>
 <span class="nb">cat</span> /proc/net/tcp
-</code></pre></div></div> <hr> <h2 id="7-总结与最佳实践">7. 总结与最佳实践</h2> <h3 id="关键知识点回顾"><strong>关键知识点回顾</strong></h3> <ol> <li> <strong>网络包处理是多层协作的结果</strong> <ul> <li>硬件层：物理信号转换和基础过滤</li> <li>驱动层：中断处理和 NAPI 轮询</li> <li>协议栈：分层解析和路由决策</li> <li>Socket层：缓冲管理和进程通信</li> </ul> </li> <li> <strong>性能优化技术多样化</strong> <ul> <li>零拷贝技术减少数据拷贝开销</li> <li>eBPF/XDP 实现可编程的包处理</li> <li>DPDK 提供用户空间的高性能方案</li> </ul> </li> <li> <strong>安全防护不可忽视</strong> <ul> <li>DDoS 防护需要在多个层次实施</li> <li>包过滤和防火墙是基础安全措施</li> <li>流量整形有助于服务质量保障</li> </ul> </li> </ol> <h3 id="编程最佳实践"><strong>编程最佳实践</strong></h3> <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 高效的网络编程建议</span>
+</code></pre></div></div> <hr> <h2 id="7-总结与最佳实践">7. 总结与最佳实践</h2> <h3 id="关键知识点回顾"><strong>关键知识点回顾</strong></h3> <ol> <li> <p><strong>网络包处理是多层协作的结果</strong></p> <ul> <li>硬件层：物理信号转换和基础过滤</li> <li>驱动层：中断处理和 NAPI 轮询</li> <li>协议栈：分层解析和路由决策</li> <li>Socket层：缓冲管理和进程通信</li> </ul> </li> <li> <p><strong>性能优化技术多样化</strong></p> <ul> <li>零拷贝技术减少数据拷贝开销</li> <li>eBPF/XDP 实现可编程的包处理</li> <li>DPDK 提供用户空间的高性能方案</li> </ul> </li> <li> <p><strong>安全防护不可忽视</strong></p> <ul> <li>DDoS 防护需要在多个层次实施</li> <li>包过滤和防火墙是基础安全措施</li> <li>流量整形有助于服务质量保障</li> </ul> </li> </ol> <h3 id="编程最佳实践"><strong>编程最佳实践</strong></h3> <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 高效的网络编程建议</span>
 
 <span class="c1">// 1. 使用合适的 I/O 多路复用机制</span>
 <span class="cp">#ifdef __linux__

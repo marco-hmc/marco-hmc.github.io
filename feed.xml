@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="cn"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://marco-hmc.github.io/feed.xml" rel="self" type="application/atom+xml"/><link href="https://marco-hmc.github.io/" rel="alternate" type="text/html" hreflang="cn"/><updated>2025-09-15T14:57:32+00:00</updated><id>https://marco-hmc.github.io/feed.xml</id><title type="html">Marco’s blog</title><subtitle>A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design. </subtitle><entry><title type="html">（一）C++对象内存模型那些事儿：基本概念</title><link href="https://marco-hmc.github.io/blog/2025/0_cppMemModel.md/" rel="alternate" type="text/html" title="（一）C++对象内存模型那些事儿：基本概念"/><published>2025-09-15T00:00:00+00:00</published><updated>2025-09-15T00:00:00+00:00</updated><id>https://marco-hmc.github.io/blog/2025/0_cppMemModel.md</id><content type="html" xml:base="https://marco-hmc.github.io/blog/2025/0_cppMemModel.md/"><![CDATA[<h2 id="一c对象内存模型那些事儿基本概念">（一）C++对象内存模型那些事儿：基本概念</h2> <h3 id="0-引言为什么需要对象">0. 引言：为什么需要对象？</h3> <p>在 C/C++的发展历程中，逐渐形成了三种主要的编程范式，每种范式都是为了解决特定的问题：</p> <h4 id="面向过程编程">面向过程编程</h4> <p>面向过程编程以 C 语言为代表，程序被看作是一系列函数的集合，强调执行的过程和步骤。数据和操作是分离的，最多通过<code class="language-plaintext highlighter-rouge">struct</code>封装一些成员变量。</p> <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="cn"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://marco-hmc.github.io/feed.xml" rel="self" type="application/atom+xml"/><link href="https://marco-hmc.github.io/" rel="alternate" type="text/html" hreflang="cn"/><updated>2025-09-15T15:31:39+00:00</updated><id>https://marco-hmc.github.io/feed.xml</id><title type="html">Marco’s blog</title><subtitle>A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design. </subtitle><entry><title type="html">（一）C++对象内存模型那些事儿：基本概念</title><link href="https://marco-hmc.github.io/blog/2025/0_cppMemModel.md/" rel="alternate" type="text/html" title="（一）C++对象内存模型那些事儿：基本概念"/><published>2025-09-15T00:00:00+00:00</published><updated>2025-09-15T00:00:00+00:00</updated><id>https://marco-hmc.github.io/blog/2025/0_cppMemModel.md</id><content type="html" xml:base="https://marco-hmc.github.io/blog/2025/0_cppMemModel.md/"><![CDATA[<h2 id="一c对象内存模型那些事儿基本概念">（一）C++对象内存模型那些事儿：基本概念</h2> <h3 id="0-引言为什么需要对象">0. 引言：为什么需要对象？</h3> <p>在 C/C++的发展历程中，逐渐形成了三种主要的编程范式，每种范式都是为了解决特定的问题：</p> <h4 id="面向过程编程">面向过程编程</h4> <p>面向过程编程以 C 语言为代表，程序被看作是一系列函数的集合，强调执行的过程和步骤。数据和操作是分离的，最多通过<code class="language-plaintext highlighter-rouge">struct</code>封装一些成员变量。</p> <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
 </span>
 <span class="kt">int</span> <span class="nf">add</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span>
@@ -1983,8 +1983,8 @@ Shape::vtable    Circle::vtable
 <span class="p">}</span>
 
 <span class="c1">// C++17: nodiscard 属性</span>
-<span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="kt">int</span> <span class="nf">calculate</span><span class="p">()</span> <span class="p">{</span> 
-    <span class="k">return</span> <span class="mi">42</span><span class="p">;</span> 
+<span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="kt">int</span> <span class="nf">calculate</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="mi">42</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="c1">// C++17: maybe_unused 属性</span>
@@ -2013,27 +2013,27 @@ Shape::vtable    Circle::vtable
 
 <span class="k">struct</span> <span class="nc">Foo</span> <span class="p">{</span>
     <span class="c1">// 左值引用版本：返回拷贝，保持原对象不变</span>
-    <span class="n">Bar</span> <span class="n">getBar</span><span class="p">()</span> <span class="o">&amp;</span> <span class="p">{</span> 
+    <span class="n">Bar</span> <span class="n">getBar</span><span class="p">()</span> <span class="o">&amp;</span> <span class="p">{</span>
         <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"lvalue version</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
-        <span class="k">return</span> <span class="n">bar</span><span class="p">;</span> 
+        <span class="k">return</span> <span class="n">bar</span><span class="p">;</span>
     <span class="p">}</span>
-    
+
     <span class="c1">// const 左值引用版本</span>
-    <span class="n">Bar</span> <span class="n">getBar</span><span class="p">()</span> <span class="k">const</span> <span class="o">&amp;</span> <span class="p">{</span> 
+    <span class="n">Bar</span> <span class="n">getBar</span><span class="p">()</span> <span class="k">const</span> <span class="o">&amp;</span> <span class="p">{</span>
         <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"const lvalue version</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
-        <span class="k">return</span> <span class="n">bar</span><span class="p">;</span> 
+        <span class="k">return</span> <span class="n">bar</span><span class="p">;</span>
     <span class="p">}</span>
-    
+
     <span class="c1">// 右值引用版本：可以移动，因为对象即将销毁</span>
-    <span class="n">Bar</span> <span class="n">getBar</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="p">{</span> 
+    <span class="n">Bar</span> <span class="n">getBar</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="p">{</span>
         <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"rvalue version</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
-        <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">bar</span><span class="p">);</span> 
+        <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">bar</span><span class="p">);</span>
     <span class="p">}</span>
-    
+
     <span class="c1">// const 右值引用版本</span>
-    <span class="n">Bar</span> <span class="n">getBar</span><span class="p">()</span> <span class="k">const</span> <span class="o">&amp;&amp;</span> <span class="p">{</span> 
+    <span class="n">Bar</span> <span class="n">getBar</span><span class="p">()</span> <span class="k">const</span> <span class="o">&amp;&amp;</span> <span class="p">{</span>
         <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"const rvalue version</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
-        <span class="k">return</span> <span class="n">bar</span><span class="p">;</span> 
+        <span class="k">return</span> <span class="n">bar</span><span class="p">;</span>
     <span class="p">}</span>
 
 <span class="k">private</span><span class="o">:</span>
@@ -2043,10 +2043,10 @@ Shape::vtable    Circle::vtable
 <span class="kt">void</span> <span class="nf">testRefQualified</span><span class="p">()</span> <span class="p">{</span>
     <span class="n">Foo</span> <span class="n">foo</span><span class="p">{};</span>
     <span class="n">Bar</span> <span class="n">bar1</span> <span class="o">=</span> <span class="n">foo</span><span class="p">.</span><span class="n">getBar</span><span class="p">();</span>        <span class="c1">// 调用 &amp; 版本</span>
-    
+
     <span class="k">const</span> <span class="n">Foo</span> <span class="n">cfoo</span><span class="p">{};</span>
     <span class="n">Bar</span> <span class="n">bar2</span> <span class="o">=</span> <span class="n">cfoo</span><span class="p">.</span><span class="n">getBar</span><span class="p">();</span>       <span class="c1">// 调用 const &amp; 版本</span>
-    
+
     <span class="n">Bar</span> <span class="n">bar3</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">{}.</span><span class="n">getBar</span><span class="p">();</span>      <span class="c1">// 调用 &amp;&amp; 版本</span>
     <span class="n">Bar</span> <span class="n">bar4</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">foo</span><span class="p">).</span><span class="n">getBar</span><span class="p">();</span> <span class="c1">// 调用 &amp;&amp; 版本</span>
     <span class="n">Bar</span> <span class="n">bar5</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">cfoo</span><span class="p">).</span><span class="n">getBar</span><span class="p">();</span> <span class="c1">// 调用 const &amp;&amp; 版本</span>
@@ -2058,11 +2058,11 @@ Shape::vtable    Circle::vtable
 <span class="c1">// 基本用法</span>
 <span class="kt">void</span> <span class="nf">basicPlacementNew</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">alignas</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">)</span> <span class="kt">char</span> <span class="n">buffer</span><span class="p">[</span><span class="k">sizeof</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">)];</span>
-    
+
     <span class="c1">// 在指定位置构造对象</span>
     <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">*</span> <span class="n">str</span> <span class="o">=</span> <span class="k">new</span><span class="p">(</span><span class="n">buffer</span><span class="p">)</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="s">"Hello, Placement New!"</span><span class="p">);</span>
     <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="o">*</span><span class="n">str</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-    
+
     <span class="c1">// 手动调用析构函数</span>
     <span class="n">str</span><span class="o">-&gt;~</span><span class="n">string</span><span class="p">();</span>
 <span class="p">}</span>
@@ -2072,18 +2072,18 @@ Shape::vtable    Circle::vtable
     <span class="kt">int</span> <span class="n">intValue</span><span class="p">;</span>
     <span class="kt">float</span> <span class="n">floatValue</span><span class="p">;</span>
     <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">strValue</span><span class="p">;</span>
-    
+
     <span class="n">ComplexData</span><span class="p">()</span> <span class="p">{}</span>
     <span class="o">~</span><span class="n">ComplexData</span><span class="p">()</span> <span class="p">{}</span>
 <span class="p">};</span>
 
 <span class="kt">void</span> <span class="nf">unionExample</span><span class="p">()</span> <span class="p">{</span>
     <span class="n">ComplexData</span> <span class="n">data</span><span class="p">;</span>
-    
+
     <span class="c1">// 在联合体中构造 string</span>
     <span class="k">new</span><span class="p">(</span><span class="o">&amp;</span><span class="n">data</span><span class="p">.</span><span class="n">strValue</span><span class="p">)</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="s">"Hello, Complex Union"</span><span class="p">);</span>
     <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"strValue: "</span> <span class="o">&lt;&lt;</span> <span class="n">data</span><span class="p">.</span><span class="n">strValue</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-    
+
     <span class="c1">// 切换到 int，需要先析构 string</span>
     <span class="n">data</span><span class="p">.</span><span class="n">strValue</span><span class="p">.</span><span class="o">~</span><span class="n">string</span><span class="p">();</span>
     <span class="n">data</span><span class="p">.</span><span class="n">intValue</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
@@ -2095,7 +2095,7 @@ Shape::vtable    Circle::vtable
 <span class="k">class</span> <span class="nc">SimplePool</span> <span class="p">{</span>
     <span class="k">alignas</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="kt">char</span> <span class="n">storage</span><span class="p">[</span><span class="n">N</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">T</span><span class="p">)];</span>
     <span class="kt">bool</span> <span class="n">used</span><span class="p">[</span><span class="n">N</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="nb">false</span><span class="p">};</span>
-    
+
 <span class="k">public</span><span class="o">:</span>
     <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="o">...</span> <span class="nc">Args</span><span class="p">&gt;</span>
     <span class="n">T</span><span class="o">*</span> <span class="nf">construct</span><span class="p">(</span><span class="n">Args</span><span class="o">&amp;&amp;</span><span class="p">...</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
@@ -2107,7 +2107,7 @@ Shape::vtable    Circle::vtable
         <span class="p">}</span>
         <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
     <span class="p">}</span>
-    
+
     <span class="kt">void</span> <span class="nf">destroy</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">ptr</span><span class="p">)</span> <span class="p">{</span>
         <span class="kt">size_t</span> <span class="n">index</span> <span class="o">=</span> <span class="p">(</span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">ptr</span><span class="p">)</span> <span class="o">-</span> <span class="n">storage</span><span class="p">)</span> <span class="o">/</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">T</span><span class="p">);</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">&lt;</span> <span class="n">N</span> <span class="o">&amp;&amp;</span> <span class="n">used</span><span class="p">[</span><span class="n">index</span><span class="p">])</span> <span class="p">{</span>
@@ -2154,7 +2154,7 @@ Shape::vtable    Circle::vtable
     在模板元编程中，尾置返回类型常用于结合`decltype`进行复杂的类型推导：
 */</span>
 <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">Container</span><span class="p">&gt;</span>
-<span class="k">auto</span> <span class="nf">getElement</span><span class="p">(</span><span class="n">Container</span><span class="o">&amp;</span> <span class="n">c</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">index</span><span class="p">)</span> 
+<span class="k">auto</span> <span class="nf">getElement</span><span class="p">(</span><span class="n">Container</span><span class="o">&amp;</span> <span class="n">c</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">index</span><span class="p">)</span>
     <span class="o">-&gt;</span> <span class="k">decltype</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="n">index</span><span class="p">])</span> <span class="p">{</span>
     <span class="k">return</span> <span class="n">c</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
 <span class="p">}</span>
@@ -2177,12 +2177,12 @@ Shape::vtable    Circle::vtable
         <span class="kt">double</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span>
         <span class="n">Point</span><span class="p">(</span><span class="kt">double</span> <span class="n">x</span><span class="p">,</span> <span class="kt">double</span> <span class="n">y</span><span class="p">)</span> <span class="o">:</span> <span class="n">x</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">y</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="p">{}</span>
     <span class="p">};</span>
-    
+
     <span class="c1">// 在 Point 所在命名空间定义相关函数</span>
     <span class="kt">void</span> <span class="nf">print</span><span class="p">(</span><span class="k">const</span> <span class="n">Point</span><span class="o">&amp;</span> <span class="n">p</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Point("</span> <span class="o">&lt;&lt;</span> <span class="n">p</span><span class="p">.</span><span class="n">x</span> <span class="o">&lt;&lt;</span> <span class="s">", "</span> <span class="o">&lt;&lt;</span> <span class="n">p</span><span class="p">.</span><span class="n">y</span> <span class="o">&lt;&lt;</span> <span class="s">")</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
     <span class="p">}</span>
-    
+
     <span class="n">Point</span> <span class="k">operator</span><span class="o">+</span><span class="p">(</span><span class="k">const</span> <span class="n">Point</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">,</span> <span class="k">const</span> <span class="n">Point</span><span class="o">&amp;</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">b</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">b</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
     <span class="p">}</span>
@@ -2207,7 +2207,7 @@ Shape::vtable    Circle::vtable
         <span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
         <span class="n">MyType</span><span class="p">(</span><span class="kt">int</span> <span class="n">v</span><span class="p">)</span> <span class="o">:</span> <span class="n">value</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="p">{}</span>
     <span class="p">};</span>
-    
+
     <span class="kt">void</span> <span class="nf">swap</span><span class="p">(</span><span class="n">MyType</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">,</span> <span class="n">MyType</span><span class="o">&amp;</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Custom swap called</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
         <span class="n">std</span><span class="o">::</span><span class="n">swap</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">value</span><span class="p">,</span> <span class="n">b</span><span class="p">.</span><span class="n">value</span><span class="p">);</span>
@@ -2223,12 +2223,12 @@ Shape::vtable    Circle::vtable
 <span class="kt">void</span> <span class="nf">testADL</span><span class="p">()</span> <span class="p">{</span>
     <span class="n">Library</span><span class="o">::</span><span class="n">Point</span> <span class="n">p1</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">);</span>
     <span class="n">Library</span><span class="o">::</span><span class="n">Point</span> <span class="n">p2</span><span class="p">(</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">);</span>
-    
+
     <span class="n">debugPrint</span><span class="p">(</span><span class="n">p1</span><span class="p">);</span>  <span class="c1">// 调用 Library::print</span>
-    
+
     <span class="k">auto</span> <span class="n">p3</span> <span class="o">=</span> <span class="n">p1</span> <span class="o">+</span> <span class="n">p2</span><span class="p">;</span>  <span class="c1">// ADL 查找 operator+</span>
     <span class="n">debugPrint</span><span class="p">(</span><span class="n">p3</span><span class="p">);</span>
-    
+
     <span class="n">MySpace</span><span class="o">::</span><span class="n">MyType</span> <span class="n">obj1</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
     <span class="n">MySpace</span><span class="o">::</span><span class="n">MyType</span> <span class="n">obj2</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
     <span class="n">genericSwap</span><span class="p">(</span><span class="n">obj1</span><span class="p">,</span> <span class="n">obj2</span><span class="p">);</span>  <span class="c1">// 调用 MySpace::swap</span>
@@ -2242,30 +2242,30 @@ Shape::vtable    Circle::vtable
 <span class="kt">void</span> <span class="nf">basicVectorization</span><span class="p">()</span> <span class="p">{</span>
     <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">data</span><span class="p">(</span><span class="mi">1000000</span><span class="p">);</span>
     <span class="n">std</span><span class="o">::</span><span class="n">iota</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">data</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="mi">1</span><span class="p">);</span>
-    
+
     <span class="c1">// 编译器可能向量化的循环</span>
     <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">data</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">sum</span> <span class="o">+=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>  <span class="c1">// 可能被向量化为 4 个元素并行计算</span>
     <span class="p">}</span>
-    
+
     <span class="c1">// 更好的方式：使用标准算法</span>
     <span class="kt">int</span> <span class="n">sum2</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">accumulate</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">data</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="mi">0</span><span class="p">);</span>
-    
+
     <span class="c1">// C++17 并行算法</span>
-    <span class="kt">int</span> <span class="n">sum3</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">reduce</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">execution</span><span class="o">::</span><span class="n">par_unseq</span><span class="p">,</span> 
+    <span class="kt">int</span> <span class="n">sum3</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">reduce</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">execution</span><span class="o">::</span><span class="n">par_unseq</span><span class="p">,</span>
                           <span class="n">data</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">data</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="mi">0</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="c1">// 2. 向量化友好的代码</span>
 <span class="kt">void</span> <span class="nf">vectorFriendlyCode</span><span class="p">()</span> <span class="p">{</span>
     <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">a</span><span class="p">(</span><span class="mi">1000</span><span class="p">),</span> <span class="n">b</span><span class="p">(</span><span class="mi">1000</span><span class="p">),</span> <span class="n">c</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
-    
+
     <span class="c1">// 向量化友好：连续内存访问</span>
     <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">a</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>  <span class="c1">// 编译器容易向量化</span>
     <span class="p">}</span>
-    
+
     <span class="c1">// 更好的方式：使用标准算法</span>
     <span class="n">std</span><span class="o">::</span><span class="n">transform</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">execution</span><span class="o">::</span><span class="n">par_unseq</span><span class="p">,</span>
                    <span class="n">a</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">a</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span>
@@ -2277,13 +2277,13 @@ Shape::vtable    Circle::vtable
 <span class="kt">void</span> <span class="nf">compilerHints</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">constexpr</span> <span class="kt">size_t</span> <span class="n">N</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">;</span>
     <span class="kt">float</span> <span class="n">a</span><span class="p">[</span><span class="n">N</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="n">N</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="n">N</span><span class="p">];</span>
-    
+
     <span class="c1">// GCC/Clang 向量化提示</span>
     <span class="cp">#pragma GCC ivdep
 </span>    <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mf">1.0</span><span class="n">f</span><span class="p">;</span>
     <span class="p">}</span>
-    
+
     <span class="c1">// 显式 SIMD（需要编译器支持）</span>
     <span class="cp">#pragma omp simd
 </span>    <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
@@ -2311,29 +2311,29 @@ Shape::vtable    Circle::vtable
     <span class="p">{</span>
         <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
         <span class="kt">double</span> <span class="n">d</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>  <span class="c1">// 数值转换</span>
-        
+
         <span class="c1">// 指针转换（上行转换总是安全的）</span>
         <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">Derived</span><span class="o">&gt;</span> <span class="n">derived</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="n">Derived</span><span class="o">&gt;</span><span class="p">();</span>
         <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">Base</span><span class="o">&gt;</span> <span class="n">base</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">derived</span><span class="p">);</span>  <span class="c1">// 隐式转换</span>
-        
+
         <span class="c1">// 下行转换（需要程序员保证安全性）</span>
         <span class="n">Base</span><span class="o">*</span> <span class="n">basePtr</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Derived</span><span class="p">();</span>
         <span class="n">Derived</span><span class="o">*</span> <span class="n">derivedPtr</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="n">Derived</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">basePtr</span><span class="p">);</span>  <span class="c1">// 不安全但快速</span>
         <span class="n">derivedPtr</span><span class="o">-&gt;</span><span class="n">derivedMethod</span><span class="p">();</span>
         <span class="k">delete</span> <span class="n">basePtr</span><span class="p">;</span>
     <span class="p">}</span>
-    
+
     <span class="c1">// 2. dynamic_cast：运行时类型检查</span>
     <span class="p">{</span>
         <span class="n">Base</span><span class="o">*</span> <span class="n">basePtr</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Derived</span><span class="p">();</span>
-        
+
         <span class="c1">// 安全的下行转换</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">Derived</span><span class="o">*</span> <span class="n">derivedPtr</span> <span class="o">=</span> <span class="k">dynamic_cast</span><span class="o">&lt;</span><span class="n">Derived</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">basePtr</span><span class="p">))</span> <span class="p">{</span>
             <span class="n">derivedPtr</span><span class="o">-&gt;</span><span class="n">derivedMethod</span><span class="p">();</span>  <span class="c1">// 转换成功</span>
         <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
             <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Cast failed</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
         <span class="p">}</span>
-        
+
         <span class="c1">// 引用版本（失败时抛异常）</span>
         <span class="k">try</span> <span class="p">{</span>
             <span class="n">Base</span><span class="o">&amp;</span> <span class="n">baseRef</span> <span class="o">=</span> <span class="o">*</span><span class="n">basePtr</span><span class="p">;</span>
@@ -2342,16 +2342,16 @@ Shape::vtable    Circle::vtable
         <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">bad_cast</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
             <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Cast failed: "</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
         <span class="p">}</span>
-        
+
         <span class="k">delete</span> <span class="n">basePtr</span><span class="p">;</span>
     <span class="p">}</span>
-    
+
     <span class="c1">// 3. const_cast：修改 const/volatile 属性</span>
     <span class="p">{</span>
         <span class="k">const</span> <span class="kt">int</span> <span class="n">ci</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
         <span class="kt">int</span><span class="o">&amp;</span> <span class="n">modifiable</span> <span class="o">=</span> <span class="k">const_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&amp;&gt;</span><span class="p">(</span><span class="n">ci</span><span class="p">);</span>
         <span class="c1">// modifiable = 100;  // 未定义行为！不要修改原本是 const 的对象</span>
-        
+
         <span class="c1">// 正确用法：移除指向非 const 对象的 const 指针的 const</span>
         <span class="kt">int</span> <span class="n">original</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
         <span class="k">const</span> <span class="kt">int</span><span class="o">*</span> <span class="n">cptr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">original</span><span class="p">;</span>
@@ -2359,11 +2359,11 @@ Shape::vtable    Circle::vtable
         <span class="o">*</span><span class="n">ptr</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>  <span class="c1">// 这是安全的，因为原始对象不是 const</span>
         <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Modified: "</span> <span class="o">&lt;&lt;</span> <span class="n">original</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
     <span class="p">}</span>
-    
+
     <span class="c1">// 4. reinterpret_cast：低级别重新解释</span>
     <span class="p">{</span>
         <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mh">0x12345678</span><span class="p">;</span>
-        
+
         <span class="c1">// 将整数重新解释为字节数组</span>
         <span class="kt">char</span><span class="o">*</span> <span class="n">bytes</span> <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">*&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i</span><span class="p">);</span>
         <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Bytes: "</span><span class="p">;</span>
@@ -2371,7 +2371,7 @@ Shape::vtable    Circle::vtable
             <span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">"%02x "</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">char</span><span class="o">&gt;</span><span class="p">(</span><span class="n">bytes</span><span class="p">[</span><span class="n">j</span><span class="p">]));</span>
         <span class="p">}</span>
         <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
-        
+
         <span class="c1">// 指针与整数之间的转换</span>
         <span class="kt">void</span><span class="o">*</span> <span class="n">vptr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">i</span><span class="p">;</span>
         <span class="kt">uintptr_t</span> <span class="n">addr</span> <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">uintptr_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">vptr</span><span class="p">);</span>
@@ -2385,11 +2385,11 @@ Shape::vtable    Circle::vtable
 <span class="kt">void</span> <span class="nf">referenceImplementation</span><span class="p">()</span> <span class="p">{</span>
     <span class="kt">int</span> <span class="n">value</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
     <span class="kt">int</span><span class="o">&amp;</span> <span class="n">ref</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>  <span class="c1">// 编译器通常实现为 int* const ref = &amp;value;</span>
-    
+
     <span class="c1">// 从汇编角度看，以下两种访问方式不同：</span>
     <span class="n">value</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>       <span class="c1">// 直接内存访问：mov DWORD PTR [rbp-4], 100</span>
     <span class="n">ref</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>         <span class="c1">// 间接访问：mov rax, [rbp-8]; mov DWORD PTR [rax], 200</span>
-    
+
     <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"value: "</span> <span class="o">&lt;&lt;</span> <span class="n">value</span> <span class="o">&lt;&lt;</span> <span class="s">", ref: "</span> <span class="o">&lt;&lt;</span> <span class="n">ref</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
 <span class="p">}</span>
 
@@ -2439,22 +2439,22 @@ Shape::vtable    Circle::vtable
 <span class="c1">// 模拟编译器生成的访问代码</span>
 <span class="kt">void</span> <span class="nf">demonstrateStructLayout</span><span class="p">()</span> <span class="p">{</span>
     <span class="n">ComplexStruct</span> <span class="n">obj</span><span class="p">;</span>
-    
+
     <span class="c1">// 编译器生成类似这样的偏移计算：</span>
     <span class="c1">// obj.c  -&gt; base_address + 0</span>
     <span class="c1">// obj.i  -&gt; base_address + 4</span>
     <span class="c1">// obj.d  -&gt; base_address + 8</span>
     <span class="c1">// obj.c2 -&gt; base_address + 16</span>
-    
+
     <span class="kt">char</span><span class="o">*</span> <span class="n">base</span> <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">*&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">obj</span><span class="p">);</span>
-    
+
     <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"ComplexStruct layout:</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
     <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Total size: "</span> <span class="o">&lt;&lt;</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">ComplexStruct</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
     <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"c offset: "</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">*&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">obj</span><span class="p">.</span><span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="n">base</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
     <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"i offset: "</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">*&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">obj</span><span class="p">.</span><span class="n">i</span><span class="p">)</span> <span class="o">-</span> <span class="n">base</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
     <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"d offset: "</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">*&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">obj</span><span class="p">.</span><span class="n">d</span><span class="p">)</span> <span class="o">-</span> <span class="n">base</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
     <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"c2 offset: "</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">*&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">obj</span><span class="p">.</span><span class="n">c2</span><span class="p">)</span> <span class="o">-</span> <span class="n">base</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
-    
+
     <span class="n">PackedStruct</span> <span class="n">packed</span><span class="p">;</span>
     <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n</span><span class="s">PackedStruct size: "</span> <span class="o">&lt;&lt;</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">PackedStruct</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
 <span class="p">}</span>
@@ -2465,7 +2465,7 @@ Shape::vtable    Circle::vtable
     <span class="k">virtual</span> <span class="kt">void</span> <span class="n">func1</span><span class="p">()</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Base::func1</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span> <span class="p">}</span>
     <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">func2</span><span class="p">()</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Base::func2</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span> <span class="p">}</span>
     <span class="k">virtual</span> <span class="o">~</span><span class="n">BaseWithVirtual</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
-    
+
 <span class="k">private</span><span class="o">:</span>
     <span class="kt">int</span> <span class="n">data</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
 <span class="p">};</span>
@@ -2474,7 +2474,7 @@ Shape::vtable    Circle::vtable
 <span class="nl">public:</span>
     <span class="kt">void</span> <span class="n">func1</span><span class="p">()</span> <span class="k">override</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Derived::func1</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span> <span class="p">}</span>
     <span class="kt">void</span> <span class="nf">func3</span><span class="p">()</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Derived::func3</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span> <span class="p">}</span>
-    
+
 <span class="k">private</span><span class="o">:</span>
     <span class="kt">double</span> <span class="n">extraData</span> <span class="o">=</span> <span class="mf">3.14</span><span class="p">;</span>
 <span class="p">};</span>
@@ -2482,12 +2482,12 @@ Shape::vtable    Circle::vtable
 <span class="kt">void</span> <span class="nf">demonstrateVTable</span><span class="p">()</span> <span class="p">{</span>
     <span class="c1">// 对象内存布局：[vptr][BaseWithVirtual::data][DerivedWithVirtual::extraData]</span>
     <span class="n">DerivedWithVirtual</span> <span class="n">obj</span><span class="p">;</span>
-    
+
     <span class="c1">// 获取 vptr（虚函数表指针）</span>
     <span class="kt">void</span><span class="o">**</span> <span class="n">vptr</span> <span class="o">=</span> <span class="o">*</span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">***&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">obj</span><span class="p">);</span>
     <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Object address: "</span> <span class="o">&lt;&lt;</span> <span class="o">&amp;</span><span class="n">obj</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
     <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"VTable address: "</span> <span class="o">&lt;&lt;</span> <span class="n">vptr</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
-    
+
     <span class="c1">// 通过基类指针调用虚函数</span>
     <span class="n">BaseWithVirtual</span><span class="o">*</span> <span class="n">basePtr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">obj</span><span class="p">;</span>
     <span class="n">basePtr</span><span class="o">-&gt;</span><span class="n">func1</span><span class="p">();</span>  <span class="c1">// 动态分发到 DerivedWithVirtual::func1</span>
@@ -2586,17 +2586,25 @@ Shape::vtable    Circle::vtable
 <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">idx</span> <span class="o">=</span> <span class="n">vec</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">idx</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">idx</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"===== </span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
 <span class="p">}</span>
-</code></pre></div></div> <ul> <li>inexplicit conversion ```c++ #include <iostream></iostream></li> </ul> <p>void print(char const *str) { std::cout « str; } void print(short num) { std::cout « num; }</p> <p>int main() { print(“abc”); print(0); print(‘A’); }</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-```c++
-// 带括号的会被看成左值表达式，被推出引用。
-#include &lt;iostream&gt;
+</code></pre></div></div> <ul> <li>inexplicit conversion</li> </ul> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="kt">void</span> <span class="nf">print</span><span class="p">(</span><span class="kt">char</span> <span class="k">const</span> <span class="o">*</span><span class="n">str</span><span class="p">)</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">str</span><span class="p">;</span> <span class="p">}</span>
+<span class="kt">void</span> <span class="nf">print</span><span class="p">(</span><span class="kt">short</span> <span class="n">num</span><span class="p">)</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">num</span><span class="p">;</span> <span class="p">}</span>
 
-int main() {
-    int a = 0;
-    decltype((a)) b = a;
-    b++;
-    std::cout &lt;&lt; a &lt;&lt; b;
-}
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">print</span><span class="p">(</span><span class="s">"abc"</span><span class="p">);</span>
+    <span class="n">print</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="n">print</span><span class="p">(</span><span class="sc">'A'</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 带括号的会被看成左值表达式，被推出引用。</span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">decltype</span><span class="p">((</span><span class="n">a</span><span class="p">))</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+    <span class="n">b</span><span class="o">++</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a</span> <span class="o">&lt;&lt;</span> <span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div></div>]]></content><author><name></name></author><category term="C++"/><category term="C++"/><summary type="html"><![CDATA[迈向 C++ 语言律师之路]]></summary></entry><entry><title type="html">二进制兼容和 ABI 兼容</title><link href="https://marco-hmc.github.io/blog/2025/1_binaryCompatbility.md/" rel="alternate" type="text/html" title="二进制兼容和 ABI 兼容"/><published>2025-09-15T00:00:00+00:00</published><updated>2025-09-15T00:00:00+00:00</updated><id>https://marco-hmc.github.io/blog/2025/1_binaryCompatbility.md</id><content type="html" xml:base="https://marco-hmc.github.io/blog/2025/1_binaryCompatbility.md/"><![CDATA[<h2 id="二进制兼容和-abi-兼容详解">二进制兼容和 ABI 兼容详解</h2> <h3 id="1-concepts">1. concepts</h3> <h4 id="11-什么是二进制兼容">1.1 什么是二进制兼容？</h4> <p><strong>二进制兼容</strong>是指在升级库文件时，不必<strong>重新编译</strong>使用此库的可执行文件或其他库文件，并且程序的功能不被破坏。</p> <p>简单来说：新版本的库能够直接替换旧版本的库，而无需重新编译依赖它的程序。</p> <h4 id="12-什么是-abi-兼容">1.2 什么是 ABI 兼容？</h4> <p><strong>ABI（Application Binary Interface，应用二进制接口）兼容性</strong>指的是在二进制级别上，程序或库的不同版本之间能够互操作的能力。</p> <p>ABI 兼容性确保以下方面的一致性：</p> <ol> <li><strong>函数和方法的签名</strong>：参数类型、数量和顺序保持一致</li> <li><strong>数据结构的布局</strong>：结构体和类的成员变量顺序和对齐方式保持一致</li> <li><strong>类的继承关系</strong>：基类和派生类的关系不变</li> <li><strong>虚函数表（vtable）</strong>：虚函数的顺序和数量不变</li> </ol> <h4 id="13-二进制兼容-vs-abi-兼容">1.3 二进制兼容 vs ABI 兼容</h4> <ul> <li><strong>ABI 兼容性</strong>：主要关注程序或库在二进制级别上的接口一致性</li> <li><strong>二进制兼容性</strong>：更广泛的概念，除了 ABI 兼容性，还包括： <ul> <li>操作系统和硬件平台兼容性</li> <li>编译器和链接器兼容性</li> <li>运行时环境兼容性</li> </ul> </li> </ul> <h3 id="2-二进制兼容的价值">2. 二进制兼容的价值</h3> <p>保持二进制兼容性的核心目标是确保软件更新和升级过程更加平滑和无缝：</p> <ul> <li> <p>用户层面</p> <ul> <li><strong>降低升级难度</strong>：用户升级时无需重新编译或修改配置</li> <li><strong>避免破坏性变更</strong>：防止功能中断或数据丢失</li> <li><strong>提高用户信任度</strong>：用户更愿意使用最新版本</li> </ul> </li> <li> <p>开发者层面</p> <ul> <li><strong>简化发布流程</strong>：无需为每个新版本重新构建所有旧版本二进制文件</li> <li><strong>降低维护成本</strong>：更轻松地维护多个版本</li> <li><strong>减少测试负担</strong>：减少回归测试的复杂性</li> </ul> </li> </ul> <h3 id="3-破坏二进制兼容的常见操作">3. 破坏二进制兼容的常见操作</h3> <h4 id="31-会破坏兼容性的操作">3.1 会破坏兼容性的操作</h4> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 原始版本</span>
 <span class="k">class</span> <span class="nc">MyClass</span> <span class="p">{</span>
 <span class="nl">public:</span>
@@ -2736,7 +2744,7 @@ int main() {
 <span class="n">Foo</span><span class="o">::~</span><span class="n">Foo</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>  <span class="c1">// 智能指针自动管理内存</span>
 <span class="n">Foo</span><span class="o">::</span><span class="n">Foo</span><span class="p">(</span><span class="n">Foo</span><span class="o">&amp;&amp;</span><span class="p">)</span> <span class="k">noexcept</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
 <span class="n">Foo</span><span class="o">&amp;</span> <span class="n">Foo</span><span class="o">::</span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">Foo</span><span class="o">&amp;&amp;</span><span class="p">)</span> <span class="k">noexcept</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
-</code></pre></div></div> <h3 id="5-实际场景中的兼容性考虑">5. 实际场景中的兼容性考虑</h3> <h4 id="51-静态库-vs-动态库">5.1 静态库 vs 动态库</h4> <ul> <li>静态库场景 <ul> <li><strong>兼容性意义</strong>：减少编译时间和简化维护</li> <li><strong>特点</strong>：所有代码在编译时链接到可执行文件中</li> <li><strong>更新方式</strong>：需要重新编译整个应用程序</li> </ul> </li> <li>动态库场景 <ul> <li><strong>兼容性意义</strong>：简化库的升级过程，<strong>尤为重要</strong></li> <li><strong>特点</strong>：运行时动态加载</li> <li><strong>更新方式</strong>：只需替换动态库文件（.dll、.so），无需重新编译应用程序</li> </ul> </li> </ul> <h4 id="52-stl-的-abi-兼容问题">5.2 STL 的 ABI 兼容问题</h4> <p>STL（标准模板库）的实现确实会针对不同的编译器和编译选项进行优化，这导致了不同编译器和编译器版本之间的实现细节可能有所不同。这些差异可能包括内存布局、对齐方式、函数内联、异常处理等方面。</p> <p>不同的编译选项（如优化级别、调试符号、C++标准等）可能导致不同的二进制布局。这意味着，如果你在库中使用 STL 容器作为参数，并且这个库需要在不同的编译环境下使用，可能会导致 ABI 不兼容，进而引发内存崩溃或未定义行为。</p> <p>使用接口隔离：通过定义稳定的接口和抽象层来隔离不同编译器实现的差异。避免跨 DLL 边界使用 STL 容器：尽量避免在 DLL 或共享库的边界上传递 STL 容器，或者确保所有相关组件都使用相同的编译器和编译选项。</p> <p>我在网上看到给出的例子是：VS2010 编的库在 VS2013 上使用就经常会出问题。然后 VS2015 开始进入了长期 ABI 兼容周期，到现在 VS2022 还是与 VS2015 保持 ABI 兼容的。这反而又导致很多优化会被拖延到下一个打破 ABI 的版本。</p> <p>STL 在不同编译器和版本间可能存在 ABI 不兼容：</p> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// ❌ 避免在 DLL 边界传递 STL 容器</span>
+</code></pre></div></div> <h3 id="5-实际场景中的兼容性考虑">5. 实际场景中的兼容性考虑</h3> <h4 id="51-静态库-vs-动态库">5.1 静态库 vs 动态库</h4> <ul> <li> <p>静态库场景</p> <ul> <li><strong>兼容性意义</strong>：减少编译时间和简化维护</li> <li><strong>特点</strong>：所有代码在编译时链接到可执行文件中</li> <li><strong>更新方式</strong>：需要重新编译整个应用程序</li> </ul> </li> <li> <p>动态库场景</p> <ul> <li><strong>兼容性意义</strong>：简化库的升级过程，<strong>尤为重要</strong></li> <li><strong>特点</strong>：运行时动态加载</li> <li><strong>更新方式</strong>：只需替换动态库文件（.dll、.so），无需重新编译应用程序</li> </ul> </li> </ul> <h4 id="52-stl-的-abi-兼容问题">5.2 STL 的 ABI 兼容问题</h4> <p>STL（标准模板库）的实现确实会针对不同的编译器和编译选项进行优化，这导致了不同编译器和编译器版本之间的实现细节可能有所不同。这些差异可能包括内存布局、对齐方式、函数内联、异常处理等方面。</p> <p>不同的编译选项（如优化级别、调试符号、C++标准等）可能导致不同的二进制布局。这意味着，如果你在库中使用 STL 容器作为参数，并且这个库需要在不同的编译环境下使用，可能会导致 ABI 不兼容，进而引发内存崩溃或未定义行为。</p> <p>使用接口隔离：通过定义稳定的接口和抽象层来隔离不同编译器实现的差异。避免跨 DLL 边界使用 STL 容器：尽量避免在 DLL 或共享库的边界上传递 STL 容器，或者确保所有相关组件都使用相同的编译器和编译选项。</p> <p>我在网上看到给出的例子是：VS2010 编的库在 VS2013 上使用就经常会出问题。然后 VS2015 开始进入了长期 ABI 兼容周期，到现在 VS2022 还是与 VS2015 保持 ABI 兼容的。这反而又导致很多优化会被拖延到下一个打破 ABI 的版本。</p> <p>STL 在不同编译器和版本间可能存在 ABI 不兼容：</p> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// ❌ 避免在 DLL 边界传递 STL 容器</span>
 <span class="kt">void</span> <span class="nf">library_function</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">data</span><span class="p">);</span>  <span class="c1">// 危险</span>
 
 <span class="c1">// ✅ 使用稳定的接口</span>
@@ -3341,18 +3349,18 @@ int main() {
 
 <span class="kt">void</span> <span class="nf">someFunction</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">throw</span> <span class="n">DerivedException</span><span class="p">();</span> 
+        <span class="k">throw</span> <span class="n">DerivedException</span><span class="p">();</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="nf">doSomething</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">try</span> <span class="p">{</span>
         <span class="n">someFunction</span><span class="p">();</span>
-    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">MyException</span><span class="o">&amp;</span> <span class="n">ex</span><span class="p">)</span> <span class="p">{</span> 
-        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="n">ex</span><span class="p">.</span><span class="n">what</span><span class="p">();</span> 
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">MyException</span><span class="o">&amp;</span> <span class="n">ex</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="n">ex</span><span class="p">.</span><span class="n">what</span><span class="p">();</span>
         <span class="c1">// 这里调用的是 DerivedException 的 what 函数</span>
-    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">MyException</span> <span class="n">ex</span><span class="p">)</span> <span class="p">{</span> 
-        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="n">ex</span><span class="p">.</span><span class="n">what</span><span class="p">();</span> 
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">MyException</span> <span class="n">ex</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="n">ex</span><span class="p">.</span><span class="n">what</span><span class="p">();</span>
         <span class="c1">// 这里调用的是 MyException 的 what 函数，而非 DerivedException 的</span>
     <span class="p">}</span>
 <span class="p">}</span>

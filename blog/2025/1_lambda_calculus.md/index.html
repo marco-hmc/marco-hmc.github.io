@@ -177,7 +177,7 @@ PRED = λn.λf.λx.n (λg.λh.h (g f)) (λu.x) (λu.u)
 </code></pre></div></div> <h3 id="5-lambda演算的计算能力">5. Lambda演算的计算能力</h3> <h4 id="51-图灵完备性">5.1 图灵完备性</h4> <p><strong>Church-Turing论题：</strong> Lambda演算与图灵机在计算能力上等价，都能表达所有可计算的函数。</p> <p><strong>证明要点：</strong></p> <ol> <li>任何图灵机都可以用Lambda表达式模拟</li> <li>任何Lambda表达式都可以在图灵机上计算</li> <li>递归函数、μ-递归函数都可以表示</li> </ol> <p><strong>实际意义：</strong> 这意味着Lambda演算是一个完整的编程语言理论基础。</p> <h4 id="52-计算复杂性">5.2 计算复杂性</h4> <p><strong>时间复杂性：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Church数字的加法复杂性
 ADD m n 需要 O(m) 步骤
 
-// 乘法复杂性  
+// 乘法复杂性
 MUL m n 需要 O(m×n) 步骤
 
 // 指数运算复杂性
@@ -203,28 +203,28 @@ TEST = λf.λx.f x x
 类型规则：
 Γ ⊢ x : τ     如果 (x:τ) ∈ Γ
 Γ,x:τ₁ ⊢ M : τ₂
-─────────────────── 
+───────────────────
 Γ ⊢ λx.M : τ₁ → τ₂
 
 Γ ⊢ M : τ₁ → τ₂    Γ ⊢ N : τ₁
 ──────────────────────────────
 Γ ⊢ M N : τ₂
-</code></pre></div></div> <p><strong>现代类型系统扩展：</strong></p> <ul> <li>多态类型（System F）</li> <li>依赖类型</li> <li>线性类型</li> <li>会话类型</li> </ul> <h4 id="63-编译器优化技术">6.3 编译器优化技术</h4> <p><strong>基于Lambda演算的优化：</strong></p> <ol> <li> <strong>Beta归约优化：</strong> <div class="language-cpp highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="c1">// 内联优化的理论基础</span>
+</code></pre></div></div> <p><strong>现代类型系统扩展：</strong></p> <ul> <li>多态类型（System F）</li> <li>依赖类型</li> <li>线性类型</li> <li>会话类型</li> </ul> <h4 id="63-编译器优化技术">6.3 编译器优化技术</h4> <p><strong>基于Lambda演算的优化：</strong></p> <ol> <li><strong>Beta归约优化：</strong></li> </ol> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 内联优化的理论基础</span>
 <span class="k">auto</span> <span class="n">f</span> <span class="o">=</span> <span class="p">[](</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="p">};</span>
 <span class="k">auto</span> <span class="n">result</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span>  <span class="c1">// 可以优化为: auto result = 42 + 1;</span>
-</code></pre></div> </div> </li> <li> <strong>Eta归约优化：</strong> <div class="language-cpp highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="c1">// 函数包装器消除</span>
+</code></pre></div></div> <ol> <li><strong>Eta归约优化：</strong></li> </ol> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 函数包装器消除</span>
 <span class="k">auto</span> <span class="n">wrapper</span> <span class="o">=</span> <span class="p">[](</span><span class="k">auto</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">);</span> <span class="p">};</span>
 <span class="c1">// 优化为直接使用 std::sin</span>
-</code></pre></div> </div> </li> <li> <strong>死代码消除：</strong> <div class="language-cpp highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="c1">// 基于Church编码的常量折叠</span>
+</code></pre></div></div> <ol> <li><strong>死代码消除：</strong></li> </ol> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 基于Church编码的常量折叠</span>
 <span class="k">auto</span> <span class="n">always_true</span> <span class="o">=</span> <span class="p">[](</span><span class="k">auto</span> <span class="n">x</span><span class="p">,</span> <span class="k">auto</span> <span class="n">y</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">x</span><span class="p">;</span> <span class="p">};</span>  <span class="c1">// K组合子</span>
 <span class="k">auto</span> <span class="n">result</span> <span class="o">=</span> <span class="n">always_true</span><span class="p">(</span><span class="mi">42</span><span class="p">,</span> <span class="n">expensive_computation</span><span class="p">());</span>
 <span class="c1">// expensive_computation() 可以被消除</span>
-</code></pre></div> </div> </li> </ol> <h3 id="7-实践练习与深入理解">7. 实践练习与深入理解</h3> <h4 id="71-手工归约练习">7.1 手工归约练习</h4> <p><strong>练习1：基础归约</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>计算：(λx.λy.x y) (λz.z) a
+</code></pre></div></div> <h3 id="7-实践练习与深入理解">7. 实践练习与深入理解</h3> <h4 id="71-手工归约练习">7.1 手工归约练习</h4> <p><strong>练习1：基础归约</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>计算：(λx.λy.x y) (λz.z) a
 
 步骤：
 1. (λx.λy.x y) (λz.z) a
 2. →β (λy.(λz.z) y) a
-3. →β (λz.z) a  
+3. →β (λz.z) a
 4. →β a
 </code></pre></div></div> <p><strong>练习2：复杂递归</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>使用Y组合子计算斐波那契数列：
 FIB = Y (λf.λn.IF (LEQ n 1) n (ADD (f (SUB n 1)) (f (SUB n 2))))
@@ -239,7 +239,7 @@ FIB = Y (λf.λn.IF (LEQ n 1) n (ADD (f (SUB n 1)) (f (SUB n 2))))
     <span class="p">};</span>
 <span class="p">};</span>
 
-<span class="c1">// Church数字1  </span>
+<span class="c1">// Church数字1</span>
 <span class="k">auto</span> <span class="n">one</span> <span class="o">=</span> <span class="p">[](</span><span class="k">auto</span> <span class="n">f</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">f</span><span class="p">](</span><span class="k">auto</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>

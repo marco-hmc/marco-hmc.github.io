@@ -5,78 +5,75 @@
 
 <span class="n">value</span> <span class="o">=</span> <span class="s">"Hello, World!"</span><span class="p">;</span> <span class="c1">// 重新存储字符串类型</span>
 <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">str</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">any_cast</span><span class="o">&lt;</span><span class="k">const</span> <span class="kt">char</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
-</code></pre></div></div> <ol> <li> <strong><code class="language-plaintext highlighter-rouge">std::function</code></strong> <code class="language-plaintext highlighter-rouge">std::function</code> 用于存储任意可调用对象，同样运用了类型擦除技术。比如，可将不同类型的函数对象存储在 <code class="language-plaintext highlighter-rouge">std::function</code> 中，并以统一方式调用： ```cpp int add(int a, int b) { return a + b; } auto lambda = <a href="int%20a,%20int%20b"></a> { return a - b; };</li> </ol> <p>std::function&lt;int(int, int)&gt; func1 = add; std::function&lt;int(int, int)&gt; func2 = lambda;</p> <p>int result1 = func1(3, 2); // 调用 add 函数 int result2 = func2(3, 2); // 调用 lambda 函数</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-3. 也可以用于实现多态行为。
+</code></pre></div></div> <ol> <li> <strong><code class="language-plaintext highlighter-rouge">std::function</code></strong> <code class="language-plaintext highlighter-rouge">std::function</code> 用于存储任意可调用对象，同样运用了类型擦除技术。比如，可将不同类型的函数对象存储在 <code class="language-plaintext highlighter-rouge">std::function</code> 中，并以统一方式调用：</li> </ol> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">add</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span> <span class="p">}</span>
+<span class="k">auto</span> <span class="n">lambda</span> <span class="o">=</span> <span class="p">[](</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">;</span> <span class="p">};</span>
 
+<span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">func1</span> <span class="o">=</span> <span class="n">add</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">func2</span> <span class="o">=</span> <span class="n">lambda</span><span class="p">;</span>
 
-### 2. impl
+<span class="kt">int</span> <span class="n">result1</span> <span class="o">=</span> <span class="n">func1</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="c1">// 调用 add 函数</span>
+<span class="kt">int</span> <span class="n">result2</span> <span class="o">=</span> <span class="n">func2</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="c1">// 调用 lambda 函数</span>
+</code></pre></div></div> <ol> <li>也可以用于实现多态行为。</li> </ol> <h3 id="2-impl">2. impl</h3> <h4 id="21-void--type_info的实现方式">2.1 void* + type_info的实现方式</h4> <p>假设要实现一个能存储任意类型数据的容器，这就需要弱化或“擦除”类型信息，使所有数据都能用同一种类型表示。一种可能的思路是容器内部存储 <code class="language-plaintext highlighter-rouge">void* ptr</code> 来表示对象地址，以及 <code class="language-plaintext highlighter-rouge">std::type_info *type</code> 来记录对象类型。</p> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;memory&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;typeinfo&gt;</span><span class="cp">
+</span>
+<span class="k">class</span> <span class="nc">Any</span> <span class="p">{</span>
+  <span class="nl">private:</span>
+    <span class="kt">void</span><span class="o">*</span> <span class="n">data</span><span class="p">;</span>
+    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">type_info</span><span class="o">&amp;</span> <span class="n">type</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">deleter</span><span class="p">)(</span><span class="kt">void</span><span class="o">*</span><span class="p">);</span>
+    <span class="kt">void</span><span class="o">*</span> <span class="p">(</span><span class="o">*</span><span class="n">creator</span><span class="p">)(</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span><span class="p">);</span>
 
-#### 2.1 void* + type_info的实现方式
+  <span class="nl">public:</span>
+    <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+    <span class="n">Any</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">value</span><span class="p">)</span>
+        <span class="o">:</span> <span class="n">data</span><span class="p">(</span><span class="k">new</span> <span class="n">T</span><span class="p">(</span><span class="n">value</span><span class="p">)),</span>
+          <span class="n">type</span><span class="p">(</span><span class="k">typeid</span><span class="p">(</span><span class="n">T</span><span class="p">)),</span>
+          <span class="n">deleter</span><span class="p">([](</span><span class="kt">void</span><span class="o">*</span> <span class="n">ptr</span><span class="p">)</span> <span class="p">{</span> <span class="k">delete</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="n">T</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">ptr</span><span class="p">);</span> <span class="p">}),</span>
+          <span class="n">creator</span><span class="p">([](</span><span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">ptr</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">void</span><span class="o">*</span> <span class="p">{</span>
+              <span class="k">return</span> <span class="k">new</span> <span class="n">T</span><span class="p">(</span><span class="o">*</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">T</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">ptr</span><span class="p">));</span>
+          <span class="p">})</span> <span class="p">{}</span>
 
-假设要实现一个能存储任意类型数据的容器，这就需要弱化或“擦除”类型信息，使所有数据都能用同一种类型表示。一种可能的思路是容器内部存储 `void* ptr` 来表示对象地址，以及 `std::type_info *type` 来记录对象类型。
+    <span class="o">~</span><span class="n">Any</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="n">deleter</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+    <span class="p">}</span>
 
-```c++
-#include &lt;iostream&gt;
-#include &lt;memory&gt;
-#include &lt;string&gt;
-#include &lt;typeinfo&gt;
+    <span class="n">Any</span><span class="p">(</span><span class="k">const</span> <span class="n">Any</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">)</span>
+        <span class="o">:</span> <span class="n">data</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">data</span> <span class="o">?</span> <span class="n">other</span><span class="p">.</span><span class="n">creator</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">data</span><span class="p">)</span> <span class="o">:</span> <span class="nb">nullptr</span><span class="p">),</span>
+          <span class="n">type</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">type</span><span class="p">),</span>
+          <span class="n">deleter</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">deleter</span><span class="p">),</span>
+          <span class="n">creator</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">creator</span><span class="p">)</span> <span class="p">{}</span>
 
-class Any {
-  private:
-    void* data;
-    const std::type_info&amp; type;
-    void (*deleter)(void*);
-    void* (*creator)(const void*);
+    <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+    <span class="kt">bool</span> <span class="n">is</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">typeid</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="o">==</span> <span class="n">type</span><span class="p">;</span>
+    <span class="p">}</span>
 
-  public:
-    template &lt;typename T&gt;
-    Any(const T&amp; value)
-        : data(new T(value)),
-          type(typeid(T)),
-          deleter([](void* ptr) { delete static_cast&lt;T*&gt;(ptr); }),
-          creator([](const void* ptr) -&gt; void* {
-              return new T(*static_cast&lt;const T*&gt;(ptr));
-          }) {}
+    <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+    <span class="n">T</span> <span class="nf">get</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">is</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">())</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">bad_cast</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">T</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
 
-    ~Any() {
-        if (data) deleter(data);
-    }
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">Any</span> <span class="n">value</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Value: "</span> <span class="o">&lt;&lt;</span> <span class="n">value</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 
-    Any(const Any&amp; other)
-        : data(other.data ? other.creator(other.data) : nullptr),
-          type(other.type),
-          deleter(other.deleter),
-          creator(other.creator) {}
+    <span class="n">Any</span> <span class="n">text</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="s">"Hello"</span><span class="p">));</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Text: "</span> <span class="o">&lt;&lt;</span> <span class="n">text</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 
-    template &lt;typename T&gt;
-    bool is() const {
-        return typeid(T) == type;
-    }
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="n">text</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">();</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">bad_cast</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">"Bad cast: "</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    template &lt;typename T&gt;
-    T get() const {
-        if (!is&lt;T&gt;()) {
-            throw std::bad_cast();
-        }
-        return *static_cast&lt;T*&gt;(data);
-    }
-};
-
-int main() {
-    Any value(42);
-    std::cout &lt;&lt; "Value: " &lt;&lt; value.get&lt;int&gt;() &lt;&lt; std::endl;
-
-    Any text(std::string("Hello"));
-    std::cout &lt;&lt; "Text: " &lt;&lt; text.get&lt;std::string&gt;() &lt;&lt; std::endl;
-
-    try {
-        text.get&lt;int&gt;();
-    } catch (const std::bad_cast&amp; e) {
-        std::cerr &lt;&lt; "Bad cast: " &lt;&lt; e.what() &lt;&lt; std::endl;
-    }
-
-    return 0;
-}
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div></div> <p>注意要知道<code class="language-plaintext highlighter-rouge">type_info</code>其实也是不好根据<code class="language-plaintext highlighter-rouge">type_info</code>去调用对应的拷贝和删除函数的。因为<code class="language-plaintext highlighter-rouge">type_info</code>是运行时标签，不是类型。C++ 不支持从标签恢复类型对象，因为它没有内建的运行时反射机制。简单来说，c++作为一种编译型语言，所有代码都是编译时就确定下来了，不能说根据运行时信息去动态生成一个新的代码去运行。因此只能通过<code class="language-plaintext highlighter-rouge">type_info</code>和对应的构造、拷贝、析构函数进行一个注册，这种注册就得提前写好了。</p> <p>所以如果不提前注册的话，就得像记录<code class="language-plaintext highlighter-rouge">type_info</code>一样，记录对应的拷贝、构造和析构函数。而这种实现的最大问题就在于内存开销太大，每一个<code class="language-plaintext highlighter-rouge">Any</code>对象都要单独存一个拷贝和删除函数。因此类型擦除方式的实现一般都是<code class="language-plaintext highlighter-rouge">model-base</code>的方式。</p> <h4 id="22-model-concept的类型擦除实现方式">2.2 model-concept的类型擦除实现方式</h4> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
 #include</span> <span class="cpf">&lt;memory&gt;</span><span class="cp">
 #include</span> <span class="cpf">&lt;typeinfo&gt;</span><span class="cp">

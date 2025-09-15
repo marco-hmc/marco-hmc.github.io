@@ -583,18 +583,18 @@
 
 <span class="kt">void</span> <span class="nf">someFunction</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">throw</span> <span class="n">DerivedException</span><span class="p">();</span> 
+        <span class="k">throw</span> <span class="n">DerivedException</span><span class="p">();</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="nf">doSomething</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">try</span> <span class="p">{</span>
         <span class="n">someFunction</span><span class="p">();</span>
-    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">MyException</span><span class="o">&amp;</span> <span class="n">ex</span><span class="p">)</span> <span class="p">{</span> 
-        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="n">ex</span><span class="p">.</span><span class="n">what</span><span class="p">();</span> 
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">MyException</span><span class="o">&amp;</span> <span class="n">ex</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="n">ex</span><span class="p">.</span><span class="n">what</span><span class="p">();</span>
         <span class="c1">// 这里调用的是 DerivedException 的 what 函数</span>
-    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">MyException</span> <span class="n">ex</span><span class="p">)</span> <span class="p">{</span> 
-        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="n">ex</span><span class="p">.</span><span class="n">what</span><span class="p">();</span> 
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">MyException</span> <span class="n">ex</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="n">ex</span><span class="p">.</span><span class="n">what</span><span class="p">();</span>
         <span class="c1">// 这里调用的是 MyException 的 what 函数，而非 DerivedException 的</span>
     <span class="p">}</span>
 <span class="p">}</span>

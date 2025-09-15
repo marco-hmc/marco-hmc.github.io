@@ -67,10 +67,10 @@
 <span class="n">QCoreApplication</span><span class="o">::</span><span class="n">sendEvent</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">event</span><span class="p">);</span>  <span class="c1">// 立即调用 widget-&gt;event(&amp;event)</span>
 </code></pre></div></div> <p><strong>(2) <code class="language-plaintext highlighter-rouge">postEvent(QObject *receiver, QEvent *event)</code></strong></p> <ul> <li> <strong>异步调用</strong>：将事件放入Qt事件队列，等到事件循环处理时才调用<code class="language-plaintext highlighter-rouge">receiver-&gt;event()</code> </li> <li>不会立即处理，返回时事件还未处理</li> <li>适合跨线程通信、延迟处理、避免阻塞</li> <li> <code class="language-plaintext highlighter-rouge">postEvent</code>会自动接管<code class="language-plaintext highlighter-rouge">event</code>的内存（Qt事件队列负责delete）</li> <li>目标对象销毁时，未处理的事件会被自动丢弃并释放</li> <li>更安全地跨线程发送事件，Qt会把事件派发到目标对象所在线程的事件循环</li> </ul> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QMouseEvent</span> <span class="o">*</span><span class="n">event</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QMouseEvent</span><span class="p">(</span><span class="n">QEvent</span><span class="o">::</span><span class="n">MouseButtonPress</span><span class="p">,</span> <span class="n">QPointF</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">Qt</span><span class="o">::</span><span class="n">LeftButton</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">LeftButton</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">NoModifier</span><span class="p">);</span>
 <span class="n">QCoreApplication</span><span class="o">::</span><span class="n">postEvent</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="n">event</span><span class="p">);</span>  <span class="c1">// 放入事件队列，稍后执行</span>
-</code></pre></div></div> <h3 id="2-子事件循环">2. 子事件循环</h3> <h4 id="21-什么是子事件循环">2.1 什么是子事件循环</h4> <p>子事件循环是一种临时构建的事件处理机制。除了由<code class="language-plaintext highlighter-rouge">QApplication::exec()</code>启动的主事件循环外，开发者可以在函数中临时创建<code class="language-plaintext highlighter-rouge">QEventLoop</code>对象，通过执行<code class="language-plaintext highlighter-rouge">loop.exec()</code>来处理事件。</p> <p>主要功能：</p> <ol> <li> <p><strong>暂停当前函数执行以显示模态对话框</strong>：如<code class="language-plaintext highlighter-rouge">QDialog::exec()</code>利用子事件循环暂停当前操作流程，等待用户输入</p> </li> <li> <strong>等待异步事件完成</strong>： <div class="language-cpp highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="n">QEventLoop</span> <span class="n">loop</span><span class="p">;</span>
+</code></pre></div></div> <h3 id="2-子事件循环">2. 子事件循环</h3> <h4 id="21-什么是子事件循环">2.1 什么是子事件循环</h4> <p>子事件循环是一种临时构建的事件处理机制。除了由<code class="language-plaintext highlighter-rouge">QApplication::exec()</code>启动的主事件循环外，开发者可以在函数中临时创建<code class="language-plaintext highlighter-rouge">QEventLoop</code>对象，通过执行<code class="language-plaintext highlighter-rouge">loop.exec()</code>来处理事件。</p> <p>主要功能：</p> <ol> <li> <p><strong>暂停当前函数执行以显示模态对话框</strong>：如<code class="language-plaintext highlighter-rouge">QDialog::exec()</code>利用子事件循环暂停当前操作流程，等待用户输入</p> </li> <li> <p><strong>等待异步事件完成</strong>：</p> <div class="language-cpp highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="n">QEventLoop</span> <span class="n">loop</span><span class="p">;</span>
 <span class="n">connect</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">AsyncTask</span><span class="o">::</span><span class="n">done</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">loop</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QEventLoop</span><span class="o">::</span><span class="n">quit</span><span class="p">);</span>
 <span class="n">loop</span><span class="p">.</span><span class="n">exec</span><span class="p">();</span>  <span class="c1">// 等待异步信号触发</span>
-</code></pre></div> </div> </li> <li> <strong>在不中断主事件循环的前提下维持UI响应性</strong>： <div class="language-cpp highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="n">QEventLoop</span> <span class="n">loop</span><span class="p">;</span>
+</code></pre></div> </div> </li> <li> <p><strong>在不中断主事件循环的前提下维持UI响应性</strong>：</p> <div class="language-cpp highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="n">QEventLoop</span> <span class="n">loop</span><span class="p">;</span>
 <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">operationFinished</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">doOneStepOfLongTask</span><span class="p">();</span>
     <span class="n">loop</span><span class="p">.</span><span class="n">processEvents</span><span class="p">();</span>  <span class="c1">// 处理用户输入和界面刷新</span>
@@ -153,29 +153,29 @@
     <span class="k">struct</span> <span class="nc">promise_type</span> <span class="p">{</span>
         <span class="n">T</span> <span class="n">value</span><span class="p">{};</span>
         <span class="n">std</span><span class="o">::</span><span class="n">exception_ptr</span> <span class="n">exception</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
-        
+
         <span class="n">Task</span> <span class="nf">get_return_object</span><span class="p">()</span> <span class="p">{</span>
             <span class="k">return</span> <span class="n">Task</span><span class="p">{</span><span class="n">std</span><span class="o">::</span><span class="n">coroutine_handle</span><span class="o">&lt;</span><span class="n">promise_type</span><span class="o">&gt;::</span><span class="n">from_promise</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">)};</span>
         <span class="p">}</span>
-        
+
         <span class="n">std</span><span class="o">::</span><span class="n">suspend_never</span> <span class="n">initial_suspend</span><span class="p">()</span> <span class="k">noexcept</span> <span class="p">{</span> <span class="k">return</span> <span class="p">{};</span> <span class="p">}</span>
         <span class="n">std</span><span class="o">::</span><span class="n">suspend_never</span> <span class="n">final_suspend</span><span class="p">()</span> <span class="k">noexcept</span> <span class="p">{</span> <span class="k">return</span> <span class="p">{};</span> <span class="p">}</span>
-        
+
         <span class="kt">void</span> <span class="nf">return_value</span><span class="p">(</span><span class="n">T</span> <span class="n">val</span><span class="p">)</span> <span class="p">{</span> <span class="n">value</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">val</span><span class="p">);</span> <span class="p">}</span>
-        
+
         <span class="kt">void</span> <span class="nf">unhandled_exception</span><span class="p">()</span> <span class="p">{</span>
             <span class="n">exception</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">current_exception</span><span class="p">();</span>
         <span class="p">}</span>
     <span class="p">};</span>
-    
+
     <span class="n">std</span><span class="o">::</span><span class="n">coroutine_handle</span><span class="o">&lt;</span><span class="n">promise_type</span><span class="o">&gt;</span> <span class="n">coro</span><span class="p">;</span>
-    
+
     <span class="n">Task</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">coroutine_handle</span><span class="o">&lt;</span><span class="n">promise_type</span><span class="o">&gt;</span> <span class="n">h</span><span class="p">)</span> <span class="o">:</span> <span class="n">coro</span><span class="p">(</span><span class="n">h</span><span class="p">)</span> <span class="p">{}</span>
-    
+
     <span class="o">~</span><span class="n">Task</span><span class="p">()</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">coro</span><span class="p">)</span> <span class="n">coro</span><span class="p">.</span><span class="n">destroy</span><span class="p">();</span>
     <span class="p">}</span>
-    
+
     <span class="c1">// 移动语义</span>
     <span class="n">Task</span><span class="p">(</span><span class="n">Task</span><span class="o">&amp;&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="k">noexcept</span> <span class="o">:</span> <span class="n">coro</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">exchange</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">coro</span><span class="p">,</span> <span class="p">{}))</span> <span class="p">{}</span>
     <span class="n">Task</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">Task</span><span class="o">&amp;&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="k">noexcept</span> <span class="p">{</span>
@@ -185,11 +185,11 @@
         <span class="p">}</span>
         <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
     <span class="p">}</span>
-    
+
     <span class="c1">// 禁止拷贝</span>
     <span class="n">Task</span><span class="p">(</span><span class="k">const</span> <span class="n">Task</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
     <span class="n">Task</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">Task</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
-    
+
     <span class="n">T</span> <span class="nf">get_result</span><span class="p">()</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">coro</span><span class="p">.</span><span class="n">promise</span><span class="p">().</span><span class="n">exception</span><span class="p">)</span> <span class="p">{</span>
             <span class="n">std</span><span class="o">::</span><span class="n">rethrow_exception</span><span class="p">(</span><span class="n">coro</span><span class="p">.</span><span class="n">promise</span><span class="p">().</span><span class="n">exception</span><span class="p">);</span>
@@ -201,22 +201,22 @@
 <span class="c1">// 等待用户点击的 awaiter</span>
 <span class="k">class</span> <span class="nc">PointAwaiter</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QObject</span> <span class="p">{</span>
     <span class="n">Q_OBJECT</span>
-    
+
 <span class="nl">public:</span>
     <span class="n">PointAwaiter</span><span class="p">(</span><span class="n">QWidget</span><span class="o">*</span> <span class="n">widget</span><span class="p">,</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">hint</span><span class="p">)</span>
         <span class="o">:</span> <span class="n">widget_</span><span class="p">(</span><span class="n">widget</span><span class="p">),</span> <span class="n">hint_</span><span class="p">(</span><span class="n">hint</span><span class="p">)</span> <span class="p">{}</span>
-    
+
     <span class="kt">bool</span> <span class="n">await_ready</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span> <span class="p">{</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span> <span class="p">}</span>
-    
+
     <span class="kt">void</span> <span class="nf">await_suspend</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">coroutine_handle</span><span class="o">&lt;&gt;</span> <span class="n">handle</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">handle_</span> <span class="o">=</span> <span class="n">handle</span><span class="p">;</span>
         <span class="n">showHint</span><span class="p">(</span><span class="n">hint_</span><span class="p">);</span>
         <span class="n">installEventFilter</span><span class="p">();</span>
     <span class="p">}</span>
-    
-    <span class="n">QPoint</span> <span class="nf">await_resume</span><span class="p">()</span> <span class="p">{</span> 
+
+    <span class="n">QPoint</span> <span class="nf">await_resume</span><span class="p">()</span> <span class="p">{</span>
         <span class="n">removeEventFilter</span><span class="p">();</span>
-        <span class="k">return</span> <span class="n">result_point_</span><span class="p">;</span> 
+        <span class="k">return</span> <span class="n">result_point_</span><span class="p">;</span>
     <span class="p">}</span>
 
 <span class="k">private</span> <span class="n">slots</span><span class="o">:</span>
@@ -235,18 +235,18 @@
     <span class="n">std</span><span class="o">::</span><span class="n">coroutine_handle</span><span class="o">&lt;&gt;</span> <span class="n">handle_</span><span class="p">;</span>
     <span class="kt">bool</span> <span class="n">cancelled_</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
     <span class="n">QTimer</span><span class="o">*</span> <span class="n">timeout_timer_</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
-    
+
     <span class="kt">void</span> <span class="nf">showHint</span><span class="p">(</span><span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">widget_</span><span class="p">)</span> <span class="p">{</span>
             <span class="n">widget_</span><span class="o">-&gt;</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">text</span><span class="p">);</span>
             <span class="n">widget_</span><span class="o">-&gt;</span><span class="n">setStatusTip</span><span class="p">(</span><span class="n">text</span><span class="p">);</span>
         <span class="p">}</span>
     <span class="p">}</span>
-    
+
     <span class="kt">void</span> <span class="nf">installEventFilter</span><span class="p">()</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">widget_</span><span class="p">)</span> <span class="p">{</span>
             <span class="n">widget_</span><span class="o">-&gt;</span><span class="n">installEventFilter</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-            
+
             <span class="c1">// 设置超时机制</span>
             <span class="n">timeout_timer_</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QTimer</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
             <span class="n">timeout_timer_</span><span class="o">-&gt;</span><span class="n">setSingleShot</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
@@ -254,7 +254,7 @@
             <span class="n">timeout_timer_</span><span class="o">-&gt;</span><span class="n">start</span><span class="p">(</span><span class="mi">30000</span><span class="p">);</span> <span class="c1">// 30秒超时</span>
         <span class="p">}</span>
     <span class="p">}</span>
-    
+
     <span class="kt">void</span> <span class="nf">removeEventFilter</span><span class="p">()</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">widget_</span><span class="p">)</span> <span class="p">{</span>
             <span class="n">widget_</span><span class="o">-&gt;</span><span class="n">removeEventFilter</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
@@ -265,7 +265,7 @@
             <span class="n">timeout_timer_</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
         <span class="p">}</span>
     <span class="p">}</span>
-    
+
     <span class="kt">bool</span> <span class="nf">eventFilter</span><span class="p">(</span><span class="n">QObject</span><span class="o">*</span> <span class="n">obj</span><span class="p">,</span> <span class="n">QEvent</span><span class="o">*</span> <span class="n">event</span><span class="p">)</span> <span class="k">override</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">event</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">MouseButtonPress</span><span class="p">)</span> <span class="p">{</span>
             <span class="n">QMouseEvent</span><span class="o">*</span> <span class="n">mouseEvent</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="n">QMouseEvent</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">event</span><span class="p">);</span>
@@ -295,25 +295,25 @@
 <span class="c1">// 等待按键的 awaiter</span>
 <span class="k">class</span> <span class="nc">KeyAwaiter</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QObject</span> <span class="p">{</span>
     <span class="n">Q_OBJECT</span>
-    
+
 <span class="nl">public:</span>
     <span class="n">KeyAwaiter</span><span class="p">(</span><span class="n">QWidget</span><span class="o">*</span> <span class="n">widget</span><span class="p">,</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">hint</span><span class="p">)</span>
         <span class="o">:</span> <span class="n">widget_</span><span class="p">(</span><span class="n">widget</span><span class="p">),</span> <span class="n">hint_</span><span class="p">(</span><span class="n">hint</span><span class="p">)</span> <span class="p">{}</span>
-    
+
     <span class="kt">bool</span> <span class="n">await_ready</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span> <span class="p">{</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span> <span class="p">}</span>
-    
+
     <span class="kt">void</span> <span class="nf">await_suspend</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">coroutine_handle</span><span class="o">&lt;&gt;</span> <span class="n">handle</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">handle_</span> <span class="o">=</span> <span class="n">handle</span><span class="p">;</span>
         <span class="n">showHint</span><span class="p">(</span><span class="n">hint_</span><span class="p">);</span>
         <span class="n">installEventFilter</span><span class="p">();</span>
     <span class="p">}</span>
-    
-    <span class="kt">int</span> <span class="nf">await_resume</span><span class="p">()</span> <span class="p">{</span> 
+
+    <span class="kt">int</span> <span class="nf">await_resume</span><span class="p">()</span> <span class="p">{</span>
         <span class="n">removeEventFilter</span><span class="p">();</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">cancelled_</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">"用户取消操作"</span><span class="p">);</span>
         <span class="p">}</span>
-        <span class="k">return</span> <span class="n">result_key_</span><span class="p">;</span> 
+        <span class="k">return</span> <span class="n">result_key_</span><span class="p">;</span>
     <span class="p">}</span>
 
 <span class="k">private</span><span class="o">:</span>
@@ -322,25 +322,25 @@
     <span class="kt">int</span> <span class="n">result_key_</span><span class="p">;</span>
     <span class="n">std</span><span class="o">::</span><span class="n">coroutine_handle</span><span class="o">&lt;&gt;</span> <span class="n">handle_</span><span class="p">;</span>
     <span class="kt">bool</span> <span class="n">cancelled_</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
-    
+
     <span class="kt">void</span> <span class="nf">showHint</span><span class="p">(</span><span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">widget_</span><span class="p">)</span> <span class="p">{</span>
             <span class="n">widget_</span><span class="o">-&gt;</span><span class="n">setStatusTip</span><span class="p">(</span><span class="n">text</span><span class="p">);</span>
         <span class="p">}</span>
     <span class="p">}</span>
-    
+
     <span class="kt">void</span> <span class="nf">installEventFilter</span><span class="p">()</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">widget_</span><span class="p">)</span> <span class="p">{</span>
             <span class="n">widget_</span><span class="o">-&gt;</span><span class="n">installEventFilter</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
         <span class="p">}</span>
     <span class="p">}</span>
-    
+
     <span class="kt">void</span> <span class="nf">removeEventFilter</span><span class="p">()</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">widget_</span><span class="p">)</span> <span class="p">{</span>
             <span class="n">widget_</span><span class="o">-&gt;</span><span class="n">removeEventFilter</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
         <span class="p">}</span>
     <span class="p">}</span>
-    
+
     <span class="kt">bool</span> <span class="nf">eventFilter</span><span class="p">(</span><span class="n">QObject</span><span class="o">*</span> <span class="n">obj</span><span class="p">,</span> <span class="n">QEvent</span><span class="o">*</span> <span class="n">event</span><span class="p">)</span> <span class="k">override</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">event</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">KeyPress</span><span class="p">)</span> <span class="p">{</span>
             <span class="n">QKeyEvent</span><span class="o">*</span> <span class="n">keyEvent</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="n">QKeyEvent</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">event</span><span class="p">);</span>
@@ -357,20 +357,20 @@
 </code></pre></div></div> <h5 id="343-协程ui交互的实际应用">3.4.3 协程UI交互的实际应用</h5> <p>使用上述框架，我们可以实现非常自然的UI交互逻辑：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 绘制线条的协程函数 - 代码看起来是同步的！</span>
 <span class="n">Task</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span> <span class="n">drawLineCommand</span><span class="p">(</span><span class="n">QWidget</span><span class="o">*</span> <span class="n">canvas</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">try</span> <span class="p">{</span>
-        <span class="c1">// 获取起点 </span>
+        <span class="c1">// 获取起点</span>
         <span class="n">QPoint</span> <span class="n">startPoint</span> <span class="o">=</span> <span class="k">co_await</span> <span class="n">PointAwaiter</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="s">"请选择起点"</span><span class="p">);</span>
-        
+
         <span class="c1">// 显示临时标记</span>
         <span class="n">showTemporaryMarker</span><span class="p">(</span><span class="n">startPoint</span><span class="p">);</span>
-        
+
         <span class="c1">// 获取终点</span>
         <span class="n">QPoint</span> <span class="n">endPoint</span> <span class="o">=</span> <span class="k">co_await</span> <span class="n">PointAwaiter</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="s">"请选择终点"</span><span class="p">);</span>
-        
+
         <span class="c1">// 绘制线条</span>
         <span class="n">drawLine</span><span class="p">(</span><span class="n">startPoint</span><span class="p">,</span> <span class="n">endPoint</span><span class="p">);</span>
-        
+
         <span class="k">co_return</span> <span class="nb">true</span><span class="p">;</span>
-        
+
     <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">exception</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">qDebug</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"绘制线条被取消:"</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">();</span>
         <span class="k">co_return</span> <span class="nb">false</span><span class="p">;</span>
@@ -382,20 +382,20 @@
     <span class="k">try</span> <span class="p">{</span>
         <span class="c1">// 第一个角点</span>
         <span class="n">QPoint</span> <span class="n">corner1</span> <span class="o">=</span> <span class="k">co_await</span> <span class="n">PointAwaiter</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="s">"选择矩形第一个角点"</span><span class="p">);</span>
-        
+
         <span class="c1">// 对角点</span>
         <span class="n">QPoint</span> <span class="n">corner2</span> <span class="o">=</span> <span class="k">co_await</span> <span class="n">PointAwaiter</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="s">"选择矩形对角点"</span><span class="p">);</span>
-        
+
         <span class="c1">// 让用户确认</span>
         <span class="kt">int</span> <span class="n">key</span> <span class="o">=</span> <span class="k">co_await</span> <span class="n">KeyAwaiter</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="s">"按回车确认，按ESC取消"</span><span class="p">);</span>
-        
+
         <span class="k">if</span> <span class="p">(</span><span class="n">key</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Key_Return</span><span class="p">)</span> <span class="p">{</span>
             <span class="n">drawRectangle</span><span class="p">(</span><span class="n">corner1</span><span class="p">,</span> <span class="n">corner2</span><span class="p">);</span>
             <span class="k">co_return</span> <span class="nb">true</span><span class="p">;</span>
         <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
             <span class="k">co_return</span> <span class="nb">false</span><span class="p">;</span> <span class="c1">// 用户取消</span>
         <span class="p">}</span>
-        
+
     <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">exception</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">qDebug</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"绘制矩形被取消:"</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">();</span>
         <span class="k">co_return</span> <span class="nb">false</span><span class="p">;</span>
@@ -409,15 +409,15 @@
     <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">lineResult</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">co_return</span> <span class="nb">false</span><span class="p">;</span>
     <span class="p">}</span>
-    
+
     <span class="c1">// 再画一个矩形</span>
     <span class="kt">bool</span> <span class="n">rectResult</span> <span class="o">=</span> <span class="k">co_await</span> <span class="nf">drawRectangleCommand</span><span class="p">(</span><span class="n">canvas</span><span class="p">);</span>
-    
+
     <span class="k">co_return</span> <span class="n">lineResult</span> <span class="o">&amp;&amp;</span> <span class="n">rectResult</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div></div> <h5 id="344-协程任务的启动和管理">3.4.4 协程任务的启动和管理</h5> <p>为了在Qt应用中使用协程，我们需要一个任务调度器：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">CoroutineScheduler</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QObject</span> <span class="p">{</span>
     <span class="n">Q_OBJECT</span>
-    
+
 <span class="nl">public:</span>
     <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
     <span class="kt">void</span> <span class="n">schedule</span><span class="p">(</span><span class="n">Task</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">task</span><span class="p">)</span> <span class="p">{</span>
@@ -438,7 +438,7 @@
 <span class="n">signals</span><span class="o">:</span>
     <span class="kt">void</span> <span class="nf">taskCompleted</span><span class="p">(</span><span class="k">const</span> <span class="n">QVariant</span><span class="o">&amp;</span> <span class="n">result</span><span class="p">);</span>
     <span class="kt">void</span> <span class="nf">taskFailed</span><span class="p">(</span><span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">error</span><span class="p">);</span>
-    
+
 <span class="k">private</span><span class="o">:</span>
     <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">QObject</span><span class="o">&gt;&gt;</span> <span class="n">activeTasks_</span><span class="p">;</span>
 <span class="p">};</span>
@@ -446,38 +446,38 @@
 <span class="c1">// 在主窗口中使用</span>
 <span class="k">class</span> <span class="nc">MainWindow</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QMainWindow</span> <span class="p">{</span>
     <span class="n">Q_OBJECT</span>
-    
+
 <span class="nl">public:</span>
     <span class="n">MainWindow</span><span class="p">(</span><span class="n">QWidget</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="o">:</span> <span class="n">QMainWindow</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">setupUI</span><span class="p">();</span>
-        
+
         <span class="n">connect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">scheduler_</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">CoroutineScheduler</span><span class="o">::</span><span class="n">taskCompleted</span><span class="p">,</span>
                 <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">MainWindow</span><span class="o">::</span><span class="n">onTaskCompleted</span><span class="p">);</span>
         <span class="n">connect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">scheduler_</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">CoroutineScheduler</span><span class="o">::</span><span class="n">taskFailed</span><span class="p">,</span>
                 <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">MainWindow</span><span class="o">::</span><span class="n">onTaskFailed</span><span class="p">);</span>
     <span class="p">}</span>
-    
+
 <span class="k">private</span> <span class="n">slots</span><span class="o">:</span>
     <span class="kt">void</span> <span class="nf">onDrawLineClicked</span><span class="p">()</span> <span class="p">{</span>
         <span class="n">scheduler_</span><span class="p">.</span><span class="n">schedule</span><span class="p">(</span><span class="n">drawLineCommand</span><span class="p">(</span><span class="n">ui</span><span class="o">-&gt;</span><span class="n">canvas</span><span class="p">));</span>
     <span class="p">}</span>
-    
+
     <span class="kt">void</span> <span class="nf">onDrawRectClicked</span><span class="p">()</span> <span class="p">{</span>
         <span class="n">scheduler_</span><span class="p">.</span><span class="n">schedule</span><span class="p">(</span><span class="n">drawRectangleCommand</span><span class="p">(</span><span class="n">ui</span><span class="o">-&gt;</span><span class="n">canvas</span><span class="p">));</span>
     <span class="p">}</span>
-    
+
     <span class="kt">void</span> <span class="nf">onComplexDrawClicked</span><span class="p">()</span> <span class="p">{</span>
         <span class="n">scheduler_</span><span class="p">.</span><span class="n">schedule</span><span class="p">(</span><span class="n">complexDrawingCommand</span><span class="p">(</span><span class="n">ui</span><span class="o">-&gt;</span><span class="n">canvas</span><span class="p">));</span>
     <span class="p">}</span>
-    
+
     <span class="kt">void</span> <span class="nf">onTaskCompleted</span><span class="p">(</span><span class="k">const</span> <span class="n">QVariant</span><span class="o">&amp;</span> <span class="n">result</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">statusBar</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">showMessage</span><span class="p">(</span><span class="s">"操作完成"</span><span class="p">,</span> <span class="mi">2000</span><span class="p">);</span>
     <span class="p">}</span>
-    
+
     <span class="kt">void</span> <span class="nf">onTaskFailed</span><span class="p">(</span><span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">error</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">statusBar</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">showMessage</span><span class="p">(</span><span class="n">QString</span><span class="p">(</span><span class="s">"操作失败: %1"</span><span class="p">).</span><span class="n">arg</span><span class="p">(</span><span class="n">error</span><span class="p">),</span> <span class="mi">5000</span><span class="p">);</span>
     <span class="p">}</span>
-    
+
 <span class="k">private</span><span class="o">:</span>
     <span class="n">CoroutineScheduler</span> <span class="n">scheduler_</span><span class="p">;</span>
     <span class="c1">// UI 组件...</span>
@@ -487,7 +487,7 @@
     <span class="k">enum</span> <span class="n">State</span> <span class="p">{</span> <span class="n">WaitingStart</span><span class="p">,</span> <span class="n">WaitingEnd</span> <span class="p">};</span>
     <span class="n">State</span> <span class="n">state_</span> <span class="o">=</span> <span class="n">WaitingStart</span><span class="p">;</span>
     <span class="n">QPoint</span> <span class="n">startPoint_</span><span class="p">;</span>
-    
+
     <span class="kt">void</span> <span class="nf">onMouseClick</span><span class="p">(</span><span class="n">QPoint</span> <span class="n">p</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">switch</span><span class="p">(</span><span class="n">state_</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">case</span> <span class="n">WaitingStart</span><span class="p">:</span>
@@ -502,7 +502,7 @@
                 <span class="k">break</span><span class="p">;</span>
         <span class="p">}</span>
     <span class="p">}</span>
-    
+
     <span class="kt">void</span> <span class="nf">onKeyPress</span><span class="p">(</span><span class="kt">int</span> <span class="n">key</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">key</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Key_Escape</span><span class="p">)</span> <span class="p">{</span>
             <span class="n">state_</span> <span class="o">=</span> <span class="n">WaitingStart</span><span class="p">;</span>
@@ -517,21 +517,21 @@
         <span class="n">QEventLoop</span> <span class="n">loop</span><span class="p">;</span>
         <span class="n">QPoint</span> <span class="n">result</span><span class="p">;</span>
         <span class="kt">bool</span> <span class="n">got_point</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
-        
-        <span class="k">auto</span> <span class="n">connection</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">Canvas</span><span class="o">::</span><span class="n">clicked</span><span class="p">,</span> 
+
+        <span class="k">auto</span> <span class="n">connection</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">Canvas</span><span class="o">::</span><span class="n">clicked</span><span class="p">,</span>
                                 <span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="n">QPoint</span> <span class="n">p</span><span class="p">)</span> <span class="p">{</span>
                                     <span class="n">result</span> <span class="o">=</span> <span class="n">p</span><span class="p">;</span>
                                     <span class="n">got_point</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
                                     <span class="n">loop</span><span class="p">.</span><span class="n">quit</span><span class="p">();</span>
                                 <span class="p">});</span>
-        
+
         <span class="n">showHint</span><span class="p">(</span><span class="n">hint</span><span class="p">);</span>
         <span class="n">loop</span><span class="p">.</span><span class="n">exec</span><span class="p">();</span>
-        
+
         <span class="n">disconnect</span><span class="p">(</span><span class="n">connection</span><span class="p">);</span>
         <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
     <span class="p">}</span>
-    
+
     <span class="kt">void</span> <span class="nf">drawLine</span><span class="p">()</span> <span class="p">{</span>
         <span class="n">QPoint</span> <span class="n">start</span> <span class="o">=</span> <span class="n">getPoint</span><span class="p">(</span><span class="s">"选择起点"</span><span class="p">);</span>
         <span class="n">QPoint</span> <span class="n">end</span> <span class="o">=</span> <span class="n">getPoint</span><span class="p">(</span><span class="s">"选择终点"</span><span class="p">);</span>
@@ -550,14 +550,14 @@
     <span class="k">try</span> <span class="p">{</span>
         <span class="n">QPoint</span> <span class="n">p1</span> <span class="o">=</span> <span class="k">co_await</span> <span class="n">PointAwaiter</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="s">"选择起点"</span><span class="p">);</span>
         <span class="n">QPoint</span> <span class="n">p2</span> <span class="o">=</span> <span class="k">co_await</span> <span class="n">PointAwaiter</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="s">"选择终点"</span><span class="p">);</span>
-        
+
         <span class="k">if</span> <span class="p">(</span><span class="n">isValidLine</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">))</span> <span class="p">{</span>
             <span class="n">drawLine</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">);</span>
             <span class="k">co_return</span> <span class="nb">true</span><span class="p">;</span>
         <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
             <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">invalid_argument</span><span class="p">(</span><span class="s">"无效的线条参数"</span><span class="p">);</span>
         <span class="p">}</span>
-        
+
     <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">showError</span><span class="p">(</span><span class="n">QString</span><span class="p">(</span><span class="s">"操作失败: %1"</span><span class="p">).</span><span class="n">arg</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()));</span>
         <span class="k">co_return</span> <span class="nb">false</span><span class="p">;</span>
@@ -572,16 +572,16 @@
         <span class="k">virtual</span> <span class="o">~</span><span class="n">TaskWrapper</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
         <span class="k">virtual</span> <span class="kt">void</span> <span class="n">execute</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="p">};</span>
-    
+
     <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
     <span class="k">struct</span> <span class="nc">TypedTaskWrapper</span> <span class="o">:</span> <span class="n">TaskWrapper</span> <span class="p">{</span>
         <span class="n">Task</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">task</span><span class="p">;</span>
         <span class="n">TypedTaskWrapper</span><span class="p">(</span><span class="n">Task</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">t</span><span class="p">)</span> <span class="o">:</span> <span class="n">task</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">t</span><span class="p">))</span> <span class="p">{}</span>
         <span class="kt">void</span> <span class="n">execute</span><span class="p">()</span> <span class="k">override</span> <span class="p">{</span> <span class="cm">/* 执行逻辑 */</span> <span class="p">}</span>
     <span class="p">};</span>
-    
+
     <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">TaskWrapper</span><span class="o">&gt;&gt;</span> <span class="n">activeTasks_</span><span class="p">;</span>
-    
+
 <span class="k">public</span><span class="o">:</span>
     <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
     <span class="kt">void</span> <span class="nf">schedule</span><span class="p">(</span><span class="n">Task</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">task</span><span class="p">)</span> <span class="p">{</span>
@@ -593,7 +593,7 @@
 </code></pre></div></div> <p><strong>2. 线程安全：</strong></p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 确保协程恢复在正确的线程中执行</span>
 <span class="kt">void</span> <span class="nf">await_suspend</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">coroutine_handle</span><span class="o">&lt;&gt;</span> <span class="n">handle</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">handle_</span> <span class="o">=</span> <span class="n">handle</span><span class="p">;</span>
-    
+
     <span class="c1">// 使用 QMetaObject::invokeMethod 确保在主线程恢复</span>
     <span class="n">QMetaObject</span><span class="o">::</span><span class="n">invokeMethod</span><span class="p">(</span><span class="n">qApp</span><span class="p">,</span> <span class="p">[</span><span class="k">this</span><span class="p">,</span> <span class="n">handle</span><span class="p">]()</span> <span class="p">{</span>
         <span class="c1">// 设置事件过滤器等操作</span>
@@ -603,27 +603,27 @@
 </code></pre></div></div> <p><strong>3. 取消机制：</strong></p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 支持取消的协程框架</span>
 <span class="k">class</span> <span class="nc">CancellableTask</span> <span class="p">{</span>
     <span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span> <span class="n">cancelled_</span><span class="p">{</span><span class="nb">false</span><span class="p">};</span>
-    
+
 <span class="k">public</span><span class="o">:</span>
     <span class="kt">void</span> <span class="nf">cancel</span><span class="p">()</span> <span class="p">{</span> <span class="n">cancelled_</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span> <span class="p">}</span>
     <span class="kt">bool</span> <span class="n">isCancelled</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">cancelled_</span><span class="p">;</span> <span class="p">}</span>
-    
+
     <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">Awaiter</span><span class="p">&gt;</span>
     <span class="k">auto</span> <span class="k">operator</span> <span class="nf">co_await</span><span class="p">(</span><span class="n">Awaiter</span> <span class="n">awaiter</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">struct</span> <span class="nc">CancellableAwaiter</span> <span class="p">{</span>
             <span class="n">Awaiter</span> <span class="n">inner</span><span class="p">;</span>
             <span class="n">CancellableTask</span><span class="o">*</span> <span class="n">task</span><span class="p">;</span>
-            
-            <span class="kt">bool</span> <span class="n">await_ready</span><span class="p">()</span> <span class="p">{</span> 
-                <span class="k">return</span> <span class="n">task</span><span class="o">-&gt;</span><span class="n">isCancelled</span><span class="p">()</span> <span class="o">||</span> <span class="n">inner</span><span class="p">.</span><span class="n">await_ready</span><span class="p">();</span> 
+
+            <span class="kt">bool</span> <span class="n">await_ready</span><span class="p">()</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="n">task</span><span class="o">-&gt;</span><span class="n">isCancelled</span><span class="p">()</span> <span class="o">||</span> <span class="n">inner</span><span class="p">.</span><span class="n">await_ready</span><span class="p">();</span>
             <span class="p">}</span>
-            
+
             <span class="kt">void</span> <span class="nf">await_suspend</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">coroutine_handle</span><span class="o">&lt;&gt;</span> <span class="n">h</span><span class="p">)</span> <span class="p">{</span>
                 <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">task</span><span class="o">-&gt;</span><span class="n">isCancelled</span><span class="p">())</span> <span class="p">{</span>
                     <span class="n">inner</span><span class="p">.</span><span class="n">await_suspend</span><span class="p">(</span><span class="n">h</span><span class="p">);</span>
                 <span class="p">}</span>
             <span class="p">}</span>
-            
+
             <span class="k">auto</span> <span class="nf">await_resume</span><span class="p">()</span> <span class="p">{</span>
                 <span class="k">if</span> <span class="p">(</span><span class="n">task</span><span class="o">-&gt;</span><span class="n">isCancelled</span><span class="p">())</span> <span class="p">{</span>
                     <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">"操作被取消"</span><span class="p">);</span>
@@ -631,12 +631,12 @@
                 <span class="k">return</span> <span class="n">inner</span><span class="p">.</span><span class="n">await_resume</span><span class="p">();</span>
             <span class="p">}</span>
         <span class="p">};</span>
-        
+
         <span class="k">return</span> <span class="n">CancellableAwaiter</span><span class="p">{</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">awaiter</span><span class="p">),</span> <span class="k">this</span><span class="p">};</span>
     <span class="p">}</span>
 <span class="p">};</span>
 </code></pre></div></div> <h5 id="347-性能和兼容性考虑">3.4.7 性能和兼容性考虑</h5> <p><strong>编译要求：</strong></p> <ul> <li>需要C++20支持的编译器（GCC 10+, Clang 11+, MSVC 2019 16.8+）</li> <li>CMake中需要设置：<code class="language-plaintext highlighter-rouge">set(CMAKE_CXX_STANDARD 20)</code> </li> </ul> <p><strong>性能特点：</strong></p> <ul> <li>协程的内存开销通常比线程小得多</li> <li>切换开销比线程上下文切换低</li> <li>但比直接的状态机略有开销</li> </ul> <p><strong>适用场景：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>✅ 复杂的多步骤用户交互
-✅ 需要频繁嵌套的操作流程  
+✅ 需要频繁嵌套的操作流程
 ✅ 对代码可读性要求高的项目
 ✅ 团队熟悉现代C++特性
 

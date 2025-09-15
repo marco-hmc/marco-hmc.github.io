@@ -165,10 +165,10 @@
 <span class="p">}</span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kt">int</span> <span class="n">result1</span> <span class="o">=</span> <span class="n">add</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span> 
+    <span class="kt">int</span> <span class="n">result1</span> <span class="o">=</span> <span class="n">add</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
     <span class="c1">// 在此处，由于使用了add函数且传入int类型参数，编译器自动生成int类型的add函数实例，即发生了隐式实例化。</span>
 
-    <span class="kt">double</span> <span class="n">result2</span> <span class="o">=</span> <span class="n">add</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">);</span> 
+    <span class="kt">double</span> <span class="n">result2</span> <span class="o">=</span> <span class="n">add</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">);</span>
     <span class="c1">// 同理，这里传入double类型参数，编译器又会隐式实例化出double类型的add函数实例。</span>
     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
@@ -182,9 +182,9 @@
 <span class="k">template</span> <span class="kt">double</span> <span class="n">add</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">&gt;(</span><span class="kt">double</span><span class="p">,</span> <span class="kt">double</span><span class="p">);</span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kt">int</span> <span class="n">result1</span> <span class="o">=</span> <span class="n">add</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span> 
+    <span class="kt">int</span> <span class="n">result1</span> <span class="o">=</span> <span class="n">add</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
     <span class="c1">// 这里直接使用显式实例化生成的int类型的add函数。</span>
-    <span class="kt">double</span> <span class="n">result2</span> <span class="o">=</span> <span class="n">add</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">);</span> 
+    <span class="kt">double</span> <span class="n">result2</span> <span class="o">=</span> <span class="n">add</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">);</span>
     <span class="c1">// 同样，使用显式实例化生成的double类型的add函数。</span>
     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
@@ -309,7 +309,7 @@
 </code></pre></div></div> <h3 id="99-quiz">99. quiz</h3> <h4 id="1-不同源文件都使用了vectorint有没有违反-odr-原则实例化了几次代码里面会有多少vectorint的定义">1. 不同源文件都使用了<code class="language-plaintext highlighter-rouge">vector&lt;int&gt;</code>，有没有违反 odr 原则？实例化了几次？代码里面会有多少<code class="language-plaintext highlighter-rouge">vector&lt;int&gt;</code>的定义？</h4> <p>在 C++ 中，模板实例化的行为取决于编译器和链接器的实现。通常情况下，如果多个源文件都使用了相同的模板实例（例如 vector<int>），编译器会在每个使用该模板实例的源文件中生成一份实例化代码。然而，链接器会负责消除重复的实例化代码，只保留一份最终的实例化代码。</int></p> <p>也就是说不同源文件使用了相同的模板实例就会各自实例化，但是链接器会优化，合并重复实例代码。注意，合并了重复的实例代码，只是减轻了代码生成的体积，实例的开销没办法去掉，所以模板用多了，编译会慢一些，开销在于模板实例化。</p> <h4 id="2-什么是-adl">2. 什么是 ADL？</h4> <p>ADL（Argument - Dependent Lookup，依赖于实参的查找）是 C++ 中一种特殊的函数查找机制。在常规的函数调用中，编译器会在函数调用点的作用域以及包含该函数调用的命名空间中查找函数声明。而 ADL 则额外在实参类型所属的命名空间中查找函数声明，这使得在调用函数时，即使函数不在当前作用域内直接可见，只要它在实参类型相关的命名空间中，也能被找到并调用。</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
 </span>
 <span class="k">namespace</span> <span class="n">MyNamespace</span> <span class="p">{</span>
-    <span class="k">struct</span> <span class="nc">MyType</span> <span class="p">{};</span> 
+    <span class="k">struct</span> <span class="nc">MyType</span> <span class="p">{};</span>
 
     <span class="kt">void</span> <span class="nf">someFunction</span><span class="p">(</span><span class="n">MyType</span> <span class="n">myArg</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Function in MyNamespace called"</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
@@ -318,12 +318,12 @@
 
 <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
 <span class="kt">void</span> <span class="nf">myTemplateFunction</span><span class="p">(</span><span class="n">T</span> <span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">someFunction</span><span class="p">(</span><span class="n">arg</span><span class="p">);</span> 
+    <span class="n">someFunction</span><span class="p">(</span><span class="n">arg</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="n">MyNamespace</span><span class="o">::</span><span class="n">MyType</span> <span class="n">obj</span><span class="p">;</span> 
-    <span class="n">myTemplateFunction</span><span class="p">(</span><span class="n">obj</span><span class="p">);</span> 
+    <span class="n">MyNamespace</span><span class="o">::</span><span class="n">MyType</span> <span class="n">obj</span><span class="p">;</span>
+    <span class="n">myTemplateFunction</span><span class="p">(</span><span class="n">obj</span><span class="p">);</span>
     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div></div> <p>在上述代码中，<code class="language-plaintext highlighter-rouge">myTemplateFunction</code> 模板函数内部调用 <code class="language-plaintext highlighter-rouge">someFunction</code> 时，虽然 <code class="language-plaintext highlighter-rouge">someFunction</code> 不在 <code class="language-plaintext highlighter-rouge">myTemplateFunction</code> 的直接作用域内，但因为 <code class="language-plaintext highlighter-rouge">arg</code> 的类型是 <code class="language-plaintext highlighter-rouge">MyNamespace::MyType</code>，ADL 机制会在 <code class="language-plaintext highlighter-rouge">MyNamespace</code> 命名空间中查找 <code class="language-plaintext highlighter-rouge">someFunction</code>，从而成功调用该函数。这展示了 ADL 如何让模板函数在不明确知道具体类型细节的情况下，利用参数类型在相应命名空间中找到合适的函数进行调用。</p> <h4 id="3-下面这些代码的注释处为什么不行">3. 下面这些代码的注释处为什么不行？</h4> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">namespace</span> <span class="n">StringLinkErrorTpl</span> <span class="p">{</span>
