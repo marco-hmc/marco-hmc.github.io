@@ -1,0 +1,638 @@
+<!DOCTYPE html> <html lang="cn"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> C++错误码与异常处理完全指南 | Marco's blog </title> <meta name="author" content="Marco Huang"> <meta name="description" content="A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design. "> <meta name="keywords" content="jekyll, jekyll-theme, blog"> <link rel="stylesheet" href="/assets/css/bootstrap.min.css?a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/assets/css/academicons.min.css?f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" href="/assets/css/scholar-icons.css?62b2ac103a88034e6882a5be5f3e2772"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link defer href="/assets/css/bootstrap-toc.min.css?6f5af0bb9aab25d79b2448143cbeaa88" rel="stylesheet"> <link rel="stylesheet" href="/assets/css/main.css"> <link rel="stylesheet" href="/assets/css/toc-custom.css"> <link rel="shortcut icon" href="/assets/img/mc_logo.ico?cf243b61f6c6d75747808b3ae8298c5b"> <link rel="stylesheet" href="/assets/css/main.css?d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://marco-hmc.github.io/blog/2025/2_exceptionAndFaultCode.md/"> <script src="/assets/js/theme.js?a81d82887dd692e91686b43de4542f18"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> Marco's blog </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">about </a> </li> <li class="nav-item active"> <a class="nav-link" href="/blog/">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/">projects </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/">cv </a> </li> <li class="nav-item"> <button id="search-toggle" title="Search" onclick="openSearchModal()"> <span class="nav-link">ctrl k <i class="ti ti-search"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="ti ti-sun-moon" id="light-toggle-system"></i> <i class="ti ti-moon-filled" id="light-toggle-dark"></i> <i class="ti ti-sun-filled" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="row"> <div class="col-sm-8"> <div class="post"> <header class="post-header"> <h1 class="post-title">C++错误码与异常处理完全指南</h1> <p class="post-meta"> Created on September 15, 2025 </p> <p class="post-tags"> <a href="/blog/2025"> <i class="fa-solid fa-calendar fa-sm"></i> 2025 </a>   ·   <a href="/blog/tag/c"> <i class="fa-solid fa-hashtag fa-sm"></i> C++</a>   ·   <a href="/blog/category/c"> <i class="fa-solid fa-tag fa-sm"></i> C++</a> </p> </header> <article class="post-content"> <div id="markdown-content"> <h2 id="c错误码与异常处理完全指南">C++错误码与异常处理完全指南</h2> <h3 id="1-错误处理概述">1. 错误处理概述</h3> <p>在程序运行过程中，错误处理是软件工程中的关键环节。错误可能源于多种原因：</p> <ul> <li> <strong>外部数据问题</strong>：输入数据格式错误、值超出范围</li> <li> <strong>资源不可用</strong>：文件不存在、网络连接失败、内存不足</li> <li> <strong>程序逻辑错误</strong>：空指针解引用、数组越界访问</li> <li> <strong>系统级问题</strong>：权限不足、硬件故障</li> </ul> <p>针对这些问题，C++提供了两种主要的错误处理机制：</p> <table> <thead> <tr> <th>特性</th> <th>错误码</th> <th>异常机制</th> </tr> </thead> <tbody> <tr> <td><strong>性能开销</strong></td> <td>低</td> <td>中等（抛出时较高）</td> </tr> <tr> <td><strong>代码复杂度</strong></td> <td>高（需要层层检查）</td> <td>低（自动传播）</td> </tr> <tr> <td><strong>错误信息</strong></td> <td>有限</td> <td>丰富</td> </tr> <tr> <td><strong>控制流</strong></td> <td>显式</td> <td>隐式</td> </tr> <tr> <td><strong>跨语言兼容</strong></td> <td>好</td> <td>差</td> </tr> <tr> <td><strong>RAII 支持</strong></td> <td>需要手动管理</td> <td>天然支持</td> </tr> </tbody> </table> <h3 id="2-错误码机制详解">2. 错误码机制详解</h3> <h4 id="21-错误码的基本概念">2.1 错误码的基本概念</h4> <p>错误码是一种传统的错误处理方式，通过返回特定数值来标识函数执行状态：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;fstream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
+</span>
+<span class="c1">// 传统的错误码定义</span>
+<span class="k">enum</span> <span class="k">class</span> <span class="nc">FileError</span> <span class="p">{</span>
+    <span class="n">SUCCESS</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">FILE_NOT_FOUND</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">PERMISSION_DENIED</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">DISK_FULL</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="n">INVALID_FORMAT</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="p">};</span>
+
+<span class="c1">// 使用错误码的函数示例</span>
+<span class="n">FileError</span> <span class="nf">readFile</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">filename</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">content</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">ifstream</span> <span class="n">file</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">file</span><span class="p">.</span><span class="n">is_open</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">FileError</span><span class="o">::</span><span class="n">FILE_NOT_FOUND</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">file</span><span class="p">.</span><span class="n">good</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">FileError</span><span class="o">::</span><span class="n">PERMISSION_DENIED</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 读取文件内容</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">line</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">getline</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">line</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">content</span> <span class="o">+=</span> <span class="n">line</span> <span class="o">+</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">FileError</span><span class="o">::</span><span class="n">SUCCESS</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// 错误码的使用方式</span>
+<span class="kt">void</span> <span class="nf">demonstrateErrorCode</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">content</span><span class="p">;</span>
+    <span class="n">FileError</span> <span class="n">result</span> <span class="o">=</span> <span class="n">readFile</span><span class="p">(</span><span class="s">"example.txt"</span><span class="p">,</span> <span class="n">content</span><span class="p">);</span>
+
+    <span class="k">switch</span> <span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="n">FileError</span><span class="o">::</span><span class="n">SUCCESS</span><span class="p">:</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"File content: "</span> <span class="o">&lt;&lt;</span> <span class="n">content</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="n">FileError</span><span class="o">::</span><span class="n">FILE_NOT_FOUND</span><span class="p">:</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">"Error: File not found"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="n">FileError</span><span class="o">::</span><span class="n">PERMISSION_DENIED</span><span class="p">:</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">"Error: Permission denied"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="nl">default:</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">"Unknown error occurred"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div> <h4 id="22-现代-c错误码设计">2.2 现代 C++错误码设计</h4> <p><strong>std::expected (C++23)和第三方实现</strong>：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;expected&gt;</span><span class="c1">  // C++23</span><span class="cp">
+#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;fstream&gt;</span><span class="cp">
+</span>
+<span class="c1">// 使用std::expected的现代错误处理</span>
+<span class="n">std</span><span class="o">::</span><span class="n">expected</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span> <span class="n">FileError</span><span class="o">&gt;</span> <span class="n">readFileModern</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">filename</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">ifstream</span> <span class="n">file</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">file</span><span class="p">.</span><span class="n">is_open</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">unexpected</span><span class="p">(</span><span class="n">FileError</span><span class="o">::</span><span class="n">FILE_NOT_FOUND</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">content</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">line</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">getline</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">line</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">content</span> <span class="o">+=</span> <span class="n">line</span> <span class="o">+</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">content</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">demonstrateExpected</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">auto</span> <span class="n">result</span> <span class="o">=</span> <span class="n">readFileModern</span><span class="p">(</span><span class="s">"example.txt"</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"File content: "</span> <span class="o">&lt;&lt;</span> <span class="o">*</span><span class="n">result</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">"Error code: "</span> <span class="o">&lt;&lt;</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">error</span><span class="p">())</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div> <p><strong>Result 模式实现</strong>：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">E</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">Result</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="kt">bool</span> <span class="n">success_</span><span class="p">;</span>
+    <span class="k">union</span> <span class="p">{</span>
+        <span class="n">T</span> <span class="n">value_</span><span class="p">;</span>
+        <span class="n">E</span> <span class="n">error_</span><span class="p">;</span>
+    <span class="p">};</span>
+
+<span class="k">public</span><span class="o">:</span>
+    <span class="c1">// 成功构造</span>
+    <span class="n">Result</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">value</span><span class="p">)</span> <span class="o">:</span> <span class="n">success_</span><span class="p">(</span><span class="nb">true</span><span class="p">),</span> <span class="n">value_</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="p">{}</span>
+    <span class="n">Result</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;&amp;</span> <span class="n">value</span><span class="p">)</span> <span class="o">:</span> <span class="n">success_</span><span class="p">(</span><span class="nb">true</span><span class="p">),</span> <span class="n">value_</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">value</span><span class="p">))</span> <span class="p">{}</span>
+
+    <span class="c1">// 错误构造</span>
+    <span class="n">Result</span><span class="p">(</span><span class="k">const</span> <span class="n">E</span><span class="o">&amp;</span> <span class="n">error</span><span class="p">)</span> <span class="o">:</span> <span class="n">success_</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span> <span class="n">error_</span><span class="p">(</span><span class="n">error</span><span class="p">)</span> <span class="p">{}</span>
+    <span class="n">Result</span><span class="p">(</span><span class="n">E</span><span class="o">&amp;&amp;</span> <span class="n">error</span><span class="p">)</span> <span class="o">:</span> <span class="n">success_</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span> <span class="n">error_</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">error</span><span class="p">))</span> <span class="p">{}</span>
+
+    <span class="o">~</span><span class="n">Result</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">success_</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">value_</span><span class="p">.</span><span class="o">~</span><span class="n">T</span><span class="p">();</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="n">error_</span><span class="p">.</span><span class="o">~</span><span class="n">E</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kt">bool</span> <span class="n">isSuccess</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">success_</span><span class="p">;</span> <span class="p">}</span>
+    <span class="kt">bool</span> <span class="n">isError</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="o">!</span><span class="n">success_</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">value</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">success_</span><span class="p">)</span> <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">"Accessing value of error result"</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">value_</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="n">E</span><span class="o">&amp;</span> <span class="n">error</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">success_</span><span class="p">)</span> <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">"Accessing error of success result"</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">error_</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 链式操作支持</span>
+    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">F</span><span class="p">&gt;</span>
+    <span class="k">auto</span> <span class="nf">map</span><span class="p">(</span><span class="n">F</span><span class="o">&amp;&amp;</span> <span class="n">func</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Result</span><span class="o">&lt;</span><span class="k">decltype</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="n">value_</span><span class="p">)),</span> <span class="n">E</span><span class="o">&gt;</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">success_</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="n">Result</span><span class="o">&lt;</span><span class="k">decltype</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="n">value_</span><span class="p">)),</span> <span class="n">E</span><span class="o">&gt;</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="n">value_</span><span class="p">));</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="n">Result</span><span class="o">&lt;</span><span class="k">decltype</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="n">value_</span><span class="p">)),</span> <span class="n">E</span><span class="o">&gt;</span><span class="p">(</span><span class="n">error_</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// 使用Result的示例</span>
+<span class="n">Result</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">divide</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">b</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">Result</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="s">"Division by zero"</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">Result</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="n">a</span> <span class="o">/</span> <span class="n">b</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div> <h4 id="23-错误码的设计模式">2.3 错误码的设计模式</h4> <p><strong>分层错误码设计</strong>：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 系统级错误码</span>
+<span class="k">namespace</span> <span class="n">SystemError</span> <span class="p">{</span>
+    <span class="k">enum</span> <span class="n">Code</span> <span class="p">{</span>
+        <span class="n">SUCCESS</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">MEMORY_ERROR</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+        <span class="n">IO_ERROR</span> <span class="o">=</span> <span class="mi">2000</span><span class="p">,</span>
+        <span class="n">NETWORK_ERROR</span> <span class="o">=</span> <span class="mi">3000</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="c1">// 应用级错误码</span>
+<span class="k">namespace</span> <span class="n">AppError</span> <span class="p">{</span>
+    <span class="k">enum</span> <span class="n">Code</span> <span class="p">{</span>
+        <span class="n">VALIDATION_ERROR</span> <span class="o">=</span> <span class="mi">4000</span><span class="p">,</span>
+        <span class="n">BUSINESS_LOGIC_ERROR</span> <span class="o">=</span> <span class="mi">5000</span><span class="p">,</span>
+        <span class="n">USER_ERROR</span> <span class="o">=</span> <span class="mi">6000</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="c1">// 错误上下文信息</span>
+<span class="k">struct</span> <span class="nc">ErrorContext</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">code</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">message</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">file</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">line</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">function</span><span class="p">;</span>
+
+    <span class="n">ErrorContext</span><span class="p">(</span><span class="kt">int</span> <span class="n">c</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">msg</span><span class="p">,</span>
+                <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">f</span><span class="p">,</span> <span class="kt">int</span> <span class="n">l</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">func</span><span class="p">)</span>
+        <span class="o">:</span> <span class="n">code</span><span class="p">(</span><span class="n">c</span><span class="p">),</span> <span class="n">message</span><span class="p">(</span><span class="n">msg</span><span class="p">),</span> <span class="n">file</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="n">line</span><span class="p">(</span><span class="n">l</span><span class="p">),</span> <span class="n">function</span><span class="p">(</span><span class="n">func</span><span class="p">)</span> <span class="p">{}</span>
+<span class="p">};</span>
+
+<span class="cp">#define MAKE_ERROR(code, msg) \
+    ErrorContext(code, msg, __FILE__, __LINE__, __FUNCTION__)
+</span></code></pre></div></div> <h3 id="3-异常机制深入解析">3. 异常机制深入解析</h3> <h4 id="31-异常的基本概念与语法">3.1 异常的基本概念与语法</h4> <p>C++异常处理通过 try、catch、throw 三个关键字实现：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdexcept&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;memory&gt;</span><span class="cp">
+</span>
+<span class="c1">// 自定义异常类</span>
+<span class="k">class</span> <span class="nc">FileException</span> <span class="o">:</span> <span class="k">public</span> <span class="n">std</span><span class="o">::</span><span class="n">exception</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">message_</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">errorCode_</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="n">FileException</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">msg</span><span class="p">,</span> <span class="kt">int</span> <span class="n">code</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="o">:</span> <span class="n">message_</span><span class="p">(</span><span class="n">msg</span><span class="p">),</span> <span class="n">errorCode_</span><span class="p">(</span><span class="n">code</span><span class="p">)</span> <span class="p">{}</span>
+
+    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="nf">what</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span> <span class="k">override</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">message_</span><span class="p">.</span><span class="n">c_str</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="kt">int</span> <span class="n">getErrorCode</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">errorCode_</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// 使用异常的函数示例</span>
+<span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="nf">readFileWithException</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">filename</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">ifstream</span> <span class="n">file</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">file</span><span class="p">.</span><span class="n">is_open</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">throw</span> <span class="n">FileException</span><span class="p">(</span><span class="s">"Failed to open file: "</span> <span class="o">+</span> <span class="n">filename</span><span class="p">,</span> <span class="mi">404</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">content</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">line</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">getline</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">line</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">content</span> <span class="o">+=</span> <span class="n">line</span> <span class="o">+</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">file</span><span class="p">.</span><span class="n">bad</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">throw</span> <span class="n">FileException</span><span class="p">(</span><span class="s">"Error reading file: "</span> <span class="o">+</span> <span class="n">filename</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">content</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// 异常处理示例</span>
+<span class="kt">void</span> <span class="nf">demonstrateExceptionHandling</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">content</span> <span class="o">=</span> <span class="n">readFileWithException</span><span class="p">(</span><span class="s">"example.txt"</span><span class="p">);</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"File content: "</span> <span class="o">&lt;&lt;</span> <span class="n">content</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">catch</span> <span class="p">(</span><span class="k">const</span> <span class="n">FileException</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">"File error ["</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">getErrorCode</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"]: "</span>
+                  <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">catch</span> <span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">exception</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">"Standard exception: "</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">catch</span> <span class="p">(...)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">"Unknown exception occurred"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div> <h4 id="32-异常安全性等级">3.2 异常安全性等级</h4> <p>C++定义了四个异常安全性等级：</p> <p><strong>1. 无异常保证 (No-throw guarantee)</strong>：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">SafeClass</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="kt">int</span> <span class="n">value_</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="c1">// 无异常保证的函数</span>
+    <span class="kt">int</span> <span class="n">getValue</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span> <span class="p">{</span> <span class="k">return</span> <span class="n">value_</span><span class="p">;</span> <span class="p">}</span>
+    <span class="kt">void</span> <span class="n">setValue</span><span class="p">(</span><span class="kt">int</span> <span class="n">val</span><span class="p">)</span> <span class="k">noexcept</span> <span class="p">{</span> <span class="n">value_</span> <span class="o">=</span> <span class="n">val</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="c1">// 析构函数默认是noexcept的</span>
+    <span class="o">~</span><span class="n">SafeClass</span><span class="p">()</span> <span class="k">noexcept</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div> <p><strong>2. 强异常安全保证 (Strong exception safety)</strong>：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">StrongSafetyExample</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">data_</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="kt">void</span> <span class="n">addElement</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 创建临时副本（可能抛出异常）</span>
+        <span class="k">auto</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">data_</span><span class="p">;</span>
+        <span class="n">temp</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>  <span class="c1">// 如果这里抛出异常，原数据不变</span>
+
+        <span class="c1">// 只有成功后才提交更改</span>
+        <span class="n">data_</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">temp</span><span class="p">);</span>  <span class="c1">// 这个操作是noexcept的</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div> <p><strong>3. 基本异常安全保证 (Basic exception safety)</strong>：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">BasicSafetyExample</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">[]</span><span class="o">&gt;</span> <span class="n">data_</span><span class="p">;</span>
+    <span class="kt">size_t</span> <span class="n">size_</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="kt">void</span> <span class="n">resize</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">newSize</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 分配新内存（可能抛出）</span>
+        <span class="k">auto</span> <span class="n">newData</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">[]</span><span class="o">&gt;</span><span class="p">(</span><span class="n">newSize</span><span class="p">);</span>
+
+        <span class="c1">// 复制现有数据（可能抛出，但不会泄漏）</span>
+        <span class="kt">size_t</span> <span class="n">copySize</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">min</span><span class="p">(</span><span class="n">size_</span><span class="p">,</span> <span class="n">newSize</span><span class="p">);</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">copy</span><span class="p">(</span><span class="n">data_</span><span class="p">.</span><span class="n">get</span><span class="p">(),</span> <span class="n">data_</span><span class="p">.</span><span class="n">get</span><span class="p">()</span> <span class="o">+</span> <span class="n">copySize</span><span class="p">,</span> <span class="n">newData</span><span class="p">.</span><span class="n">get</span><span class="p">());</span>
+
+        <span class="c1">// 提交更改</span>
+        <span class="n">data_</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">newData</span><span class="p">);</span>
+        <span class="n">size_</span> <span class="o">=</span> <span class="n">newSize</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div> <p><strong>4. 无异常安全保证 (No exception safety)</strong>：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 错误示例：可能导致资源泄漏</span>
+<span class="k">class</span> <span class="nc">UnsafeClass</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="kt">int</span><span class="o">*</span> <span class="n">data_</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="kt">void</span> <span class="n">unsafeOperation</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">delete</span><span class="p">[]</span> <span class="n">data_</span><span class="p">;</span>  <span class="c1">// 释放旧内存</span>
+        <span class="n">data_</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>  <span class="c1">// 如果这里抛出异常，data_变成悬挂指针</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div> <h4 id="33-raii-与异常安全">3.3 RAII 与异常安全</h4> <p><strong>RAII 原理与实现</strong>：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;mutex&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;fstream&gt;</span><span class="cp">
+</span>
+<span class="c1">// RAII文件管理器</span>
+<span class="k">class</span> <span class="nc">FileGuard</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="n">std</span><span class="o">::</span><span class="kt">FILE</span><span class="o">*</span> <span class="n">file_</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="k">explicit</span> <span class="n">FileGuard</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">filename</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">mode</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">file_</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">fopen</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">file_</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">"Failed to open file"</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="o">~</span><span class="n">FileGuard</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">file_</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">fclose</span><span class="p">(</span><span class="n">file_</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 禁止拷贝</span>
+    <span class="n">FileGuard</span><span class="p">(</span><span class="k">const</span> <span class="n">FileGuard</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+    <span class="n">FileGuard</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">FileGuard</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+
+    <span class="c1">// 允许移动</span>
+    <span class="n">FileGuard</span><span class="p">(</span><span class="n">FileGuard</span><span class="o">&amp;&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="k">noexcept</span> <span class="o">:</span> <span class="n">file_</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">file_</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">other</span><span class="p">.</span><span class="n">file_</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">FileGuard</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">FileGuard</span><span class="o">&amp;&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="k">noexcept</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span> <span class="o">!=</span> <span class="o">&amp;</span><span class="n">other</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">file_</span><span class="p">)</span> <span class="n">std</span><span class="o">::</span><span class="n">fclose</span><span class="p">(</span><span class="n">file_</span><span class="p">);</span>
+            <span class="n">file_</span> <span class="o">=</span> <span class="n">other</span><span class="p">.</span><span class="n">file_</span><span class="p">;</span>
+            <span class="n">other</span><span class="p">.</span><span class="n">file_</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="kt">FILE</span><span class="o">*</span> <span class="n">get</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">file_</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// 使用RAII的异常安全函数</span>
+<span class="kt">void</span> <span class="nf">processFile</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">filename</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">FileGuard</span> <span class="n">file</span><span class="p">(</span><span class="n">filename</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="s">"r"</span><span class="p">);</span>  <span class="c1">// 自动管理文件资源</span>
+
+    <span class="c1">// 即使下面的代码抛出异常，文件也会被正确关闭</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">lines</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">buffer</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">fgets</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buffer</span><span class="p">),</span> <span class="n">file</span><span class="p">.</span><span class="n">get</span><span class="p">()))</span> <span class="p">{</span>
+        <span class="n">lines</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span>  <span class="c1">// 可能抛出std::bad_alloc</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 处理数据...</span>
+<span class="p">}</span> <span class="c1">// FileGuard析构函数自动关闭文件</span>
+</code></pre></div></div> <h3 id="4-异常处理进阶技术">4. 异常处理进阶技术</h3> <h4 id="41-异常传播与栈展开">4.1 异常传播与栈展开</h4> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span>
+<span class="k">class</span> <span class="nc">DestructorDemo</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="kt">int</span> <span class="n">id_</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="n">DestructorDemo</span><span class="p">(</span><span class="kt">int</span> <span class="n">id</span><span class="p">)</span> <span class="o">:</span> <span class="n">id_</span><span class="p">(</span><span class="n">id</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"构造对象 "</span> <span class="o">&lt;&lt;</span> <span class="n">id_</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="o">~</span><span class="n">DestructorDemo</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"析构对象 "</span> <span class="o">&lt;&lt;</span> <span class="n">id_</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kt">void</span> <span class="nf">level3</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">DestructorDemo</span> <span class="n">obj3</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+    <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">"Level 3 error"</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">level2</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">DestructorDemo</span> <span class="n">obj2</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    <span class="n">level3</span><span class="p">();</span>  <span class="c1">// 抛出异常</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">level1</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">DestructorDemo</span> <span class="n">obj1</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="n">level2</span><span class="p">();</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">exception</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"捕获异常: "</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="c1">// 观察栈展开过程中的析构函数调用</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// 演示栈展开过程</span>
+<span class="kt">void</span> <span class="nf">demonstrateStackUnwinding</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"=== 栈展开演示 ==="</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">level1</span><span class="p">();</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"=== 演示结束 ==="</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div> <h4 id="42-异常重新抛出与嵌套异常">4.2 异常重新抛出与嵌套异常</h4> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;exception&gt;</span><span class="cp">
+</span>
+<span class="c1">// 异常重新抛出</span>
+<span class="kt">void</span> <span class="nf">processWithRetry</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">retryCount</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">maxRetries</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="n">retryCount</span> <span class="o">&lt;</span> <span class="n">maxRetries</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="c1">// 尝试执行可能失败的操作</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">retryCount</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">"模拟暂时性错误"</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"操作成功!"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">catch</span> <span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">exception</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+            <span class="o">++</span><span class="n">retryCount</span><span class="p">;</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"重试 "</span> <span class="o">&lt;&lt;</span> <span class="n">retryCount</span> <span class="o">&lt;&lt;</span> <span class="s">"/"</span> <span class="o">&lt;&lt;</span> <span class="n">maxRetries</span>
+                      <span class="o">&lt;&lt;</span> <span class="s">": "</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">retryCount</span> <span class="o">&gt;=</span> <span class="n">maxRetries</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"重试次数耗尽，重新抛出异常"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+                <span class="k">throw</span><span class="p">;</span>  <span class="c1">// 重新抛出当前异常</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// 嵌套异常处理</span>
+<span class="kt">void</span> <span class="nf">nestedExceptionExample</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">"内层错误"</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">catch</span> <span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">exception</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">throw_with_nested</span><span class="p">(</span>
+                <span class="n">std</span><span class="o">::</span><span class="n">logic_error</span><span class="p">(</span><span class="s">"外层错误: 处理内层错误时发生问题"</span><span class="p">)</span>
+            <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">catch</span> <span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">exception</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"外层异常: "</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+        <span class="c1">// 展开嵌套异常</span>
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">rethrow_if_nested</span><span class="p">(</span><span class="n">e</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">catch</span> <span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">exception</span><span class="o">&amp;</span> <span class="n">nested</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"嵌套异常: "</span> <span class="o">&lt;&lt;</span> <span class="n">nested</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div> <h4 id="43-自定义异常层次结构">4.3 自定义异常层次结构</h4> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sstream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;source_location&gt;</span><span class="c1">  // C++20</span><span class="cp">
+</span>
+<span class="c1">// 基础异常类</span>
+<span class="k">class</span> <span class="nc">ApplicationException</span> <span class="o">:</span> <span class="k">public</span> <span class="n">std</span><span class="o">::</span><span class="n">exception</span> <span class="p">{</span>
+<span class="nl">protected:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">message_</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">details_</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">source_location</span> <span class="n">location_</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="n">ApplicationException</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">message</span><span class="p">,</span>
+                        <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">source_location</span><span class="o">&amp;</span> <span class="n">loc</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">source_location</span><span class="o">::</span><span class="n">current</span><span class="p">())</span>
+        <span class="o">:</span> <span class="n">message_</span><span class="p">(</span><span class="n">message</span><span class="p">),</span> <span class="n">location_</span><span class="p">(</span><span class="n">loc</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="n">std</span><span class="o">::</span><span class="n">ostringstream</span> <span class="n">oss</span><span class="p">;</span>
+        <span class="n">oss</span> <span class="o">&lt;&lt;</span> <span class="n">message_</span> <span class="o">&lt;&lt;</span> <span class="s">" ["</span>
+            <span class="o">&lt;&lt;</span> <span class="n">location_</span><span class="p">.</span><span class="n">file_name</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">":"</span> <span class="o">&lt;&lt;</span> <span class="n">location_</span><span class="p">.</span><span class="n">line</span><span class="p">()</span>
+            <span class="o">&lt;&lt;</span> <span class="s">" in "</span> <span class="o">&lt;&lt;</span> <span class="n">location_</span><span class="p">.</span><span class="n">function_name</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"]"</span><span class="p">;</span>
+        <span class="n">details_</span> <span class="o">=</span> <span class="n">oss</span><span class="p">.</span><span class="n">str</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="nf">what</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span> <span class="k">override</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">details_</span><span class="p">.</span><span class="n">c_str</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">source_location</span><span class="o">&amp;</span> <span class="n">where</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">location_</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// 具体异常类</span>
+<span class="k">class</span> <span class="nc">ValidationException</span> <span class="o">:</span> <span class="k">public</span> <span class="n">ApplicationException</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">fieldName_</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="n">ValidationException</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">field</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">message</span><span class="p">,</span>
+                       <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">source_location</span><span class="o">&amp;</span> <span class="n">loc</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">source_location</span><span class="o">::</span><span class="n">current</span><span class="p">())</span>
+        <span class="o">:</span> <span class="n">ApplicationException</span><span class="p">(</span><span class="s">"Validation error in field '"</span> <span class="o">+</span> <span class="n">field</span> <span class="o">+</span> <span class="s">"': "</span> <span class="o">+</span> <span class="n">message</span><span class="p">,</span> <span class="n">loc</span><span class="p">),</span>
+          <span class="n">fieldName_</span><span class="p">(</span><span class="n">field</span><span class="p">)</span> <span class="p">{}</span>
+
+    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">getFieldName</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">fieldName_</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">BusinessLogicException</span> <span class="o">:</span> <span class="k">public</span> <span class="n">ApplicationException</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="kt">int</span> <span class="n">errorCode_</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="n">BusinessLogicException</span><span class="p">(</span><span class="kt">int</span> <span class="n">code</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">message</span><span class="p">,</span>
+                          <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">source_location</span><span class="o">&amp;</span> <span class="n">loc</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">source_location</span><span class="o">::</span><span class="n">current</span><span class="p">())</span>
+        <span class="o">:</span> <span class="n">ApplicationException</span><span class="p">(</span><span class="s">"Business logic error ["</span> <span class="o">+</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">code</span><span class="p">)</span> <span class="o">+</span> <span class="s">"]: "</span> <span class="o">+</span> <span class="n">message</span><span class="p">,</span> <span class="n">loc</span><span class="p">),</span>
+          <span class="n">errorCode_</span><span class="p">(</span><span class="n">code</span><span class="p">)</span> <span class="p">{}</span>
+
+    <span class="kt">int</span> <span class="n">getErrorCode</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">errorCode_</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// 使用示例</span>
+<span class="kt">void</span> <span class="nf">validateUser</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">username</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">email</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">username</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">throw</span> <span class="n">ValidationException</span><span class="p">(</span><span class="s">"username"</span><span class="p">,</span> <span class="s">"Username cannot be empty"</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">email</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="sc">'@'</span><span class="p">)</span> <span class="o">==</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">::</span><span class="n">npos</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">throw</span> <span class="n">ValidationException</span><span class="p">(</span><span class="s">"email"</span><span class="p">,</span> <span class="s">"Invalid email format"</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">processUserRegistration</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">username</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">email</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="n">validateUser</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">email</span><span class="p">);</span>
+
+        <span class="c1">// 模拟业务逻辑错误</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">username</span> <span class="o">==</span> <span class="s">"admin"</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="n">BusinessLogicException</span><span class="p">(</span><span class="mi">1001</span><span class="p">,</span> <span class="s">"Admin username is reserved"</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"用户注册成功: "</span> <span class="o">&lt;&lt;</span> <span class="n">username</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">catch</span> <span class="p">(</span><span class="k">const</span> <span class="n">ValidationException</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">"验证错误: "</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">"字段: "</span> <span class="o">&lt;&lt;</span> <span class="n">e</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div> <h3 id="5-异常开销">5. 异常开销</h3> <p><code class="language-plaintext highlighter-rouge">try</code>的开销约等于没有，堆栈深度为1的时候抛出异常的开销大约是1微妙，堆栈深度为10的时候抛出异常的开销大约是3微妙，堆栈深度为50的时候抛出异常的开销大约是11微妙。</p> <h3 id="99-quiz">99. quiz</h3> <h4 id="1-如何理解异常的开销">1. 如何理解异常的开销？</h4> <p>在C++中，异常处理开销主要体现在以下几个方面：</p> <ul> <li> <code class="language-plaintext highlighter-rouge">栈展开开销</code>：当异常发生时，程序需要进行栈展开操作，即解除函数调用栈，以确定要调用的异常处理程序。这涉及到对栈上对象的析构等操作，是一个相对耗时的过程。</li> <li> <code class="language-plaintext highlighter-rouge">异常对象开销</code>：异常是通过对象传递的，这些对象通常被分配在堆内存中，会增加内存开销，包括对象的创建和析构。</li> <li> <code class="language-plaintext highlighter-rouge">额外代码路径开销</code>：异常处理机制会使程序增加额外的代码路径，导致编译生成后的程序尺寸偏大，也会在一定程度上降低程序执行速度。</li> <li> <code class="language-plaintext highlighter-rouge">性能开销</code>：异常的跳转会打乱程序的正常执行流程，使编译器难以进行一些优化，可能导致程序性能下降。同时，为保证写出异常安全的代码，往往需要借用C++其它特性，如智能指针，这又进一步加剧了程序的时空开销，包括编译时间延长和运行效率降低。</li> </ul> <h4 id="2-析构函数抛出异常会怎么样">2. 析构函数抛出异常会怎么样？</h4> <p>首先，回顾一下异常处理过程：</p> <ol> <li> <p><strong>栈展开（Stack Unwinding）</strong>：</p> <ul> <li>当一个异常被抛出时，C++ 会开始栈展开过程。这意味着程序会回溯调用栈，寻找相应的 <code class="language-plaintext highlighter-rouge">catch</code>块来处理该异常。</li> <li>在栈展开过程中，所有在栈上的对象的析构函数都会被调用，以确保资源被正确释放。</li> </ul> </li> <li> <p><strong>调用析构函数</strong>：</p> <ul> <li>栈展开过程中，所有在栈上的对象的析构函数都会被调用。这是为了确保在异常处理过程中，所有资源都能被正确释放，避免资源泄漏。</li> </ul> </li> <li> <p><strong>调用 <code class="language-plaintext highlighter-rouge">catch</code>块</strong>：</p> <ul> <li>一旦找到相应的 <code class="language-plaintext highlighter-rouge">catch</code>块，程序会跳转到该 <code class="language-plaintext highlighter-rouge">catch</code>块，并执行其中的代码来处理异常。</li> </ul> </li> <li> <p><strong>调用终止函数</strong>：</p> <ul> <li>如果在栈展开过程中再次抛出异常（例如，析构函数抛出异常），程序将无法同时处理两个异常。根据 C++ 标准，程序必须立即调用 <code class="language-plaintext highlighter-rouge">std::terminate</code> 函数来终止程序。</li> </ul> </li> </ol> <p>一般情况下析构函数是可以抛出异常的。但会潜藏一种情况，即抛出某个异常，在栈展开过程中，需要对栈上所有对象调用析构。如果这个时候析构函数又再次抛出异常，就会导致程序直接调用 <code class="language-plaintext highlighter-rouge">std::terminate</code> 函数。所以不应该让异常传递到析构函数外面，而是应该在析构函数里面直接 <code class="language-plaintext highlighter-rouge">catch</code> 并且处理掉。</p> <p>那为什么析构再次抛出异常就会导致程序直接调用 <code class="language-plaintext highlighter-rouge">std::terminate</code> 呢？因为 C++ 不允许同时处理多个异常，这是 C++ 标准规定的，如果有两个异常就会立刻调用 <code class="language-plaintext highlighter-rouge">std::terminate</code>。而 C++ 标准这么设定，则是因为考虑到以下原因：</p> <ol> <li> <strong>异常处理机制的复杂性</strong>：同时处理多个异常会显著增加异常处理机制的复杂性，导致实现和维护变得更加困难。</li> <li> <strong>栈展开过程</strong>：在栈展开过程中再次抛出异常会导致异常处理逻辑变得混乱，程序无法确定应该优先处理哪个异常。</li> <li> <strong>设计原则</strong>：C++ 设计者选择了简单而一致的异常处理模型，即一次只处理一个异常，使得异常处理机制更加直观和易于理解。</li> </ol> <p>因此，实际上 C++11 之后析构函数不需要声明，默认就是 <code class="language-plaintext highlighter-rouge">noexcept</code> 的。注意，<code class="language-plaintext highlighter-rouge">noexcept</code> 的意思是不对外抛出异常，内部还是可以使用 <code class="language-plaintext highlighter-rouge">try-catch</code> 语句的。</p> <h4 id="3-构造函数出现异常会怎么样">3. 构造函数出现异常会怎么样？</h4> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BookEntry</span><span class="o">::</span><span class="n">BookEntry</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">theImage</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Image</span><span class="p">(</span><span class="n">imageFileName</span><span class="p">);</span>
+    <span class="n">theAudioClip</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AudioClip</span><span class="p">(</span><span class="n">audioClipFileName</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">BookEntry</span><span class="o">::~</span><span class="n">BookEntry</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">delete</span> <span class="n">theImage</span><span class="p">;</span>
+    <span class="k">delete</span> <span class="n">theAudioClip</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div> <p><strong>问题</strong>：如果在 <code class="language-plaintext highlighter-rouge">new AudioClip</code> 处抛出异常，<code class="language-plaintext highlighter-rouge">~BookEntry</code> 析构函数不会被调用，导致 <code class="language-plaintext highlighter-rouge">theImage</code> 永远不会被删除，资源泄露。</p> <ol> <li> <p><strong>对象未完全构造</strong>：</p> <ul> <li>当构造函数抛出异常时，C++ 会认为对象的构造失败。此时，对象并未完全构造成功，因此不会调用该对象的析构函数。</li> </ul> </li> <li> <p><strong>栈展开和资源释放</strong>：</p> <ul> <li>在构造函数抛出异常时，C++ 会开始栈展开过程，调用已经成功构造的成员对象和基类对象的析构函数，以确保资源被正确释放。</li> </ul> </li> </ol> <p>但是<code class="language-plaintext highlighter-rouge">theImage</code>是堆上的数据，就永远不会被删除了。</p> <p><strong>解决方案</strong>：</p> <ul> <li>通过在构造函数中使用 <code class="language-plaintext highlighter-rouge">try-catch</code> 块来捕获异常，并在 <code class="language-plaintext highlighter-rouge">catch</code> 块中释放已经分配的资源，以防止资源泄露。</li> <li>更好的做法是使用智能指针（如 <code class="language-plaintext highlighter-rouge">std::auto_ptr</code>，尽管在现代 C++ 中推荐使用 <code class="language-plaintext highlighter-rouge">std::unique_ptr</code>）来管理资源，这样可以自动处理资源释放，避免手动管理资源带来的复杂性和错误。</li> </ul> <h5 id="31-使用-try-catch-解决资源泄露">3.1 使用 <code class="language-plaintext highlighter-rouge">try-catch</code> 解决资源泄露</h5> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BookEntry</span><span class="o">::</span><span class="n">BookEntry</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="n">theImage</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Image</span><span class="p">(</span><span class="n">imageFileName</span><span class="p">);</span>
+        <span class="n">theAudioClip</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AudioClip</span><span class="p">(</span><span class="n">audioClipFileName</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(...)</span> <span class="p">{</span>
+        <span class="n">cleanup</span><span class="p">();</span>
+        <span class="k">throw</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">BookEntry</span><span class="o">::~</span><span class="n">BookEntry</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">cleanup</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">BookEntry</span><span class="o">::</span><span class="n">cleanup</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">delete</span> <span class="n">theImage</span><span class="p">;</span>
+    <span class="n">theImage</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="k">delete</span> <span class="n">theAudioClip</span><span class="p">;</span>
+    <span class="n">theAudioClip</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div> <ul> <li> <strong>解决方案</strong>：在构造函数中使用 <code class="language-plaintext highlighter-rouge">try-catch</code> 块捕获异常，并在 <code class="language-plaintext highlighter-rouge">catch</code> 块中释放已经分配的资源。</li> <li>注意：一般不会手动调用析构，所以 catch 的时候不要调用析构，构造如果出现异常，一般还是要接着往上抛出的。</li> </ul> <h5 id="32-使用智能指针">3.2 使用智能指针</h5> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;memory&gt;</span><span class="cp">
+</span>
+<span class="k">class</span> <span class="nc">BookEntry</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">BookEntry</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">imageFileName</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">audioClipFileName</span><span class="p">)</span>
+        <span class="o">:</span> <span class="n">theImage</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="n">Image</span><span class="o">&gt;</span><span class="p">(</span><span class="n">imageFileName</span><span class="p">)),</span>
+          <span class="n">theAudioClip</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="n">AudioClip</span><span class="o">&gt;</span><span class="p">(</span><span class="n">audioClipFileName</span><span class="p">))</span> <span class="p">{</span>
+    <span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">Image</span><span class="o">&gt;</span> <span class="n">theImage</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">AudioClip</span><span class="o">&gt;</span> <span class="n">theAudioClip</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div> <ul> <li> <strong>更好的做法</strong>：使用智能指针（如 <code class="language-plaintext highlighter-rouge">std::unique_ptr</code>）来管理资源。智能指针会自动处理资源释放，避免手动管理资源带来的复杂性和错误。 简单来说，就是如果 <code class="language-plaintext highlighter-rouge">theImage</code> 成功构造了，但是 <code class="language-plaintext highlighter-rouge">theAudioClip</code> 没有成功构造，抛出了异常。那 <code class="language-plaintext highlighter-rouge">BookEntry</code> 就会析构栈上的对象，而 <code class="language-plaintext highlighter-rouge">theImage</code> 通过栈上的智能指针管理了，析构这个栈上的 <code class="language-plaintext highlighter-rouge">theImage</code> 对象的时候，就会顺带析构到堆上去。这是 RAII 的原理。</li> </ul> <h4 id="4-通过引用捕获异常">4. 通过引用捕获异常</h4> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">MyException</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="k">virtual</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">what</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="s">"Base Exception"</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">DerivedException</span> <span class="o">:</span> <span class="k">public</span> <span class="n">MyException</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">what</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span> <span class="k">override</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="s">"Derived Exception"</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kt">void</span> <span class="nf">someFunction</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">throw</span> <span class="n">DerivedException</span><span class="p">();</span> 
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">doSomething</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="n">someFunction</span><span class="p">();</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">MyException</span><span class="o">&amp;</span> <span class="n">ex</span><span class="p">)</span> <span class="p">{</span> 
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="n">ex</span><span class="p">.</span><span class="n">what</span><span class="p">();</span> 
+        <span class="c1">// 这里调用的是 DerivedException 的 what 函数</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">MyException</span> <span class="n">ex</span><span class="p">)</span> <span class="p">{</span> 
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="n">ex</span><span class="p">.</span><span class="n">what</span><span class="p">();</span> 
+        <span class="c1">// 这里调用的是 MyException 的 what 函数，而非 DerivedException 的</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div> <ul> <li> <p><strong>通过值捕获异常</strong> 这种方式不会出现上述作用域和内存管理的问题。然而，它存在性能和类型处理的弊端。当异常被抛出时，系统会将异常对象拷贝两次，这会带来一定的性能开销。此外，还会出现派生类和基类的切片问题（slicing problem）。当派生类的异常对象被作为基类异常对象捕获时，派生类特有的部分会被切掉，导致调用的函数是基类版本而非派生类版本。例如：</p> </li> <li> <p><strong>通过引用捕获异常</strong> 通过引用捕获异常可以避免上述所有问题。异常对象只会被拷贝一次，既不会出现因作用域导致的异常失效问题，也不会出现切片问题。在捕获派生类异常时，能够正确调用派生类中重写的函数。例如：</p> </li> </ul> <p>综上所述，在C++ 异常处理中，通过引用捕获异常通常是最稳健和高效的选择，能够避免多种潜在问题，同时保证代码的可读性和可维护性。</p> <h4 id="5-抛出异常没有捕获会怎么样">5. 抛出异常，没有捕获会怎么样?</h4> <p>在C++中，异常处理机制是通过栈展开（stack unwinding）来实现的。当一个异常被抛出时，程序会沿着调用栈向上查找，直到找到一个匹配的异常处理程序（catch块）。如果在调用栈中没有找到匹配的catch块，那么程序会调用函数<code class="language-plaintext highlighter-rouge">std::terminate</code>，通常会导致程序的非正常退出。</p> <p>在调用<code class="language-plaintext highlighter-rouge">std::terminate</code>之前，C++还会尝试调用一个名为<code class="language-plaintext highlighter-rouge">std::unexpected</code>的函数。可以通过<code class="language-plaintext highlighter-rouge">std::set_unexpected</code>函数来设置<code class="language-plaintext highlighter-rouge">std::unexpected</code>的行为。如果<code class="language-plaintext highlighter-rouge">std::unexpected</code>函数没有调用<code class="language-plaintext highlighter-rouge">std::terminate</code>并且能够处理异常，那么程序可能会继续执行。不过，通常情况下，<code class="language-plaintext highlighter-rouge">std::unexpected</code>函数会调用<code class="language-plaintext highlighter-rouge">std::terminate</code>。</p> <p><code class="language-plaintext highlighter-rouge">std::terminate</code>函数的默认行为是调用<code class="language-plaintext highlighter-rouge">abort</code>来终止程序，但可以通过<code class="language-plaintext highlighter-rouge">std::set_terminate</code>函数来改变这个行为。</p> <p>总的来说，如果抛出了异常但没有被捕获，程序通常会立即终止。因此，在编写可能会抛出异常的代码时，应该提供异常处理机制，以防止程序的非正常退出。</p> <h4 id="6-new-失败不需要调用-delete">6. new 失败不需要调用 delete</h4> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdexcept&gt;</span><span class="cp">
+</span>
+<span class="k">class</span> <span class="nc">MyClass</span> <span class="p">{</span>
+   <span class="nl">public:</span>
+    <span class="n">MyClass</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"MyClass constructor</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+        <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">"Exception in MyClass constructor"</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="o">~</span><span class="n">MyClass</span><span class="p">()</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"MyClass destructor</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="n">MyClass</span><span class="o">*</span> <span class="n">obj</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MyClass</span><span class="p">();</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">exception</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// delete obj; // new失败，不需要delete</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">"Caught exception: "</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div> <h4 id="7-cc混用时怎么处理异常">7. C/C++混用时，怎么处理异常？</h4> <p>由于 C 代码中没有异常处理机制，栈展开过程可能无法正确进行，导致未定义行为或程序崩溃。 因此为了避免 C++ 异常传递到没有异常处理机制的 C 代码中，可以采取以下措施：</p> <p>使用<code class="language-plaintext highlighter-rouge">extern "C"</code>的 C++代码是可以使用 c++特性的，因为这个关键词只是让函数用了 name mangling 技术。而 C/C++本身都是用类似的编译器的。</p> <ol> <li> <p><strong>在 C++ 代码中捕获异常</strong>：</p> <ul> <li>在 C++ 代码中捕获所有可能的异常，确保异常不会传递到 C 代码中。</li> </ul> <div class="language-cpp highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="k">extern</span> <span class="s">"C"</span> <span class="kt">void</span> <span class="nf">c_function_wrapper</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="c1">// 调用实际的 C++ 函数</span>
+        <span class="n">cpp_function</span><span class="p">();</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">exception</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 处理异常</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">"Exception caught: "</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(...)</span> <span class="p">{</span>
+        <span class="c1">// 处理所有其他类型的异常</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">"Unknown exception caught"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div> </div> </li> <li> <p><strong>使用 <code class="language-plaintext highlighter-rouge">noexcept</code> 进行函数声明</strong>：</p> <div class="language-cpp highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="k">extern</span> <span class="s">"C"</span> <span class="kt">void</span> <span class="n">cpp_function</span><span class="p">()</span> <span class="k">noexcept</span><span class="p">;</span>
+</code></pre></div> </div> </li> </ol> </div> </article> <br> <hr> <br> <ul class="list-disc pl-8"></ul> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/6_internet.md/">（七）内核那些事儿：操作系统对网络包的处理</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/5_fileSystem.md/">（六）内核那些事儿：文件系统</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/4_interaction.md/">（五）内核那些事儿：系统和程序的交互</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/3_device.md/">（四）内核那些事儿：设备管理与驱动开发</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/2_signal.md/">（三）内核那些事儿：CPU中断和信号</a> </li> </div> </div> <div class="col-sm-4"> <nav id="toc-sidebar" class="sticky-top"></nav> </div> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2025 Marco Huang. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. </div> </footer> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script defer src="/assets/js/bootstrap-toc.min.js?c82ff4de8b0955d6ff14f5b05eed7eb6"></script> <script src="/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/assets/js/common.js?e0514a05c5c95ac1a93a8dfd5249b92e"></script> <script defer src="/assets/js/copy_code.js?c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/js/mathjax-setup.js?a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/assets/js/progress-bar.js?2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script src="/assets/js/vanilla-back-to-top.min.js?f40d453793ff4f64e238e420181a1d17"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/assets/js/search/ninja-keys.min.js?a3446f084dcaecc5f75aa1757d087dcf"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/js/search-setup.js?6c304f7b1992d4b60f7a07956e52f04a"></script> <script src="/assets/js/search-data.js"></script> <script src="/assets/js/shortcut-key.js?6f508d74becd347268a7f822bca7309d"></script> <script src="/assets/js/toc-depth.js"></script> </body> </html>

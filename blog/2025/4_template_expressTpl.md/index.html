@@ -1,0 +1,379 @@
+<!DOCTYPE html> <html lang="cn"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> （五）模板那些事儿：表达式模板 | Marco's blog </title> <meta name="author" content="Marco Huang"> <meta name="description" content="A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design. "> <meta name="keywords" content="jekyll, jekyll-theme, blog"> <link rel="stylesheet" href="/assets/css/bootstrap.min.css?a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/assets/css/academicons.min.css?f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" href="/assets/css/scholar-icons.css?62b2ac103a88034e6882a5be5f3e2772"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link defer href="/assets/css/bootstrap-toc.min.css?6f5af0bb9aab25d79b2448143cbeaa88" rel="stylesheet"> <link rel="stylesheet" href="/assets/css/main.css"> <link rel="stylesheet" href="/assets/css/toc-custom.css"> <link rel="shortcut icon" href="/assets/img/mc_logo.ico?cf243b61f6c6d75747808b3ae8298c5b"> <link rel="stylesheet" href="/assets/css/main.css?d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://marco-hmc.github.io/blog/2025/4_template_expressTpl.md/"> <script src="/assets/js/theme.js?a81d82887dd692e91686b43de4542f18"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> Marco's blog </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">about </a> </li> <li class="nav-item active"> <a class="nav-link" href="/blog/">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/">projects </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/">cv </a> </li> <li class="nav-item"> <button id="search-toggle" title="Search" onclick="openSearchModal()"> <span class="nav-link">ctrl k <i class="ti ti-search"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="ti ti-sun-moon" id="light-toggle-system"></i> <i class="ti ti-moon-filled" id="light-toggle-dark"></i> <i class="ti ti-sun-filled" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="row"> <div class="col-sm-8"> <div class="post"> <header class="post-header"> <h1 class="post-title">（五）模板那些事儿：表达式模板</h1> <p class="post-meta"> Created on September 15, 2025 </p> <p class="post-tags"> <a href="/blog/2025"> <i class="fa-solid fa-calendar fa-sm"></i> 2025 </a>   ·   <a href="/blog/tag/template"> <i class="fa-solid fa-hashtag fa-sm"></i> template</a>   <a href="/blog/tag/doing"> <i class="fa-solid fa-hashtag fa-sm"></i> doing</a>   ·   <a href="/blog/category/c"> <i class="fa-solid fa-tag fa-sm"></i> C++</a> </p> </header> <article class="post-content"> <div id="markdown-content"> <h2 id="五模板那些事儿表达式模板">（五）模板那些事儿：表达式模板</h2> <p>表达式模板（Expression Templates）是一种高级的模板编程技术，主要用于优化复杂表达式的计算，尤其是在数值计算和矩阵运算等领域。它通过延迟计算（Lazy Evaluation）和避免中间结果的生成，显著提高了程序的性能。</p> <h3 id="1-数值计算中的中间变量">1. 数值计算中的中间变量</h3> <p>在 C++ 中，简单的基本类型运算，如 <code class="language-plaintext highlighter-rouge">a = b + c + d;</code>（假设 <code class="language-plaintext highlighter-rouge">a</code>、<code class="language-plaintext highlighter-rouge">b</code>、<code class="language-plaintext highlighter-rouge">c</code>、<code class="language-plaintext highlighter-rouge">d</code> 为 <code class="language-plaintext highlighter-rouge">int</code> 类型），生成的汇编代码大致如下：</p> <pre><code class="language-asm">mov reg, [b] ; 将 b 的值移动到寄存器
+add reg, [c] ; 寄存器的值与 c 相加，结果存于寄存器
+add reg, [d] ; 寄存器的值再与 d 相加，结果仍存于寄存器
+mov [a], reg ; 将寄存器的值移至 a 的内存位置
+</code></pre> <p>然而，当涉及自定义类型时，情况会变得复杂。以如下自定义的 <code class="language-plaintext highlighter-rouge">Vec3</code> 类型为例：</p> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">Vec3</span> <span class="p">{</span>
+    <span class="kt">float</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">Vec3</span> <span class="k">operator</span><span class="o">+</span><span class="p">(</span><span class="k">const</span> <span class="n">Vec3</span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="k">const</span> <span class="n">Vec3</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">Vec3</span><span class="p">{</span> <span class="n">lhs</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">rhs</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">lhs</span><span class="p">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">rhs</span><span class="p">.</span><span class="n">y</span><span class="p">,</span> <span class="n">lhs</span><span class="p">.</span><span class="n">z</span> <span class="o">+</span> <span class="n">rhs</span><span class="p">.</span><span class="n">z</span> <span class="p">};</span>
+<span class="p">}</span>
+<span class="n">Vec3</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">;</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="n">d</span><span class="p">;</span>
+</code></pre></div></div> <p>对于 <code class="language-plaintext highlighter-rouge">a = b + c + d;</code> 这行代码，通常生成的汇编代码类似这样：</p> <pre><code class="language-asm">; tmp1 = b + c
+movss xmm0, [b.x] ; 将 b.x 加载到 xmm0 浮点寄存器
+addss xmm0, [c.x] ; xmm0 与 c.x 相加
+movss [tmp1.x], xmm0 ; 将结果存到 tmp1.x
+
+movss xmm1, [b.y]
+addss xmm1, [c.y]
+movss [tmp1.y], xmm1
+
+movss xmm2, [b.z]
+addss xmm2, [c.z]
+movss [tmp1.z], xmm2
+
+; tmp2 = tmp1 + d
+movss xmm0, [tmp1.x]
+addss xmm0, [d.x]
+movss [tmp2.x], xmm0
+
+movss xmm1, [tmp1.y]
+addss xmm1, [d.y]
+movss [tmp2.y], xmm1
+
+movss xmm2, [tmp1.z]
+addss xmm2, [d.z]
+movss [tmp2.z], xmm2
+
+; a = tmp2
+movss xmm0, [tmp2.x]
+movss [a.x], xmm0
+
+movss xmm1, [tmp2.y]
+movss [a.y], xmm1
+
+movss xmm2, [tmp2.z]
+movss [a.z], xmm2
+</code></pre> <p>在此过程中，由于每次 <code class="language-plaintext highlighter-rouge">+</code> 操作根据 <code class="language-plaintext highlighter-rouge">operator+</code> 的语义都会生成一个 <code class="language-plaintext highlighter-rouge">Vec3</code> 临时变量，即便开启了 <code class="language-plaintext highlighter-rouge">-O3</code> 优化选项，这些临时变量也不一定能被完全优化掉。</p> <p>更优的汇编代码应类似这样：</p> <pre><code class="language-asm">; a.x = b.x + c.x + d.x
+movss xmm0, [b.x]
+addss xmm0, [c.x]
+addss xmm0, [d.x]
+movss [a.x], xmm0
+
+; a.y = b.y + c.y + d.y
+movss xmm1, [b.y]
+addss xmm1, [c.y]
+addss xmm1, [d.y]
+movss [a.y], xmm1
+
+; a.z = b.z + c.z + d.z
+movss xmm2, [b.z]
+addss xmm2, [c.z]
+addss xmm2, [d.z]
+movss [a.z], xmm2
+</code></pre> <p>对比两段汇编代码，后者没有中间变量，减少了频繁的内存写回操作，效率更高。</p> <p>编译器不能直接优化成更优代码的原因：</p> <ul> <li> <strong>语义一致性的保持</strong>：编译器需要遵循 C++ 的语言标准和语义。在标准中，<code class="language-plaintext highlighter-rouge">operator+</code> 的定义会生成临时对象，编译器在优化时需要确保不改变程序的可观察行为。优化成无临时变量的形式可能会改变某些边界情况下程序的行为，例如在临时对象有副作用（如析构函数中有重要操作）时，直接去除临时对象会导致副作用无法执行。</li> <li> <strong>数据流和控制流分析的局限性</strong>：编译器的优化依赖于对代码数据流和控制流的分析。复杂的代码结构、指针运算、虚函数调用等因素会增加分析的难度。对于 <code class="language-plaintext highlighter-rouge">Vec3</code> 的例子，如果代码中存在对 <code class="language-plaintext highlighter-rouge">Vec3</code> 对象的复杂操作，或者 <code class="language-plaintext highlighter-rouge">operator+</code> 函数内有复杂逻辑，编译器可能难以确定去除临时对象是否安全，从而无法进行这种优化。</li> </ul> <p>那么，怎样才能让编译器生成后者代码呢？这个时候就可以使用表达式模板了</p> <h3 id="2-表达式模板的原理">2. 表达式模板的原理</h3> <p>正如前面<code class="language-plaintext highlighter-rouge">a = b + c + d;</code>这个例子中，问题在于如果<code class="language-plaintext highlighter-rouge">a,b,c,d</code>是自定义类型的时候，编译器往往都会生成临时变量，这个优化编译器不好直接优化，如果是基本类型，则往往都能够在同一个寄存器操作完毕，然后不需要再写回到内存当中去，因为不涉及到临时变量的构造，特别临时变量如果是有构造函数的话，编译器不好判断是否需要优化。因此如果要砍掉这个中间变量的话，其实就是让自定义类型和自定义类型的运算，转变成基本类型之间的运算。 即</p> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">Vec3</span> <span class="p">{</span>
+    <span class="kt">float</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">Vec3</span> <span class="k">operator</span><span class="o">+</span><span class="p">(</span><span class="k">const</span> <span class="n">Vec3</span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="k">const</span> <span class="n">Vec3</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">Vec3</span><span class="p">{</span> <span class="n">lhs</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">rhs</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">lhs</span><span class="p">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">rhs</span><span class="p">.</span><span class="n">y</span><span class="p">,</span> <span class="n">lhs</span><span class="p">.</span><span class="n">z</span> <span class="o">+</span> <span class="n">rhs</span><span class="p">.</span><span class="n">z</span> <span class="p">};</span>
+<span class="p">}</span>
+<span class="n">Vec3</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">;</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="n">d</span><span class="p">;</span>
+
+<span class="c1">// bad way</span>
+<span class="k">auto</span> <span class="n">tmp</span> <span class="o">=</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span><span class="p">;</span> <span class="c1">// 会生成中间变量</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">tmp</span> <span class="o">+</span> <span class="n">d</span><span class="p">;</span>
+
+<span class="c1">// ideal way</span>
+<span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="p">,</span> <span class="n">a</span><span class="p">.</span><span class="n">z</span> <span class="o">=</span> <span class="p">[</span><span class="n">b</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">c</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">d</span><span class="p">.</span><span class="n">x</span><span class="p">],</span> <span class="p">[</span><span class="n">b</span><span class="p">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">c</span><span class="p">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">d</span><span class="p">.</span><span class="n">y</span><span class="p">],</span> <span class="p">[</span><span class="n">b</span><span class="p">.</span><span class="n">z</span> <span class="o">+</span> <span class="n">c</span><span class="p">.</span><span class="n">z</span> <span class="o">+</span> <span class="n">d</span><span class="p">.</span><span class="n">z</span><span class="p">]</span>
+</code></pre></div></div> <p>而<code class="language-plaintext highlighter-rouge">[b.x + c.x + d.x]</code>的时候是相当于这种的，因此就没有中间变量了。</p> <pre><code class="language-asm">movss xmm0, [b.x]
+addss xmm0, [c.x]
+addss xmm0, [d.x]
+movss [a.x], xmm0
+</code></pre> <p>而要达到这种目的，需要一种延迟计算的能力，即<code class="language-plaintext highlighter-rouge">a = b + c + d;</code>的时候不要算出来具体的值，只是存储这个表达式，知道是哪些基本类型相加，最后的时候求值的时候才展开计算，这个时候就是多个基本类型相加，就不需要中间变量了。而获得表达式这个的开销实际上是和具体数值无关的，因此这部分开销应该通过模板元变成挪到编译时进行。最后，基于上述想法的叠加，最终得到的一个实现就如下了：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">Vector</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">data</span><span class="p">;</span>
+
+    <span class="n">Vector</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">size</span><span class="p">)</span> <span class="o">:</span> <span class="n">data</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="p">{}</span>
+
+    <span class="c1">// 重载加法运算符，返回表达式模板</span>
+    <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">E</span><span class="p">&gt;</span>
+    <span class="n">Vector</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">E</span><span class="o">&amp;</span> <span class="n">expr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">data</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">expr</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">T</span><span class="o">&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="p">}</span>
+    <span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// 表达式模板类</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">L</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">R</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">AddExpr</span> <span class="p">{</span>
+    <span class="k">const</span> <span class="n">L</span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">;</span>
+    <span class="k">const</span> <span class="n">R</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="n">AddExpr</span><span class="p">(</span><span class="k">const</span> <span class="n">L</span><span class="o">&amp;</span> <span class="n">l</span><span class="p">,</span> <span class="k">const</span> <span class="n">R</span><span class="o">&amp;</span> <span class="n">r</span><span class="p">)</span> <span class="o">:</span> <span class="n">lhs</span><span class="p">(</span><span class="n">l</span><span class="p">),</span> <span class="n">rhs</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="p">{}</span>
+
+    <span class="k">auto</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">lhs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">rhs</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// 重载加法运算符，返回表达式模板</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">L</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">R</span><span class="p">&gt;</span>
+<span class="k">auto</span> <span class="k">operator</span><span class="o">+</span><span class="p">(</span><span class="k">const</span> <span class="n">L</span><span class="o">&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="k">const</span> <span class="n">R</span><span class="o">&amp;</span> <span class="n">rhs</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">AddExpr</span><span class="o">&lt;</span><span class="n">L</span><span class="p">,</span> <span class="n">R</span><span class="o">&gt;</span><span class="p">(</span><span class="n">lhs</span><span class="p">,</span> <span class="n">rhs</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">a</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">b</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">c</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+    <span class="n">a</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">};</span>
+    <span class="n">b</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">};</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span> <span class="c1">// 使用表达式模板</span>
+    <span class="k">for</span> <span class="p">(</span><span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">val</span> <span class="o">:</span> <span class="n">c</span><span class="p">.</span><span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">val</span> <span class="o">&lt;&lt;</span> <span class="s">" "</span><span class="p">;</span> <span class="c1">// 输出：5 7 9</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div> <p>其优点在于：</p> <ul> <li> <strong>性能优化</strong>：通过延迟计算避免了中间结果的生成，减少了临时对象的创建和拷贝。</li> <li> <strong>灵活性</strong>：可以轻松扩展支持更多的操作符和表达式类型。</li> <li> <strong>编译期优化</strong>：表达式模板利用了模板的静态多态性，允许编译器在编译期生成高效的代码。</li> </ul> <p>应用场景在于：</p> <ul> <li> <strong>数值计算库</strong>：如 Eigen、Blaze 等矩阵运算库。</li> <li> <strong>符号计算</strong>：如符号代数库。</li> <li> <strong>嵌入式开发</strong>：在资源受限的环境中，通过表达式模板优化性能。</li> </ul> <p>但是这东西都非常看编译器优化，我试过开不同编译优化等级、是否开<code class="language-plaintext highlighter-rouge">-ffast-math</code> <code class="language-plaintext highlighter-rouge">-funroll-loops</code>这些都对性能影响很大，特别是如果这些都开了，表达式模板能比传统方式快非常非常多。</p> <h3 id="99-appendix">99. appendix</h3> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;array&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;chrono&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;random&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span>
+<span class="c1">// ------------------------- 表达式模板基类 -------------------------</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">E</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">Expression</span> <span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="kt">double</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">E</span><span class="o">&amp;&gt;</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">)[</span><span class="n">i</span><span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="kt">size_t</span> <span class="nf">size</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">E</span><span class="o">&amp;&gt;</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">).</span><span class="n">size</span><span class="p">();</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// ------------------------- std::array 实现 -------------------------</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="kt">size_t</span> <span class="n">N</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">VectorET_array</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Expression</span><span class="o">&lt;</span><span class="n">VectorET_array</span><span class="o">&lt;</span><span class="n">N</span><span class="o">&gt;&gt;</span> <span class="p">{</span>
+  <span class="nl">private:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span> <span class="n">N</span><span class="o">&gt;</span> <span class="n">data</span><span class="p">;</span>
+
+  <span class="nl">public:</span>
+    <span class="n">VectorET_array</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+
+    <span class="kt">double</span><span class="o">&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="p">}</span>
+    <span class="kt">double</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="p">}</span>
+
+    <span class="kt">size_t</span> <span class="n">size</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">N</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">E</span><span class="p">&gt;</span>
+    <span class="n">VectorET_array</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">Expression</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;&amp;</span> <span class="n">expr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">expr</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// ------------------------- std::vector 实现（表达式模板） -------------------------</span>
+<span class="k">class</span> <span class="nc">VectorET_vector</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Expression</span><span class="o">&lt;</span><span class="n">VectorET_vector</span><span class="o">&gt;</span> <span class="p">{</span>
+  <span class="nl">private:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">data</span><span class="p">;</span>
+
+  <span class="nl">public:</span>
+    <span class="n">VectorET_vector</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">size</span><span class="p">)</span> <span class="o">:</span> <span class="n">data</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="p">{}</span>
+
+    <span class="kt">double</span><span class="o">&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="p">}</span>
+    <span class="kt">double</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="p">}</span>
+
+    <span class="kt">size_t</span> <span class="nf">size</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">data</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="p">}</span>
+
+    <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">E</span><span class="p">&gt;</span>
+    <span class="n">VectorET_vector</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">Expression</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;&amp;</span> <span class="n">expr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">data</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">expr</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// ------------------------- std::vector 实现（传统计算） -------------------------</span>
+<span class="k">class</span> <span class="nc">VectorTraditional</span> <span class="p">{</span>
+  <span class="nl">private:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">data</span><span class="p">;</span>
+
+  <span class="nl">public:</span>
+    <span class="n">VectorTraditional</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">size</span><span class="p">)</span> <span class="o">:</span> <span class="n">data</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="p">{}</span>
+
+    <span class="kt">double</span><span class="o">&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="p">}</span>
+    <span class="k">const</span> <span class="kt">double</span><span class="o">&amp;</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="p">}</span>
+
+    <span class="kt">size_t</span> <span class="nf">size</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">data</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="p">}</span>
+
+    <span class="n">VectorTraditional</span> <span class="k">operator</span><span class="o">+</span><span class="p">(</span><span class="k">const</span> <span class="n">VectorTraditional</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span>
+        <span class="n">VectorTraditional</span> <span class="n">result</span><span class="p">(</span><span class="n">size</span><span class="p">());</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">other</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">VectorTraditional</span> <span class="k">operator</span><span class="o">-</span><span class="p">(</span><span class="k">const</span> <span class="n">VectorTraditional</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span>
+        <span class="n">VectorTraditional</span> <span class="n">result</span><span class="p">(</span><span class="n">size</span><span class="p">());</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">other</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">VectorTraditional</span> <span class="k">operator</span><span class="o">*</span><span class="p">(</span><span class="kt">double</span> <span class="n">scalar</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span>
+        <span class="n">VectorTraditional</span> <span class="n">result</span><span class="p">(</span><span class="n">size</span><span class="p">());</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">scalar</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// ------------------------- 表达式模板运算 -------------------------</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">E1</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">E2</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">AddExpr</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Expression</span><span class="o">&lt;</span><span class="n">AddExpr</span><span class="o">&lt;</span><span class="n">E1</span><span class="p">,</span> <span class="n">E2</span><span class="o">&gt;&gt;</span> <span class="p">{</span>
+  <span class="nl">private:</span>
+    <span class="k">const</span> <span class="n">E1</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">;</span>
+    <span class="k">const</span> <span class="n">E2</span><span class="o">&amp;</span> <span class="n">b</span><span class="p">;</span>
+
+  <span class="nl">public:</span>
+    <span class="n">AddExpr</span><span class="p">(</span><span class="k">const</span> <span class="n">E1</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">,</span> <span class="k">const</span> <span class="n">E2</span><span class="o">&amp;</span> <span class="n">b</span><span class="p">)</span> <span class="o">:</span> <span class="n">a</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">b</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="p">{}</span>
+    <span class="kt">double</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="p">}</span>
+    <span class="kt">size_t</span> <span class="nf">size</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">a</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">E1</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">E2</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">SubExpr</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Expression</span><span class="o">&lt;</span><span class="n">SubExpr</span><span class="o">&lt;</span><span class="n">E1</span><span class="p">,</span> <span class="n">E2</span><span class="o">&gt;&gt;</span> <span class="p">{</span>
+  <span class="nl">private:</span>
+    <span class="k">const</span> <span class="n">E1</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">;</span>
+    <span class="k">const</span> <span class="n">E2</span><span class="o">&amp;</span> <span class="n">b</span><span class="p">;</span>
+
+  <span class="nl">public:</span>
+    <span class="n">SubExpr</span><span class="p">(</span><span class="k">const</span> <span class="n">E1</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">,</span> <span class="k">const</span> <span class="n">E2</span><span class="o">&amp;</span> <span class="n">b</span><span class="p">)</span> <span class="o">:</span> <span class="n">a</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">b</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="p">{}</span>
+    <span class="kt">double</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="p">}</span>
+    <span class="kt">size_t</span> <span class="nf">size</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">a</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">E</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">MulExpr</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Expression</span><span class="o">&lt;</span><span class="n">MulExpr</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;&gt;</span> <span class="p">{</span>
+  <span class="nl">private:</span>
+    <span class="k">const</span> <span class="n">E</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">scalar</span><span class="p">;</span>
+
+  <span class="nl">public:</span>
+    <span class="n">MulExpr</span><span class="p">(</span><span class="k">const</span> <span class="n">E</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">,</span> <span class="kt">double</span> <span class="n">scalar</span><span class="p">)</span> <span class="o">:</span> <span class="n">a</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">scalar</span><span class="p">(</span><span class="n">scalar</span><span class="p">)</span> <span class="p">{}</span>
+    <span class="kt">double</span> <span class="k">operator</span><span class="p">[](</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">scalar</span><span class="p">;</span> <span class="p">}</span>
+    <span class="kt">size_t</span> <span class="nf">size</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">a</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// 运算符重载</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">E1</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">E2</span><span class="p">&gt;</span>
+<span class="n">AddExpr</span><span class="o">&lt;</span><span class="n">E1</span><span class="p">,</span> <span class="n">E2</span><span class="o">&gt;</span> <span class="k">operator</span><span class="o">+</span><span class="p">(</span><span class="k">const</span> <span class="n">Expression</span><span class="o">&lt;</span><span class="n">E1</span><span class="o">&gt;&amp;</span> <span class="n">a</span><span class="p">,</span> <span class="k">const</span> <span class="n">Expression</span><span class="o">&lt;</span><span class="n">E2</span><span class="o">&gt;&amp;</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">AddExpr</span><span class="o">&lt;</span><span class="n">E1</span><span class="p">,</span> <span class="n">E2</span><span class="o">&gt;</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">E1</span><span class="o">&amp;&gt;</span><span class="p">(</span><span class="n">a</span><span class="p">),</span>
+                           <span class="k">static_cast</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">E2</span><span class="o">&amp;&gt;</span><span class="p">(</span><span class="n">b</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">E1</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">E2</span><span class="p">&gt;</span>
+<span class="n">SubExpr</span><span class="o">&lt;</span><span class="n">E1</span><span class="p">,</span> <span class="n">E2</span><span class="o">&gt;</span> <span class="k">operator</span><span class="o">-</span><span class="p">(</span><span class="k">const</span> <span class="n">Expression</span><span class="o">&lt;</span><span class="n">E1</span><span class="o">&gt;&amp;</span> <span class="n">a</span><span class="p">,</span> <span class="k">const</span> <span class="n">Expression</span><span class="o">&lt;</span><span class="n">E2</span><span class="o">&gt;&amp;</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">SubExpr</span><span class="o">&lt;</span><span class="n">E1</span><span class="p">,</span> <span class="n">E2</span><span class="o">&gt;</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">E1</span><span class="o">&amp;&gt;</span><span class="p">(</span><span class="n">a</span><span class="p">),</span>
+                           <span class="k">static_cast</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">E2</span><span class="o">&amp;&gt;</span><span class="p">(</span><span class="n">b</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">E</span><span class="p">&gt;</span>
+<span class="n">MulExpr</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="k">operator</span><span class="o">*</span><span class="p">(</span><span class="k">const</span> <span class="n">Expression</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;&amp;</span> <span class="n">a</span><span class="p">,</span> <span class="kt">double</span> <span class="n">scalar</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">MulExpr</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">E</span><span class="o">&amp;&gt;</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">scalar</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">E</span><span class="p">&gt;</span>
+<span class="n">MulExpr</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="k">operator</span><span class="o">*</span><span class="p">(</span><span class="kt">double</span> <span class="n">scalar</span><span class="p">,</span> <span class="k">const</span> <span class="n">Expression</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;&amp;</span> <span class="n">a</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">MulExpr</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">E</span><span class="o">&amp;&gt;</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">scalar</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// ------------------------- 初始化函数 -------------------------</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">Vec</span><span class="p">&gt;</span>
+<span class="kt">void</span> <span class="nf">initVector</span><span class="p">(</span><span class="n">Vec</span><span class="o">&amp;</span> <span class="n">vec</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">mt19937</span> <span class="n">gen</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">random_device</span><span class="p">{}());</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">uniform_real_distribution</span><span class="o">&lt;&gt;</span> <span class="n">dis</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">vec</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">vec</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">dis</span><span class="p">(</span><span class="n">gen</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// ------------------------- 测试 array -------------------------</span>
+<span class="kt">void</span> <span class="nf">runArrayTest</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">constexpr</span> <span class="kt">size_t</span> <span class="n">N</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">;</span>
+    <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">iterations</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+    <span class="k">using</span> <span class="n">Vec</span> <span class="o">=</span> <span class="n">VectorET_array</span><span class="o">&lt;</span><span class="n">N</span><span class="o">&gt;</span><span class="p">;</span>
+
+    <span class="n">Vec</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">result</span><span class="p">;</span>
+    <span class="n">initVector</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+    <span class="n">initVector</span><span class="p">(</span><span class="n">b</span><span class="p">);</span>
+    <span class="n">initVector</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
+    <span class="n">initVector</span><span class="p">(</span><span class="n">d</span><span class="p">);</span>
+
+    <span class="k">auto</span> <span class="n">start</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">high_resolution_clock</span><span class="o">::</span><span class="n">now</span><span class="p">();</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">iterations</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">((</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">c</span> <span class="o">*</span> <span class="mf">2.0</span><span class="p">))</span> <span class="o">+</span> <span class="p">(</span><span class="n">d</span> <span class="o">*</span> <span class="mf">3.0</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">auto</span> <span class="n">end</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">high_resolution_clock</span><span class="o">::</span><span class="n">now</span><span class="p">();</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"std::array + 表达式模板: "</span>
+              <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">duration</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">milli</span><span class="o">&gt;</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">).</span><span class="n">count</span><span class="p">()</span>
+              <span class="o">&lt;&lt;</span> <span class="s">" ms</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// ------------------------- 测试 vector + 表达式模板 -------------------------</span>
+<span class="kt">void</span> <span class="nf">runVectorTemplateTest</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">constexpr</span> <span class="kt">size_t</span> <span class="n">N</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">;</span>
+    <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">iterations</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+    <span class="k">using</span> <span class="n">Vec</span> <span class="o">=</span> <span class="n">VectorET_vector</span><span class="p">;</span>
+
+    <span class="n">Vec</span> <span class="n">a</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">b</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">c</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">d</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">result</span><span class="p">(</span><span class="n">N</span><span class="p">);</span>
+    <span class="n">initVector</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+    <span class="n">initVector</span><span class="p">(</span><span class="n">b</span><span class="p">);</span>
+    <span class="n">initVector</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
+    <span class="n">initVector</span><span class="p">(</span><span class="n">d</span><span class="p">);</span>
+
+    <span class="k">auto</span> <span class="n">start</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">high_resolution_clock</span><span class="o">::</span><span class="n">now</span><span class="p">();</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">iterations</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">((</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">c</span> <span class="o">*</span> <span class="mf">2.0</span><span class="p">))</span> <span class="o">+</span> <span class="p">(</span><span class="n">d</span> <span class="o">*</span> <span class="mf">3.0</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">auto</span> <span class="n">end</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">high_resolution_clock</span><span class="o">::</span><span class="n">now</span><span class="p">();</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"std::vector + 表达式模板: "</span>
+              <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">duration</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">milli</span><span class="o">&gt;</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">).</span><span class="n">count</span><span class="p">()</span>
+              <span class="o">&lt;&lt;</span> <span class="s">" ms</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// ------------------------- 测试 vector + 传统写法 -------------------------</span>
+<span class="kt">void</span> <span class="nf">runVectorTraditionalTest</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">constexpr</span> <span class="kt">size_t</span> <span class="n">N</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">;</span>
+    <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">iterations</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+    <span class="k">using</span> <span class="n">Vec</span> <span class="o">=</span> <span class="n">VectorTraditional</span><span class="p">;</span>
+
+    <span class="n">Vec</span> <span class="n">a</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">b</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">c</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">d</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">result</span><span class="p">(</span><span class="n">N</span><span class="p">);</span>
+    <span class="n">initVector</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+    <span class="n">initVector</span><span class="p">(</span><span class="n">b</span><span class="p">);</span>
+    <span class="n">initVector</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
+    <span class="n">initVector</span><span class="p">(</span><span class="n">d</span><span class="p">);</span>
+
+    <span class="k">auto</span> <span class="n">start</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">high_resolution_clock</span><span class="o">::</span><span class="n">now</span><span class="p">();</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">iterations</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">-</span> <span class="p">(</span><span class="n">c</span> <span class="o">*</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">d</span> <span class="o">*</span> <span class="mf">3.0</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">auto</span> <span class="n">end</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">high_resolution_clock</span><span class="o">::</span><span class="n">now</span><span class="p">();</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"std::vector + 传统写法: "</span>
+              <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">duration</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">milli</span><span class="o">&gt;</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">).</span><span class="n">count</span><span class="p">()</span>
+              <span class="o">&lt;&lt;</span> <span class="s">" ms</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// ------------------------- main -------------------------</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"表达式模板 vs 传统写法 性能对比:</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+    <span class="n">runArrayTest</span><span class="p">();</span>
+    <span class="n">runVectorTemplateTest</span><span class="p">();</span>
+    <span class="n">runVectorTraditionalTest</span><span class="p">();</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre></div></div> </div> </article> <br> <hr> <br> <ul class="list-disc pl-8"></ul> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/6_internet.md/">（七）内核那些事儿：操作系统对网络包的处理</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/5_fileSystem.md/">（六）内核那些事儿：文件系统</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/4_interaction.md/">（五）内核那些事儿：系统和程序的交互</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/3_device.md/">（四）内核那些事儿：设备管理与驱动开发</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/2_signal.md/">（三）内核那些事儿：CPU中断和信号</a> </li> </div> </div> <div class="col-sm-4"> <nav id="toc-sidebar" class="sticky-top"></nav> </div> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2025 Marco Huang. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. </div> </footer> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script defer src="/assets/js/bootstrap-toc.min.js?c82ff4de8b0955d6ff14f5b05eed7eb6"></script> <script src="/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/assets/js/common.js?e0514a05c5c95ac1a93a8dfd5249b92e"></script> <script defer src="/assets/js/copy_code.js?c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/js/mathjax-setup.js?a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/assets/js/progress-bar.js?2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script src="/assets/js/vanilla-back-to-top.min.js?f40d453793ff4f64e238e420181a1d17"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/assets/js/search/ninja-keys.min.js?a3446f084dcaecc5f75aa1757d087dcf"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/js/search-setup.js?6c304f7b1992d4b60f7a07956e52f04a"></script> <script src="/assets/js/search-data.js"></script> <script src="/assets/js/shortcut-key.js?6f508d74becd347268a7f822bca7309d"></script> <script src="/assets/js/toc-depth.js"></script> </body> </html>

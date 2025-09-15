@@ -1,0 +1,270 @@
+<!DOCTYPE html> <html lang="cn"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> （二）函数式那些事儿：Lambda 演算 | Marco's blog </title> <meta name="author" content="Marco Huang"> <meta name="description" content="A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design. "> <meta name="keywords" content="jekyll, jekyll-theme, blog"> <link rel="stylesheet" href="/assets/css/bootstrap.min.css?a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/assets/css/academicons.min.css?f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" href="/assets/css/scholar-icons.css?62b2ac103a88034e6882a5be5f3e2772"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link defer href="/assets/css/bootstrap-toc.min.css?6f5af0bb9aab25d79b2448143cbeaa88" rel="stylesheet"> <link rel="stylesheet" href="/assets/css/main.css"> <link rel="stylesheet" href="/assets/css/toc-custom.css"> <link rel="shortcut icon" href="/assets/img/mc_logo.ico?cf243b61f6c6d75747808b3ae8298c5b"> <link rel="stylesheet" href="/assets/css/main.css?d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://marco-hmc.github.io/blog/2025/1_lambda_calculus.md/"> <script src="/assets/js/theme.js?a81d82887dd692e91686b43de4542f18"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> Marco's blog </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">about </a> </li> <li class="nav-item active"> <a class="nav-link" href="/blog/">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/">projects </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/">cv </a> </li> <li class="nav-item"> <button id="search-toggle" title="Search" onclick="openSearchModal()"> <span class="nav-link">ctrl k <i class="ti ti-search"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="ti ti-sun-moon" id="light-toggle-system"></i> <i class="ti ti-moon-filled" id="light-toggle-dark"></i> <i class="ti ti-sun-filled" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="row"> <div class="col-sm-8"> <div class="post"> <header class="post-header"> <h1 class="post-title">（二）函数式那些事儿：Lambda 演算</h1> <p class="post-meta"> Created on September 15, 2025 </p> <p class="post-tags"> <a href="/blog/2025"> <i class="fa-solid fa-calendar fa-sm"></i> 2025 </a>   ·   <a href="/blog/tag/%E5%87%BD%E6%95%B0%E5%BC%8F"> <i class="fa-solid fa-hashtag fa-sm"></i> 函数式</a>   ·   <a href="/blog/category/%E5%87%BD%E6%95%B0%E5%BC%8F"> <i class="fa-solid fa-tag fa-sm"></i> 函数式</a> </p> </header> <article class="post-content"> <div id="markdown-content"> <h2 id="lambda-演算函数式编程的数学基础">Lambda 演算：函数式编程的数学基础</h2> <h3 id="1-引言从数学到计算机科学的桥梁">1. 引言：从数学到计算机科学的桥梁</h3> <h4 id="11-历史背景与重要性">1.1 历史背景与重要性</h4> <p><strong>历史脉络：</strong> 1930年代，数学危机促使数学家们寻求更严格的逻辑基础。阿隆佐·邱奇（Alonzo Church）提出Lambda演算，试图为数学提供统一的逻辑基础。虽然在数学基础方面遇到挫折，但却意外地为计算机科学奠定了理论基石。</p> <p><strong>时代意义对比：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1930s: Lambda演算诞生 → 数学逻辑研究
+1940s: 图灵机模型 → 计算理论
+1950s: 第一台计算机 → 工程实现
+1960s: LISP语言 → Lambda演算的首次工程化
+2000s: 函数式编程复兴 → 现代软件工程需求
+</code></pre></div></div> <p>Lambda演算的核心洞察是：<strong>计算即函数应用</strong>。这一思想彻底改变了我们对计算本质的理解。</p> <h4 id="12-什么是-lambda-演算">1.2 什么是 Lambda 演算</h4> <p><strong>核心理念：</strong> Lambda演算是一种极简的计算模型，仅用三种基本构造就能表达所有可计算的函数：</p> <ol> <li> <strong>变量（Variables）</strong>：<code class="language-plaintext highlighter-rouge">x</code>, <code class="language-plaintext highlighter-rouge">y</code>, <code class="language-plaintext highlighter-rouge">z</code> - 表示数据</li> <li> <strong>抽象（Abstraction）</strong>：<code class="language-plaintext highlighter-rouge">λx.M</code> - 表示函数定义</li> <li> <strong>应用（Application）</strong>：<code class="language-plaintext highlighter-rouge">M N</code> - 表示函数调用</li> </ol> <p><strong>哲学思想：</strong> 在Lambda演算中，<strong>一切皆为函数</strong>。数字、布尔值、数据结构，甚至控制流都通过函数来表示。这种统一性使得Lambda演算具有惊人的表达能力。</p> <p><strong>与现代编程的关系：</strong></p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 现代C++中的Lambda表达式直接继承了Lambda演算的思想</span>
+<span class="k">auto</span> <span class="n">identity</span> <span class="o">=</span> <span class="p">[](</span><span class="k">auto</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">x</span><span class="p">;</span> <span class="p">};</span>        <span class="c1">// λx.x</span>
+<span class="k">auto</span> <span class="n">constant</span> <span class="o">=</span> <span class="p">[](</span><span class="k">auto</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="p">[</span><span class="n">x</span><span class="p">](</span><span class="k">auto</span> <span class="n">y</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">x</span><span class="p">;</span> <span class="p">};</span> <span class="p">};</span> <span class="c1">// λx.λy.x</span>
+<span class="k">auto</span> <span class="n">apply</span> <span class="o">=</span> <span class="p">[](</span><span class="k">auto</span> <span class="n">f</span><span class="p">,</span> <span class="k">auto</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">);</span> <span class="p">};</span> <span class="c1">// 函数应用</span>
+</code></pre></div></div> <h3 id="2-lambda-表达式的形式化定义">2. Lambda 表达式的形式化定义</h3> <h4 id="21-语法结构bnf范式">2.1 语法结构（BNF范式）</h4> <p><strong>形式化语法：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>表达式 ::= 变量 | 抽象 | 应用
+变量   ::= x | y | z | ...
+抽象   ::= λ变量.表达式
+应用   ::= 表达式 表达式
+</code></pre></div></div> <p><strong>实际示例：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>x                    // 变量
+λx.x                 // 恒等函数
+λx.λy.x             // 常量函数（K组合子）
+λx.λy.λz.x z (y z)  // S组合子
+(λx.x) y            // 函数应用
+</code></pre></div></div> <h4 id="22-变量绑定与作用域">2.2 变量绑定与作用域</h4> <p><strong>绑定变量 vs 自由变量：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>λx.x y     // x是绑定变量，y是自由变量
+λx.λy.x    // x和y都是绑定变量
+λx.x (λy.y x)  // 外层x绑定，内层y绑定，但内层x引用外层绑定
+</code></pre></div></div> <p><strong>作用域规则：</strong></p> <ul> <li>Lambda抽象 <code class="language-plaintext highlighter-rouge">λx.M</code> 将变量 <code class="language-plaintext highlighter-rouge">x</code> 在表达式 <code class="language-plaintext highlighter-rouge">M</code> 中绑定</li> <li>内层绑定会遮蔽外层同名变量</li> <li>自由变量在当前表达式中未被绑定</li> </ul> <p><strong>C++对比理解：</strong></p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Lambda演算: λx.λy.x</span>
+<span class="k">auto</span> <span class="n">curry_example</span> <span class="o">=</span> <span class="p">[](</span><span class="k">auto</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">x</span><span class="p">](</span><span class="k">auto</span> <span class="n">y</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">// x被闭包捕获</span>
+        <span class="k">return</span> <span class="n">x</span><span class="p">;</span>         <span class="c1">// 返回外层的x</span>
+    <span class="p">};</span>
+<span class="p">};</span>
+
+<span class="c1">// 变量遮蔽示例</span>
+<span class="k">auto</span> <span class="n">shadowing</span> <span class="o">=</span> <span class="p">[](</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[](</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>    <span class="c1">// 内层x遮蔽外层x</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">};</span>
+</code></pre></div></div> <h3 id="3-lambda-演算的归约规则">3. Lambda 演算的归约规则</h3> <h4 id="31-alpha变换α-conversion变量重命名">3.1 Alpha变换（α-conversion）：变量重命名</h4> <p><strong>目的：</strong> 避免变量名冲突，保持语义等价性</p> <p><strong>规则：</strong> 绑定变量可以被重命名，只要不与自由变量冲突</p> <p><strong>示例：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>λx.x ≡α λy.y ≡α λz.z    // 都是恒等函数
+
+// 避免变量捕获
+λx.λy.x y   不能直接替换为  λx.λx.x x  // 会造成变量捕获
+正确的Alpha变换: λx.λy.x y ≡α λx.λz.x z
+</code></pre></div></div> <p><strong>实际应用场景：</strong></p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 编译器在内联函数时需要进行类似的变量重命名</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">auto</span> <span class="nf">make_adder</span><span class="p">(</span><span class="n">T</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">x</span><span class="p">](</span><span class="n">T</span> <span class="n">y</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">;</span> <span class="p">};</span>  <span class="c1">// 避免参数名冲突</span>
+<span class="p">}</span>
+</code></pre></div></div> <h4 id="32-beta归约β-reduction函数应用">3.2 Beta归约（β-reduction）：函数应用</h4> <p><strong>核心规则：</strong> <code class="language-plaintext highlighter-rouge">(λx.M) N →β M[x := N]</code></p> <p>其中 <code class="language-plaintext highlighter-rouge">M[x := N]</code> 表示在 <code class="language-plaintext highlighter-rouge">M</code> 中将所有自由出现的 <code class="language-plaintext highlighter-rouge">x</code> 替换为 <code class="language-plaintext highlighter-rouge">N</code></p> <p><strong>详细示例：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 基础应用
+(λx.x) y →β y
+
+// 高阶函数应用
+(λx.λy.x) a b →β (λy.a) b →β a
+
+// 复杂替换
+(λx.x x) (λy.y) →β (λy.y) (λy.y) →β λy.y
+</code></pre></div></div> <p><strong>替换规则的细节：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 1. 变量替换
+x[x := N] = N
+y[x := N] = y  (当 y ≠ x)
+
+// 2. 应用中的替换
+(M₁ M₂)[x := N] = (M₁[x := N]) (M₂[x := N])
+
+// 3. 抽象中的替换（避免变量捕获）
+(λy.M)[x := N] = λy.(M[x := N])  // 当 y ∉ FV(N) 且 y ≠ x
+</code></pre></div></div> <p><strong>变量捕获问题及解决：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 问题：变量捕获
+(λx.λy.x y) y  // 如果直接替换会出现问题
+
+// 解决：先进行Alpha变换
+(λx.λy.x y) y ≡α (λx.λz.x z) y →β λz.y z
+</code></pre></div></div> <h4 id="33-eta归约η-reduction函数等价性">3.3 Eta归约（η-reduction）：函数等价性</h4> <p><strong>核心规则：</strong> <code class="language-plaintext highlighter-rouge">λx.f x →η f</code> （当 x ∉ FV(f)）</p> <p><strong>直观理解：</strong> 如果一个函数只是将参数传递给另一个函数，那么它们是等价的</p> <p><strong>示例：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>λx.f x →η f           // 基本Eta归约
+λx.(λy.y) x →η λy.y   // 复合情况
+λx.x →η I             // 恒等函数不能进一步归约
+</code></pre></div></div> <p><strong>程序语言中的对应：</strong></p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// C++中的类似概念</span>
+<span class="k">auto</span> <span class="n">wrapper</span> <span class="o">=</span> <span class="p">[](</span><span class="k">auto</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">some_function</span><span class="p">(</span><span class="n">x</span><span class="p">);</span> <span class="p">};</span>
+<span class="c1">// 在某些情况下等价于</span>
+<span class="k">auto</span><span class="o">&amp;</span> <span class="n">wrapper</span> <span class="o">=</span> <span class="n">some_function</span><span class="p">;</span>  <span class="c1">// 直接引用</span>
+
+<span class="c1">// 函数对象的Eta等价</span>
+<span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">f1</span> <span class="o">=</span> <span class="p">[](</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="p">);</span> <span class="p">};</span>
+<span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">f2</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">abs</span><span class="p">;</span>  <span class="c1">// Eta等价</span>
+</code></pre></div></div> <h4 id="34-归约策略与计算复杂性">3.4 归约策略与计算复杂性</h4> <p><strong>求值策略比较：</strong></p> <ol> <li> <strong>正常顺序（Normal Order）</strong> <ul> <li>总是归约最左边的最外层redex</li> <li>保证找到正常形式（如果存在）</li> <li>对应惰性求值</li> </ul> </li> </ol> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 示例：(λx.λy.y) ((λz.z z) (λz.z z))
+// 正常顺序：先归约外层
+(λx.λy.y) ((λz.z z) (λz.z z)) →β λy.y
+// 避免了内层的无限循环
+</code></pre></div></div> <ol> <li> <strong>应用顺序（Applicative Order）</strong> <ul> <li>总是归约最左边的最内层redex</li> <li>对应严格求值</li> <li>可能在无限循环中终止</li> </ul> </li> </ol> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 同样的示例
+(λx.λy.y) ((λz.z z) (λz.z z))
+// 应用顺序：先归约内层 (λz.z z) (λz.z z)
+// 这会导致无限循环！
+</code></pre></div></div> <p><strong>Church-Rosser定理：</strong> 如果表达式可以归约到正常形式，那么无论选择什么归约策略，最终结果都是唯一的（模Alpha等价）。</p> <h3 id="4-经典lambda算子与组合子">4. 经典Lambda算子与组合子</h3> <h4 id="41-基础组合子">4.1 基础组合子</h4> <p><strong>I组合子（恒等函数）：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>I = λx.x
+
+// 应用示例
+I 42 →β 42
+I I →β I
+</code></pre></div></div> <p><strong>K组合子（常量函数）：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>K = λx.λy.x
+
+// 应用示例
+K a b →β a
+K I (λx.x x) →β I  // 第二个参数被忽略
+</code></pre></div></div> <p><strong>S组合子（替换函数）：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>S = λx.λy.λz.x z (y z)
+
+// 应用示例
+S K K a →β K a (K a) →β a
+// S K K 等价于 I
+</code></pre></div></div> <p><strong>SKI完备性：</strong> 任何Lambda表达式都可以用S、K、I组合子表示！</p> <h4 id="42-church编码数据结构的函数式表示">4.2 Church编码：数据结构的函数式表示</h4> <p><strong>Church数字：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0 = λf.λx.x           // 零次应用
+1 = λf.λx.f x         // 一次应用
+2 = λf.λx.f (f x)     // 两次应用
+3 = λf.λx.f (f (f x)) // 三次应用
+n = λf.λx.f^n x       // n次应用
+</code></pre></div></div> <p><strong>算术运算：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 后继函数
+SUCC = λn.λf.λx.f (n f x)
+
+// 加法
+ADD = λm.λn.λf.λx.m f (n f x)
+// 等价于: ADD = λm.λn.m SUCC n
+
+// 乘法
+MUL = λm.λn.λf.m (n f)
+
+// 指数
+EXP = λm.λn.n m
+</code></pre></div></div> <p><strong>计算示例：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 计算 SUCC 1
+SUCC 1
+= (λn.λf.λx.f (n f x)) (λf.λx.f x)
+→β λf.λx.f ((λf.λx.f x) f x)
+→β λf.λx.f (f x)
+= 2
+</code></pre></div></div> <p><strong>布尔值与逻辑：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TRUE  = λx.λy.x  // 选择第一个参数
+FALSE = λx.λy.y  // 选择第二个参数
+
+// 逻辑运算
+AND = λp.λq.p q FALSE
+OR  = λp.λq.p TRUE q
+NOT = λp.λa.λb.p b a
+
+// 条件表达式
+IF = λp.λa.λb.p a b
+</code></pre></div></div> <p><strong>列表结构：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 配对
+PAIR = λx.λy.λf.f x y
+FST  = λp.p TRUE   // 提取第一个元素
+SND  = λp.p FALSE  // 提取第二个元素
+
+// 列表
+NIL  = λx.TRUE     // 空列表
+CONS = λh.λt.λf.f h t  // 构造列表
+HEAD = FST         // 列表头
+TAIL = SND         // 列表尾
+
+// 判断空列表
+NULL = λl.l (λh.λt.FALSE)
+</code></pre></div></div> <h4 id="43-y组合子递归的实现">4.3 Y组合子：递归的实现</h4> <p><strong>问题背景：</strong> Lambda演算中没有命名机制，如何实现递归？</p> <p><strong>不动点理论：</strong> 如果 <code class="language-plaintext highlighter-rouge">Y f = f (Y f)</code>，那么 <code class="language-plaintext highlighter-rouge">Y f</code> 就是函数 <code class="language-plaintext highlighter-rouge">f</code> 的不动点</p> <p><strong>Y组合子定义：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Y = λf.(λx.f (x x)) (λx.f (x x))
+</code></pre></div></div> <p><strong>工作原理验证：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Y f
+= (λf.(λx.f (x x)) (λx.f (x x))) f
+→β (λx.f (x x)) (λx.f (x x))
+→β f ((λx.f (x x)) (λx.f (x x)))
+= f (Y f)  // 满足不动点性质
+</code></pre></div></div> <p><strong>递归函数实现：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 阶乘函数的递归实现
+FACT = Y (λf.λn.IF (ISZERO n) 1 (MUL n (f (PRED n))))
+
+// 其中需要的辅助函数
+ISZERO = λn.n (λx.FALSE) TRUE
+PRED = λn.λf.λx.n (λg.λh.h (g f)) (λu.x) (λu.u)
+</code></pre></div></div> <p><strong>现代编程语言中的对应：</strong></p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Y组合子的C++实现</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">F</span><span class="p">&gt;</span>
+<span class="k">auto</span> <span class="nf">Y</span><span class="p">(</span><span class="n">F</span> <span class="n">f</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">f</span><span class="p">](</span><span class="k">auto</span> <span class="n">x</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="o">&gt;</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">f</span><span class="p">([</span><span class="n">x</span><span class="p">](</span><span class="k">auto</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">x</span><span class="p">(</span><span class="n">x</span><span class="p">)(</span><span class="n">v</span><span class="p">);</span> <span class="p">});</span>
+    <span class="p">}([</span><span class="n">f</span><span class="p">](</span><span class="k">auto</span> <span class="n">x</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="o">&gt;</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">f</span><span class="p">([</span><span class="n">x</span><span class="p">](</span><span class="k">auto</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">x</span><span class="p">(</span><span class="n">x</span><span class="p">)(</span><span class="n">v</span><span class="p">);</span> <span class="p">});</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+
+<span class="c1">// 使用Y组合子实现阶乘</span>
+<span class="k">auto</span> <span class="n">factorial</span> <span class="o">=</span> <span class="n">Y</span><span class="p">([](</span><span class="k">auto</span> <span class="n">f</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">f</span><span class="p">](</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">?</span> <span class="mi">1</span> <span class="o">:</span> <span class="n">n</span> <span class="o">*</span> <span class="n">f</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">};</span>
+<span class="p">});</span>
+</code></pre></div></div> <h3 id="5-lambda演算的计算能力">5. Lambda演算的计算能力</h3> <h4 id="51-图灵完备性">5.1 图灵完备性</h4> <p><strong>Church-Turing论题：</strong> Lambda演算与图灵机在计算能力上等价，都能表达所有可计算的函数。</p> <p><strong>证明要点：</strong></p> <ol> <li>任何图灵机都可以用Lambda表达式模拟</li> <li>任何Lambda表达式都可以在图灵机上计算</li> <li>递归函数、μ-递归函数都可以表示</li> </ol> <p><strong>实际意义：</strong> 这意味着Lambda演算是一个完整的编程语言理论基础。</p> <h4 id="52-计算复杂性">5.2 计算复杂性</h4> <p><strong>时间复杂性：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Church数字的加法复杂性
+ADD m n 需要 O(m) 步骤
+
+// 乘法复杂性  
+MUL m n 需要 O(m×n) 步骤
+
+// 指数运算复杂性
+EXP m n 需要 O(m^n) 步骤
+</code></pre></div></div> <p><strong>空间复杂性：</strong></p> <ul> <li>正常顺序求值可能需要指数级空间</li> <li>应用顺序求值通常需要线性空间</li> <li>共享技术可以优化空间使用</li> </ul> <h4 id="53-停机问题">5.3 停机问题</h4> <p><strong>不可判定性：</strong> 给定任意Lambda表达式，判断它是否会终止是不可判定的。</p> <p><strong>示例：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 这个表达式会无限循环
+Ω = (λx.x x) (λx.x x)
+
+// 这个表达式的停机性依赖于输入
+TEST = λf.λx.f x x
+</code></pre></div></div> <h3 id="6-lambda演算在现代编程中的应用">6. Lambda演算在现代编程中的应用</h3> <h4 id="61-函数式编程语言设计">6.1 函数式编程语言设计</h4> <p><strong>语言特性映射：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Lambda演算特性        → 编程语言特性
+函数抽象             → lambda表达式/匿名函数
+函数应用             → 函数调用
+高阶函数             → 函数作为参数/返回值
+柯里化               → 部分应用
+递归                → 递归函数定义
+</code></pre></div></div> <p><strong>Haskell示例：</strong></p> <div class="language-haskell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">-- 直接对应Lambda演算</span>
+<span class="n">identity</span> <span class="o">=</span> <span class="nf">\</span><span class="n">x</span> <span class="o">-&gt;</span> <span class="n">x</span>                    <span class="c1">-- λx.x</span>
+<span class="n">const</span> <span class="o">=</span> <span class="nf">\</span><span class="n">x</span> <span class="o">-&gt;</span> <span class="nf">\</span><span class="n">y</span> <span class="o">-&gt;</span> <span class="n">x</span>                 <span class="c1">-- λx.λy.x</span>
+<span class="n">compose</span> <span class="o">=</span> <span class="nf">\</span><span class="n">f</span> <span class="o">-&gt;</span> <span class="nf">\</span><span class="n">g</span> <span class="o">-&gt;</span> <span class="nf">\</span><span class="n">x</span> <span class="o">-&gt;</span> <span class="n">f</span> <span class="p">(</span><span class="n">g</span> <span class="n">x</span><span class="p">)</span>   <span class="c1">-- λf.λg.λx.f (g x)</span>
+</code></pre></div></div> <h4 id="62-类型系统的发展">6.2 类型系统的发展</h4> <p><strong>Simply Typed Lambda Calculus：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>类型语法：
+τ ::= α | τ₁ → τ₂
+
+类型规则：
+Γ ⊢ x : τ     如果 (x:τ) ∈ Γ
+Γ,x:τ₁ ⊢ M : τ₂
+─────────────────── 
+Γ ⊢ λx.M : τ₁ → τ₂
+
+Γ ⊢ M : τ₁ → τ₂    Γ ⊢ N : τ₁
+──────────────────────────────
+Γ ⊢ M N : τ₂
+</code></pre></div></div> <p><strong>现代类型系统扩展：</strong></p> <ul> <li>多态类型（System F）</li> <li>依赖类型</li> <li>线性类型</li> <li>会话类型</li> </ul> <h4 id="63-编译器优化技术">6.3 编译器优化技术</h4> <p><strong>基于Lambda演算的优化：</strong></p> <ol> <li> <strong>Beta归约优化：</strong> <div class="language-cpp highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="c1">// 内联优化的理论基础</span>
+<span class="k">auto</span> <span class="n">f</span> <span class="o">=</span> <span class="p">[](</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="p">};</span>
+<span class="k">auto</span> <span class="n">result</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span>  <span class="c1">// 可以优化为: auto result = 42 + 1;</span>
+</code></pre></div> </div> </li> <li> <strong>Eta归约优化：</strong> <div class="language-cpp highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="c1">// 函数包装器消除</span>
+<span class="k">auto</span> <span class="n">wrapper</span> <span class="o">=</span> <span class="p">[](</span><span class="k">auto</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">);</span> <span class="p">};</span>
+<span class="c1">// 优化为直接使用 std::sin</span>
+</code></pre></div> </div> </li> <li> <strong>死代码消除：</strong> <div class="language-cpp highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="c1">// 基于Church编码的常量折叠</span>
+<span class="k">auto</span> <span class="n">always_true</span> <span class="o">=</span> <span class="p">[](</span><span class="k">auto</span> <span class="n">x</span><span class="p">,</span> <span class="k">auto</span> <span class="n">y</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">x</span><span class="p">;</span> <span class="p">};</span>  <span class="c1">// K组合子</span>
+<span class="k">auto</span> <span class="n">result</span> <span class="o">=</span> <span class="n">always_true</span><span class="p">(</span><span class="mi">42</span><span class="p">,</span> <span class="n">expensive_computation</span><span class="p">());</span>
+<span class="c1">// expensive_computation() 可以被消除</span>
+</code></pre></div> </div> </li> </ol> <h3 id="7-实践练习与深入理解">7. 实践练习与深入理解</h3> <h4 id="71-手工归约练习">7.1 手工归约练习</h4> <p><strong>练习1：基础归约</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>计算：(λx.λy.x y) (λz.z) a
+
+步骤：
+1. (λx.λy.x y) (λz.z) a
+2. →β (λy.(λz.z) y) a
+3. →β (λz.z) a  
+4. →β a
+</code></pre></div></div> <p><strong>练习2：复杂递归</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>使用Y组合子计算斐波那契数列：
+FIB = Y (λf.λn.IF (LEQ n 1) n (ADD (f (SUB n 1)) (f (SUB n 2))))
+</code></pre></div></div> <h4 id="72-c实现练习">7.2 C++实现练习</h4> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 实现Church数字和算术运算</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">F</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">X</span><span class="p">&gt;</span>
+<span class="k">using</span> <span class="n">Church</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="n">X</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="c1">// Church数字0</span>
+<span class="k">auto</span> <span class="n">zero</span> <span class="o">=</span> <span class="p">[](</span><span class="k">auto</span> <span class="n">f</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[](</span><span class="k">auto</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">x</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">};</span>
+
+<span class="c1">// Church数字1  </span>
+<span class="k">auto</span> <span class="n">one</span> <span class="o">=</span> <span class="p">[](</span><span class="k">auto</span> <span class="n">f</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">f</span><span class="p">](</span><span class="k">auto</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+    <span class="p">};</span>
+<span class="p">};</span>
+
+<span class="c1">// 后继函数</span>
+<span class="k">auto</span> <span class="n">succ</span> <span class="o">=</span> <span class="p">[](</span><span class="k">auto</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">n</span><span class="p">](</span><span class="k">auto</span> <span class="n">f</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">f</span><span class="p">](</span><span class="k">auto</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">n</span><span class="p">(</span><span class="n">f</span><span class="p">)(</span><span class="n">x</span><span class="p">));</span>
+        <span class="p">};</span>
+    <span class="p">};</span>
+<span class="p">};</span>
+
+<span class="c1">// 加法</span>
+<span class="k">auto</span> <span class="n">add</span> <span class="o">=</span> <span class="p">[](</span><span class="k">auto</span> <span class="n">m</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">m</span><span class="p">](</span><span class="k">auto</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">](</span><span class="k">auto</span> <span class="n">f</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">f</span><span class="p">](</span><span class="k">auto</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="n">m</span><span class="p">(</span><span class="n">f</span><span class="p">)(</span><span class="n">n</span><span class="p">(</span><span class="n">f</span><span class="p">)(</span><span class="n">x</span><span class="p">));</span>
+            <span class="p">};</span>
+        <span class="p">};</span>
+    <span class="p">};</span>
+<span class="p">};</span>
+</code></pre></div></div> </div> </article> <br> <hr> <br> <ul class="list-disc pl-8"></ul> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/6_internet.md/">（七）内核那些事儿：操作系统对网络包的处理</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/5_fileSystem.md/">（六）内核那些事儿：文件系统</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/4_interaction.md/">（五）内核那些事儿：系统和程序的交互</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/3_device.md/">（四）内核那些事儿：设备管理与驱动开发</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/2_signal.md/">（三）内核那些事儿：CPU中断和信号</a> </li> </div> </div> <div class="col-sm-4"> <nav id="toc-sidebar" class="sticky-top"></nav> </div> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2025 Marco Huang. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. </div> </footer> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script defer src="/assets/js/bootstrap-toc.min.js?c82ff4de8b0955d6ff14f5b05eed7eb6"></script> <script src="/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/assets/js/common.js?e0514a05c5c95ac1a93a8dfd5249b92e"></script> <script defer src="/assets/js/copy_code.js?c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/js/mathjax-setup.js?a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/assets/js/progress-bar.js?2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script src="/assets/js/vanilla-back-to-top.min.js?f40d453793ff4f64e238e420181a1d17"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/assets/js/search/ninja-keys.min.js?a3446f084dcaecc5f75aa1757d087dcf"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/js/search-setup.js?6c304f7b1992d4b60f7a07956e52f04a"></script> <script src="/assets/js/search-data.js"></script> <script src="/assets/js/shortcut-key.js?6f508d74becd347268a7f822bca7309d"></script> <script src="/assets/js/toc-depth.js"></script> </body> </html>

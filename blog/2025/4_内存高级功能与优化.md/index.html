@@ -1,0 +1,227 @@
+<!DOCTYPE html> <html lang="cn"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> （五）内存那些事儿：内存高级功能与优化 | Marco's blog </title> <meta name="author" content="Marco Huang"> <meta name="description" content="A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design. "> <meta name="keywords" content="jekyll, jekyll-theme, blog"> <link rel="stylesheet" href="/assets/css/bootstrap.min.css?a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/assets/css/academicons.min.css?f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" href="/assets/css/scholar-icons.css?62b2ac103a88034e6882a5be5f3e2772"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link defer href="/assets/css/bootstrap-toc.min.css?6f5af0bb9aab25d79b2448143cbeaa88" rel="stylesheet"> <link rel="stylesheet" href="/assets/css/main.css"> <link rel="stylesheet" href="/assets/css/toc-custom.css"> <link rel="shortcut icon" href="/assets/img/mc_logo.ico?cf243b61f6c6d75747808b3ae8298c5b"> <link rel="stylesheet" href="/assets/css/main.css?d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://marco-hmc.github.io/blog/2025/4_%E5%86%85%E5%AD%98%E9%AB%98%E7%BA%A7%E5%8A%9F%E8%83%BD%E4%B8%8E%E4%BC%98%E5%8C%96.md/"> <script src="/assets/js/theme.js?a81d82887dd692e91686b43de4542f18"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> Marco's blog </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">about </a> </li> <li class="nav-item active"> <a class="nav-link" href="/blog/">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/">projects </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/">cv </a> </li> <li class="nav-item"> <button id="search-toggle" title="Search" onclick="openSearchModal()"> <span class="nav-link">ctrl k <i class="ti ti-search"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="ti ti-sun-moon" id="light-toggle-system"></i> <i class="ti ti-moon-filled" id="light-toggle-dark"></i> <i class="ti ti-sun-filled" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="row"> <div class="col-sm-8"> <div class="post"> <header class="post-header"> <h1 class="post-title">（五）内存那些事儿：内存高级功能与优化</h1> <p class="post-meta"> Created on September 15, 2025 </p> <p class="post-tags"> <a href="/blog/2025"> <i class="fa-solid fa-calendar fa-sm"></i> 2025 </a>   ·   <a href="/blog/tag/memory"> <i class="fa-solid fa-hashtag fa-sm"></i> Memory</a>   ·   <a href="/blog/category/os"> <i class="fa-solid fa-tag fa-sm"></i> OS</a> </p> </header> <article class="post-content"> <div id="markdown-content"> <h2 id="内存高级功能与优化">内存高级功能与优化</h2> <p>在掌握了内存分配、虚拟内存等基础概念后，现代操作系统面临更加复杂的挑战：</p> <ol> <li> <strong>安全性需求</strong>：如何防止恶意程序或错误代码破坏系统？</li> <li> <strong>性能优化需求</strong>：如何在保证功能的基础上最大化系统性能？</li> <li> <strong>资源共享需求</strong>：如何在多进程环境下高效共享内存资源？</li> </ol> <p>为应对这些挑战，操作系统发展出了一系列<strong>高级内存管理技术</strong>，包括内存保护、缓存管理、碎片整理、内存共享和内存映射等机制。这些技术相互配合，构成了现代内存管理的完整体系。</p> <p><strong>技术发展的层次关系</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>基础内存管理 → 高级功能扩展 → 性能与安全平衡
+    ↓              ↓              ↓
+分配与虚拟化    保护与优化    共享与映射
+</code></pre></div></div> <h3 id="1-内存保护系统安全的第一道防线">1. 内存保护：系统安全的第一道防线</h3> <h4 id="11-技术背景与设计动机">1.1 技术背景与设计动机</h4> <p><strong>历史问题</strong>：早期系统中程序可以任意访问内存，导致：</p> <ul> <li>一个程序的错误可能影响其他程序甚至操作系统</li> <li>恶意程序可以读取或修改其他程序的敏感数据</li> <li>系统稳定性严重依赖所有程序的正确性</li> </ul> <p><strong>解决思路</strong>：建立内存访问的权限控制机制，确保进程只能访问被授权的内存区域。</p> <h4 id="12-内存保护的实现机制">1.2 内存保护的实现机制</h4> <h5 id="121-地址空间隔离">1.2.1 地址空间隔离</h5> <p><strong>核心原理</strong>：每个进程拥有独立的虚拟地址空间</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>进程A地址空间    进程B地址空间    物理内存
+┌─────────┐    ┌─────────┐    ┌─────────┐
+│ 0x1000  │ ─→ │ 0x1000  │ ─→ │ 0x5000  │ ← 不同映射
+├─────────┤    ├─────────┤    ├─────────┤
+│ 0x2000  │ ─→ │ 0x2000  │ ─→ │ 0x8000  │
+└─────────┘    └─────────┘    └─────────┘
+</code></pre></div></div> <p><strong>实现机制</strong>：</p> <ul> <li>每个进程拥有独立的页表</li> <li>MMU 根据当前进程的页表进行地址转换</li> <li>进程无法访问不在其页表中的物理地址</li> </ul> <h5 id="122-访问权限控制">1.2.2 访问权限控制</h5> <p><strong>权限类型</strong>：</p> <ul> <li> <strong>读权限（R）</strong>：允许读取数据</li> <li> <strong>写权限（W）</strong>：允许修改数据</li> <li> <strong>执行权限（X）</strong>：允许执行代码</li> </ul> <p><strong>权限组合示例</strong>：</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌─────────────┬─────┬─────┬─────┬─────────────┐
+│ 内存区域    │  R  │  W  │  X  │    用途     │
+├─────────────┼─────┼─────┼─────┼─────────────┤
+│ 代码段      │  ✓  │  ✗  │  ✓  │ 程序指令    │
+│ 数据段      │  ✓  │  ✓  │  ✗  │ 全局变量    │
+│ 栈区        │  ✓  │  ✓  │  ✗  │ 函数调用    │
+│ 堆区        │  ✓  │  ✓  │  ✗  │ 动态分配    │
+└─────────────┴─────┴─────┴─────┴─────────────┘
+</code></pre></div></div> <h5 id="123-硬件支持机制">1.2.3 硬件支持机制</h5> <p><strong>MMU 的保护功能</strong>：</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>虚拟地址 → MMU检查 → 权限验证 → 物理地址
+    ↓         ↓          ↓         ↓
+访问请求   查页表项   检查权限位   正常访问
+                        ↓
+                   权限违反 → 异常中断
+</code></pre></div></div> <p><strong>异常处理流程</strong>：</p> <ol> <li>MMU 检测到权限违反</li> <li>触发保护异常中断</li> <li>操作系统接管控制权</li> <li>分析异常类型和原因</li> <li>执行相应处理（终止进程、发送信号等）</li> </ol> <h4 id="13-内存保护的安全价值">1.3 内存保护的安全价值</h4> <ol> <li> <strong>隔离性保障</strong>：防止进程间相互干扰</li> <li> <strong>完整性保护</strong>：防止代码段被意外修改</li> <li> <strong>攻击防御</strong>：阻止缓冲区溢出等攻击手段</li> <li> <strong>系统稳定性</strong>：避免单个程序错误影响整个系统</li> </ol> <hr> <h3 id="2-高速缓存管理性能优化的核心技术">2. 高速缓存管理：性能优化的核心技术</h3> <h4 id="21-缓存技术的引入背景">2.1 缓存技术的引入背景</h4> <p><strong>性能瓶颈</strong>：处理器速度与存储器速度的差距不断扩大</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>访问延迟对比（纳秒级）：
+寄存器：    ~0.1ns
+L1缓存：    ~1ns    （10倍差距）
+L2缓存：    ~3ns    （30倍差距）
+L3缓存：    ~12ns   （120倍差距）
+内存：      ~100ns  （1000倍差距）
+磁盘：      ~10ms   （100万倍差距）
+</code></pre></div></div> <p><strong>解决策略</strong>：构建多层次缓存体系，利用程序的局部性原理提升访问效率。</p> <ul> <li> <strong>缓存指标 - 缓存命中率</strong> 缓存命中描述了成功从缓存中提供内容的情况。标签在内存中快速搜索，当找到并读取数据时，就被认为是缓存命中。 缓存命中率是衡量缓存性能的重要指标，它表示在所有的内存访问请求中，能够直接从缓存中获取数据的请求所占的比例。较高的缓存命中率意味着更多的数据访问可以在高速缓存中完成，从而减少对慢速存储的访问，提高系统性能。更多关于缓存命中率的介绍可参考 <a href="https://blog.csdn.net/qq_22585453/article/details/110080900" rel="external nofollow noopener" target="_blank">缓存命中率介绍</a>。</li> </ul> <p>所有缓存模式都可抽象为一种映射。例如，查询一个虚拟地址为 0x12345678 的变量值时，首先通过缓存映射计算。若映射值有效，则直接返回缓存值；否则继续查找其他存储层次。在缓存命中的情况下，需要解决内存与缓存之间如何建立关联的映射问题，不同的缓存设计采用不同的映射方式（如直接映射、全相联映射、组相联映射等）来实现这种关联。</p> <h4 id="22-缓存层次结构与工作原理">2.2 缓存层次结构与工作原理</h4> <h5 id="221-缓存层级设计">2.2.1 缓存层级设计</h5> <p><strong>分层缓存架构</strong>：</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌─────────────────────────────────────────────┐
+│              CPU 核心                       │
+├─────────────────────────────────────────────┤
+│ L1I缓存(32KB) │ L1D缓存(32KB) │  ~1ns      │
+├─────────────────────────────────────────────┤
+│           L2缓存(256KB)         │  ~3ns      │
+├─────────────────────────────────────────────┤
+│           L3缓存(8MB,共享)      │  ~12ns     │
+├─────────────────────────────────────────────┤
+│               内存               │  ~100ns   │
+└─────────────────────────────────────────────┘
+</code></pre></div></div> <p><strong>缓存行结构</strong>：</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌─────────┬──────────────────────┬─────────┬─────────┐
+│ 有效位  │       标记位         │  数据   │ 状态位  │
+└─────────┴──────────────────────┴─────────┴─────────┘
+     ↓                ↓               ↓         ↓
+指示数据是否有效     物理地址前缀    实际数据    MESI状态
+</code></pre></div></div> <h5 id="222-缓存映射策略">2.2.2 缓存映射策略</h5> <p>大部分数据的存储都可以看成是一种键值方式，键的意义在于标识数据的唯一性，是 A 数据还是 B 数据。比如说文件数据，其键就是路径；对于报文数据，其键就是报文首部。键的存在使得数据可以区分。键的形式可以作为数据存在，如报文首部，也可以不作为数据存在，如内存地址。</p> <p>对于数据快速查询有要求的场景，通常会要求一组映射关系，使得可以通过键快速找到值；如果没有的话，则需要全遍历比较键是否一致。</p> <p>缓存的实现方式是为了解决数据的快速查询问题。因此，缓存需要有键值对，也需要有映射关系。缓存行结构中的标记（Tag）就是充当键的作用，还需要一种映射方式来实现快速查询。</p> <p><strong>直接映射（Direct Mapped）</strong>：</p> <ul> <li> <strong>原理</strong>：每个内存块只能映射到固定的缓存位置</li> <li> <strong>优点</strong>：硬件实现简单，查找速度快</li> <li> <p><strong>缺点</strong>：容易产生冲突，缓存利用率低 直接映射是一种简单的缓存映射方式。具体思路如下：</p> <ul> <li>缓存空间为 <code class="language-plaintext highlighter-rouge">[0, a]</code>，内存大小为 <code class="language-plaintext highlighter-rouge">[0, n*a]</code>。</li> <li>如果虚拟内存地址为 <code class="language-plaintext highlighter-rouge">[0, n]</code>，则在缓存空间 <code class="language-plaintext highlighter-rouge">0</code> 查找，然后比较标记是否一致。</li> <li>如果虚拟内存地址为 <code class="language-plaintext highlighter-rouge">[n, 2n]</code>，则在缓存空间 <code class="language-plaintext highlighter-rouge">1</code> 查找，然后比较标记是否一致。</li> </ul> <p>这种映射方式可行，但过于简单。一个主要问题是，内存块在缓存中的映射位置是固定的，这导致连续固定间隔的数据每次都要替换缓存；而且没有基于时空局部性这个先验条件做任何优化，即相邻的数据往往更容易被访问。</p> </li> <li> <p><strong>优化思路</strong> 优化思路包括以下两点：</p> <ol> <li> <strong>减少冲突</strong>：避免内存块在缓存中的映射位置固定，减少缓存替换的频率。</li> <li> <strong>利用时空局部性</strong>：相邻的数据往往更容易被访问，优化缓存映射方式以提高命中率。</li> </ol> </li> </ul> <p>在不改变硬件的前提下，直接映射的优化手段有限。可以考虑分级映射（类似于分级页表）或映射到某一个块上再局部全遍历。</p> <p><strong>全相联映射（Fully Associative）</strong>：</p> <ul> <li> <strong>原理</strong>：每个内存块可以映射到任意缓存位置</li> <li> <strong>优点</strong>：冲突少，缓存利用率高</li> <li> <strong>缺点</strong>：查找复杂，硬件成本高</li> </ul> <p><strong>组相联映射（Set Associative）</strong>：</p> <ul> <li> <strong>原理</strong>：缓存分组，块可映射到指定组的任意位置</li> <li> <strong>优点</strong>：平衡性能和成本</li> <li> <strong>缺点</strong>：介于前两者之间的折中方案</li> </ul> <h4 id="23-缓存管理的三大核心问题">2.3 缓存管理的三大核心问题</h4> <h5 id="231-预取策略prefetching">2.3.1 预取策略（Prefetching）</h5> <p><strong>设计目标</strong>：基于程序访问模式预测未来需求，提前加载数据</p> <p><strong>预取类型</strong>：</p> <ol> <li> <p><strong>硬件预取</strong>：</p> <ul> <li> <strong>顺序预取</strong>：检测到连续访问时自动预取下一个缓存行</li> <li> <strong>跨步预取</strong>：识别固定间隔访问模式（如数组遍历）</li> </ul> </li> <li> <p><strong>软件预取</strong>：</p> <ul> <li> <strong>编译器预取</strong>：编译时插入预取指令</li> <li> <strong>程序员手动预取</strong>：使用预取指令优化关键路径</li> </ul> </li> </ol> <p><strong>预取的性能影响</strong>：</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>无预取场景：
+访问A → 缺失 → 等待100ns → 访问B → 缺失 → 等待100ns
+总时间 = 200ns + 计算时间
+
+预取场景：
+预取A+B → 访问A(命中) → 访问B(命中)
+总时间 = 100ns(初始加载) + 计算时间
+</code></pre></div></div> <h5 id="232-替换策略replacement">2.3.2 替换策略（Replacement）</h5> <p><strong>常见替换算法对比</strong>：</p> <table> <thead> <tr> <th>算法</th> <th>策略描述</th> <th>硬件复杂度</th> <th>性能表现</th> <th>适用场景</th> </tr> </thead> <tbody> <tr> <td><strong>随机</strong></td> <td>随机选择替换块</td> <td>简单</td> <td>一般</td> <td>硬件受限环境</td> </tr> <tr> <td><strong>FIFO</strong></td> <td>最先进入的最先替换</td> <td>简单</td> <td>较差</td> <td>特定访问模式</td> </tr> <tr> <td><strong>LRU</strong></td> <td>最近最少使用替换</td> <td>复杂</td> <td>最优</td> <td>通用场景</td> </tr> <tr> <td><strong>LFU</strong></td> <td>使用频率最低替换</td> <td>复杂</td> <td>良好</td> <td>频率敏感场景</td> </tr> </tbody> </table> <h5 id="233-写策略write-policy">2.3.3 写策略（Write Policy）</h5> <p><strong>写直达（Write-Through）</strong>：</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CPU写请求 → 缓存更新 → 同时写入内存
+优点：数据一致性好，实现简单
+缺点：写延迟高，总线带宽消耗大
+</code></pre></div></div> <p><strong>写回（Write-Back）</strong>：</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CPU写请求 → 仅缓存更新 → 设置脏位
+替换时：脏位=1 → 写回内存；脏位=0 → 直接丢弃
+优点：写性能好，总线效率高
+缺点：一致性维护复杂
+</code></pre></div></div> <h4 id="24-多核缓存一致性">2.4 多核缓存一致性</h4> <h5 id="241-一致性问题的产生">2.4.1 一致性问题的产生</h5> <p><strong>问题场景</strong>：</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>初始状态：内存X = 0
+Core1缓存：X = 0    Core2缓存：X = 0
+     ↓                    ↓
+Core1：X = 1         Core2：读取X
+     ↓                    ↓
+Core1缓存：X = 1     Core2缓存：X = 0 ← 不一致!
+</code></pre></div></div> <h5 id="242-mesi-协议解决方案">2.4.2 MESI 协议解决方案</h5> <p><strong>四种状态定义</strong>：</p> <ul> <li> <strong>M (Modified)</strong>：缓存行已修改，独占且与内存不一致</li> <li> <strong>E (Exclusive)</strong>：缓存行独占，与内存一致</li> <li> <strong>S (Shared)</strong>：缓存行共享，与内存一致</li> <li> <strong>I (Invalid)</strong>：缓存行无效</li> </ul> <p><strong>状态转换机制</strong>：</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>读请求处理：
+I → E/S（从内存加载）
+M/E/S → 直接命中
+
+写请求处理：
+I → M（加载并修改）
+E → M（直接修改）
+S → M（使其他副本失效）
+M → M（继续修改）
+</code></pre></div></div> <h3 id="3-内存碎片管理空间效率的优化">3. 内存碎片管理：空间效率的优化</h3> <h4 id="31-碎片问题的根源分析">3.1 碎片问题的根源分析</h4> <p><strong>碎片产生的必然性</strong>：</p> <ol> <li> <strong>动态分配</strong>：程序运行时的内存需求无法预知</li> <li> <strong>释放随机性</strong>：内存释放的时机和顺序不可控</li> <li> <strong>大小多样性</strong>：不同程序的内存需求差异巨大</li> </ol> <p><strong>碎片类型与影响</strong>：</p> <h5 id="311-内部碎片">3.1.1 内部碎片</h5> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>请求：100字节
+分配：128字节（按2^n对齐）
+浪费：28字节内部碎片
+
+影响：降低内存利用率，但管理简单
+</code></pre></div></div> <h5 id="312-外部碎片">3.1.2 外部碎片</h5> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>内存状态：|已用|空闲8KB|已用|空闲12KB|已用|空闲6KB|
+请求：20KB
+结果：总空闲26KB足够，但最大连续空闲仅12KB，分配失败
+
+影响：即使有足够空闲内存也无法满足大块需求
+</code></pre></div></div> <h4 id="32-碎片整理的解决方案">3.2 碎片整理的解决方案</h4> <h5 id="321-紧凑技术compaction">3.2.1 紧凑技术（Compaction）</h5> <p><strong>工作原理</strong>：</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>碎片化状态：
+|进程A|空闲|进程B|空闲|进程C|空闲|
+
+紧凑后状态：
+|进程A|进程B|进程C|    大块空闲    |
+</code></pre></div></div> <p><strong>实施挑战</strong>：</p> <ul> <li>需要暂停所有进程</li> <li>更新所有指针和引用</li> <li>时间开销巨大（O(n)复制操作）</li> </ul> <h5 id="322-分配策略优化">3.2.2 分配策略优化</h5> <p><strong>首次适应（First Fit）</strong>：</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>优点：分配速度快，实现简单
+缺点：容易在低地址产生小碎片
+适用：对分配速度要求高的场景
+</code></pre></div></div> <p><strong>最佳适应（Best Fit）</strong>：</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>优点：减少内存浪费，最大化剩余块
+缺点：产生大量小到无法使用的碎片
+适用：内存紧张的环境
+</code></pre></div></div> <p><strong>最坏适应（Worst Fit）</strong>：</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>优点：保持大的空闲块，减少外部碎片
+缺点：快速消耗大块内存
+适用：需要大内存分配的应用
+</code></pre></div></div> <h5 id="323-现代解决方案">3.2.3 现代解决方案</h5> <p><strong>伙伴系统（Buddy System）</strong>：</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>分配规则：只分配2^n大小的块
+合并规则：释放时自动与"伙伴"合并
+
+示例：分配24KB
+1. 请求32KB（最小的2^n ≥ 24）
+2. 从64KB块分裂：64KB → 32KB + 32KB
+3. 分配其中一个32KB块
+
+优点：分配快速，自动合并，碎片可控
+缺点：内部碎片较多
+</code></pre></div></div> <p><strong>Slab 分配器</strong>：</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>设计思想：为每种对象类型维护专用缓存
+
+结构：
+Cache → Slab → Objects
+  ↓       ↓        ↓
+网络包   页面    实际对象
+
+优点：消除内部碎片，分配极快
+应用：Linux内核、数据库缓冲池
+</code></pre></div></div> <hr> <h3 id="4-内存共享资源效率的最大化">4. 内存共享：资源效率的最大化</h3> <h4 id="41-内存共享的设计动机">4.1 内存共享的设计动机</h4> <p><strong>资源效率问题</strong>：</p> <ul> <li>多个进程加载相同的库文件导致内存重复</li> <li>进程间通信需要数据复制，效率低下</li> <li>大型应用的内存需求超出单进程地址空间</li> </ul> <p><strong>共享的经济效应</strong>：</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>无共享场景：
+进程A：libc.so (2MB)
+进程B：libc.so (2MB)
+进程C：libc.so (2MB)
+总计：6MB
+
+共享场景：
+进程A、B、C：共享libc.so (2MB)
+总计：2MB + 少量私有数据
+节省：67%内存
+</code></pre></div></div> <h4 id="42-内存共享的实现机制">4.2 内存共享的实现机制</h4> <h5 id="421-共享内存shared-memory">4.2.1 共享内存（Shared Memory）</h5> <p><strong>实现原理</strong>：</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>进程A虚拟地址空间    物理内存    进程B虚拟地址空间
+┌─────────────┐                ┌─────────────┐
+│ 0x40000000  │ ─────┐         │ 0x50000000  │
+└─────────────┘      │         └─────────────┘
+                     ↓
+                ┌─────────────┐
+                │ 共享内存区  │
+                └─────────────┘
+</code></pre></div></div> <p><strong>应用编程接口</strong>：</p> <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 系统V共享内存</span>
+<span class="kt">int</span> <span class="n">shmid</span> <span class="o">=</span> <span class="n">shmget</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">IPC_CREAT</span> <span class="o">|</span> <span class="mo">0666</span><span class="p">);</span>
+<span class="kt">void</span> <span class="o">*</span><span class="n">addr</span> <span class="o">=</span> <span class="n">shmat</span><span class="p">(</span><span class="n">shmid</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="c1">// 使用addr指向的共享内存</span>
+<span class="n">shmdt</span><span class="p">(</span><span class="n">addr</span><span class="p">);</span>  <span class="c1">// 分离</span>
+<span class="n">shmctl</span><span class="p">(</span><span class="n">shmid</span><span class="p">,</span> <span class="n">IPC_RMID</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>  <span class="c1">// 删除</span>
+
+<span class="c1">// POSIX共享内存</span>
+<span class="kt">int</span> <span class="n">fd</span> <span class="o">=</span> <span class="n">shm_open</span><span class="p">(</span><span class="s">"/myshm"</span><span class="p">,</span> <span class="n">O_CREAT</span> <span class="o">|</span> <span class="n">O_RDWR</span><span class="p">,</span> <span class="mo">0666</span><span class="p">);</span>
+<span class="n">ftruncate</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">size</span><span class="p">);</span>
+<span class="kt">void</span> <span class="o">*</span><span class="n">addr</span> <span class="o">=</span> <span class="n">mmap</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">PROT_READ</span><span class="o">|</span><span class="n">PROT_WRITE</span><span class="p">,</span> <span class="n">MAP_SHARED</span><span class="p">,</span> <span class="n">fd</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</code></pre></div></div> <h5 id="422-动态链接库共享">4.2.2 动态链接库共享</h5> <p><strong>共享库的内存布局</strong>：</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌─────────────────────────────────────┐
+│            代码段（只读）             │ ← 所有进程共享
+├─────────────────────────────────────┤
+│            数据段（可写）             │ ← 每进程独立副本
+└─────────────────────────────────────┘
+</code></pre></div></div> <p><strong>写时复制（Copy-on-Write, COW）机制</strong>：</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>初始状态：多进程共享只读页面
+     ↓
+写操作触发：页面故障中断
+     ↓
+内核响应：复制页面 + 更新页表
+     ↓
+最终状态：写进程获得私有副本，其他进程继续共享
+</code></pre></div></div> <h4 id="43-共享内存的同步机制">4.3 共享内存的同步机制</h4> <p><strong>竞争条件问题</strong>：</p> <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 危险的共享变量操作</span>
+<span class="n">shared_counter</span><span class="o">++</span><span class="p">;</span>  <span class="c1">// 非原子操作</span>
+<span class="c1">// 实际分解为：</span>
+<span class="c1">// 1. load shared_counter → register</span>
+<span class="c1">// 2. increment register</span>
+<span class="c1">// 3. store register → shared_counter</span>
+</code></pre></div></div> <p><strong>同步解决方案</strong>：</p> <ol> <li> <strong>信号量（Semaphore）</strong>：</li> </ol> <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sem_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>    <span class="c1">// P操作，获取锁</span>
+<span class="c1">// 临界区代码</span>
+<span class="n">shared_data</span> <span class="o">=</span> <span class="n">new_value</span><span class="p">;</span>
+<span class="n">sem_post</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>    <span class="c1">// V操作，释放锁</span>
+</code></pre></div></div> <ol> <li> <strong>互斥锁（Mutex）</strong>：</li> </ol> <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+<span class="c1">// 临界区代码</span>
+<span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+</code></pre></div></div> <ol> <li> <strong>读写锁（RWLock）</strong>：</li> </ol> <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pthread_rwlock_rdlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rwlock</span><span class="p">);</span>  <span class="c1">// 读锁</span>
+<span class="c1">// 只读操作</span>
+<span class="n">pthread_rwlock_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rwlock</span><span class="p">);</span>
+
+<span class="n">pthread_rwlock_wrlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rwlock</span><span class="p">);</span>  <span class="c1">// 写锁</span>
+<span class="c1">// 写操作</span>
+<span class="n">pthread_rwlock_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rwlock</span><span class="p">);</span>
+</code></pre></div></div> <hr> <h3 id="5-内存映射高效的文件与设备访问">5. 内存映射：高效的文件与设备访问</h3> <h4 id="51-内存映射的技术背景">5.1 内存映射的技术背景</h4> <p><strong>传统 I/O 的性能瓶颈</strong>：</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>传统文件读取：
+用户程序 → 系统调用 → 内核缓冲区 → 用户缓冲区
+         read()        磁盘I/O        内存拷贝
+
+问题：
+1. 多次内存拷贝开销
+2. 系统调用切换开销
+3. 内核缓冲区额外消耗
+</code></pre></div></div> <p><strong>内存映射的解决思路</strong>：</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>内存映射读取：
+用户程序 → 直接访问映射区域 → 缺页中断 → 自动加载
+        mmap()           page fault      零拷贝
+
+优势：
+1. 零拷贝技术
+2. 减少系统调用
+3. 利用虚拟内存优势
+</code></pre></div></div> <h4 id="52-内存映射的实现机制">5.2 内存映射的实现机制</h4> <h5 id="521-文件映射file-mapping">5.2.1 文件映射（File Mapping）</h5> <p><strong>映射建立过程</strong>：</p> <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 建立文件映射</span>
+<span class="kt">int</span> <span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="s">"data.txt"</span><span class="p">,</span> <span class="n">O_RDONLY</span><span class="p">);</span>
+<span class="k">struct</span> <span class="n">stat</span> <span class="n">sb</span><span class="p">;</span>
+<span class="n">fstat</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sb</span><span class="p">);</span>
+<span class="kt">void</span> <span class="o">*</span><span class="n">mapped</span> <span class="o">=</span> <span class="n">mmap</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">sb</span><span class="p">.</span><span class="n">st_size</span><span class="p">,</span> <span class="n">PROT_READ</span><span class="p">,</span> <span class="n">MAP_SHARED</span><span class="p">,</span> <span class="n">fd</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+<span class="c1">// 直接通过内存访问文件</span>
+<span class="kt">char</span> <span class="n">first_byte</span> <span class="o">=</span> <span class="p">((</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">mapped</span><span class="p">)[</span><span class="mi">0</span><span class="p">];</span>  <span class="c1">// 可能触发页面载入</span>
+<span class="kt">char</span> <span class="o">*</span><span class="n">line</span> <span class="o">=</span> <span class="n">strstr</span><span class="p">(</span><span class="n">mapped</span><span class="p">,</span> <span class="s">"target"</span><span class="p">);</span> <span class="c1">// 字符串搜索</span>
+</code></pre></div></div> <p><strong>映射类型对比</strong>：</p> <table> <thead> <tr> <th>映射类型</th> <th>特征</th> <th>修改可见性</th> <th>适用场景</th> </tr> </thead> <tbody> <tr> <td><strong>MAP_SHARED</strong></td> <td>共享映射</td> <td>对所有进程可见，写回文件</td> <td>进程间通信、数据库文件</td> </tr> <tr> <td><strong>MAP_PRIVATE</strong></td> <td>私有映射</td> <td>仅对当前进程可见，不写回</td> <td>程序加载、配置文件读取</td> </tr> </tbody> </table> <h5 id="522-匿名映射anonymous-mapping">5.2.2 匿名映射（Anonymous Mapping）</h5> <p><strong>用途与实现</strong>：</p> <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 创建匿名共享内存</span>
+<span class="kt">void</span> <span class="o">*</span><span class="n">shared_mem</span> <span class="o">=</span> <span class="n">mmap</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">PROT_READ</span><span class="o">|</span><span class="n">PROT_WRITE</span><span class="p">,</span>
+                       <span class="n">MAP_SHARED</span><span class="o">|</span><span class="n">MAP_ANONYMOUS</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+<span class="c1">// 替代malloc的大内存分配</span>
+<span class="kt">void</span> <span class="o">*</span><span class="n">large_buffer</span> <span class="o">=</span> <span class="n">mmap</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="mi">1</span><span class="n">GB</span><span class="p">,</span> <span class="n">PROT_READ</span><span class="o">|</span><span class="n">PROT_WRITE</span><span class="p">,</span>
+                         <span class="n">MAP_PRIVATE</span><span class="o">|</span><span class="n">MAP_ANONYMOUS</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</code></pre></div></div> <p><strong>优势分析</strong>：</p> <ul> <li> <strong>按需分配</strong>：虚拟内存技术，只在访问时分配物理内存</li> <li> <strong>系统管理</strong>：由内核管理，自动处理换页和回收</li> <li> <strong>灵活调整</strong>：可以动态扩展或收缩映射区域</li> </ul> <h4 id="53-内存映射的高级应用">5.3 内存映射的高级应用</h4> <h5 id="531-数据库系统优化">5.3.1 数据库系统优化</h5> <p><strong>B+树索引的映射优化</strong>：</p> <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 传统方式：频繁read/write系统调用</span>
+<span class="c1">// 映射方式：直接内存访问</span>
+<span class="k">struct</span> <span class="n">btree_node</span> <span class="o">*</span><span class="n">root</span> <span class="o">=</span> <span class="p">(</span><span class="k">struct</span> <span class="n">btree_node</span><span class="o">*</span><span class="p">)</span><span class="n">mapped_index_file</span><span class="p">;</span>
+<span class="k">struct</span> <span class="n">btree_node</span> <span class="o">*</span><span class="n">leaf</span> <span class="o">=</span> <span class="n">btree_search</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">key</span><span class="p">);</span>  <span class="c1">// 纯内存操作</span>
+</code></pre></div></div> <p><strong>优势体现</strong>：</p> <ul> <li> <strong>减少 I/O 开销</strong>：避免重复读取相同数据页</li> <li> <strong>缓存利用</strong>：操作系统自动管理页面缓存</li> <li> <strong>并发优化</strong>：多进程可共享只读索引页面</li> </ul> <h5 id="532-大文件处理">5.3.2 大文件处理</h5> <p><strong>日志分析场景</strong>：</p> <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 处理GB级日志文件</span>
+<span class="kt">void</span> <span class="o">*</span><span class="n">log_data</span> <span class="o">=</span> <span class="n">mmap</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">file_size</span><span class="p">,</span> <span class="n">PROT_READ</span><span class="p">,</span> <span class="n">MAP_SHARED</span><span class="p">,</span> <span class="n">fd</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+<span class="c1">// 分段并行处理</span>
+<span class="cp">#pragma omp parallel for
+</span><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_threads</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">process_log_segment</span><span class="p">(</span><span class="n">log_data</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">segment_size</span><span class="p">,</span> <span class="n">segment_size</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div> <p><strong>性能优势</strong>：</p> <ul> <li> <strong>内存效率</strong>：不需要将整个文件载入内存</li> <li> <strong>访问灵活</strong>：支持随机访问和顺序访问</li> <li> <strong>系统优化</strong>：利用预读和缓存机制</li> </ul> <hr> </div> </article> <br> <hr> <br> <ul class="list-disc pl-8"></ul> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/6_internet.md/">（七）内核那些事儿：操作系统对网络包的处理</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/5_fileSystem.md/">（六）内核那些事儿：文件系统</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/4_interaction.md/">（五）内核那些事儿：系统和程序的交互</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/3_device.md/">（四）内核那些事儿：设备管理与驱动开发</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/2_signal.md/">（三）内核那些事儿：CPU中断和信号</a> </li> </div> </div> <div class="col-sm-4"> <nav id="toc-sidebar" class="sticky-top"></nav> </div> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2025 Marco Huang. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. </div> </footer> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script defer src="/assets/js/bootstrap-toc.min.js?c82ff4de8b0955d6ff14f5b05eed7eb6"></script> <script src="/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/assets/js/common.js?e0514a05c5c95ac1a93a8dfd5249b92e"></script> <script defer src="/assets/js/copy_code.js?c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/js/mathjax-setup.js?a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/assets/js/progress-bar.js?2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script src="/assets/js/vanilla-back-to-top.min.js?f40d453793ff4f64e238e420181a1d17"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/assets/js/search/ninja-keys.min.js?a3446f084dcaecc5f75aa1757d087dcf"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/js/search-setup.js?6c304f7b1992d4b60f7a07956e52f04a"></script> <script src="/assets/js/search-data.js"></script> <script src="/assets/js/shortcut-key.js?6f508d74becd347268a7f822bca7309d"></script> <script src="/assets/js/toc-depth.js"></script> </body> </html>
