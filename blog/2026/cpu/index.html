@@ -1,0 +1,156 @@
+<!DOCTYPE html> <html lang="cn"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> （一）计算机组成那些事儿：CPU | Marco's blog </title> <meta name="author" content="Marco Huang"> <meta name="description" content="A blog for documenting my own study notes. "> <meta name="keywords" content="blog, cpp, programmer"> <link rel="stylesheet" href="/assets/css/bootstrap.min.css?a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/assets/css/academicons.min.css?f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" href="/assets/css/scholar-icons.css?62b2ac103a88034e6882a5be5f3e2772"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link defer href="/assets/css/bootstrap-toc.min.css?6f5af0bb9aab25d79b2448143cbeaa88" rel="stylesheet"> <link rel="stylesheet" href="/assets/css/main.css"> <link rel="stylesheet" href="/assets/css/toc-custom.css"> <link rel="shortcut icon" href="/assets/img/mc_logo.ico?cf243b61f6c6d75747808b3ae8298c5b"> <link rel="stylesheet" href="/assets/css/main.css?d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://marco-hmc.github.io/blog/2026/cpu/"> <script src="/assets/js/theme.js?a81d82887dd692e91686b43de4542f18"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> Marco's blog </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">about </a> </li> <li class="nav-item active"> <a class="nav-link" href="/blog/">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/">projects </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/">cv </a> </li> <li class="nav-item"> <button id="search-toggle" title="Search" onclick="openSearchModal()"> <span class="nav-link">ctrl k <i class="ti ti-search"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="ti ti-sun-moon" id="light-toggle-system"></i> <i class="ti ti-moon-filled" id="light-toggle-dark"></i> <i class="ti ti-sun-filled" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="row"> <div class="col-sm-8"> <div class="post"> <header class="post-header"> <h1 class="post-title">（一）计算机组成那些事儿：CPU</h1> <p class="post-meta"> Created on January 04, 2026 </p> <p class="post-tags"> <a href="/blog/2026"> <i class="fa-solid fa-calendar fa-sm"></i> 2026 </a>   ·   <a href="/blog/tag/cc"> <i class="fa-solid fa-hashtag fa-sm"></i> CC</a>   ·   <a href="/blog/category/os"> <i class="fa-solid fa-tag fa-sm"></i> OS</a> </p> </header> <article class="post-content"> <div id="markdown-content"> <h2 id="cpu-工作原理">CPU 工作原理</h2> <h3 id="1-cpu-的基本组成">1. CPU 的基本组成</h3> <h4 id="11-cpu-的本质与职责">1.1 CPU 的本质与职责</h4> <p>CPU 作为计算机的核心处理单元，主要履行以下三方面职责：</p> <ul> <li> <strong>指令执行</strong>：逐条解析并运行程序指令，确保程序按序执行</li> <li> <strong>数据处理</strong>：执行算术运算（加减乘除）与逻辑运算（与、或、非），对数据进行加工</li> <li> <strong>控制协调</strong>：管理内存读写操作，协调 I/O 设备与其他组件交互，保障各部件协同运作</li> </ul> <pre><code class="language-mermaid">graph TD
+    A[CPU核心职责] --&gt; B[指令执行]
+    A --&gt; C[数据处理]
+    A --&gt; D[控制协调]
+
+    B --&gt; B1[取指令→解码→执行]
+    C --&gt; C1[算术运算+逻辑运算]
+    D --&gt; D1[内存管理+I/O协调]
+</code></pre> <p>简而言之，CPU 可看作依据内存中的指令进行计算，并将计算结果写回内存、硬盘或其他外部设备的组件。</p> <h4 id="12-cpu-的组成结构">1.2 CPU 的组成结构</h4> <p><strong>设计原则：</strong> 基于”分工合作”思想，将复杂的计算任务分解为专门的功能单元。</p> <p><strong>1. 控制单元（Control Unit, CU）</strong> 控制单元是 CPU 的”指挥中心”，包含以下关键组件：</p> <ul> <li> <strong>程序计数器（PC）</strong>：存储下一条待执行指令的地址</li> <li> <strong>指令寄存器（IR）</strong>：暂存当前执行的指令</li> <li> <strong>指令译码器</strong>：分析解码指令，确定操作类型</li> <li> <strong>操作控制器（OC）</strong>：由节拍脉冲发生器、控制矩阵、时钟脉冲发生器等组成</li> </ul> <p><strong>2. 算术逻辑单元（Arithmetic Logic Unit, ALU）</strong></p> <ul> <li>ALU 是 CPU 数据运算的核心</li> <li>执行加减乘除等算术运算</li> <li>执行与或非等逻辑运算</li> <li>现代 ALU 还支持位移、旋转等操作</li> </ul> <p><strong>3. 存储单元</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>存储层次（速度从快到慢）：
+寄存器 &gt; L1缓存 &gt; L2缓存 &gt; L3缓存 &gt; 主内存
+</code></pre></div></div> <ul> <li> <strong>寄存器（Registers）</strong>：CPU 内部高速存储单元，访问速度最快</li> <li> <strong>缓存（Cache）</strong>：L1/L2/L3 多级缓存，缓解 CPU 与内存速度差异</li> <li> <strong>缓冲区</strong>：临时存储数据和指令</li> </ul> <p><strong>4. 总线接口</strong></p> <ul> <li> <strong>内部总线</strong>：连接 CPU 内部各功能单元</li> <li> <strong>外部总线</strong>：连接 CPU 与内存、I/O 设备</li> <li> <strong>控制总线</strong>：传输控制信号</li> </ul> <h3 id="2-cpu-的工作原理">2. CPU 的工作原理</h3> <h4 id="21-指令周期详解">2.1 指令周期详解</h4> <p><img src="imgs/1_cpu_image.png" alt="CPU工作流程"></p> <p>CPU 执行指令的完整周期包括以下阶段：</p> <p><strong>1. 取指令（Instruction Fetch, IF）</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>目标：获取下一条要执行的指令
+过程：PC → 地址总线 → 内存 → 数据总线 → IR
+关键：PC 自动递增，保证程序顺序执行
+</code></pre></div></div> <p><strong>2. 指令解码（Instruction Decode, ID）</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>目标：理解指令的含义和要求
+过程：分析操作码 → 确定操作类型 → 准备操作数
+挑战：不同指令格式的统一处理
+</code></pre></div></div> <p><strong>3. 执行（Execute, EX）</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>目标：实际完成指令要求的操作
+过程：ALU 运算 / 地址计算 / 条件判断
+优化：可能包含多个子阶段
+</code></pre></div></div> <p><strong>4. 访存（Memory Access, MEM）</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>目标：与内存系统交互
+过程：读取数据 / 写入结果 / 地址转换
+瓶颈：内存访问是主要性能瓶颈
+</code></pre></div></div> <p><strong>5. 写回（Write Back, WB）</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>目标：保存执行结果
+过程：结果写入寄存器 → 更新状态标志
+重要性：为后续指令提供正确的程序状态
+</code></pre></div></div> <h4 id="22-时钟周期与性能">2.2 时钟周期与性能</h4> <p><strong>时钟周期基础</strong>：</p> <ul> <li>CPU 采用同步电路设计，统一时钟信号驱动</li> <li>时钟周期是 CPU 工作的最小时间单位</li> <li>时钟频率 = 1 / 时钟周期</li> </ul> <p><strong>性能计算公式</strong>：</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CPU时间 = 指令数 × CPI × 时钟周期
+其中：CPI = Cycles Per Instruction（每指令平均时钟周期数）
+</code></pre></div></div> <h3 id="3-cpu-的指令集架构isa">3. CPU 的指令集架构（ISA）</h3> <p>指令集架构（Instruction Set Architecture，ISA）是硬件与软件之间的接口规范，定义了处理器能识别和执行的指令集合、指令格式、寻址方式、寄存器集合、异常与中断行为等。对程序员和编译器来说，ISA 决定了如何用机器指令表达算法；对硬件设计者来说，ISA 决定了实现这些指令的微架构自由度。</p> <ul> <li> <p><strong>为什么会有 CISC 和 RISC 两种设计？</strong></p> </li> <li>历史原因：早期（1960-70 年代）内存昂贵且编译器能力有限，设计者希望用复杂指令减少程序长度，于是产生 CISC（复杂指令集）。后来随着内存变便宜和编译器技术进步，研究发现大多数时间在执行少数简单指令，于是提出 RISC（精简指令集），以简化硬件、利于流水线与高频率设计。</li> <li>设计目标不同：CISC 目标是用单条指令完成更多工作（减少代码密度、简化编译），RISC 目标是指令简单统一（易于流水线、提高并行性和可预测性）。</li> <li> <p>实践折中：现代处理器在实现上往往结合两者优点（例如对外呈现复杂指令集，但内部将复杂指令拆解为 RISC 式微指令或微操作）。</p> </li> <li> <p><strong>CISC 与 RISC 的主要区别（简要）</strong></p> </li> <li>指令复杂度 <ul> <li>CISC：指令集大且功能丰富，单条指令可完成多步操作（可变长度指令）。</li> <li>RISC：指令集小且简单，指令长度通常固定，单指令做单一操作。</li> </ul> </li> <li>硬件实现 <ul> <li>CISC：解码逻辑复杂，可能使用微码实现复杂指令，流水线设计较困难。</li> <li>RISC：解码简单，易实现深度流水线和高频率设计。</li> </ul> </li> <li>编译器与软件 <ul> <li>CISC：编译器更简单（某些复杂操作由硬件完成），但优化空间有限。</li> <li>RISC：编译器需生成更多指令序列，编译器优化更重要但更灵活。</li> </ul> </li> <li>性能影响 <ul> <li>CISC：单条指令做更多事，代码密度高，对内存受限场景有优势。</li> <li>RISC：由于指令简洁和流水线友好，能在时钟周期和并行度上获得更好吞吐。</li> </ul> </li> <li>寻址与指令格式 <ul> <li>CISC：多种寻址模式，指令长度可变。</li> <li>RISC：寻址模式少，指令格式统一，便于流水线和并行执行。</li> </ul> </li> </ul> <p>示例对比（示意）</p> <ul> <li>CISC（单条复杂指令）： <ul> <li>MOVL (A0)+, D0 ; 从内存读并自增地址，写到寄存器</li> </ul> </li> <li>RISC（等价多条）： <ul> <li>LOAD R1, (R2)</li> <li>ADD R3, R1, R4</li> <li>STORE R3, (R5)</li> </ul> </li> <li> <p><strong>现代趋势</strong></p> </li> <li>许多现代 CPU 表面上兼容复杂指令（如 x86），但内部把复杂指令译为一系列微操作（micro-ops），并用 RISC 风格的流水线和乱序执行实现高性能。</li> <li>RISC 仍为嵌入式、移动和服务器领域的重要选择（如 ARM、RISC-V），因其功耗、可扩展性和设计简洁性优越。</li> <li>总结：CISC 与 RISC 代表两种不同的设计哲学，实际产品经常混合两者优点以权衡代码密度、功耗和性能。</li> </ul> <h4 id="31-指令类型分类">3.1 指令类型分类</h4> <p><strong>基础指令类型</strong>：</p> <ol> <li> <strong>算术指令</strong>：ADD, SUB, MUL, DIV 等</li> <li> <strong>逻辑指令</strong>：AND, OR, XOR, NOT 等</li> <li> <strong>比较指令</strong>：CMP, TEST 等</li> <li> <strong>跳转指令</strong>：JMP, JZ, JNZ 等</li> <li> <strong>数据传输指令</strong>：MOV, LOAD, STORE 等</li> <li> <strong>移位指令</strong>：SHL, SHR, ROL, ROR 等</li> </ol> <p><strong>专用指令类型</strong>：</p> <ol> <li> <strong>浮点运算指令</strong>：FADD, FMUL, FDIV 等</li> <li> <strong>向量指令</strong>：SSE, AVX, NEON 等</li> <li> <strong>多媒体指令</strong>：专用于音视频处理</li> <li> <strong>加密指令</strong>：AES, SHA 等硬件加速指令</li> </ol> <h3 id="4-cpu-并行处理技术">4. CPU 并行处理技术</h3> <h4 id="41-流水线技术原理">4.1 流水线技术原理</h4> <p><strong>为什么需要流水线？</strong></p> <p><strong>性能瓶颈分析：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>传统方式（串行执行）：
+指令1: [取指|解码|执行|访存|写回] ─ 5个周期
+指令2:                      [取指|解码|执行|访存|写回] ─ 又5个周期
+总计：10个周期完成2条指令
+</code></pre></div></div> <p><strong>工业流水线启发：</strong> 福特汽车流水线生产的成功，启发了计算机工程师</p> <p><strong>核心思想：</strong> 将指令执行分解为多个阶段，不同指令的不同阶段可以并行执行</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>流水线方式（并行执行）：
+时钟1: [指令1-取指]
+时钟2: [指令1-解码] [指令2-取指]
+时钟3: [指令1-执行] [指令2-解码] [指令3-取指]
+时钟4: [指令1-访存] [指令2-执行] [指令3-解码] [指令4-取指]
+时钟5: [指令1-写回] [指令2-访存] [指令3-执行] [指令4-解码] [指令5-取指]
+</code></pre></div></div> <p><strong>性能提升：</strong> 理想情况下，流水线充满后每个时钟周期都能完成一条指令</p> <p><img src="imgs/1_cpu_image-1.png" alt="流水线执行"></p> <h4 id="42-标量流水线">4.2 标量流水线</h4> <p>标量（Scalar）流水计算机仅有一条指令流水线。从标量流水计算机的时空图（“imgs/1_cpu_image - 2.png”）可以看出，对于前后两条指令的 5 个子过程而言，在时间上能够实现重叠执行。当流水线满载时，每个时钟周期便可输出一个结果。例如在该图中，仅用 9 个时钟周期就完成了 5 条指令的处理，平均每条指令耗时 1.8 个时钟周期。采用标量流水线工作模式，虽然单条指令的执行时长并未缩短，但 CPU 运行指令的整体速度却得以成倍提升。当然，为实现标量流水，需要增添部分硬件。</p> <p><img src="imgs/1_cpu_image-2.png" alt="标量流水线"></p> <p><strong>特点分析：</strong></p> <ul> <li>✅ <strong>简单可靠</strong>：单指令流，便于实现</li> <li>✅ <strong>性能提升明显</strong>：相比非流水线提升 2-3 倍</li> <li>❌ <strong>并行度有限</strong>：每周期最多完成 1 条指令</li> </ul> <h4 id="43-超标量流水线">4.3 超标量流水线</h4> <p>一般的流水计算机因仅有一条指令流水线，故而被称作标量流水计算机。而超标量（Superscalar）流水计算机，则是指具备两条或两条以上指令流水线的计算机。从超标量流水计算机的时空图（“imgs/1_cpu_image - 3.png”）可知，当流水线满载时，每个时钟周期能够执行 2 条及以上的指令。如图所示，9 个时钟周期便完成了 10 条指令的处理，平均每条指令仅用时 0.9 个时钟周期。超标量流水计算机综合运用了时间并行技术与空间并行技术，通过增加指令流水线的数量，进一步强化了 CPU 的指令处理能力。</p> <p><img src="imgs/1_cpu_image-3.png" alt="alt text"></p> <p><strong>超标量解决方案：</strong></p> <ul> <li>🔄 <strong>多条流水线</strong>：同时执行多条指令</li> <li>🧠 <strong>智能调度</strong>：动态分析指令依赖关系</li> <li>⚡ <strong>资源复用</strong>：多个执行单元并行工作</li> </ul> <p><strong>性能突破：</strong> 10 条指令在 9 个周期完成，平均 0.9 周期/指令</p> <h4 id="44-流水线冲突现实中的挑战">4.4 流水线冲突：现实中的挑战</h4> <p><strong>1. 结构冲突（Resource Hazard）</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>问题：硬件资源不足
+示例：指令1访存 + 指令2取指 → 都需要内存访问
+解决：分离指令缓存和数据缓存
+</code></pre></div></div> <p><strong>2. 数据冲突（Data Hazard）</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>问题：指令间存在数据依赖
+示例：ADD R1, R2, R3  (R1 = R2 + R3)
+      SUB R4, R1, R5  (需要等R1计算完成)
+解决：数据前推、流水线暂停
+</code></pre></div></div> <p><strong>3. 控制冲突（Control Hazard）</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>问题：分支指令改变执行流程
+示例：BEQ R1, R2, LABEL (如果相等则跳转)
+      后续指令不确定是否执行
+解决：分支预测、延迟槽
+</code></pre></div></div> <h4 id="45-指令间相关性处理">4.5 指令间相关性处理</h4> <p>理想的流水线假设所有指令都是独立的，可以无缝并行执行。但现实中，指令之间存在复杂的依赖关系，就像工厂流水线上，有些产品必须等待上一道工序完成才能开始。</p> <p><strong>核心挑战：</strong> 指令间的相关性导致流水线必须暂停、等待或重新安排，严重影响性能。</p> <h5 id="451-rawread-after-write--真相关">4.5.1 RAW（Read After Write）- 真相关</h5> <p><strong>问题场景：</strong></p> <pre><code class="language-assembly">ADD R1, R2, R3    ; R1 = R2 + R3  (周期1开始)
+SUB R4, R1, R5    ; R4 = R1 - R5  (周期2开始，但需要R1的值)
+</code></pre> <p><strong>流水线冲突分析：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>时钟1: [ADD-取指]
+时钟2: [ADD-解码] [SUB-取指]     ← SUB开始执行
+时钟3: [ADD-执行] [SUB-解码]     ← SUB需要R1，但ADD还未完成
+时钟4: [ADD-访存] [SUB-??? ]     ← SUB被迫等待
+时钟5: [ADD-写回] [SUB-执行]     ← SUB终于可以执行
+</code></pre></div></div> <p><strong>性能损失：</strong> SUB 指令被迫等待 2-3 个周期，流水线出现”气泡”（空闲周期）</p> <h6 id="raw-解决方式抄近路">RAW 解决方式：抄近路</h6> <p>技术原理：绕过写回阶段直接传递数据</p> <p><strong>传统方式的问题：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ADD R1, R2, R3    执行完成 → 写回寄存器 → SUB读取寄存器
+           ↑                    ↑               ↑
+        周期3                周期5           周期6
+        (有结果)             (结果可用)      (SUB才能开始)
+</code></pre></div></div> <p><strong>前推优化方案：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ADD R1, R2, R3    执行完成 ──┐
+                             ├── 直接传递给SUB
+SUB R4, R1, R5    ←──────────┘
+           ↑
+        周期4 (立即可用)
+</code></pre></div></div> <p><strong>硬件实现：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>前推路径设计：
+ALU输出 → 前推总线 → 下一条指令的输入
+        → 寄存器文件  → 正常写回路径
+
+前推控制逻辑：
+IF (源寄存器 == 前一条指令的目标寄存器)
+   AND (前一条指令在执行阶段)
+THEN 使用前推数据
+ELSE 使用寄存器数据
+</code></pre></div></div> <p><strong>性能提升：</strong> 将等待时间从 2-3 个周期减少到 0-1 个周期</p> <h5 id="452-warwrite-after-read--反相关">4.5.2 WAR（Write After Read）- 反相关</h5> <p><strong>问题场景：</strong></p> <pre><code class="language-assembly">ADD R1, R2, R3    ; 读取R2的值
+SUB R2, R4, R5    ; 写入R2新值 (不能在ADD读取R2之前执行)
+</code></pre> <p><strong>为什么会有问题？</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>在乱序执行的处理器中：
+如果SUB在ADD之前执行 → R2被提前修改 → ADD读到错误的R2值
+</code></pre></div></div> <p><strong>具体危害：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>正确顺序: ADD读取R2=10, 然后SUB写入R2=20
+错误顺序: SUB写入R2=20, 然后ADD读取R2=20 (本应读取10)
+结果: ADD使用了错误的操作数
+</code></pre></div></div> <h5 id="453-wawwrite-after-write--输出相关">4.5.3 WAW（Write After Write）- 输出相关</h5> <p><strong>问题场景：</strong></p> <pre><code class="language-assembly">ADD R1, R2, R3    ; 写入R1
+SUB R1, R4, R5    ; 写入R1 (顺序不能颠倒)
+</code></pre> <p><strong>危害分析：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>正确结果: R1最终应该是SUB的结果
+如果顺序颠倒: R1变成ADD的结果
+后果: 程序看到错误的最终值
+</code></pre></div></div> <h6 id="war-war-解决方式消除伪相关">WAR-WAR 解决方式：消除伪相关</h6> <p><strong>问题分析：</strong></p> <ul> <li> <strong>RAW</strong>是真正的数据依赖，必须保证顺序</li> <li> <strong>WAR</strong>和<strong>WAW</strong>只是因为寄存器名称冲突，本质上可以并行</li> </ul> <p><strong>重命名核心思想：</strong> 用更多的物理寄存器映射到较少的逻辑寄存器</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>程序员视角（逻辑寄存器）：
+ADD R1, R2, R3     ; R1 = R2 + R3
+SUB R2, R4, R5     ; R2 = R4 - R5  ← WAR冲突
+MUL R1, R6, R7     ; R1 = R6 * R7  ← WAW冲突
+
+处理器内部（物理寄存器）：
+ADD P1, P2, P3     ; P1 = P2 + P3
+SUB P8, P4, P5     ; P8 = P4 - P5  ← 使用不同物理寄存器
+MUL P9, P6, P7     ; P9 = P6 * P7  ← 使用不同物理寄存器
+</code></pre></div></div> <p><strong>重命名表机制：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>逻辑寄存器 → 物理寄存器映射表
+R1 → P1 (ADD指令后)
+R1 → P9 (MUL指令后)  ← 动态更新映射
+R2 → P2 (初始)
+R2 → P8 (SUB指令后)  ← 动态更新映射
+</code></pre></div></div> <p><strong>性能效果：</strong> WAR 和 WAW 相关被完全消除，指令可以乱序执行</p> <h5 id="454-性能优化-乱序执行智能重排">4.5.4 性能优化-乱序执行：智能重排</h5> <p>动态调度独立指令</p> <p><strong>基本思路：</strong> 在保证正确性的前提下，让没有依赖关系的指令先执行</p> <p><strong>示例程序：</strong></p> <pre><code class="language-assembly">1. ADD R1, R2, R3    ; R1 = R2 + R3  (数据依赖链起点)
+2. SUB R4, R1, R5    ; R4 = R1 - R5  (依赖指令1)
+3. MUL R6, R7, R8    ; R6 = R7 * R8  (独立指令)
+4. DIV R9, R1, R10   ; R9 = R1 / R10 (依赖指令1)
+5. AND R11, R12, R13 ; R11= R12&amp; R13 (独立指令)
+</code></pre> <p><strong>顺序执行时序：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>周期: 1  2  3  4  5  6  7  8  9  10 11 12
+指令1: IF ID EX MEM WB
+指令2:    IF ID -- -- EX MEM WB      ← 等待指令1
+指令3:       IF -- -- -- ID EX MEM WB  ← 被阻塞
+指令4:          -- -- -- -- IF ID EX MEM WB
+指令5:                         IF ID EX MEM WB
+</code></pre></div></div> <p><strong>乱序执行时序：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>周期: 1  2  3  4  5  6  7  8  9  10
+指令1: IF ID EX MEM WB
+指令3: IF ID EX MEM WB              ← 独立指令先执行
+指令5:    IF ID EX MEM WB           ← 独立指令先执行
+指令2:       IF ID EX MEM WB        ← 等待指令1完成
+指令4:          IF ID EX MEM WB     ← 等待指令1完成
+</code></pre></div></div> <p><strong>性能提升：</strong> 从 12 个周期减少到 10 个周期，提升 20%</p> <h4 id="46-现代处理器执行模式">4.6 现代处理器执行模式</h4> <table> <thead> <tr> <th>执行模式</th> <th>Frontend</th> <th>Issue</th> <th>Write Back</th> <th>Commit</th> </tr> </thead> <tbody> <tr> <td>顺序超标量</td> <td>顺序</td> <td>顺序</td> <td>顺序</td> <td>顺序</td> </tr> <tr> <td>乱序超标量</td> <td>顺序</td> <td>乱序</td> <td>乱序</td> <td>顺序</td> </tr> </tbody> </table> <p><strong>关键技术</strong>：</p> <ul> <li> <strong>指令重排序</strong>：动态调度提高并行度</li> <li> <strong>寄存器重命名</strong>：消除伪相关</li> <li> <strong>重排序缓冲区（ROB）</strong>：保证顺序提交</li> </ul> <h3 id="5-现代-cpu-高级技术">5. 现代 CPU 高级技术</h3> <h4 id="51-分支预测技术">5.1 分支预测技术</h4> <p><strong>分支预测的必要性</strong>：</p> <ul> <li>条件跳转指令占程序指令的 15-25%</li> <li>分支预测错误导致流水线清空，损失 10-20 个周期，性能损失严重</li> </ul> <p><strong>预测算法类型</strong>：</p> <p><strong>1. 静态预测</strong></p> <ul> <li>编译时固定策略</li> <li>向后跳转预测为跳转（循环）</li> <li>向前跳转预测为不跳转</li> </ul> <p><strong>2. 动态预测</strong></p> <ul> <li> <strong>1 位饱和计数器</strong>：记录上次跳转结果</li> <li> <strong>2 位饱和计数器</strong>：增强预测稳定性</li> <li> <strong>全局历史预测器</strong>：基于全局分支历史</li> <li> <strong>局部历史预测器</strong>：基于局部分支历史</li> <li> <strong>混合预测器</strong>：结合多种预测算法</li> </ul> <p><strong>现代预测器特点</strong>：</p> <ul> <li>预测准确率达 95%以上</li> <li>支持多级预测结构</li> <li>动态学习分支模式</li> </ul> <h4 id="52-投机执行技术">5.2 投机执行技术</h4> <p><strong>基本思路：</strong> 既然分支预测有一定准确率，为什么不基于预测结果继续执行？</p> <p><strong>投机执行原理</strong>：</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>分支预测 → 投机执行后续指令 → 预测验证
+├─ 预测正确：提交执行结果
+└─ 预测错误：回滚并执行正确路径
+</code></pre></div></div> <p><strong>关键机制</strong>：</p> <ul> <li> <strong>投机指令执行</strong>：基于预测结果继续执行</li> <li> <strong>结果缓存</strong>：暂存投机执行结果</li> <li> <strong>回滚机制</strong>：预测错误时恢复处理器状态</li> </ul> <p><strong>安全考虑</strong>：</p> <ul> <li>Spectre 漏洞：利用投机执行泄露数据</li> <li>Meltdown 漏洞：绕过内存保护机制</li> <li>缓解措施：微码更新、软件补丁</li> </ul> <h4 id="53-内存预取技术">5.3 内存预取技术</h4> <p>CPU 速度提升：每年约 60% 内存速度提升：每年约 7% 结果：CPU 与内存速度差距越来越大</p> <p><strong>预取器类型</strong>：</p> <p><strong>1. 硬件预取器</strong></p> <ul> <li> <strong>顺序预取器</strong>：检测顺序访问模式</li> <li> <strong>步长预取器</strong>：识别固定步长访问</li> <li> <strong>基于表的预取器</strong>：维护访问历史表</li> </ul> <p><strong>2. 软件预取</strong></p> <ul> <li>编译器插入预取指令</li> <li>程序员显式调用预取函数</li> <li>基于程序语义的智能预取</li> </ul> <p><strong>程序员控制：</strong></p> <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">__builtin_prefetch</span><span class="p">(</span><span class="n">ptr</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>  <span class="c1">// 预取数据到L1缓存</span>
+</code></pre></div></div> <h4 id="54-缓存层次结构">5.4 缓存层次结构</h4> <p>现代计算机面临一个根本性的技术挑战——<strong>内存墙问题</strong>：</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>性能差距数据：
+CPU 频率：3.5GHz（每纳秒3.5个周期）
+内存延迟：100-300ns（相当于350-1050个CPU周期）
+速度差距：CPU比内存快1000倍以上！
+</code></pre></div></div> <p><strong>多级缓存设计</strong>：</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>L1 Cache（指令+数据）
+    ├─ 容量：32KB-64KB
+    ├─ 延迟：1-2周期
+    └─ 关联度：4-8路
+
+L2 Cache（统一缓存）
+    ├─ 容量：256KB-1MB
+    ├─ 延迟：8-12周期
+    └─ 关联度：8-16路
+
+L3 Cache（共享缓存）
+    ├─ 容量：8MB-32MB
+    ├─ 延迟：20-40周期
+    └─ 关联度：16-32路
+</code></pre></div></div> <p>L1 ⊆ L2 ⊆ L3 ⊆ 主存</p> <h5 id="缓存一致性问题">缓存一致性问题：</h5> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>初始状态：内存中 X = 0
+CPU1: 读取 X → 缓存中 X = 0
+CPU2: 读取 X → 缓存中 X = 0
+CPU1: 修改 X = 1 → CPU1缓存中 X = 1
+问题：CPU2缓存中仍然是 X = 0！
+</code></pre></div></div> <p><strong>解决需求：</strong> 确保所有 CPU 看到的数据都是一致的。</p> <p><strong>缓存一致性协议</strong>：</p> <ul> <li> <strong>MESI 协议</strong>：Modified, Exclusive, Shared, Invalid</li> <li> <strong>MOESI 协议</strong>：增加 Owned 状态</li> <li> <strong>目录协议</strong>：大规模多处理器系统</li> </ul> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>L2 Cache（统一缓存） ├─ 容量：256KB-1MB ├─ 延迟：8-12 周期 └─ 关联度：8-16 路
+L3 Cache（共享缓存） ├─ 容量：8MB-32MB ├─ 延迟：20-40 周期 └─ 关联度：16-32 路
+</code></pre></div></div> <p>L1 ⊆ L2 ⊆ L3 ⊆ 主存</p> <h5 id="缓存一致性问题-1">缓存一致性问题：</h5> <p>初始状态：内存中 X = 0 CPU1: 读取 X → 缓存中 X = 0 CPU2: 读取 X → 缓存中 X = 0 CPU1: 修改 X = 1 → CPU1 缓存中 X = 1 问题：CPU2 缓存中仍然是 X = 0！</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>**解决需求：** 确保所有CPU看到的数据都是一致的。
+
+**缓存一致性协议**：
+- **MESI 协议**：Modified, Exclusive, Shared, Invalid
+- **MOESI 协议**：增加 Owned 状态
+- **目录协议**：大规模多处理器系统
+</code></pre></div></div> </div> </article> <br> <hr> <br> <ul class="list-disc pl-8"></ul> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2026/signal/">（三）内核那些事儿：CPU中断和信号</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2026/program/">（二）内核那些事儿：程序启动到运行的完整过程</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2026/os/">（一）内核那些事儿：从硬件抽象到系统服务的完整框架</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2026/internet/">（七）内核那些事儿：操作系统对网络包的处理</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2026/interaction/">（五）内核那些事儿：系统和程序的交互</a> </li> </div> </div> <div class="col-sm-4"> <nav id="toc-sidebar" class="sticky-top"></nav> </div> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Marco Huang. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. </div> </footer> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script defer src="/assets/js/bootstrap-toc.min.js?c82ff4de8b0955d6ff14f5b05eed7eb6"></script> <script src="/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/assets/js/common.js?e0514a05c5c95ac1a93a8dfd5249b92e"></script> <script defer src="/assets/js/copy_code.js?c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/js/mathjax-setup.js?a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/assets/js/progress-bar.js?2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script src="/assets/js/vanilla-back-to-top.min.js?f40d453793ff4f64e238e420181a1d17"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/assets/js/search/ninja-keys.min.js?a3446f084dcaecc5f75aa1757d087dcf"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/js/search-setup.js?6c304f7b1992d4b60f7a07956e52f04a"></script> <script src="/assets/js/search-data.js"></script> <script src="/assets/js/shortcut-key.js?6f508d74becd347268a7f822bca7309d"></script> <script src="/assets/js/toc-depth.js"></script> </body> </html>

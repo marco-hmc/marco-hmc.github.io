@@ -1,0 +1,1236 @@
+<!DOCTYPE html> <html lang="cn"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> （三）Qt 那些事儿：GUI 编程 | Marco's blog </title> <meta name="author" content="Marco Huang"> <meta name="description" content="A blog for documenting my own study notes. "> <meta name="keywords" content="blog, cpp, programmer"> <link rel="stylesheet" href="/assets/css/bootstrap.min.css?a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/assets/css/academicons.min.css?f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" href="/assets/css/scholar-icons.css?62b2ac103a88034e6882a5be5f3e2772"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link defer href="/assets/css/bootstrap-toc.min.css?6f5af0bb9aab25d79b2448143cbeaa88" rel="stylesheet"> <link rel="stylesheet" href="/assets/css/main.css"> <link rel="stylesheet" href="/assets/css/toc-custom.css"> <link rel="shortcut icon" href="/assets/img/mc_logo.ico?cf243b61f6c6d75747808b3ae8298c5b"> <link rel="stylesheet" href="/assets/css/main.css?d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://marco-hmc.github.io/blog/2026/qt_gui/"> <script src="/assets/js/theme.js?a81d82887dd692e91686b43de4542f18"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> Marco's blog </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">about </a> </li> <li class="nav-item active"> <a class="nav-link" href="/blog/">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/">projects </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/">cv </a> </li> <li class="nav-item"> <button id="search-toggle" title="Search" onclick="openSearchModal()"> <span class="nav-link">ctrl k <i class="ti ti-search"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="ti ti-sun-moon" id="light-toggle-system"></i> <i class="ti ti-moon-filled" id="light-toggle-dark"></i> <i class="ti ti-sun-filled" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="row"> <div class="col-sm-8"> <div class="post"> <header class="post-header"> <h1 class="post-title">（三）Qt 那些事儿：GUI 编程</h1> <p class="post-meta"> Created on January 04, 2026 </p> <p class="post-tags"> <a href="/blog/2026"> <i class="fa-solid fa-calendar fa-sm"></i> 2026 </a>   ·   <a href="/blog/tag/qt"> <i class="fa-solid fa-hashtag fa-sm"></i> Qt</a>   ·   <a href="/blog/category/c"> <i class="fa-solid fa-tag fa-sm"></i> C++</a> </p> </header> <article class="post-content"> <div id="markdown-content"> <h2 id="三qt-那些事儿gui-编程">（三）Qt 那些事儿：GUI 编程</h2> <p>Qt GUI 编程是 Qt 框架的核心组成部分，提供了丰富的图形用户界面开发工具和组件。通过 widgets（控件）、stylesheet（样式表）、layout（布局）和 MVC（模型-视图-控制器）模式的协同工作，开发者可以构建出功能强大、界面美观、用户体验良好的桌面应用程序。</p> <h3 id="1-widgets控件">1 Widgets（控件）</h3> <p>Widgets 是 Qt GUI 编程的基础构建块，每个可视化界面元素都是一个 widget。Qt 提供了丰富的预定义控件，同时也支持自定义控件的开发。</p> <h4 id="11-基础控件类型">1.1 基础控件类型</h4> <h5 id="111-输入控件input-widgets">1.1.1 <strong>输入控件（Input Widgets）</strong> </h5> <ul> <li> <p><strong>QLineEdit</strong>：单行文本输入框，支持文本验证、占位符、密码模式等</p> <div class="language-cpp highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="n">QLineEdit</span> <span class="o">*</span><span class="n">lineEdit</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QLineEdit</span><span class="p">();</span>
+<span class="n">lineEdit</span><span class="o">-&gt;</span><span class="n">setPlaceholderText</span><span class="p">(</span><span class="s">"请输入用户名"</span><span class="p">);</span>
+<span class="n">lineEdit</span><span class="o">-&gt;</span><span class="n">setMaxLength</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
+<span class="n">lineEdit</span><span class="o">-&gt;</span><span class="n">setValidator</span><span class="p">(</span><span class="k">new</span> <span class="nf">QRegExpValidator</span><span class="p">(</span><span class="n">QRegExp</span><span class="p">(</span><span class="s">"[A-Za-z0-9]+"</span><span class="p">)));</span>
+</code></pre></div> </div> </li> <li> <p><strong>QTextEdit</strong>：多行富文本编辑器，支持 HTML 格式、图片插入等</p> <div class="language-cpp highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="n">QTextEdit</span> <span class="o">*</span><span class="n">textEdit</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QTextEdit</span><span class="p">();</span>
+<span class="n">textEdit</span><span class="o">-&gt;</span><span class="n">setHtml</span><span class="p">(</span><span class="s">"&lt;b&gt;粗体文本&lt;/b&gt; 和 &lt;i&gt;斜体文本&lt;/i&gt;"</span><span class="p">);</span>
+<span class="n">textEdit</span><span class="o">-&gt;</span><span class="n">setAcceptRichText</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+</code></pre></div> </div> </li> <li> <p><strong>QSpinBox/QDoubleSpinBox</strong>：数值输入框，支持范围限制、步长设置</p> <div class="language-cpp highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="n">QSpinBox</span> <span class="o">*</span><span class="n">spinBox</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QSpinBox</span><span class="p">();</span>
+<span class="n">spinBox</span><span class="o">-&gt;</span><span class="n">setRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+<span class="n">spinBox</span><span class="o">-&gt;</span><span class="n">setSingleStep</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="n">spinBox</span><span class="o">-&gt;</span><span class="n">setSuffix</span><span class="p">(</span><span class="s">" %"</span><span class="p">);</span>
+</code></pre></div> </div> </li> </ul> <h5 id="112-显示控件display-widgets">1.1.2 <strong>显示控件（Display Widgets）</strong> </h5> <ul> <li> <p><strong>QLabel</strong>：文本和图片显示控件</p> <div class="language-cpp highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="n">QLabel</span> <span class="o">*</span><span class="n">label</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QLabel</span><span class="p">(</span><span class="s">"Hello World"</span><span class="p">);</span>
+<span class="n">label</span><span class="o">-&gt;</span><span class="n">setPixmap</span><span class="p">(</span><span class="n">QPixmap</span><span class="p">(</span><span class="s">":/images/icon.png"</span><span class="p">));</span>
+<span class="n">label</span><span class="o">-&gt;</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">::</span><span class="n">AlignCenter</span><span class="p">);</span>
+</code></pre></div> </div> </li> <li> <p><strong>QProgressBar</strong>：进度条控件</p> <div class="language-cpp highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="n">QProgressBar</span> <span class="o">*</span><span class="n">progressBar</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QProgressBar</span><span class="p">();</span>
+<span class="n">progressBar</span><span class="o">-&gt;</span><span class="n">setRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+<span class="n">progressBar</span><span class="o">-&gt;</span><span class="n">setValue</span><span class="p">(</span><span class="mi">50</span><span class="p">);</span>
+<span class="n">progressBar</span><span class="o">-&gt;</span><span class="n">setFormat</span><span class="p">(</span><span class="s">"%p% 完成"</span><span class="p">);</span>
+</code></pre></div> </div> </li> </ul> <h5 id="113-按钮控件button-widgets">1.1.3 <strong>按钮控件（Button Widgets）</strong> </h5> <ul> <li> <strong>QPushButton</strong>：标准按钮</li> <li> <strong>QCheckBox</strong>：复选框</li> <li> <strong>QRadioButton</strong>：单选按钮</li> <li> <strong>QToolButton</strong>：工具按钮</li> </ul> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QPushButton</span> <span class="o">*</span><span class="n">button</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QPushButton</span><span class="p">(</span><span class="s">"点击我"</span><span class="p">);</span>
+<span class="n">QCheckBox</span> <span class="o">*</span><span class="n">checkBox</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QCheckBox</span><span class="p">(</span><span class="s">"启用功能"</span><span class="p">);</span>
+<span class="n">QRadioButton</span> <span class="o">*</span><span class="n">radioButton</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QRadioButton</span><span class="p">(</span><span class="s">"选项A"</span><span class="p">);</span>
+
+<span class="c1">// 按钮组管理单选按钮</span>
+<span class="n">QButtonGroup</span> <span class="o">*</span><span class="n">buttonGroup</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QButtonGroup</span><span class="p">();</span>
+<span class="n">buttonGroup</span><span class="o">-&gt;</span><span class="n">addButton</span><span class="p">(</span><span class="n">radioButton</span><span class="p">);</span>
+</code></pre></div></div> <p><strong>容器控件（Container Widgets）</strong>：</p> <ul> <li> <strong>QGroupBox</strong>：分组框</li> <li> <strong>QTabWidget</strong>：选项卡容器</li> <li> <strong>QStackedWidget</strong>：堆叠容器</li> <li> <strong>QScrollArea</strong>：滚动区域</li> </ul> <h4 id="12-高级控件">1.2 高级控件</h4> <h5 id="121-列表和树控件">1.2.1 <strong>列表和树控件</strong> </h5> <ul> <li> <strong>QListWidget</strong>：简单列表控件</li> <li> <strong>QTreeWidget</strong>：树形控件</li> <li> <strong>QTableWidget</strong>：表格控件</li> </ul> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 创建表格控件</span>
+<span class="n">QTableWidget</span> <span class="o">*</span><span class="n">tableWidget</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QTableWidget</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+<span class="n">tableWidget</span><span class="o">-&gt;</span><span class="n">setHorizontalHeaderLabels</span><span class="p">({</span><span class="s">"姓名"</span><span class="p">,</span> <span class="s">"年龄"</span><span class="p">,</span> <span class="s">"职业"</span><span class="p">});</span>
+
+<span class="c1">// 添加数据</span>
+<span class="n">QTableWidgetItem</span> <span class="o">*</span><span class="n">item</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QTableWidgetItem</span><span class="p">(</span><span class="s">"张三"</span><span class="p">);</span>
+<span class="n">tableWidget</span><span class="o">-&gt;</span><span class="n">setItem</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">item</span><span class="p">);</span>
+</code></pre></div></div> <h5 id="122-对话框类">1.2.2 <strong>对话框类</strong> </h5> <ul> <li> <strong>QMessageBox</strong>：消息对话框</li> <li> <strong>QFileDialog</strong>：文件选择对话框</li> <li> <strong>QColorDialog</strong>：颜色选择对话框</li> <li> <strong>QFontDialog</strong>：字体选择对话框</li> </ul> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 显示消息框</span>
+<span class="n">QMessageBox</span><span class="o">::</span><span class="n">information</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s">"信息"</span><span class="p">,</span> <span class="s">"操作完成！"</span><span class="p">);</span>
+
+<span class="c1">// 文件选择对话框</span>
+<span class="n">QString</span> <span class="n">fileName</span> <span class="o">=</span> <span class="n">QFileDialog</span><span class="o">::</span><span class="n">getOpenFileName</span><span class="p">(</span><span class="k">this</span><span class="p">,</span>
+    <span class="s">"选择文件"</span><span class="p">,</span> <span class="s">""</span><span class="p">,</span> <span class="s">"文本文件 (*.txt);;所有文件 (*.*)"</span><span class="p">);</span>
+</code></pre></div></div> <h4 id="13-自定义控件开发">1.3 自定义控件开发</h4> <p><strong>继承现有控件</strong>：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">CustomButton</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QPushButton</span> <span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+<span class="nl">public:</span>
+    <span class="n">CustomButton</span><span class="p">(</span><span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span><span class="n">text</span><span class="p">,</span> <span class="n">QWidget</span> <span class="o">*</span><span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">)</span>
+        <span class="o">:</span> <span class="n">QPushButton</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">setupUI</span><span class="p">();</span>
+    <span class="p">}</span>
+
+<span class="k">protected</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="nf">paintEvent</span><span class="p">(</span><span class="n">QPaintEvent</span> <span class="o">*</span><span class="n">event</span><span class="p">)</span> <span class="k">override</span> <span class="p">{</span>
+        <span class="c1">// 自定义绘制逻辑</span>
+        <span class="n">QPainter</span> <span class="n">painter</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+        <span class="n">painter</span><span class="p">.</span><span class="n">setRenderHint</span><span class="p">(</span><span class="n">QPainter</span><span class="o">::</span><span class="n">Antialiasing</span><span class="p">);</span>
+
+        <span class="c1">// 绘制自定义外观</span>
+        <span class="n">QRect</span> <span class="n">rect</span> <span class="o">=</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">rect</span><span class="p">();</span>
+        <span class="n">painter</span><span class="p">.</span><span class="n">setBrush</span><span class="p">(</span><span class="n">QColor</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">200</span><span class="p">));</span>
+        <span class="n">painter</span><span class="p">.</span><span class="n">drawRoundedRect</span><span class="p">(</span><span class="n">rect</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+
+        <span class="c1">// 调用基类绘制文本</span>
+        <span class="n">QPushButton</span><span class="o">::</span><span class="n">paintEvent</span><span class="p">(</span><span class="n">event</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="nf">setupUI</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">setMinimumSize</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">30</span><span class="p">);</span>
+        <span class="n">setStyleSheet</span><span class="p">(</span><span class="s">"border: none; color: white;"</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div> <p><strong>完全自定义控件</strong>：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">CustomWidget</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QWidget</span> <span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+<span class="nl">public:</span>
+    <span class="n">CustomWidget</span><span class="p">(</span><span class="n">QWidget</span> <span class="o">*</span><span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="o">:</span> <span class="n">QWidget</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">setAttribute</span><span class="p">(</span><span class="n">Qt</span><span class="o">::</span><span class="n">WA_StaticContents</span><span class="p">);</span>
+        <span class="n">setMouseTracking</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="k">protected</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="nf">paintEvent</span><span class="p">(</span><span class="n">QPaintEvent</span> <span class="o">*</span><span class="n">event</span><span class="p">)</span> <span class="k">override</span> <span class="p">{</span>
+        <span class="n">QPainter</span> <span class="n">painter</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+        <span class="n">painter</span><span class="p">.</span><span class="n">fillRect</span><span class="p">(</span><span class="n">rect</span><span class="p">(),</span> <span class="n">Qt</span><span class="o">::</span><span class="n">white</span><span class="p">);</span>
+
+        <span class="c1">// 自定义绘制内容</span>
+        <span class="n">painter</span><span class="p">.</span><span class="n">setPen</span><span class="p">(</span><span class="n">QPen</span><span class="p">(</span><span class="n">Qt</span><span class="o">::</span><span class="n">black</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
+        <span class="n">painter</span><span class="p">.</span><span class="n">drawLine</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">width</span><span class="p">()</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="n">height</span><span class="p">()</span><span class="o">-</span><span class="mi">10</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">mousePressEvent</span><span class="p">(</span><span class="n">QMouseEvent</span> <span class="o">*</span><span class="n">event</span><span class="p">)</span> <span class="k">override</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">event</span><span class="o">-&gt;</span><span class="n">button</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">LeftButton</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">emit</span> <span class="n">clicked</span><span class="p">(</span><span class="n">event</span><span class="o">-&gt;</span><span class="n">pos</span><span class="p">());</span>
+        <span class="p">}</span>
+        <span class="n">QWidget</span><span class="o">::</span><span class="n">mousePressEvent</span><span class="p">(</span><span class="n">event</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="n">signals</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="nf">clicked</span><span class="p">(</span><span class="k">const</span> <span class="n">QPoint</span> <span class="o">&amp;</span><span class="n">position</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre></div></div> <h4 id="14-特殊控件和界面组件">1.4 特殊控件和界面组件</h4> <h5 id="141-qdockwidget停靠窗口">1.4.1 <strong>QDockWidget（停靠窗口）</strong> </h5> <p>DockWidget 是一种可停靠的窗口部件，它可以在主窗口的边缘停靠，并且可以通过拖拽来重新排列位置。</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">MainWindow</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QMainWindow</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">MainWindow</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// 创建停靠窗口</span>
+        <span class="n">QDockWidget</span> <span class="o">*</span><span class="n">dockWidget</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QDockWidget</span><span class="p">(</span><span class="s">"工具面板"</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+
+        <span class="c1">// 创建停靠窗口的内容</span>
+        <span class="n">QListWidget</span> <span class="o">*</span><span class="n">listWidget</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QListWidget</span><span class="p">();</span>
+        <span class="n">listWidget</span><span class="o">-&gt;</span><span class="n">addItems</span><span class="p">({</span><span class="s">"工具1"</span><span class="p">,</span> <span class="s">"工具2"</span><span class="p">,</span> <span class="s">"工具3"</span><span class="p">});</span>
+        <span class="n">dockWidget</span><span class="o">-&gt;</span><span class="n">setWidget</span><span class="p">(</span><span class="n">listWidget</span><span class="p">);</span>
+
+        <span class="c1">// 设置停靠区域</span>
+        <span class="n">dockWidget</span><span class="o">-&gt;</span><span class="n">setAllowedAreas</span><span class="p">(</span><span class="n">Qt</span><span class="o">::</span><span class="n">LeftDockWidgetArea</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">::</span><span class="n">RightDockWidgetArea</span><span class="p">);</span>
+
+        <span class="c1">// 添加到主窗口</span>
+        <span class="n">addDockWidget</span><span class="p">(</span><span class="n">Qt</span><span class="o">::</span><span class="n">LeftDockWidgetArea</span><span class="p">,</span> <span class="n">dockWidget</span><span class="p">);</span>
+
+        <span class="c1">// 设置停靠窗口特性</span>
+        <span class="n">dockWidget</span><span class="o">-&gt;</span><span class="n">setFeatures</span><span class="p">(</span><span class="n">QDockWidget</span><span class="o">::</span><span class="n">DockWidgetMovable</span> <span class="o">|</span>
+                               <span class="n">QDockWidget</span><span class="o">::</span><span class="n">DockWidgetFloatable</span> <span class="o">|</span>
+                               <span class="n">QDockWidget</span><span class="o">::</span><span class="n">DockWidgetClosable</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div> <h5 id="142-qmdiarea多文档接口">1.4.2 <strong>QMdiArea（多文档接口）</strong> </h5> <p>MDI 窗口（Multiple Document Interface，多文档接口窗口）是一种用户界面策略，允许应用程序在一个主窗口中同时打开和处理多个子窗口。</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">MDIApplication</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QMainWindow</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="n">QMdiArea</span> <span class="o">*</span><span class="n">mdiArea</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="n">MDIApplication</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// 创建MDI区域</span>
+        <span class="n">mdiArea</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QMdiArea</span><span class="p">();</span>
+        <span class="n">setCentralWidget</span><span class="p">(</span><span class="n">mdiArea</span><span class="p">);</span>
+
+        <span class="c1">// 创建菜单</span>
+        <span class="n">createMenus</span><span class="p">();</span>
+    <span class="p">}</span>
+
+<span class="k">private</span> <span class="n">slots</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="nf">newDocument</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// 创建新的子窗口</span>
+        <span class="n">QTextEdit</span> <span class="o">*</span><span class="n">textEdit</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QTextEdit</span><span class="p">();</span>
+        <span class="n">QMdiSubWindow</span> <span class="o">*</span><span class="n">subWindow</span> <span class="o">=</span> <span class="n">mdiArea</span><span class="o">-&gt;</span><span class="n">addSubWindow</span><span class="p">(</span><span class="n">textEdit</span><span class="p">);</span>
+        <span class="n">subWindow</span><span class="o">-&gt;</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s">"新文档"</span><span class="p">);</span>
+        <span class="n">subWindow</span><span class="o">-&gt;</span><span class="n">show</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">cascadeWindows</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">mdiArea</span><span class="o">-&gt;</span><span class="n">cascadeSubWindows</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">tileWindows</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">mdiArea</span><span class="o">-&gt;</span><span class="n">tileSubWindows</span><span class="p">();</span>
+    <span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="nf">createMenus</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">QMenu</span> <span class="o">*</span><span class="n">fileMenu</span> <span class="o">=</span> <span class="n">menuBar</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">addMenu</span><span class="p">(</span><span class="s">"文件"</span><span class="p">);</span>
+        <span class="n">fileMenu</span><span class="o">-&gt;</span><span class="n">addAction</span><span class="p">(</span><span class="s">"新建"</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">MDIApplication</span><span class="o">::</span><span class="n">newDocument</span><span class="p">);</span>
+
+        <span class="n">QMenu</span> <span class="o">*</span><span class="n">windowMenu</span> <span class="o">=</span> <span class="n">menuBar</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">addMenu</span><span class="p">(</span><span class="s">"窗口"</span><span class="p">);</span>
+        <span class="n">windowMenu</span><span class="o">-&gt;</span><span class="n">addAction</span><span class="p">(</span><span class="s">"层叠"</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">MDIApplication</span><span class="o">::</span><span class="n">cascadeWindows</span><span class="p">);</span>
+        <span class="n">windowMenu</span><span class="o">-&gt;</span><span class="n">addAction</span><span class="p">(</span><span class="s">"平铺"</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">MDIApplication</span><span class="o">::</span><span class="n">tileWindows</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div> <h5 id="143-qgroupbox分组框">1.4.3 <strong>QGroupBox（分组框）</strong> </h5> <p>QGroupBox 是一个容器控件，用于将相关的控件组织在一起，并提供一个可选的标题。</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 创建分组框</span>
+<span class="n">QGroupBox</span> <span class="o">*</span><span class="n">personalInfoGroup</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QGroupBox</span><span class="p">(</span><span class="s">"个人信息"</span><span class="p">);</span>
+<span class="n">QFormLayout</span> <span class="o">*</span><span class="n">formLayout</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QFormLayout</span><span class="p">();</span>
+<span class="n">formLayout</span><span class="o">-&gt;</span><span class="n">addRow</span><span class="p">(</span><span class="s">"姓名:"</span><span class="p">,</span> <span class="k">new</span> <span class="nf">QLineEdit</span><span class="p">());</span>
+<span class="n">formLayout</span><span class="o">-&gt;</span><span class="n">addRow</span><span class="p">(</span><span class="s">"年龄:"</span><span class="p">,</span> <span class="k">new</span> <span class="nf">QSpinBox</span><span class="p">());</span>
+<span class="n">formLayout</span><span class="o">-&gt;</span><span class="n">addRow</span><span class="p">(</span><span class="s">"性别:"</span><span class="p">,</span> <span class="k">new</span> <span class="nf">QComboBox</span><span class="p">());</span>
+<span class="n">personalInfoGroup</span><span class="o">-&gt;</span><span class="n">setLayout</span><span class="p">(</span><span class="n">formLayout</span><span class="p">);</span>
+
+<span class="c1">// 可选择的分组框</span>
+<span class="n">QGroupBox</span> <span class="o">*</span><span class="n">optionsGroup</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QGroupBox</span><span class="p">(</span><span class="s">"选项"</span><span class="p">);</span>
+<span class="n">optionsGroup</span><span class="o">-&gt;</span><span class="n">setCheckable</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>  <span class="c1">// 使分组框可选择</span>
+<span class="n">optionsGroup</span><span class="o">-&gt;</span><span class="n">setChecked</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>    <span class="c1">// 默认选中</span>
+
+<span class="n">QVBoxLayout</span> <span class="o">*</span><span class="n">optionsLayout</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QVBoxLayout</span><span class="p">();</span>
+<span class="n">optionsLayout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="k">new</span> <span class="nf">QCheckBox</span><span class="p">(</span><span class="s">"选项1"</span><span class="p">));</span>
+<span class="n">optionsLayout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="k">new</span> <span class="nf">QCheckBox</span><span class="p">(</span><span class="s">"选项2"</span><span class="p">));</span>
+<span class="n">optionsGroup</span><span class="o">-&gt;</span><span class="n">setLayout</span><span class="p">(</span><span class="n">optionsLayout</span><span class="p">);</span>
+</code></pre></div></div> <h4 id="15-控件更新和重绘机制">1.5 控件更新和重绘机制</h4> <p><strong>update() vs repaint()</strong>： Qt 提供了两种不同的控件更新机制：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">CustomWidget</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QWidget</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="kt">void</span> <span class="n">setValue</span><span class="p">(</span><span class="kt">int</span> <span class="n">newValue</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">value</span> <span class="o">!=</span> <span class="n">newValue</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">newValue</span><span class="p">;</span>
+
+            <span class="c1">// update() - 延迟更新，在下次事件循环中重绘</span>
+            <span class="n">update</span><span class="p">();</span>  <span class="c1">// 推荐使用，性能更好</span>
+
+            <span class="c1">// repaint() - 立即重绘，不等待事件循环</span>
+            <span class="c1">// repaint();  // 只在需要立即更新时使用</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+<span class="k">protected</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="nf">paintEvent</span><span class="p">(</span><span class="n">QPaintEvent</span> <span class="o">*</span><span class="n">event</span><span class="p">)</span> <span class="k">override</span> <span class="p">{</span>
+        <span class="n">QPainter</span> <span class="n">painter</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+        <span class="n">painter</span><span class="p">.</span><span class="n">drawText</span><span class="p">(</span><span class="n">rect</span><span class="p">(),</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignCenter</span><span class="p">,</span> <span class="n">QString</span><span class="o">::</span><span class="n">number</span><span class="p">(</span><span class="n">value</span><span class="p">));</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// 使用场景示例</span>
+<span class="kt">void</span> <span class="nf">demonstrateUpdateMethods</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">CustomWidget</span> <span class="o">*</span><span class="n">widget</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CustomWidget</span><span class="p">();</span>
+
+    <span class="c1">// 批量更新时使用 update()</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">widget</span><span class="o">-&gt;</span><span class="n">setValue</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>  <span class="c1">// 每次调用 update()</span>
+    <span class="p">}</span>
+    <span class="c1">// Qt 会合并这些更新请求，只进行一次重绘</span>
+
+    <span class="c1">// 需要立即更新时使用 repaint()</span>
+    <span class="n">widget</span><span class="o">-&gt;</span><span class="n">setValue</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+    <span class="n">widget</span><span class="o">-&gt;</span><span class="n">repaint</span><span class="p">();</span>  <span class="c1">// 立即重绘，不等待事件循环</span>
+<span class="p">}</span>
+</code></pre></div></div> <p><strong>几何属性更新</strong>：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ResizableWidget</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QWidget</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="n">QString</span> <span class="n">customText</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="kt">void</span> <span class="n">setCustomText</span><span class="p">(</span><span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span><span class="n">text</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">customText</span> <span class="o">=</span> <span class="n">text</span><span class="p">;</span>
+
+        <span class="c1">// 通知布局系统重新计算</span>
+        <span class="n">updateGeometry</span><span class="p">();</span>
+
+        <span class="c1">// 请求重绘</span>
+        <span class="n">update</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="n">QSize</span> <span class="nf">sizeHint</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span> <span class="p">{</span>
+        <span class="n">QFontMetrics</span> <span class="n">fm</span><span class="p">(</span><span class="n">font</span><span class="p">());</span>
+        <span class="k">return</span> <span class="n">fm</span><span class="p">.</span><span class="n">size</span><span class="p">(</span><span class="n">Qt</span><span class="o">::</span><span class="n">TextSingleLine</span><span class="p">,</span> <span class="n">customText</span><span class="p">)</span> <span class="o">+</span> <span class="n">QSize</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="k">protected</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="nf">paintEvent</span><span class="p">(</span><span class="n">QPaintEvent</span> <span class="o">*</span><span class="n">event</span><span class="p">)</span> <span class="k">override</span> <span class="p">{</span>
+        <span class="n">QPainter</span> <span class="n">painter</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+        <span class="n">painter</span><span class="p">.</span><span class="n">drawText</span><span class="p">(</span><span class="n">rect</span><span class="p">(),</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignCenter</span><span class="p">,</span> <span class="n">customText</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// updateGeometry() 使用场景</span>
+<span class="kt">void</span> <span class="nf">whenToUseUpdateGeometry</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">ResizableWidget</span> <span class="o">*</span><span class="n">widget</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ResizableWidget</span><span class="p">();</span>
+
+    <span class="c1">// 当控件内容变化影响尺寸提示时</span>
+    <span class="n">widget</span><span class="o">-&gt;</span><span class="n">setCustomText</span><span class="p">(</span><span class="s">"This is a much longer text"</span><span class="p">);</span>
+
+    <span class="c1">// 当尺寸策略变化时</span>
+    <span class="n">widget</span><span class="o">-&gt;</span><span class="n">setSizePolicy</span><span class="p">(</span><span class="n">QSizePolicy</span><span class="o">::</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">::</span><span class="n">Fixed</span><span class="p">);</span>
+    <span class="n">widget</span><span class="o">-&gt;</span><span class="n">updateGeometry</span><span class="p">();</span>
+
+    <span class="c1">// 当最小/最大尺寸变化时</span>
+    <span class="n">widget</span><span class="o">-&gt;</span><span class="n">setMinimumSize</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">50</span><span class="p">);</span>
+    <span class="n">widget</span><span class="o">-&gt;</span><span class="n">updateGeometry</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div> <h4 id="16-窗口显示方法">1.6 窗口显示方法</h4> <p>Qt 提供了不同的窗口显示方法，适用于不同的场景：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// show() - 非模态显示</span>
+<span class="n">QWidget</span> <span class="o">*</span><span class="n">window</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QWidget</span><span class="p">();</span>
+<span class="n">window</span><span class="o">-&gt;</span><span class="n">show</span><span class="p">();</span>  <span class="c1">// 窗口显示，程序继续执行</span>
+
+<span class="c1">// exec() - 模态显示</span>
+<span class="n">QDialog</span> <span class="o">*</span><span class="n">dialog</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QDialog</span><span class="p">();</span>
+<span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">-&gt;</span><span class="n">exec</span><span class="p">();</span>  <span class="c1">// 阻塞执行，直到对话框关闭</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">result</span> <span class="o">==</span> <span class="n">QDialog</span><span class="o">::</span><span class="n">Accepted</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 用户点击了确定</span>
+<span class="p">}</span>
+
+<span class="c1">// 模态窗口示例</span>
+<span class="kt">void</span> <span class="nf">showModalDialog</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">QMessageBox</span> <span class="n">msgBox</span><span class="p">;</span>
+    <span class="n">msgBox</span><span class="p">.</span><span class="n">setText</span><span class="p">(</span><span class="s">"这是一个模态对话框"</span><span class="p">);</span>
+    <span class="n">msgBox</span><span class="p">.</span><span class="n">setStandardButtons</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">::</span><span class="n">Ok</span> <span class="o">|</span> <span class="n">QMessageBox</span><span class="o">::</span><span class="n">Cancel</span><span class="p">);</span>
+
+    <span class="kt">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">msgBox</span><span class="p">.</span><span class="n">exec</span><span class="p">();</span>  <span class="c1">// 阻塞执行</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="n">QMessageBox</span><span class="o">::</span><span class="n">Ok</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">qDebug</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"用户点击了确定"</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// 非模态窗口示例</span>
+<span class="kt">void</span> <span class="nf">showModelessDialog</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">QDialog</span> <span class="o">*</span><span class="n">dialog</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QDialog</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+    <span class="n">dialog</span><span class="o">-&gt;</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s">"非模态对话框"</span><span class="p">);</span>
+    <span class="n">dialog</span><span class="o">-&gt;</span><span class="n">setAttribute</span><span class="p">(</span><span class="n">Qt</span><span class="o">::</span><span class="n">WA_DeleteOnClose</span><span class="p">);</span>  <span class="c1">// 关闭时自动删除</span>
+    <span class="n">dialog</span><span class="o">-&gt;</span><span class="n">show</span><span class="p">();</span>  <span class="c1">// 非阻塞显示</span>
+<span class="p">}</span>
+</code></pre></div></div> <h3 id="2-stylesheet样式表">2 Stylesheet（样式表）</h3> <p>Qt 样式表（QSS）是 Qt 提供的强大样式定制机制，语法类似 CSS，允许开发者精确控制界面外观。</p> <h4 id="21-样式表基础语法">2.1 样式表基础语法</h4> <p><strong>选择器类型</strong>：</p> <div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/* 类型选择器 - 影响所有 QPushButton */</span>
+<span class="nt">QPushButton</span> <span class="p">{</span>
+  <span class="nl">background-color</span><span class="p">:</span> <span class="m">#4caf50</span><span class="p">;</span>
+  <span class="nl">border</span><span class="p">:</span> <span class="nb">none</span><span class="p">;</span>
+  <span class="nl">color</span><span class="p">:</span> <span class="no">white</span><span class="p">;</span>
+  <span class="nl">padding</span><span class="p">:</span> <span class="m">8px</span> <span class="m">16px</span><span class="p">;</span>
+  <span class="nl">border-radius</span><span class="p">:</span> <span class="m">4px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c">/* ID选择器 - 影响特定objectName的控件 */</span>
+<span class="nt">QPushButton</span><span class="nf">#submitButton</span> <span class="p">{</span>
+  <span class="nl">background-color</span><span class="p">:</span> <span class="m">#f44336</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c">/* 类选择器 - 影响继承关系 */</span>
+<span class="nc">.QPushButton</span> <span class="p">{</span>
+  <span class="nl">font-weight</span><span class="p">:</span> <span class="nb">bold</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c">/* 状态选择器 - 控件状态 */</span>
+<span class="nt">QPushButton</span><span class="nd">:hover</span> <span class="p">{</span>
+  <span class="nl">background-color</span><span class="p">:</span> <span class="m">#45a049</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">QPushButton</span><span class="nd">:pressed</span> <span class="p">{</span>
+  <span class="nl">background-color</span><span class="p">:</span> <span class="m">#3d8b40</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">QPushButton</span><span class="nd">:disabled</span> <span class="p">{</span>
+  <span class="nl">background-color</span><span class="p">:</span> <span class="m">#cccccc</span><span class="p">;</span>
+  <span class="nl">color</span><span class="p">:</span> <span class="m">#666666</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div> <p><strong>属性选择器</strong>：</p> <div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/* 属性选择器 */</span>
+<span class="nt">QLineEdit</span><span class="o">[</span><span class="nt">readOnly</span><span class="o">=</span><span class="s1">"true"</span><span class="o">]</span> <span class="p">{</span>
+  <span class="nl">background-color</span><span class="p">:</span> <span class="m">#f0f0f0</span><span class="p">;</span>
+  <span class="nl">color</span><span class="p">:</span> <span class="m">#888888</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c">/* 复合选择器 */</span>
+<span class="nt">QDialog</span> <span class="nt">QPushButton</span> <span class="p">{</span>
+  <span class="nl">min-width</span><span class="p">:</span> <span class="m">80px</span><span class="p">;</span>
+  <span class="nl">min-height</span><span class="p">:</span> <span class="m">25px</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div> <h4 id="22-常用样式属性">2.2 常用样式属性</h4> <p><strong>背景和边框</strong>：</p> <div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">QWidget</span> <span class="p">{</span>
+  <span class="nl">background-color</span><span class="p">:</span> <span class="m">#ffffff</span><span class="p">;</span>
+  <span class="nl">background-image</span><span class="p">:</span> <span class="sx">url(:/images/background.png)</span><span class="p">;</span>
+  <span class="nl">background-repeat</span><span class="p">:</span> <span class="nb">no-repeat</span><span class="p">;</span>
+  <span class="nl">background-position</span><span class="p">:</span> <span class="nb">center</span><span class="p">;</span>
+
+  <span class="nl">border</span><span class="p">:</span> <span class="m">2px</span> <span class="nb">solid</span> <span class="m">#cccccc</span><span class="p">;</span>
+  <span class="nl">border-radius</span><span class="p">:</span> <span class="m">8px</span><span class="p">;</span>
+  <span class="nl">border-top-left-radius</span><span class="p">:</span> <span class="m">10px</span><span class="p">;</span>
+  <span class="nl">border-bottom-right-radius</span><span class="p">:</span> <span class="m">0px</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div> <p><strong>字体和文本</strong>：</p> <div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">QLabel</span> <span class="p">{</span>
+  <span class="nl">font-family</span><span class="p">:</span> <span class="s1">"Arial"</span><span class="p">,</span> <span class="s1">"Microsoft YaHei"</span><span class="p">;</span>
+  <span class="nl">font-size</span><span class="p">:</span> <span class="m">14px</span><span class="p">;</span>
+  <span class="nl">font-weight</span><span class="p">:</span> <span class="nb">bold</span><span class="p">;</span>
+  <span class="nl">font-style</span><span class="p">:</span> <span class="nb">italic</span><span class="p">;</span>
+  <span class="nl">color</span><span class="p">:</span> <span class="m">#333333</span><span class="p">;</span>
+  <span class="nl">text-align</span><span class="p">:</span> <span class="nb">center</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div> <p><strong>布局和间距</strong>：</p> <div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">QPushButton</span> <span class="p">{</span>
+  <span class="nl">padding</span><span class="p">:</span> <span class="m">10px</span> <span class="m">20px</span><span class="p">;</span>
+  <span class="nl">margin</span><span class="p">:</span> <span class="m">5px</span><span class="p">;</span>
+  <span class="nl">min-width</span><span class="p">:</span> <span class="m">100px</span><span class="p">;</span>
+  <span class="nl">max-width</span><span class="p">:</span> <span class="m">200px</span><span class="p">;</span>
+  <span class="nl">min-height</span><span class="p">:</span> <span class="m">30px</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div> <h4 id="23-高级样式技巧">2.3 高级样式技巧</h4> <p><strong>复杂控件样式化</strong>：</p> <div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/* QTableView 样式 */</span>
+<span class="nt">QTableView</span> <span class="p">{</span>
+  <span class="py">gridline-color</span><span class="p">:</span> <span class="m">#d0d0d0</span><span class="p">;</span>
+  <span class="nl">background-color</span><span class="p">:</span> <span class="m">#ffffff</span><span class="p">;</span>
+  <span class="py">alternate-background-color</span><span class="p">:</span> <span class="m">#f5f5f5</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">QTableView</span><span class="nd">::item</span> <span class="p">{</span>
+  <span class="nl">padding</span><span class="p">:</span> <span class="m">5px</span><span class="p">;</span>
+  <span class="nl">border-bottom</span><span class="p">:</span> <span class="m">1px</span> <span class="nb">solid</span> <span class="m">#e0e0e0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">QTableView</span><span class="nd">::item:selected</span> <span class="p">{</span>
+  <span class="nl">background-color</span><span class="p">:</span> <span class="m">#3daee9</span><span class="p">;</span>
+  <span class="nl">color</span><span class="p">:</span> <span class="no">white</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c">/* QScrollBar 样式 */</span>
+<span class="nt">QScrollBar</span><span class="nd">:vertical</span> <span class="p">{</span>
+  <span class="nl">background</span><span class="p">:</span> <span class="m">#f0f0f0</span><span class="p">;</span>
+  <span class="nl">width</span><span class="p">:</span> <span class="m">12px</span><span class="p">;</span>
+  <span class="nl">border</span><span class="p">:</span> <span class="nb">none</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">QScrollBar</span><span class="nd">::handle:vertical</span> <span class="p">{</span>
+  <span class="nl">background</span><span class="p">:</span> <span class="m">#c0c0c0</span><span class="p">;</span>
+  <span class="nl">min-height</span><span class="p">:</span> <span class="m">20px</span><span class="p">;</span>
+  <span class="nl">border-radius</span><span class="p">:</span> <span class="m">6px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">QScrollBar</span><span class="nd">::handle:vertical:hover</span> <span class="p">{</span>
+  <span class="nl">background</span><span class="p">:</span> <span class="m">#a0a0a0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div> <p><strong>主题切换实现</strong>：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ThemeManager</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="k">enum</span> <span class="n">Theme</span> <span class="p">{</span> <span class="n">Light</span><span class="p">,</span> <span class="n">Dark</span> <span class="p">};</span>
+
+    <span class="k">static</span> <span class="kt">void</span> <span class="nf">applyTheme</span><span class="p">(</span><span class="n">Theme</span> <span class="n">theme</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">QString</span> <span class="n">styleSheet</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">theme</span> <span class="o">==</span> <span class="n">Light</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">styleSheet</span> <span class="o">=</span> <span class="n">loadStyleSheet</span><span class="p">(</span><span class="s">":/styles/light.qss"</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="n">styleSheet</span> <span class="o">=</span> <span class="n">loadStyleSheet</span><span class="p">(</span><span class="s">":/styles/dark.qss"</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">qApp</span><span class="o">-&gt;</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="n">styleSheet</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="k">static</span> <span class="n">QString</span> <span class="nf">loadStyleSheet</span><span class="p">(</span><span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span><span class="n">path</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">QFile</span> <span class="n">file</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">file</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">QIODevice</span><span class="o">::</span><span class="n">ReadOnly</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="n">file</span><span class="p">.</span><span class="n">readAll</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nf">QString</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div> <h3 id="3-layout布局">3 Layout（布局）</h3> <p>Qt 的布局管理系统提供了自动化的控件位置和尺寸管理，确保界面在不同窗口大小和分辨率下都能正确显示。</p> <h4 id="31-基础布局类型">3.1 基础布局类型</h4> <p><strong>水平布局（QHBoxLayout）</strong>：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QHBoxLayout</span> <span class="o">*</span><span class="n">horizontalLayout</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QHBoxLayout</span><span class="p">();</span>
+<span class="n">horizontalLayout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="k">new</span> <span class="nf">QPushButton</span><span class="p">(</span><span class="s">"按钮1"</span><span class="p">));</span>
+<span class="n">horizontalLayout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="k">new</span> <span class="nf">QPushButton</span><span class="p">(</span><span class="s">"按钮2"</span><span class="p">));</span>
+<span class="n">horizontalLayout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="k">new</span> <span class="nf">QPushButton</span><span class="p">(</span><span class="s">"按钮3"</span><span class="p">));</span>
+
+<span class="c1">// 设置间距和边距</span>
+<span class="n">horizontalLayout</span><span class="o">-&gt;</span><span class="n">setSpacing</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+<span class="n">horizontalLayout</span><span class="o">-&gt;</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+
+<span class="c1">// 设置伸缩因子</span>
+<span class="n">horizontalLayout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">button1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">// 占1份</span>
+<span class="n">horizontalLayout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">button2</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="c1">// 占2份</span>
+</code></pre></div></div> <p><strong>垂直布局（QVBoxLayout）</strong>：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QVBoxLayout</span> <span class="o">*</span><span class="n">verticalLayout</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QVBoxLayout</span><span class="p">();</span>
+<span class="n">verticalLayout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="k">new</span> <span class="nf">QLabel</span><span class="p">(</span><span class="s">"标题"</span><span class="p">));</span>
+<span class="n">verticalLayout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="k">new</span> <span class="nf">QLineEdit</span><span class="p">());</span>
+<span class="n">verticalLayout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="k">new</span> <span class="nf">QPushButton</span><span class="p">(</span><span class="s">"确定"</span><span class="p">));</span>
+
+<span class="c1">// 添加弹性空间</span>
+<span class="n">verticalLayout</span><span class="o">-&gt;</span><span class="n">addStretch</span><span class="p">();</span> <span class="c1">// 末尾添加弹性空间</span>
+<span class="n">verticalLayout</span><span class="o">-&gt;</span><span class="n">insertStretch</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="c1">// 在索引1处添加2倍弹性空间</span>
+</code></pre></div></div> <p><strong>网格布局（QGridLayout）</strong>：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QGridLayout</span> <span class="o">*</span><span class="n">gridLayout</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QGridLayout</span><span class="p">();</span>
+
+<span class="c1">// 添加控件到指定位置 (行, 列)</span>
+<span class="n">gridLayout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="k">new</span> <span class="nf">QLabel</span><span class="p">(</span><span class="s">"用户名:"</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="n">gridLayout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="k">new</span> <span class="nf">QLineEdit</span><span class="p">(),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+<span class="n">gridLayout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="k">new</span> <span class="nf">QLabel</span><span class="p">(</span><span class="s">"密码:"</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="n">gridLayout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="k">new</span> <span class="nf">QLineEdit</span><span class="p">(),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+<span class="c1">// 跨行跨列添加控件 (行, 列, 行跨度, 列跨度)</span>
+<span class="n">gridLayout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="k">new</span> <span class="nf">QPushButton</span><span class="p">(</span><span class="s">"登录"</span><span class="p">),</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+
+<span class="c1">// 设置行列伸缩</span>
+<span class="n">gridLayout</span><span class="o">-&gt;</span><span class="n">setRowStretch</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>    <span class="c1">// 第0行占1份</span>
+<span class="n">gridLayout</span><span class="o">-&gt;</span><span class="n">setColumnStretch</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="c1">// 第1列占2份</span>
+</code></pre></div></div> <p><strong>表单布局（QFormLayout）</strong>：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QFormLayout</span> <span class="o">*</span><span class="n">formLayout</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QFormLayout</span><span class="p">();</span>
+
+<span class="n">formLayout</span><span class="o">-&gt;</span><span class="n">addRow</span><span class="p">(</span><span class="s">"姓名:"</span><span class="p">,</span> <span class="k">new</span> <span class="nf">QLineEdit</span><span class="p">());</span>
+<span class="n">formLayout</span><span class="o">-&gt;</span><span class="n">addRow</span><span class="p">(</span><span class="s">"年龄:"</span><span class="p">,</span> <span class="k">new</span> <span class="nf">QSpinBox</span><span class="p">());</span>
+<span class="n">formLayout</span><span class="o">-&gt;</span><span class="n">addRow</span><span class="p">(</span><span class="s">"邮箱:"</span><span class="p">,</span> <span class="k">new</span> <span class="nf">QLineEdit</span><span class="p">());</span>
+
+<span class="c1">// 添加分隔符</span>
+<span class="n">formLayout</span><span class="o">-&gt;</span><span class="n">addRow</span><span class="p">(</span><span class="k">new</span> <span class="nf">QLabel</span><span class="p">(</span><span class="s">""</span><span class="p">));</span>
+<span class="n">formLayout</span><span class="o">-&gt;</span><span class="n">addRow</span><span class="p">(</span><span class="s">"备注:"</span><span class="p">,</span> <span class="k">new</span> <span class="nf">QTextEdit</span><span class="p">());</span>
+
+<span class="c1">// 设置标签对齐方式</span>
+<span class="n">formLayout</span><span class="o">-&gt;</span><span class="n">setLabelAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">::</span><span class="n">AlignRight</span><span class="p">);</span>
+</code></pre></div></div> <h4 id="32-高级布局技巧">3.2 高级布局技巧</h4> <p><strong>布局嵌套</strong>：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 创建主布局</span>
+<span class="n">QVBoxLayout</span> <span class="o">*</span><span class="n">mainLayout</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QVBoxLayout</span><span class="p">();</span>
+
+<span class="c1">// 创建顶部水平布局</span>
+<span class="n">QHBoxLayout</span> <span class="o">*</span><span class="n">topLayout</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QHBoxLayout</span><span class="p">();</span>
+<span class="n">topLayout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="k">new</span> <span class="nf">QLabel</span><span class="p">(</span><span class="s">"搜索:"</span><span class="p">));</span>
+<span class="n">topLayout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="k">new</span> <span class="nf">QLineEdit</span><span class="p">());</span>
+<span class="n">topLayout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="k">new</span> <span class="nf">QPushButton</span><span class="p">(</span><span class="s">"搜索"</span><span class="p">));</span>
+
+<span class="c1">// 创建中间内容区域</span>
+<span class="n">QHBoxLayout</span> <span class="o">*</span><span class="n">contentLayout</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QHBoxLayout</span><span class="p">();</span>
+<span class="n">contentLayout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="k">new</span> <span class="nf">QListWidget</span><span class="p">());</span>
+<span class="n">contentLayout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="k">new</span> <span class="nf">QTextEdit</span><span class="p">());</span>
+
+<span class="c1">// 创建底部按钮布局</span>
+<span class="n">QHBoxLayout</span> <span class="o">*</span><span class="n">buttonLayout</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QHBoxLayout</span><span class="p">();</span>
+<span class="n">buttonLayout</span><span class="o">-&gt;</span><span class="n">addStretch</span><span class="p">();</span> <span class="c1">// 左侧弹性空间</span>
+<span class="n">buttonLayout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="k">new</span> <span class="nf">QPushButton</span><span class="p">(</span><span class="s">"取消"</span><span class="p">));</span>
+<span class="n">buttonLayout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="k">new</span> <span class="nf">QPushButton</span><span class="p">(</span><span class="s">"确定"</span><span class="p">));</span>
+
+<span class="c1">// 组装主布局</span>
+<span class="n">mainLayout</span><span class="o">-&gt;</span><span class="n">addLayout</span><span class="p">(</span><span class="n">topLayout</span><span class="p">);</span>
+<span class="n">mainLayout</span><span class="o">-&gt;</span><span class="n">addLayout</span><span class="p">(</span><span class="n">contentLayout</span><span class="p">);</span>
+<span class="n">mainLayout</span><span class="o">-&gt;</span><span class="n">addLayout</span><span class="p">(</span><span class="n">buttonLayout</span><span class="p">);</span>
+
+<span class="n">widget</span><span class="o">-&gt;</span><span class="n">setLayout</span><span class="p">(</span><span class="n">mainLayout</span><span class="p">);</span>
+</code></pre></div></div> <p><strong>尺寸策略控制</strong>：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 设置控件的尺寸策略</span>
+<span class="n">QPushButton</span> <span class="o">*</span><span class="n">button</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QPushButton</span><span class="p">(</span><span class="s">"按钮"</span><span class="p">);</span>
+<span class="n">button</span><span class="o">-&gt;</span><span class="n">setSizePolicy</span><span class="p">(</span><span class="n">QSizePolicy</span><span class="o">::</span><span class="n">Preferred</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">::</span><span class="n">Fixed</span><span class="p">);</span>
+
+<span class="n">QLineEdit</span> <span class="o">*</span><span class="n">lineEdit</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QLineEdit</span><span class="p">();</span>
+<span class="n">lineEdit</span><span class="o">-&gt;</span><span class="n">setSizePolicy</span><span class="p">(</span><span class="n">QSizePolicy</span><span class="o">::</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">::</span><span class="n">Preferred</span><span class="p">);</span>
+
+<span class="c1">// 设置最小/最大尺寸</span>
+<span class="n">button</span><span class="o">-&gt;</span><span class="n">setMinimumSize</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">25</span><span class="p">);</span>
+<span class="n">button</span><span class="o">-&gt;</span><span class="n">setMaximumWidth</span><span class="p">(</span><span class="mi">120</span><span class="p">);</span>
+
+<span class="n">lineEdit</span><span class="o">-&gt;</span><span class="n">setMinimumWidth</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+</code></pre></div></div> <p><strong>动态布局调整</strong>：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">DynamicLayoutWidget</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QWidget</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">DynamicLayoutWidget</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">setupUI</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">addItem</span><span class="p">(</span><span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span><span class="n">text</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">QPushButton</span> <span class="o">*</span><span class="n">button</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QPushButton</span><span class="p">(</span><span class="n">text</span><span class="p">);</span>
+        <span class="n">connect</span><span class="p">(</span><span class="n">button</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QPushButton</span><span class="o">::</span><span class="n">clicked</span><span class="p">,</span> <span class="p">[</span><span class="k">this</span><span class="p">,</span> <span class="n">button</span><span class="p">]()</span> <span class="p">{</span>
+            <span class="n">removeItem</span><span class="p">(</span><span class="n">button</span><span class="p">);</span>
+        <span class="p">});</span>
+
+        <span class="n">layout</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">button</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">removeItem</span><span class="p">(</span><span class="n">QWidget</span> <span class="o">*</span><span class="n">widget</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">layout</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">removeWidget</span><span class="p">(</span><span class="n">widget</span><span class="p">);</span>
+        <span class="n">widget</span><span class="o">-&gt;</span><span class="n">deleteLater</span><span class="p">();</span>
+    <span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="nf">setupUI</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">setLayout</span><span class="p">(</span><span class="k">new</span> <span class="n">QVBoxLayout</span><span class="p">());</span>
+        <span class="n">layout</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">::</span><span class="n">AlignTop</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div> <h3 id="4-mvc模型-视图-控制器">4 MVC（模型-视图-控制器）</h3> <h4 id="41-mvc-模式的意义与价值">4.1 MVC 模式的意义与价值</h4> <p><strong>引入 MVC 模式的核心意义</strong>：</p> <ol> <li> <p><strong>职责分离原则</strong>：MVC 模式将应用程序分解为三个核心组件，每个组件都有明确的职责边界：</p> <ul> <li> <strong>Model（模型）</strong>：负责数据管理、业务逻辑和数据验证</li> <li> <strong>View（视图）</strong>：负责数据展示和用户界面交互</li> <li> <strong>Controller（控制器）</strong>：负责协调模型和视图，处理用户输入</li> </ul> </li> <li> <p><strong>可维护性提升</strong>：通过职责分离，代码结构更加清晰，修改某一层的代码不会影响其他层，大大提高了代码的可维护性。</p> </li> <li> <p><strong>可测试性增强</strong>：业务逻辑与 UI 分离后，可以独立测试业务逻辑，无需依赖 GUI 环境。</p> </li> <li> <p><strong>可复用性提高</strong>：同一个模型可以被多个视图使用，同一个视图也可以展示不同的模型数据。</p> </li> <li> <p><strong>团队协作优化</strong>：不同的开发人员可以并行开发模型、视图和控制器，提高开发效率。</p> </li> </ol> <p><strong>Qt 中 MVC 模式的特点</strong>：</p> <p>Qt 采用了简化的 Model-View 架构（没有显式的 Controller），通过信号槽机制和委托（Delegate）来实现 MVC 的职责分离：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 传统的紧耦合方式（不推荐）</span>
+<span class="k">class</span> <span class="nc">BadDesignWidget</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QWidget</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="n">QTableWidget</span> <span class="o">*</span><span class="n">table</span><span class="p">;</span>
+    <span class="n">QVector</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">&gt;</span> <span class="n">persons</span><span class="p">;</span>  <span class="c1">// 数据直接存储在UI类中</span>
+    <span class="n">QLineEdit</span> <span class="o">*</span><span class="n">nameEdit</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="kt">void</span> <span class="n">addPerson</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// UI逻辑和业务逻辑混合在一起</span>
+        <span class="n">QString</span> <span class="n">name</span> <span class="o">=</span> <span class="n">nameEdit</span><span class="o">-&gt;</span><span class="n">text</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">name</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+            <span class="n">QMessageBox</span><span class="o">::</span><span class="n">warning</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s">"错误"</span><span class="p">,</span> <span class="s">"姓名不能为空"</span><span class="p">);</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="c1">// 业务逻辑：数据验证和处理</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">name</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">50</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">QMessageBox</span><span class="o">::</span><span class="n">warning</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s">"错误"</span><span class="p">,</span> <span class="s">"姓名过长"</span><span class="p">);</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="c1">// 直接操作UI和数据</span>
+        <span class="n">Person</span> <span class="n">person</span><span class="p">;</span>
+        <span class="n">person</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="p">;</span>
+        <span class="n">persons</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">person</span><span class="p">);</span>
+
+        <span class="c1">// 手动更新UI</span>
+        <span class="kt">int</span> <span class="n">row</span> <span class="o">=</span> <span class="n">table</span><span class="o">-&gt;</span><span class="n">rowCount</span><span class="p">();</span>
+        <span class="n">table</span><span class="o">-&gt;</span><span class="n">insertRow</span><span class="p">(</span><span class="n">row</span><span class="p">);</span>
+        <span class="n">table</span><span class="o">-&gt;</span><span class="n">setItem</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">new</span> <span class="nf">QTableWidgetItem</span><span class="p">(</span><span class="n">name</span><span class="p">));</span>
+
+        <span class="n">nameEdit</span><span class="o">-&gt;</span><span class="n">clear</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div> <h4 id="42-ui-与业务逻辑的解耦分离">4.2 UI 与业务逻辑的解耦分离</h4> <p><strong>分离策略和实现方法</strong>：</p> <p><strong>1. 数据层分离</strong>：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 业务数据模型 - 纯业务逻辑，不依赖UI</span>
+<span class="k">class</span> <span class="nc">PersonBusinessModel</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QObject</span> <span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+<span class="nl">private:</span>
+    <span class="n">QVector</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">&gt;</span> <span class="n">persons</span><span class="p">;</span>
+    <span class="n">PersonValidator</span> <span class="n">validator</span><span class="p">;</span>  <span class="c1">// 业务规则验证器</span>
+    <span class="n">PersonRepository</span> <span class="n">repository</span><span class="p">;</span>  <span class="c1">// 数据持久化</span>
+
+<span class="nl">public:</span>
+    <span class="c1">// 纯业务方法，不涉及UI</span>
+    <span class="kt">bool</span> <span class="n">addPerson</span><span class="p">(</span><span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span><span class="n">name</span><span class="p">,</span> <span class="kt">int</span> <span class="n">age</span><span class="p">,</span> <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span><span class="n">occupation</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 业务规则验证</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">validator</span><span class="p">.</span><span class="n">validateName</span><span class="p">(</span><span class="n">name</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">emit</span> <span class="n">errorOccurred</span><span class="p">(</span><span class="s">"姓名格式不正确"</span><span class="p">);</span>
+            <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">validator</span><span class="p">.</span><span class="n">validateAge</span><span class="p">(</span><span class="n">age</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">emit</span> <span class="n">errorOccurred</span><span class="p">(</span><span class="s">"年龄范围无效"</span><span class="p">);</span>
+            <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="c1">// 检查重复</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">findPersonByName</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">emit</span> <span class="n">errorOccurred</span><span class="p">(</span><span class="s">"姓名已存在"</span><span class="p">);</span>
+            <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="c1">// 执行业务操作</span>
+        <span class="n">Person</span> <span class="n">person</span><span class="p">{</span><span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">,</span> <span class="n">occupation</span><span class="p">};</span>
+        <span class="n">persons</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">person</span><span class="p">);</span>
+
+        <span class="c1">// 持久化数据</span>
+        <span class="n">repository</span><span class="p">.</span><span class="n">save</span><span class="p">(</span><span class="n">person</span><span class="p">);</span>
+
+        <span class="n">emit</span> <span class="nf">personAdded</span><span class="p">(</span><span class="n">person</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">bool</span> <span class="nf">removePerson</span><span class="p">(</span><span class="kt">int</span> <span class="n">index</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="n">persons</span><span class="p">.</span><span class="n">size</span><span class="p">())</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="n">Person</span> <span class="n">person</span> <span class="o">=</span> <span class="n">persons</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
+        <span class="n">persons</span><span class="p">.</span><span class="n">removeAt</span><span class="p">(</span><span class="n">index</span><span class="p">);</span>
+        <span class="n">repository</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">person</span><span class="p">.</span><span class="n">id</span><span class="p">);</span>
+
+        <span class="n">emit</span> <span class="nf">personRemoved</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">person</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 查询方法</span>
+    <span class="n">QVector</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">&gt;</span> <span class="n">getAllPersons</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">persons</span><span class="p">;</span> <span class="p">}</span>
+    <span class="n">Person</span> <span class="nf">getPersonAt</span><span class="p">(</span><span class="kt">int</span> <span class="n">index</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">persons</span><span class="p">.</span><span class="n">value</span><span class="p">(</span><span class="n">index</span><span class="p">);</span> <span class="p">}</span>
+
+<span class="n">signals</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="nf">personAdded</span><span class="p">(</span><span class="k">const</span> <span class="n">Person</span> <span class="o">&amp;</span><span class="n">person</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">personRemoved</span><span class="p">(</span><span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="k">const</span> <span class="n">Person</span> <span class="o">&amp;</span><span class="n">person</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">errorOccurred</span><span class="p">(</span><span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span><span class="n">message</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">dataChanged</span><span class="p">();</span>
+<span class="p">};</span>
+</code></pre></div></div> <p><strong>2. 视图适配层</strong>：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Qt Model适配器 - 将业务模型适配为Qt View可用的接口</span>
+<span class="k">class</span> <span class="nc">PersonTableModel</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QAbstractTableModel</span> <span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+<span class="nl">private:</span>
+    <span class="n">PersonBusinessModel</span> <span class="o">*</span><span class="n">businessModel</span><span class="p">;</span>  <span class="c1">// 引用业务模型</span>
+
+<span class="nl">public:</span>
+    <span class="n">PersonTableModel</span><span class="p">(</span><span class="n">PersonBusinessModel</span> <span class="o">*</span><span class="n">business</span><span class="p">,</span> <span class="n">QObject</span> <span class="o">*</span><span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">)</span>
+        <span class="o">:</span> <span class="n">QAbstractTableModel</span><span class="p">(</span><span class="n">parent</span><span class="p">),</span> <span class="n">businessModel</span><span class="p">(</span><span class="n">business</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="c1">// 监听业务模型变化</span>
+        <span class="n">connect</span><span class="p">(</span><span class="n">businessModel</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">PersonBusinessModel</span><span class="o">::</span><span class="n">personAdded</span><span class="p">,</span>
+                <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">PersonTableModel</span><span class="o">::</span><span class="n">onPersonAdded</span><span class="p">);</span>
+        <span class="n">connect</span><span class="p">(</span><span class="n">businessModel</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">PersonBusinessModel</span><span class="o">::</span><span class="n">personRemoved</span><span class="p">,</span>
+                <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">PersonTableModel</span><span class="o">::</span><span class="n">onPersonRemoved</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Qt Model接口实现</span>
+    <span class="kt">int</span> <span class="nf">rowCount</span><span class="p">(</span><span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">parent</span> <span class="o">=</span> <span class="n">QModelIndex</span><span class="p">())</span> <span class="k">const</span> <span class="k">override</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">businessModel</span><span class="o">-&gt;</span><span class="n">getAllPersons</span><span class="p">().</span><span class="n">size</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="kt">int</span> <span class="n">columnCount</span><span class="p">(</span><span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">parent</span> <span class="o">=</span> <span class="n">QModelIndex</span><span class="p">())</span> <span class="k">const</span> <span class="k">override</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">3</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">QVariant</span> <span class="nf">data</span><span class="p">(</span><span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">index</span><span class="p">,</span> <span class="kt">int</span> <span class="n">role</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">DisplayRole</span><span class="p">)</span> <span class="k">const</span> <span class="k">override</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">index</span><span class="p">.</span><span class="n">isValid</span><span class="p">())</span> <span class="k">return</span> <span class="n">QVariant</span><span class="p">();</span>
+
+        <span class="n">Person</span> <span class="n">person</span> <span class="o">=</span> <span class="n">businessModel</span><span class="o">-&gt;</span><span class="n">getPersonAt</span><span class="p">(</span><span class="n">index</span><span class="p">.</span><span class="n">row</span><span class="p">());</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">role</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">DisplayRole</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">switch</span> <span class="p">(</span><span class="n">index</span><span class="p">.</span><span class="n">column</span><span class="p">())</span> <span class="p">{</span>
+                <span class="k">case</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="n">person</span><span class="p">.</span><span class="n">name</span><span class="p">;</span>
+                <span class="k">case</span> <span class="mi">1</span><span class="p">:</span> <span class="k">return</span> <span class="n">person</span><span class="p">.</span><span class="n">age</span><span class="p">;</span>
+                <span class="k">case</span> <span class="mi">2</span><span class="p">:</span> <span class="k">return</span> <span class="n">person</span><span class="p">.</span><span class="n">occupation</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nf">QVariant</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 编辑支持</span>
+    <span class="kt">bool</span> <span class="n">setData</span><span class="p">(</span><span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">index</span><span class="p">,</span> <span class="k">const</span> <span class="n">QVariant</span> <span class="o">&amp;</span><span class="n">value</span><span class="p">,</span> <span class="kt">int</span> <span class="n">role</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">EditRole</span><span class="p">)</span> <span class="k">override</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">index</span><span class="p">.</span><span class="n">isValid</span><span class="p">()</span> <span class="o">||</span> <span class="n">role</span> <span class="o">!=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">EditRole</span><span class="p">)</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+
+        <span class="n">Person</span> <span class="n">person</span> <span class="o">=</span> <span class="n">businessModel</span><span class="o">-&gt;</span><span class="n">getPersonAt</span><span class="p">(</span><span class="n">index</span><span class="p">.</span><span class="n">row</span><span class="p">());</span>
+
+        <span class="c1">// 根据列更新对应字段</span>
+        <span class="k">switch</span> <span class="p">(</span><span class="n">index</span><span class="p">.</span><span class="n">column</span><span class="p">())</span> <span class="p">{</span>
+            <span class="k">case</span> <span class="mi">0</span><span class="p">:</span> <span class="n">person</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">value</span><span class="p">.</span><span class="n">toString</span><span class="p">();</span> <span class="k">break</span><span class="p">;</span>
+            <span class="k">case</span> <span class="mi">1</span><span class="p">:</span> <span class="n">person</span><span class="p">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">value</span><span class="p">.</span><span class="n">toInt</span><span class="p">();</span> <span class="k">break</span><span class="p">;</span>
+            <span class="k">case</span> <span class="mi">2</span><span class="p">:</span> <span class="n">person</span><span class="p">.</span><span class="n">occupation</span> <span class="o">=</span> <span class="n">value</span><span class="p">.</span><span class="n">toString</span><span class="p">();</span> <span class="k">break</span><span class="p">;</span>
+            <span class="nl">default:</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="c1">// 通过业务模型更新（经过业务验证）</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">businessModel</span><span class="o">-&gt;</span><span class="n">updatePerson</span><span class="p">(</span><span class="n">index</span><span class="p">.</span><span class="n">row</span><span class="p">(),</span> <span class="n">person</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">emit</span> <span class="n">dataChanged</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="p">{</span><span class="n">Qt</span><span class="o">::</span><span class="n">DisplayRole</span><span class="p">});</span>
+            <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+<span class="k">private</span> <span class="n">slots</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="nf">onPersonAdded</span><span class="p">(</span><span class="k">const</span> <span class="n">Person</span> <span class="o">&amp;</span><span class="n">person</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">row</span> <span class="o">=</span> <span class="n">businessModel</span><span class="o">-&gt;</span><span class="n">getAllPersons</span><span class="p">().</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="n">beginInsertRows</span><span class="p">(</span><span class="n">QModelIndex</span><span class="p">(),</span> <span class="n">row</span><span class="p">,</span> <span class="n">row</span><span class="p">);</span>
+        <span class="n">endInsertRows</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">onPersonRemoved</span><span class="p">(</span><span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="k">const</span> <span class="n">Person</span> <span class="o">&amp;</span><span class="n">person</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">beginRemoveRows</span><span class="p">(</span><span class="n">QModelIndex</span><span class="p">(),</span> <span class="n">index</span><span class="p">,</span> <span class="n">index</span><span class="p">);</span>
+        <span class="n">endRemoveRows</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div> <p><strong>3. 控制器层（协调层）</strong>：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 应用控制器 - 协调UI和业务逻辑</span>
+<span class="k">class</span> <span class="nc">PersonController</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QObject</span> <span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+<span class="nl">private:</span>
+    <span class="n">PersonBusinessModel</span> <span class="o">*</span><span class="n">businessModel</span><span class="p">;</span>
+    <span class="n">PersonTableModel</span> <span class="o">*</span><span class="n">tableModel</span><span class="p">;</span>
+    <span class="n">QTableView</span> <span class="o">*</span><span class="n">view</span><span class="p">;</span>
+    <span class="n">QLineEdit</span> <span class="o">*</span><span class="n">nameEdit</span><span class="p">;</span>
+    <span class="n">QSpinBox</span> <span class="o">*</span><span class="n">ageSpinBox</span><span class="p">;</span>
+    <span class="n">QLineEdit</span> <span class="o">*</span><span class="n">occupationEdit</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="n">PersonController</span><span class="p">(</span><span class="n">QObject</span> <span class="o">*</span><span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="o">:</span> <span class="n">QObject</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 创建业务模型</span>
+        <span class="n">businessModel</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PersonBusinessModel</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+
+        <span class="c1">// 创建适配模型</span>
+        <span class="n">tableModel</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PersonTableModel</span><span class="p">(</span><span class="n">businessModel</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+
+        <span class="c1">// 连接业务模型的错误信号</span>
+        <span class="n">connect</span><span class="p">(</span><span class="n">businessModel</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">PersonBusinessModel</span><span class="o">::</span><span class="n">errorOccurred</span><span class="p">,</span>
+                <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">PersonController</span><span class="o">::</span><span class="n">handleBusinessError</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">setView</span><span class="p">(</span><span class="n">QTableView</span> <span class="o">*</span><span class="n">v</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">view</span> <span class="o">=</span> <span class="n">v</span><span class="p">;</span>
+        <span class="n">view</span><span class="o">-&gt;</span><span class="n">setModel</span><span class="p">(</span><span class="n">tableModel</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">setInputControls</span><span class="p">(</span><span class="n">QLineEdit</span> <span class="o">*</span><span class="n">name</span><span class="p">,</span> <span class="n">QSpinBox</span> <span class="o">*</span><span class="n">age</span><span class="p">,</span> <span class="n">QLineEdit</span> <span class="o">*</span><span class="n">occupation</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">nameEdit</span> <span class="o">=</span> <span class="n">name</span><span class="p">;</span>
+        <span class="n">ageSpinBox</span> <span class="o">=</span> <span class="n">age</span><span class="p">;</span>
+        <span class="n">occupationEdit</span> <span class="o">=</span> <span class="n">occupation</span><span class="p">;</span>
+    <span class="p">}</span>
+
+<span class="k">public</span> <span class="n">slots</span><span class="o">:</span>
+    <span class="c1">// UI事件处理 - 只负责收集UI数据，委托给业务层处理</span>
+    <span class="kt">void</span> <span class="nf">addPersonRequested</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">QString</span> <span class="n">name</span> <span class="o">=</span> <span class="n">nameEdit</span><span class="o">-&gt;</span><span class="n">text</span><span class="p">().</span><span class="n">trimmed</span><span class="p">();</span>
+        <span class="kt">int</span> <span class="n">age</span> <span class="o">=</span> <span class="n">ageSpinBox</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">();</span>
+        <span class="n">QString</span> <span class="n">occupation</span> <span class="o">=</span> <span class="n">occupationEdit</span><span class="o">-&gt;</span><span class="n">text</span><span class="p">().</span><span class="n">trimmed</span><span class="p">();</span>
+
+        <span class="c1">// 委托给业务层，不在这里做业务验证</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">businessModel</span><span class="o">-&gt;</span><span class="n">addPerson</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">,</span> <span class="n">occupation</span><span class="p">))</span> <span class="p">{</span>
+            <span class="c1">// 成功后清空UI</span>
+            <span class="n">clearInputs</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="c1">// 错误处理由 handleBusinessError 统一处理</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">removePersonRequested</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">QModelIndexList</span> <span class="n">selected</span> <span class="o">=</span> <span class="n">view</span><span class="o">-&gt;</span><span class="n">selectionModel</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">selectedRows</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">selected</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+            <span class="kt">int</span> <span class="n">row</span> <span class="o">=</span> <span class="n">selected</span><span class="p">.</span><span class="n">first</span><span class="p">().</span><span class="n">row</span><span class="p">();</span>
+            <span class="n">businessModel</span><span class="o">-&gt;</span><span class="n">removePerson</span><span class="p">(</span><span class="n">row</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">importFromFile</span><span class="p">(</span><span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span><span class="n">fileName</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 委托给业务层处理文件导入</span>
+        <span class="n">businessModel</span><span class="o">-&gt;</span><span class="n">importFromFile</span><span class="p">(</span><span class="n">fileName</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">exportToFile</span><span class="p">(</span><span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span><span class="n">fileName</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 委托给业务层处理文件导出</span>
+        <span class="n">businessModel</span><span class="o">-&gt;</span><span class="n">exportToFile</span><span class="p">(</span><span class="n">fileName</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="k">private</span> <span class="n">slots</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="nf">handleBusinessError</span><span class="p">(</span><span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span><span class="n">message</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 统一的错误处理 - 只负责UI展示</span>
+        <span class="n">QMessageBox</span><span class="o">::</span><span class="n">warning</span><span class="p">(</span><span class="n">qobject_cast</span><span class="o">&lt;</span><span class="n">QWidget</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">parent</span><span class="p">()),</span> <span class="s">"业务错误"</span><span class="p">,</span> <span class="n">message</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="nf">clearInputs</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">nameEdit</span><span class="o">-&gt;</span><span class="n">clear</span><span class="p">();</span>
+        <span class="n">ageSpinBox</span><span class="o">-&gt;</span><span class="n">setValue</span><span class="p">(</span><span class="mi">18</span><span class="p">);</span>
+        <span class="n">occupationEdit</span><span class="o">-&gt;</span><span class="n">clear</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div> <p><strong>4. 完整的分层应用示例</strong>：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 主窗口 - 只负责UI组装和事件连接</span>
+<span class="k">class</span> <span class="nc">MainWindow</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QMainWindow</span> <span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+<span class="nl">private:</span>
+    <span class="n">PersonController</span> <span class="o">*</span><span class="n">controller</span><span class="p">;</span>
+    <span class="n">QTableView</span> <span class="o">*</span><span class="n">tableView</span><span class="p">;</span>
+    <span class="n">QLineEdit</span> <span class="o">*</span><span class="n">nameEdit</span><span class="p">;</span>
+    <span class="n">QSpinBox</span> <span class="o">*</span><span class="n">ageSpinBox</span><span class="p">;</span>
+    <span class="n">QLineEdit</span> <span class="o">*</span><span class="n">occupationEdit</span><span class="p">;</span>
+    <span class="n">QPushButton</span> <span class="o">*</span><span class="n">addButton</span><span class="p">;</span>
+    <span class="n">QPushButton</span> <span class="o">*</span><span class="n">removeButton</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="n">MainWindow</span><span class="p">(</span><span class="n">QWidget</span> <span class="o">*</span><span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="o">:</span> <span class="n">QMainWindow</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">setupUI</span><span class="p">();</span>
+        <span class="n">setupController</span><span class="p">();</span>
+        <span class="n">connectSignals</span><span class="p">();</span>
+    <span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="nf">setupUI</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">auto</span> <span class="o">*</span><span class="n">centralWidget</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QWidget</span><span class="p">();</span>
+        <span class="n">setCentralWidget</span><span class="p">(</span><span class="n">centralWidget</span><span class="p">);</span>
+
+        <span class="c1">// 创建UI控件</span>
+        <span class="n">tableView</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QTableView</span><span class="p">();</span>
+        <span class="n">nameEdit</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QLineEdit</span><span class="p">();</span>
+        <span class="n">ageSpinBox</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QSpinBox</span><span class="p">();</span>
+        <span class="n">ageSpinBox</span><span class="o">-&gt;</span><span class="n">setRange</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+        <span class="n">occupationEdit</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QLineEdit</span><span class="p">();</span>
+        <span class="n">addButton</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s">"添加"</span><span class="p">);</span>
+        <span class="n">removeButton</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s">"删除"</span><span class="p">);</span>
+
+        <span class="c1">// 布局设置</span>
+        <span class="k">auto</span> <span class="o">*</span><span class="n">layout</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="n">centralWidget</span><span class="p">);</span>
+        <span class="k">auto</span> <span class="o">*</span><span class="n">formLayout</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QFormLayout</span><span class="p">();</span>
+        <span class="n">formLayout</span><span class="o">-&gt;</span><span class="n">addRow</span><span class="p">(</span><span class="s">"姓名:"</span><span class="p">,</span> <span class="n">nameEdit</span><span class="p">);</span>
+        <span class="n">formLayout</span><span class="o">-&gt;</span><span class="n">addRow</span><span class="p">(</span><span class="s">"年龄:"</span><span class="p">,</span> <span class="n">ageSpinBox</span><span class="p">);</span>
+        <span class="n">formLayout</span><span class="o">-&gt;</span><span class="n">addRow</span><span class="p">(</span><span class="s">"职业:"</span><span class="p">,</span> <span class="n">occupationEdit</span><span class="p">);</span>
+
+        <span class="k">auto</span> <span class="o">*</span><span class="n">buttonLayout</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QHBoxLayout</span><span class="p">();</span>
+        <span class="n">buttonLayout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">addButton</span><span class="p">);</span>
+        <span class="n">buttonLayout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">removeButton</span><span class="p">);</span>
+        <span class="n">buttonLayout</span><span class="o">-&gt;</span><span class="n">addStretch</span><span class="p">();</span>
+
+        <span class="n">layout</span><span class="o">-&gt;</span><span class="n">addLayout</span><span class="p">(</span><span class="n">formLayout</span><span class="p">);</span>
+        <span class="n">layout</span><span class="o">-&gt;</span><span class="n">addLayout</span><span class="p">(</span><span class="n">buttonLayout</span><span class="p">);</span>
+        <span class="n">layout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">tableView</span><span class="p">);</span>
+
+        <span class="c1">// 创建菜单</span>
+        <span class="n">createMenus</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">setupController</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">controller</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PersonController</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+        <span class="n">controller</span><span class="o">-&gt;</span><span class="n">setView</span><span class="p">(</span><span class="n">tableView</span><span class="p">);</span>
+        <span class="n">controller</span><span class="o">-&gt;</span><span class="n">setInputControls</span><span class="p">(</span><span class="n">nameEdit</span><span class="p">,</span> <span class="n">ageSpinBox</span><span class="p">,</span> <span class="n">occupationEdit</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">connectSignals</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// UI事件直接连接到控制器</span>
+        <span class="n">connect</span><span class="p">(</span><span class="n">addButton</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QPushButton</span><span class="o">::</span><span class="n">clicked</span><span class="p">,</span>
+                <span class="n">controller</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">PersonController</span><span class="o">::</span><span class="n">addPersonRequested</span><span class="p">);</span>
+        <span class="n">connect</span><span class="p">(</span><span class="n">removeButton</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QPushButton</span><span class="o">::</span><span class="n">clicked</span><span class="p">,</span>
+                <span class="n">controller</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">PersonController</span><span class="o">::</span><span class="n">removePersonRequested</span><span class="p">);</span>
+
+        <span class="c1">// 回车键添加</span>
+        <span class="n">connect</span><span class="p">(</span><span class="n">nameEdit</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QLineEdit</span><span class="o">::</span><span class="n">returnPressed</span><span class="p">,</span>
+                <span class="n">controller</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">PersonController</span><span class="o">::</span><span class="n">addPersonRequested</span><span class="p">);</span>
+        <span class="n">connect</span><span class="p">(</span><span class="n">occupationEdit</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QLineEdit</span><span class="o">::</span><span class="n">returnPressed</span><span class="p">,</span>
+                <span class="n">controller</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">PersonController</span><span class="o">::</span><span class="n">addPersonRequested</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">createMenus</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">auto</span> <span class="o">*</span><span class="n">fileMenu</span> <span class="o">=</span> <span class="n">menuBar</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">addMenu</span><span class="p">(</span><span class="s">"文件"</span><span class="p">);</span>
+
+        <span class="k">auto</span> <span class="o">*</span><span class="n">importAction</span> <span class="o">=</span> <span class="n">fileMenu</span><span class="o">-&gt;</span><span class="n">addAction</span><span class="p">(</span><span class="s">"导入"</span><span class="p">);</span>
+        <span class="n">connect</span><span class="p">(</span><span class="n">importAction</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QAction</span><span class="o">::</span><span class="n">triggered</span><span class="p">,</span> <span class="p">[</span><span class="k">this</span><span class="p">]()</span> <span class="p">{</span>
+            <span class="n">QString</span> <span class="n">fileName</span> <span class="o">=</span> <span class="n">QFileDialog</span><span class="o">::</span><span class="n">getOpenFileName</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s">"导入文件"</span><span class="p">,</span> <span class="s">""</span><span class="p">,</span> <span class="s">"CSV Files (*.csv)"</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">fileName</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+                <span class="n">controller</span><span class="o">-&gt;</span><span class="n">importFromFile</span><span class="p">(</span><span class="n">fileName</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+
+        <span class="k">auto</span> <span class="o">*</span><span class="n">exportAction</span> <span class="o">=</span> <span class="n">fileMenu</span><span class="o">-&gt;</span><span class="n">addAction</span><span class="p">(</span><span class="s">"导出"</span><span class="p">);</span>
+        <span class="n">connect</span><span class="p">(</span><span class="n">exportAction</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QAction</span><span class="o">::</span><span class="n">triggered</span><span class="p">,</span> <span class="p">[</span><span class="k">this</span><span class="p">]()</span> <span class="p">{</span>
+            <span class="n">QString</span> <span class="n">fileName</span> <span class="o">=</span> <span class="n">QFileDialog</span><span class="o">::</span><span class="n">getSaveFileName</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s">"导出文件"</span><span class="p">,</span> <span class="s">""</span><span class="p">,</span> <span class="s">"CSV Files (*.csv)"</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">fileName</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+                <span class="n">controller</span><span class="o">-&gt;</span><span class="n">exportToFile</span><span class="p">(</span><span class="n">fileName</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div> <p><strong>解耦分离的核心优势</strong>：</p> <ol> <li> <p><strong>业务逻辑独立性</strong>：</p> <ul> <li>业务模型（PersonBusinessModel）完全独立于 UI，可以在控制台应用、Web 应用或移动应用中复用</li> <li>业务规则集中管理，修改业务逻辑不影响 UI 代码</li> </ul> </li> <li> <p><strong>UI 灵活性</strong>：</p> <ul> <li>UI 可以独立变化，从 TableView 改为 ListView 或自定义控件都不影响业务逻辑</li> <li>支持多种 UI 呈现方式（详细视图、简化视图、图表视图等）</li> </ul> </li> <li> <p><strong>测试便利性</strong>：</p> <div class="language-cpp highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="c1">// 业务逻辑单元测试 - 无需GUI环境</span>
+<span class="kt">void</span> <span class="nf">testPersonBusinessModel</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">PersonBusinessModel</span> <span class="n">model</span><span class="p">;</span>
+
+    <span class="c1">// 测试添加功能</span>
+    <span class="kt">bool</span> <span class="n">result</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">addPerson</span><span class="p">(</span><span class="s">"张三"</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="s">"工程师"</span><span class="p">);</span>
+    <span class="n">QVERIFY</span><span class="p">(</span><span class="n">result</span> <span class="o">==</span> <span class="nb">true</span><span class="p">);</span>
+    <span class="n">QVERIFY</span><span class="p">(</span><span class="n">model</span><span class="p">.</span><span class="n">getAllPersons</span><span class="p">().</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">);</span>
+
+    <span class="c1">// 测试重复添加</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">addPerson</span><span class="p">(</span><span class="s">"张三"</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="s">"设计师"</span><span class="p">);</span>
+    <span class="n">QVERIFY</span><span class="p">(</span><span class="n">result</span> <span class="o">==</span> <span class="nb">false</span><span class="p">);</span>  <span class="c1">// 应该失败</span>
+
+    <span class="c1">// 测试无效数据</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">addPerson</span><span class="p">(</span><span class="s">""</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="s">"工程师"</span><span class="p">);</span>
+    <span class="n">QVERIFY</span><span class="p">(</span><span class="n">result</span> <span class="o">==</span> <span class="nb">false</span><span class="p">);</span>  <span class="c1">// 应该失败</span>
+<span class="p">}</span>
+</code></pre></div> </div> </li> <li> <p><strong>维护便利性</strong>：</p> <ul> <li>各层职责清晰，bug 定位更容易</li> <li>可以独立升级某一层而不影响其他层</li> <li>代码结构标准化，新团队成员更容易理解</li> </ul> </li> </ol> <p><strong>QT 中 ui 和 business logic 是如何耦合的?</strong></p> <p>在传统 Qt 应用中，UI 和业务逻辑常常耦合在一起，但通过 MVC 模式可以实现有效解耦：</p> <p>在 Qt 框架中，Model-View 设计模式用于分离数据和用户界面。这个模式主要由三个组件组成：Model（模型）、View（视图）和 Delegate（委托）。下面是对 Model 和 View 关系的详细解释：</p> <ol> <li> <p><strong>分离关注点</strong>：</p> <ul> <li>模型和视图的分离使得数据和显示逻辑独立。模型专注于数据管理，而视图专注于数据展示。</li> <li>这种分离使得同一个模型可以被多个视图共享，从而实现数据的一致性和代码的重用。</li> </ul> </li> <li> <p><strong>数据流动</strong>：</p> <ul> <li>视图通过模型接口获取数据，并在界面上显示。</li> <li>当用户在视图中进行操作（如编辑数据），视图会通过模型接口将更改传递给模型。</li> </ul> </li> <li> <p><strong>信号和槽机制</strong>：</p> <ul> <li>模型和视图之间通过信号和槽进行通信。例如，当模型中的数据发生变化时，会发出 <code class="language-plaintext highlighter-rouge">dataChanged</code> 信号，视图接收到信号后会更新显示。</li> <li>视图中的用户操作（如选择、编辑）也会通过信号和槽机制通知模型。</li> </ul> </li> </ol> <h4 id="43-model模型信号类型">4.3 Model（模型）信号类型</h4> <p><strong>数据变化信号</strong>：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// QAbstractItemModel 的核心信号</span>
+<span class="k">class</span> <span class="nc">CustomModel</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QAbstractItemModel</span> <span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+<span class="nl">public:</span>
+    <span class="c1">// 当数据发生变化时发出</span>
+    <span class="kt">void</span> <span class="n">updateData</span><span class="p">(</span><span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">index</span><span class="p">,</span> <span class="k">const</span> <span class="n">QVariant</span> <span class="o">&amp;</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">setData</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">DisplayRole</span><span class="p">);</span>
+        <span class="n">emit</span> <span class="n">dataChanged</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="p">{</span><span class="n">Qt</span><span class="o">::</span><span class="n">DisplayRole</span><span class="p">});</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 当行即将被插入时发出</span>
+    <span class="kt">void</span> <span class="nf">insertRows</span><span class="p">(</span><span class="kt">int</span> <span class="n">row</span><span class="p">,</span> <span class="kt">int</span> <span class="n">count</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">beginInsertRows</span><span class="p">(</span><span class="n">QModelIndex</span><span class="p">(),</span> <span class="n">row</span><span class="p">,</span> <span class="n">row</span> <span class="o">+</span> <span class="n">count</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="c1">// 实际插入逻辑</span>
+        <span class="n">endInsertRows</span><span class="p">();</span> <span class="c1">// 这会触发 rowsInserted 信号</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 当行即将被删除时发出</span>
+    <span class="kt">void</span> <span class="nf">removeRows</span><span class="p">(</span><span class="kt">int</span> <span class="n">row</span><span class="p">,</span> <span class="kt">int</span> <span class="n">count</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">beginRemoveRows</span><span class="p">(</span><span class="n">QModelIndex</span><span class="p">(),</span> <span class="n">row</span><span class="p">,</span> <span class="n">row</span> <span class="o">+</span> <span class="n">count</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="c1">// 实际删除逻辑</span>
+        <span class="n">endRemoveRows</span><span class="p">();</span> <span class="c1">// 这会触发 rowsRemoved 信号</span>
+    <span class="p">}</span>
+
+<span class="n">signals</span><span class="o">:</span>
+    <span class="c1">// 数据变化信号</span>
+    <span class="kt">void</span> <span class="nf">dataChanged</span><span class="p">(</span><span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">topLeft</span><span class="p">,</span>
+                    <span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">bottomRight</span><span class="p">,</span>
+                    <span class="k">const</span> <span class="n">QVector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">roles</span><span class="p">);</span>
+
+    <span class="c1">// 结构变化信号</span>
+    <span class="kt">void</span> <span class="nf">rowsAboutToBeInserted</span><span class="p">(</span><span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">parent</span><span class="p">,</span> <span class="kt">int</span> <span class="n">first</span><span class="p">,</span> <span class="kt">int</span> <span class="n">last</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">rowsInserted</span><span class="p">(</span><span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">parent</span><span class="p">,</span> <span class="kt">int</span> <span class="n">first</span><span class="p">,</span> <span class="kt">int</span> <span class="n">last</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">rowsAboutToBeRemoved</span><span class="p">(</span><span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">parent</span><span class="p">,</span> <span class="kt">int</span> <span class="n">first</span><span class="p">,</span> <span class="kt">int</span> <span class="n">last</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">rowsRemoved</span><span class="p">(</span><span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">parent</span><span class="p">,</span> <span class="kt">int</span> <span class="n">first</span><span class="p">,</span> <span class="kt">int</span> <span class="n">last</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="nf">columnsAboutToBeInserted</span><span class="p">(</span><span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">parent</span><span class="p">,</span> <span class="kt">int</span> <span class="n">first</span><span class="p">,</span> <span class="kt">int</span> <span class="n">last</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">columnsInserted</span><span class="p">(</span><span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">parent</span><span class="p">,</span> <span class="kt">int</span> <span class="n">first</span><span class="p">,</span> <span class="kt">int</span> <span class="n">last</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">columnsAboutToBeRemoved</span><span class="p">(</span><span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">parent</span><span class="p">,</span> <span class="kt">int</span> <span class="n">first</span><span class="p">,</span> <span class="kt">int</span> <span class="n">last</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">columnsRemoved</span><span class="p">(</span><span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">parent</span><span class="p">,</span> <span class="kt">int</span> <span class="n">first</span><span class="p">,</span> <span class="kt">int</span> <span class="n">last</span><span class="p">);</span>
+
+    <span class="c1">// 布局变化信号</span>
+    <span class="kt">void</span> <span class="nf">layoutAboutToBeChanged</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="nf">layoutChanged</span><span class="p">();</span>
+
+    <span class="c1">// 模型重置信号</span>
+    <span class="kt">void</span> <span class="nf">modelAboutToBeReset</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="nf">modelReset</span><span class="p">();</span>
+<span class="p">};</span>
+</code></pre></div></div> <h4 id="44-view视图信号类型">4.4 View（视图）信号类型</h4> <p><strong>选择和交互信号</strong>：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// QAbstractItemView 的核心信号</span>
+<span class="k">class</span> <span class="nc">CustomView</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QTableView</span> <span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+<span class="nl">public:</span>
+    <span class="n">CustomView</span><span class="p">(</span><span class="n">QWidget</span> <span class="o">*</span><span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="o">:</span> <span class="n">QTableView</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 连接信号</span>
+        <span class="n">connect</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QAbstractItemView</span><span class="o">::</span><span class="n">clicked</span><span class="p">,</span>
+                <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">CustomView</span><span class="o">::</span><span class="n">onItemClicked</span><span class="p">);</span>
+        <span class="n">connect</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QAbstractItemView</span><span class="o">::</span><span class="n">doubleClicked</span><span class="p">,</span>
+                <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">CustomView</span><span class="o">::</span><span class="n">onItemDoubleClicked</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="k">private</span> <span class="n">slots</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="nf">onItemClicked</span><span class="p">(</span><span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">index</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">qDebug</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"点击项目:"</span> <span class="o">&lt;&lt;</span> <span class="n">index</span><span class="p">.</span><span class="n">row</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">index</span><span class="p">.</span><span class="n">column</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">onItemDoubleClicked</span><span class="p">(</span><span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">index</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">qDebug</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"双击项目:"</span> <span class="o">&lt;&lt;</span> <span class="n">index</span><span class="p">.</span><span class="n">row</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">index</span><span class="p">.</span><span class="n">column</span><span class="p">();</span>
+        <span class="c1">// 进入编辑模式</span>
+        <span class="n">edit</span><span class="p">(</span><span class="n">index</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="n">signals</span><span class="o">:</span>
+    <span class="c1">// 鼠标交互信号</span>
+    <span class="kt">void</span> <span class="nf">clicked</span><span class="p">(</span><span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">index</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">doubleClicked</span><span class="p">(</span><span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">index</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">pressed</span><span class="p">(</span><span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">index</span><span class="p">);</span>
+
+    <span class="c1">// 激活信号</span>
+    <span class="kt">void</span> <span class="nf">activated</span><span class="p">(</span><span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">index</span><span class="p">);</span>
+
+    <span class="c1">// 进入/退出编辑信号</span>
+    <span class="kt">void</span> <span class="nf">entered</span><span class="p">(</span><span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">index</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">viewportEntered</span><span class="p">();</span>
+
+    <span class="c1">// 选择变化信号（通过 QItemSelectionModel）</span>
+    <span class="kt">void</span> <span class="nf">selectionChanged</span><span class="p">(</span><span class="k">const</span> <span class="n">QItemSelection</span> <span class="o">&amp;</span><span class="n">selected</span><span class="p">,</span>
+                         <span class="k">const</span> <span class="n">QItemSelection</span> <span class="o">&amp;</span><span class="n">deselected</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">currentChanged</span><span class="p">(</span><span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">current</span><span class="p">,</span>
+                       <span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">previous</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre></div></div> <h4 id="45-完整的-mvc-示例">4.5 完整的 MVC 示例</h4> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 自定义模型</span>
+<span class="k">class</span> <span class="nc">PersonModel</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QAbstractTableModel</span> <span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+<span class="nl">private:</span>
+    <span class="k">struct</span> <span class="nc">Person</span> <span class="p">{</span>
+        <span class="n">QString</span> <span class="n">name</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">age</span><span class="p">;</span>
+        <span class="n">QString</span> <span class="n">occupation</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="n">QVector</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">&gt;</span> <span class="n">persons</span><span class="p">;</span>
+
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">PersonModel</span><span class="p">(</span><span class="n">QObject</span> <span class="o">*</span><span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="o">:</span> <span class="n">QAbstractTableModel</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 初始化数据</span>
+        <span class="n">persons</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="p">{</span><span class="s">"张三"</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="s">"工程师"</span><span class="p">},</span>
+            <span class="p">{</span><span class="s">"李四"</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="s">"设计师"</span><span class="p">},</span>
+            <span class="p">{</span><span class="s">"王五"</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="s">"产品经理"</span><span class="p">}</span>
+        <span class="p">};</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 必须实现的纯虚函数</span>
+    <span class="kt">int</span> <span class="nf">rowCount</span><span class="p">(</span><span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">parent</span> <span class="o">=</span> <span class="n">QModelIndex</span><span class="p">())</span> <span class="k">const</span> <span class="k">override</span> <span class="p">{</span>
+        <span class="n">Q_UNUSED</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">persons</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="kt">int</span> <span class="n">columnCount</span><span class="p">(</span><span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">parent</span> <span class="o">=</span> <span class="n">QModelIndex</span><span class="p">())</span> <span class="k">const</span> <span class="k">override</span> <span class="p">{</span>
+        <span class="n">Q_UNUSED</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">3</span><span class="p">;</span> <span class="c1">// 姓名、年龄、职业</span>
+    <span class="p">}</span>
+
+    <span class="n">QVariant</span> <span class="nf">data</span><span class="p">(</span><span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">index</span><span class="p">,</span> <span class="kt">int</span> <span class="n">role</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">DisplayRole</span><span class="p">)</span> <span class="k">const</span> <span class="k">override</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">index</span><span class="p">.</span><span class="n">isValid</span><span class="p">()</span> <span class="o">||</span> <span class="n">index</span><span class="p">.</span><span class="n">row</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">persons</span><span class="p">.</span><span class="n">size</span><span class="p">())</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="n">QVariant</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="k">const</span> <span class="n">Person</span> <span class="o">&amp;</span><span class="n">person</span> <span class="o">=</span> <span class="n">persons</span><span class="p">[</span><span class="n">index</span><span class="p">.</span><span class="n">row</span><span class="p">()];</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">role</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">DisplayRole</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">switch</span> <span class="p">(</span><span class="n">index</span><span class="p">.</span><span class="n">column</span><span class="p">())</span> <span class="p">{</span>
+                <span class="k">case</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="n">person</span><span class="p">.</span><span class="n">name</span><span class="p">;</span>
+                <span class="k">case</span> <span class="mi">1</span><span class="p">:</span> <span class="k">return</span> <span class="n">person</span><span class="p">.</span><span class="n">age</span><span class="p">;</span>
+                <span class="k">case</span> <span class="mi">2</span><span class="p">:</span> <span class="k">return</span> <span class="n">person</span><span class="p">.</span><span class="n">occupation</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">role</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">BackgroundRole</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// 偶数行使用不同背景色</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">index</span><span class="p">.</span><span class="n">row</span><span class="p">()</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="n">QBrush</span><span class="p">(</span><span class="n">QColor</span><span class="p">(</span><span class="mi">240</span><span class="p">,</span> <span class="mi">240</span><span class="p">,</span> <span class="mi">240</span><span class="p">));</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nf">QVariant</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="n">QVariant</span> <span class="nf">headerData</span><span class="p">(</span><span class="kt">int</span> <span class="n">section</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span><span class="p">,</span>
+                       <span class="kt">int</span> <span class="n">role</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">DisplayRole</span><span class="p">)</span> <span class="k">const</span> <span class="k">override</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">orientation</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="o">&amp;&amp;</span> <span class="n">role</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">DisplayRole</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">switch</span> <span class="p">(</span><span class="n">section</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">case</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="s">"姓名"</span><span class="p">;</span>
+                <span class="k">case</span> <span class="mi">1</span><span class="p">:</span> <span class="k">return</span> <span class="s">"年龄"</span><span class="p">;</span>
+                <span class="k">case</span> <span class="mi">2</span><span class="p">:</span> <span class="k">return</span> <span class="s">"职业"</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nf">QVariant</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 支持编辑</span>
+    <span class="kt">bool</span> <span class="nf">setData</span><span class="p">(</span><span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">index</span><span class="p">,</span> <span class="k">const</span> <span class="n">QVariant</span> <span class="o">&amp;</span><span class="n">value</span><span class="p">,</span>
+                <span class="kt">int</span> <span class="n">role</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">EditRole</span><span class="p">)</span> <span class="k">override</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">index</span><span class="p">.</span><span class="n">isValid</span><span class="p">()</span> <span class="o">||</span> <span class="n">index</span><span class="p">.</span><span class="n">row</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">persons</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">||</span> <span class="n">role</span> <span class="o">!=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">EditRole</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="n">Person</span> <span class="o">&amp;</span><span class="n">person</span> <span class="o">=</span> <span class="n">persons</span><span class="p">[</span><span class="n">index</span><span class="p">.</span><span class="n">row</span><span class="p">()];</span>
+
+        <span class="k">switch</span> <span class="p">(</span><span class="n">index</span><span class="p">.</span><span class="n">column</span><span class="p">())</span> <span class="p">{</span>
+            <span class="k">case</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">person</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">value</span><span class="p">.</span><span class="n">toString</span><span class="p">();</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="k">case</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">person</span><span class="p">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">value</span><span class="p">.</span><span class="n">toInt</span><span class="p">();</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="k">case</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">person</span><span class="p">.</span><span class="n">occupation</span> <span class="o">=</span> <span class="n">value</span><span class="p">.</span><span class="n">toString</span><span class="p">();</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="nl">default:</span>
+                <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="n">emit</span> <span class="nf">dataChanged</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="p">{</span><span class="n">Qt</span><span class="o">::</span><span class="n">DisplayRole</span><span class="p">});</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">Qt</span><span class="o">::</span><span class="n">ItemFlags</span> <span class="nf">flags</span><span class="p">(</span><span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">index</span><span class="p">)</span> <span class="k">const</span> <span class="k">override</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">index</span><span class="p">.</span><span class="n">isValid</span><span class="p">())</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="n">Qt</span><span class="o">::</span><span class="n">NoItemFlags</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ItemIsEnabled</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ItemIsSelectable</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ItemIsEditable</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 添加新人员</span>
+    <span class="kt">void</span> <span class="nf">addPerson</span><span class="p">(</span><span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span><span class="n">name</span><span class="p">,</span> <span class="kt">int</span> <span class="n">age</span><span class="p">,</span> <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span><span class="n">occupation</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">row</span> <span class="o">=</span> <span class="n">persons</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+        <span class="n">beginInsertRows</span><span class="p">(</span><span class="n">QModelIndex</span><span class="p">(),</span> <span class="n">row</span><span class="p">,</span> <span class="n">row</span><span class="p">);</span>
+        <span class="n">persons</span><span class="p">.</span><span class="n">append</span><span class="p">({</span><span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">,</span> <span class="n">occupation</span><span class="p">});</span>
+        <span class="n">endInsertRows</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 删除人员</span>
+    <span class="kt">void</span> <span class="nf">removePerson</span><span class="p">(</span><span class="kt">int</span> <span class="n">row</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">row</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">row</span> <span class="o">&gt;=</span> <span class="n">persons</span><span class="p">.</span><span class="n">size</span><span class="p">())</span> <span class="p">{</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="n">beginRemoveRows</span><span class="p">(</span><span class="n">QModelIndex</span><span class="p">(),</span> <span class="n">row</span><span class="p">,</span> <span class="n">row</span><span class="p">);</span>
+        <span class="n">persons</span><span class="p">.</span><span class="n">removeAt</span><span class="p">(</span><span class="n">row</span><span class="p">);</span>
+        <span class="n">endRemoveRows</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// 主窗口类</span>
+<span class="k">class</span> <span class="nc">MainWindow</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QMainWindow</span> <span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+<span class="nl">private:</span>
+    <span class="n">PersonModel</span> <span class="o">*</span><span class="n">model</span><span class="p">;</span>
+    <span class="n">QTableView</span> <span class="o">*</span><span class="n">view</span><span class="p">;</span>
+    <span class="n">QLineEdit</span> <span class="o">*</span><span class="n">nameEdit</span><span class="p">;</span>
+    <span class="n">QSpinBox</span> <span class="o">*</span><span class="n">ageSpinBox</span><span class="p">;</span>
+    <span class="n">QLineEdit</span> <span class="o">*</span><span class="n">occupationEdit</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="n">MainWindow</span><span class="p">(</span><span class="n">QWidget</span> <span class="o">*</span><span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="o">:</span> <span class="n">QMainWindow</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">setupUI</span><span class="p">();</span>
+        <span class="n">setupConnections</span><span class="p">();</span>
+    <span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="nf">setupUI</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">auto</span> <span class="o">*</span><span class="n">centralWidget</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QWidget</span><span class="p">();</span>
+        <span class="n">setCentralWidget</span><span class="p">(</span><span class="n">centralWidget</span><span class="p">);</span>
+
+        <span class="c1">// 创建模型和视图</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PersonModel</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+        <span class="n">view</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QTableView</span><span class="p">();</span>
+        <span class="n">view</span><span class="o">-&gt;</span><span class="n">setModel</span><span class="p">(</span><span class="n">model</span><span class="p">);</span>
+        <span class="n">view</span><span class="o">-&gt;</span><span class="n">setSelectionBehavior</span><span class="p">(</span><span class="n">QAbstractItemView</span><span class="o">::</span><span class="n">SelectRows</span><span class="p">);</span>
+
+        <span class="c1">// 创建输入控件</span>
+        <span class="n">nameEdit</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QLineEdit</span><span class="p">();</span>
+        <span class="n">ageSpinBox</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QSpinBox</span><span class="p">();</span>
+        <span class="n">ageSpinBox</span><span class="o">-&gt;</span><span class="n">setRange</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+        <span class="n">occupationEdit</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QLineEdit</span><span class="p">();</span>
+
+        <span class="k">auto</span> <span class="o">*</span><span class="n">addButton</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s">"添加"</span><span class="p">);</span>
+        <span class="k">auto</span> <span class="o">*</span><span class="n">removeButton</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s">"删除"</span><span class="p">);</span>
+
+        <span class="c1">// 布局</span>
+        <span class="k">auto</span> <span class="o">*</span><span class="n">mainLayout</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="n">centralWidget</span><span class="p">);</span>
+
+        <span class="c1">// 输入表单</span>
+        <span class="k">auto</span> <span class="o">*</span><span class="n">formLayout</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QFormLayout</span><span class="p">();</span>
+        <span class="n">formLayout</span><span class="o">-&gt;</span><span class="n">addRow</span><span class="p">(</span><span class="s">"姓名:"</span><span class="p">,</span> <span class="n">nameEdit</span><span class="p">);</span>
+        <span class="n">formLayout</span><span class="o">-&gt;</span><span class="n">addRow</span><span class="p">(</span><span class="s">"年龄:"</span><span class="p">,</span> <span class="n">ageSpinBox</span><span class="p">);</span>
+        <span class="n">formLayout</span><span class="o">-&gt;</span><span class="n">addRow</span><span class="p">(</span><span class="s">"职业:"</span><span class="p">,</span> <span class="n">occupationEdit</span><span class="p">);</span>
+
+        <span class="k">auto</span> <span class="o">*</span><span class="n">buttonLayout</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QHBoxLayout</span><span class="p">();</span>
+        <span class="n">buttonLayout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">addButton</span><span class="p">);</span>
+        <span class="n">buttonLayout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">removeButton</span><span class="p">);</span>
+        <span class="n">buttonLayout</span><span class="o">-&gt;</span><span class="n">addStretch</span><span class="p">();</span>
+
+        <span class="n">mainLayout</span><span class="o">-&gt;</span><span class="n">addLayout</span><span class="p">(</span><span class="n">formLayout</span><span class="p">);</span>
+        <span class="n">mainLayout</span><span class="o">-&gt;</span><span class="n">addLayout</span><span class="p">(</span><span class="n">buttonLayout</span><span class="p">);</span>
+        <span class="n">mainLayout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">view</span><span class="p">);</span>
+
+        <span class="c1">// 连接按钮信号</span>
+        <span class="n">connect</span><span class="p">(</span><span class="n">addButton</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QPushButton</span><span class="o">::</span><span class="n">clicked</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">MainWindow</span><span class="o">::</span><span class="n">addPerson</span><span class="p">);</span>
+        <span class="n">connect</span><span class="p">(</span><span class="n">removeButton</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QPushButton</span><span class="o">::</span><span class="n">clicked</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">MainWindow</span><span class="o">::</span><span class="n">removePerson</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">setupConnections</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// 监听视图选择变化</span>
+        <span class="n">connect</span><span class="p">(</span><span class="n">view</span><span class="o">-&gt;</span><span class="n">selectionModel</span><span class="p">(),</span> <span class="o">&amp;</span><span class="n">QItemSelectionModel</span><span class="o">::</span><span class="n">currentRowChanged</span><span class="p">,</span>
+                <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">MainWindow</span><span class="o">::</span><span class="n">onCurrentRowChanged</span><span class="p">);</span>
+
+        <span class="c1">// 监听模型数据变化</span>
+        <span class="n">connect</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QAbstractItemModel</span><span class="o">::</span><span class="n">dataChanged</span><span class="p">,</span>
+                <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">MainWindow</span><span class="o">::</span><span class="n">onDataChanged</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="k">private</span> <span class="n">slots</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="nf">addPerson</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">QString</span> <span class="n">name</span> <span class="o">=</span> <span class="n">nameEdit</span><span class="o">-&gt;</span><span class="n">text</span><span class="p">().</span><span class="n">trimmed</span><span class="p">();</span>
+        <span class="kt">int</span> <span class="n">age</span> <span class="o">=</span> <span class="n">ageSpinBox</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">();</span>
+        <span class="n">QString</span> <span class="n">occupation</span> <span class="o">=</span> <span class="n">occupationEdit</span><span class="o">-&gt;</span><span class="n">text</span><span class="p">().</span><span class="n">trimmed</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">name</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">occupation</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+            <span class="n">model</span><span class="o">-&gt;</span><span class="n">addPerson</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">,</span> <span class="n">occupation</span><span class="p">);</span>
+
+            <span class="c1">// 清空输入框</span>
+            <span class="n">nameEdit</span><span class="o">-&gt;</span><span class="n">clear</span><span class="p">();</span>
+            <span class="n">ageSpinBox</span><span class="o">-&gt;</span><span class="n">setValue</span><span class="p">(</span><span class="mi">18</span><span class="p">);</span>
+            <span class="n">occupationEdit</span><span class="o">-&gt;</span><span class="n">clear</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">removePerson</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">QModelIndex</span> <span class="n">current</span> <span class="o">=</span> <span class="n">view</span><span class="o">-&gt;</span><span class="n">currentIndex</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">current</span><span class="p">.</span><span class="n">isValid</span><span class="p">())</span> <span class="p">{</span>
+            <span class="n">model</span><span class="o">-&gt;</span><span class="n">removePerson</span><span class="p">(</span><span class="n">current</span><span class="p">.</span><span class="n">row</span><span class="p">());</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">onCurrentRowChanged</span><span class="p">(</span><span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">current</span><span class="p">,</span> <span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">previous</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">Q_UNUSED</span><span class="p">(</span><span class="n">previous</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">current</span><span class="p">.</span><span class="n">isValid</span><span class="p">())</span> <span class="p">{</span>
+            <span class="c1">// 将选中行的数据填入编辑框</span>
+            <span class="n">QString</span> <span class="n">name</span> <span class="o">=</span> <span class="n">model</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">(</span><span class="n">model</span><span class="o">-&gt;</span><span class="n">index</span><span class="p">(</span><span class="n">current</span><span class="p">.</span><span class="n">row</span><span class="p">(),</span> <span class="mi">0</span><span class="p">)).</span><span class="n">toString</span><span class="p">();</span>
+            <span class="kt">int</span> <span class="n">age</span> <span class="o">=</span> <span class="n">model</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">(</span><span class="n">model</span><span class="o">-&gt;</span><span class="n">index</span><span class="p">(</span><span class="n">current</span><span class="p">.</span><span class="n">row</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)).</span><span class="n">toInt</span><span class="p">();</span>
+            <span class="n">QString</span> <span class="n">occupation</span> <span class="o">=</span> <span class="n">model</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">(</span><span class="n">model</span><span class="o">-&gt;</span><span class="n">index</span><span class="p">(</span><span class="n">current</span><span class="p">.</span><span class="n">row</span><span class="p">(),</span> <span class="mi">2</span><span class="p">)).</span><span class="n">toString</span><span class="p">();</span>
+
+            <span class="n">nameEdit</span><span class="o">-&gt;</span><span class="n">setText</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+            <span class="n">ageSpinBox</span><span class="o">-&gt;</span><span class="n">setValue</span><span class="p">(</span><span class="n">age</span><span class="p">);</span>
+            <span class="n">occupationEdit</span><span class="o">-&gt;</span><span class="n">setText</span><span class="p">(</span><span class="n">occupation</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">onDataChanged</span><span class="p">(</span><span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">topLeft</span><span class="p">,</span> <span class="k">const</span> <span class="n">QModelIndex</span> <span class="o">&amp;</span><span class="n">bottomRight</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">qDebug</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"数据变化:"</span> <span class="o">&lt;&lt;</span> <span class="n">topLeft</span><span class="p">.</span><span class="n">row</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">topLeft</span><span class="p">.</span><span class="n">column</span><span class="p">()</span>
+                 <span class="o">&lt;&lt;</span> <span class="s">"到"</span> <span class="o">&lt;&lt;</span> <span class="n">bottomRight</span><span class="p">.</span><span class="n">row</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">bottomRight</span><span class="p">.</span><span class="n">column</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="cp">#include</span> <span class="cpf">"main.moc"</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+    <span class="n">QApplication</span> <span class="n">app</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+
+    <span class="n">MainWindow</span> <span class="n">window</span><span class="p">;</span>
+    <span class="n">window</span><span class="p">.</span><span class="n">show</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="n">app</span><span class="p">.</span><span class="n">exec</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div> <p><strong>Model 和 View 信号绑定总结</strong>：</p> <table> <thead> <tr> <th>组件</th> <th>信号类型</th> <th>主要信号</th> <th>用途</th> </tr> </thead> <tbody> <tr> <td><strong>Model</strong></td> <td>数据变化</td> <td><code class="language-plaintext highlighter-rouge">dataChanged</code></td> <td>通知视图数据已修改</td> </tr> <tr> <td> </td> <td>结构变化</td> <td> <code class="language-plaintext highlighter-rouge">rowsInserted</code>, <code class="language-plaintext highlighter-rouge">rowsRemoved</code> </td> <td>通知视图行结构变化</td> </tr> <tr> <td> </td> <td>布局变化</td> <td><code class="language-plaintext highlighter-rouge">layoutChanged</code></td> <td>通知视图重新布局</td> </tr> <tr> <td> </td> <td>重置</td> <td><code class="language-plaintext highlighter-rouge">modelReset</code></td> <td>通知视图模型完全重置</td> </tr> <tr> <td><strong>View</strong></td> <td>用户交互</td> <td> <code class="language-plaintext highlighter-rouge">clicked</code>, <code class="language-plaintext highlighter-rouge">doubleClicked</code> </td> <td>响应用户点击操作</td> </tr> <tr> <td> </td> <td>选择变化</td> <td><code class="language-plaintext highlighter-rouge">selectionChanged</code></td> <td>响应选择项变化</td> </tr> <tr> <td> </td> <td>激活</td> <td><code class="language-plaintext highlighter-rouge">activated</code></td> <td>响应项目激活（回车/双击）</td> </tr> <tr> <td> </td> <td>编辑</td> <td> <code class="language-plaintext highlighter-rouge">entered</code>, <code class="language-plaintext highlighter-rouge">viewportEntered</code> </td> <td>响应编辑状态变化</td> </tr> </tbody> </table> <p>这种信号槽机制确保了 Model 和 View 之间的松耦合，当数据发生变化时，所有相关的视图都会自动更新，而当用户在视图中进行操作时，也会通过适当的信号通知到相关组件。</p> </div> </article> <br> <hr> <br> <ul class="list-disc pl-8"></ul> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2026/signal/">（三）内核那些事儿：CPU中断和信号</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2026/program/">（二）内核那些事儿：程序启动到运行的完整过程</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2026/os/">（一）内核那些事儿：从硬件抽象到系统服务的完整框架</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2026/internet/">（七）内核那些事儿：操作系统对网络包的处理</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2026/interaction/">（五）内核那些事儿：系统和程序的交互</a> </li> </div> </div> <div class="col-sm-4"> <nav id="toc-sidebar" class="sticky-top"></nav> </div> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Marco Huang. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. </div> </footer> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script defer src="/assets/js/bootstrap-toc.min.js?c82ff4de8b0955d6ff14f5b05eed7eb6"></script> <script src="/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/assets/js/common.js?e0514a05c5c95ac1a93a8dfd5249b92e"></script> <script defer src="/assets/js/copy_code.js?c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/js/mathjax-setup.js?a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/assets/js/progress-bar.js?2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script src="/assets/js/vanilla-back-to-top.min.js?f40d453793ff4f64e238e420181a1d17"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/assets/js/search/ninja-keys.min.js?a3446f084dcaecc5f75aa1757d087dcf"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/js/search-setup.js?6c304f7b1992d4b60f7a07956e52f04a"></script> <script src="/assets/js/search-data.js"></script> <script src="/assets/js/shortcut-key.js?6f508d74becd347268a7f822bca7309d"></script> <script src="/assets/js/toc-depth.js"></script> </body> </html>

@@ -1,0 +1,914 @@
+<!DOCTYPE html> <html lang="cn"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> （一）函数式那些事儿：什么是函数式？ | Marco's blog </title> <meta name="author" content="Marco Huang"> <meta name="description" content="A blog for documenting my own study notes. "> <meta name="keywords" content="blog, cpp, programmer"> <link rel="stylesheet" href="/assets/css/bootstrap.min.css?a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/assets/css/academicons.min.css?f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" href="/assets/css/scholar-icons.css?62b2ac103a88034e6882a5be5f3e2772"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link defer href="/assets/css/bootstrap-toc.min.css?6f5af0bb9aab25d79b2448143cbeaa88" rel="stylesheet"> <link rel="stylesheet" href="/assets/css/main.css"> <link rel="stylesheet" href="/assets/css/toc-custom.css"> <link rel="shortcut icon" href="/assets/img/mc_logo.ico?cf243b61f6c6d75747808b3ae8298c5b"> <link rel="stylesheet" href="/assets/css/main.css?d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://marco-hmc.github.io/blog/2026/functionalProgamming/"> <script src="/assets/js/theme.js?a81d82887dd692e91686b43de4542f18"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> Marco's blog </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">about </a> </li> <li class="nav-item active"> <a class="nav-link" href="/blog/">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/">projects </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/">cv </a> </li> <li class="nav-item"> <button id="search-toggle" title="Search" onclick="openSearchModal()"> <span class="nav-link">ctrl k <i class="ti ti-search"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="ti ti-sun-moon" id="light-toggle-system"></i> <i class="ti ti-moon-filled" id="light-toggle-dark"></i> <i class="ti ti-sun-filled" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="row"> <div class="col-sm-8"> <div class="post"> <header class="post-header"> <h1 class="post-title">（一）函数式那些事儿：什么是函数式？</h1> <p class="post-meta"> Created on January 04, 2026 </p> <p class="post-tags"> <a href="/blog/2026"> <i class="fa-solid fa-calendar fa-sm"></i> 2026 </a>   ·   <a href="/blog/tag/functional"> <i class="fa-solid fa-hashtag fa-sm"></i> Functional</a>   ·   <a href="/blog/category/c"> <i class="fa-solid fa-tag fa-sm"></i> C++</a> </p> </header> <article class="post-content"> <div id="markdown-content"> <h2 id="函数式编程从命令式到声明式的编程范式革命">函数式编程：从命令式到声明式的编程范式革命</h2> <p><strong>历史背景：</strong> 计算机编程经历了从机器码到高级语言的演进，每一次范式革新都是为了解决当时面临的核心问题：</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>编程范式演进：
+1940s: 机器码 → 解决：直接控制硬件
+1950s: 汇编语言 → 解决：可读性和可维护性
+1960s: 结构化编程 → 解决：goto语句的混乱
+1970s: 面向对象编程 → 解决：大型软件的复杂性
+1990s: 函数式编程复兴 → 解决：并发和状态管理问题
+</code></pre></div></div> <p><strong>现代挑战：</strong> 随着多核处理器普及和大数据处理需求激增，传统编程范式面临新的挑战：</p> <ol> <li> <strong>并发编程的复杂性</strong>：共享状态导致的竞态条件和死锁</li> <li> <strong>状态管理的困难</strong>：全局状态使程序行为难以预测</li> <li> <strong>代码复用性不足</strong>：命令式代码难以组合和重用</li> <li> <strong>测试和调试困难</strong>：副作用使程序行为不确定</li> </ol> <p><strong>函数式编程的价值主张：</strong> 函数式编程通过<strong>数学化的函数概念</strong>，为这些现代挑战提供了优雅的解决方案。</p> <hr> <h3 id="1-函数式编程的核心概念">1. 函数式编程的核心概念</h3> <h4 id="11-函数作为一等公民编程的新视角">1.1 函数作为”一等公民”：编程的新视角</h4> <p><strong>理论基础：</strong> λ演算（Lambda Calculus）</p> <p>函数式编程的理论基础可追溯到1930年代阿隆佐·邱奇（Alonzo Church）提出的λ演算。在λ演算中，<strong>一切皆为函数</strong>，这为现代函数式编程奠定了数学基础。</p> <p><strong>“一等公民”的含义：</strong></p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 在函数式编程中，函数享有与基本数据类型相同的权利：</span>
+
+<span class="c1">// 1. 可以赋值给变量</span>
+<span class="k">auto</span> <span class="n">add</span> <span class="o">=</span> <span class="p">[](</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span> <span class="p">};</span>
+
+<span class="c1">// 2. 可以作为参数传递</span>
+<span class="kt">void</span> <span class="nf">apply_operation</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">data</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">operation</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">transform</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">data</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">data</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">operation</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// 3. 可以作为返回值</span>
+<span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">create_multiplier</span><span class="p">(</span><span class="kt">int</span> <span class="n">factor</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">factor</span><span class="p">](</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">factor</span><span class="p">;</span> <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="c1">// 4. 可以存储在数据结构中</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">)</span><span class="o">&gt;&gt;</span> <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">[](</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span> <span class="p">},</span>
+    <span class="p">[](</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">;</span> <span class="p">},</span>
+    <span class="p">[](</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div> <h4 id="12-函数作为参数策略模式的函数式实现">1.2 函数作为参数：策略模式的函数式实现</h4> <p><strong>问题场景：</strong> 传统面向对象的策略模式实现</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 传统OOP方式：需要定义接口和多个类</span>
+<span class="k">class</span> <span class="nc">SortStrategy</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="k">virtual</span> <span class="o">~</span><span class="n">SortStrategy</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">sort</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">data</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">BubbleSort</span> <span class="o">:</span> <span class="k">public</span> <span class="n">SortStrategy</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="kt">void</span> <span class="n">sort</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">data</span><span class="p">)</span> <span class="k">override</span> <span class="p">{</span>
+        <span class="c1">// 冒泡排序实现</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">data</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">data</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">i</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">data</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span> <span class="p">{</span>
+                    <span class="n">std</span><span class="o">::</span><span class="n">swap</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">QuickSort</span> <span class="o">:</span> <span class="k">public</span> <span class="n">SortStrategy</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="kt">void</span> <span class="n">sort</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">data</span><span class="p">)</span> <span class="k">override</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+        <span class="n">quicksort_impl</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">data</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="nf">quicksort_impl</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">arr</span><span class="p">,</span> <span class="kt">int</span> <span class="n">low</span><span class="p">,</span> <span class="kt">int</span> <span class="n">high</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">low</span> <span class="o">&lt;</span> <span class="n">high</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kt">int</span> <span class="n">pivot</span> <span class="o">=</span> <span class="n">partition</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">);</span>
+            <span class="n">quicksort_impl</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">low</span><span class="p">,</span> <span class="n">pivot</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+            <span class="n">quicksort_impl</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">pivot</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">high</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kt">int</span> <span class="nf">partition</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">arr</span><span class="p">,</span> <span class="kt">int</span> <span class="n">low</span><span class="p">,</span> <span class="kt">int</span> <span class="n">high</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">pivot</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">high</span><span class="p">];</span>
+        <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">low</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="n">low</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">high</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">pivot</span><span class="p">)</span> <span class="p">{</span>
+                <span class="o">++</span><span class="n">i</span><span class="p">;</span>
+                <span class="n">std</span><span class="o">::</span><span class="n">swap</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">swap</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">arr</span><span class="p">[</span><span class="n">high</span><span class="p">]);</span>
+        <span class="k">return</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// 使用策略模式</span>
+<span class="k">class</span> <span class="nc">DataProcessor</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">SortStrategy</span><span class="o">&gt;</span> <span class="n">strategy</span><span class="p">;</span>
+<span class="nl">public:</span>
+    <span class="kt">void</span> <span class="n">set_strategy</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">SortStrategy</span><span class="o">&gt;</span> <span class="n">new_strategy</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">strategy</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">new_strategy</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">process</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">strategy</span><span class="o">-&gt;</span><span class="n">sort</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div> <p><strong>函数式解决方案：</strong> 将策略抽象为函数</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 函数式方式：策略就是函数</span>
+<span class="k">class</span> <span class="nc">FunctionalDataProcessor</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="k">using</span> <span class="n">SortFunction</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="p">)</span><span class="o">&gt;</span><span class="p">;</span>
+
+    <span class="k">static</span> <span class="kt">void</span> <span class="n">bubble_sort</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">data</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">data</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">i</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">data</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span> <span class="p">{</span>
+                    <span class="n">std</span><span class="o">::</span><span class="n">swap</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">static</span> <span class="kt">void</span> <span class="nf">quick_sort</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">sort</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">data</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>  <span class="c1">// 使用标准库实现</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">process</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">data</span><span class="p">,</span> <span class="n">SortFunction</span> <span class="n">sort_strategy</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">sort_strategy</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// 使用示例</span>
+<span class="kt">void</span> <span class="nf">demonstrate_functional_strategy</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">FunctionalDataProcessor</span> <span class="n">processor</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">data1</span> <span class="o">=</span> <span class="p">{</span><span class="mi">64</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">90</span><span class="p">};</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">data2</span> <span class="o">=</span> <span class="p">{</span><span class="mi">64</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">90</span><span class="p">};</span>
+
+    <span class="c1">// 直接传递函数作为策略</span>
+    <span class="n">processor</span><span class="p">.</span><span class="n">process</span><span class="p">(</span><span class="n">data1</span><span class="p">,</span> <span class="n">FunctionalDataProcessor</span><span class="o">::</span><span class="n">bubble_sort</span><span class="p">);</span>
+    <span class="n">processor</span><span class="p">.</span><span class="n">process</span><span class="p">(</span><span class="n">data2</span><span class="p">,</span> <span class="n">FunctionalDataProcessor</span><span class="o">::</span><span class="n">quick_sort</span><span class="p">);</span>
+
+    <span class="c1">// 甚至可以传递lambda表达式作为自定义策略</span>
+    <span class="n">processor</span><span class="p">.</span><span class="n">process</span><span class="p">(</span><span class="n">data1</span><span class="p">,</span> <span class="p">[](</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">sort</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">rbegin</span><span class="p">(),</span> <span class="n">data</span><span class="p">.</span><span class="n">rend</span><span class="p">());</span>  <span class="c1">// 降序排列</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div></div> <p><strong>优势对比：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>传统OOP策略模式：
+❌ 需要定义接口和多个类（代码冗余）
+❌ 运行时多态开销（虚函数调用）
+❌ 难以组合多个策略
+❌ 扩展需要新增类
+
+函数式策略模式：
+✅ 直接使用函数（代码简洁）
+✅ 编译时优化（内联优化）
+✅ 易于组合和扩展
+✅ 支持即时定义策略（lambda）
+</code></pre></div></div> <h4 id="13-纯函数程序可靠性的数学保证">1.3 纯函数：程序可靠性的数学保证</h4> <p><strong>数学背景：</strong> 纯函数的概念来源于数学中的函数定义</p> <p>在数学中，函数 f(x) = x² 具有以下性质：</p> <ul> <li> <strong>确定性</strong>：相同输入必定产生相同输出</li> <li> <strong>无副作用</strong>：函数计算不会改变外部世界的状态</li> </ul> <p><strong>纯函数的严格定义：</strong></p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// ✅ 纯函数示例</span>
+<span class="k">namespace</span> <span class="n">PureFunctions</span> <span class="p">{</span>
+
+<span class="c1">// 数学运算：纯函数</span>
+<span class="kt">int</span> <span class="n">square</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">;</span>  <span class="c1">// 1. 仅依赖输入参数</span>
+<span class="p">}</span>                  <span class="c1">// 2. 不修改任何外部状态</span>
+                   <span class="c1">// 3. 相同输入总是产生相同输出</span>
+
+<span class="c1">// 字符串处理：纯函数</span>
+<span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="nf">to_uppercase</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">result</span> <span class="o">=</span> <span class="n">str</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">transform</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">result</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">result</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="o">::</span><span class="n">toupper</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>  <span class="c1">// 返回新对象，不修改原对象</span>
+<span class="p">}</span>
+
+<span class="c1">// 数组变换：纯函数</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">map_double</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">input</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">result</span><span class="p">;</span>
+    <span class="n">result</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">input</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">transform</span><span class="p">(</span><span class="n">input</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">input</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">std</span><span class="o">::</span><span class="n">back_inserter</span><span class="p">(</span><span class="n">result</span><span class="p">),</span>
+                  <span class="p">[](</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span> <span class="p">});</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>  <span class="c1">// 不修改输入数组</span>
+<span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre></div></div> <p><strong>非纯函数的问题：</strong></p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// ❌ 非纯函数示例</span>
+<span class="k">namespace</span> <span class="n">ImpureFunctions</span> <span class="p">{</span>
+
+<span class="c1">// 全局状态依赖</span>
+<span class="kt">int</span> <span class="n">global_counter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">impure_increment</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="o">++</span><span class="n">global_counter</span><span class="p">;</span>  <span class="c1">// 依赖并修改全局状态</span>
+<span class="p">}</span>
+
+<span class="c1">// 副作用：修改输入参数</span>
+<span class="kt">void</span> <span class="nf">impure_sort</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">sort</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">data</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>  <span class="c1">// 直接修改输入</span>
+<span class="p">}</span>
+
+<span class="c1">// 不确定输出：依赖系统状态</span>
+<span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="nf">impure_timestamp</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">auto</span> <span class="n">now</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">system_clock</span><span class="o">::</span><span class="n">now</span><span class="p">();</span>
+    <span class="k">auto</span> <span class="kt">time_t</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">system_clock</span><span class="o">::</span><span class="n">to_time_t</span><span class="p">(</span><span class="n">now</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">ctime</span><span class="p">(</span><span class="o">&amp;</span><span class="kt">time_t</span><span class="p">);</span>  <span class="c1">// 输出依赖调用时间</span>
+<span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="c1">// 问题演示</span>
+<span class="kt">void</span> <span class="nf">demonstrate_impurity_problems</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// 问题1：不可预测的行为</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">ImpureFunctions</span><span class="o">::</span><span class="n">impure_increment</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>  <span class="c1">// 输出：1</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">ImpureFunctions</span><span class="o">::</span><span class="n">impure_increment</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>  <span class="c1">// 输出：2（不一致！）</span>
+
+    <span class="c1">// 问题2：副作用导致原始数据丢失</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">original_data</span> <span class="o">=</span> <span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">};</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">backup</span> <span class="o">=</span> <span class="n">original_data</span><span class="p">;</span>  <span class="c1">// 必须备份原始数据</span>
+    <span class="n">ImpureFunctions</span><span class="o">::</span><span class="n">impure_sort</span><span class="p">(</span><span class="n">original_data</span><span class="p">);</span>
+    <span class="c1">// original_data已被修改，无法恢复原始顺序</span>
+
+    <span class="c1">// 问题3：难以测试</span>
+    <span class="c1">// 如何为impure_timestamp()编写可靠的单元测试？</span>
+<span class="p">}</span>
+</code></pre></div></div> <p><strong>纯函数在实际开发中的价值：</strong></p> <p><strong>1. 并发安全示例：</strong></p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 数据并行处理：纯函数版本</span>
+<span class="k">namespace</span> <span class="n">ConcurrentProcessing</span> <span class="p">{</span>
+
+<span class="c1">// 纯函数：线程安全</span>
+<span class="kt">double</span> <span class="n">expensive_calculation</span><span class="p">(</span><span class="kt">double</span> <span class="n">input</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 复杂的数学计算，不依赖外部状态</span>
+    <span class="kt">double</span> <span class="n">result</span> <span class="o">=</span> <span class="n">input</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">sin</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">+</span> <span class="n">std</span><span class="o">::</span><span class="n">cos</span><span class="p">(</span><span class="n">result</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">parallel_processing</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">input_data</span><span class="p">(</span><span class="mi">10000</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">iota</span><span class="p">(</span><span class="n">input_data</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">input_data</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="mf">1.0</span><span class="p">);</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">results</span><span class="p">(</span><span class="n">input_data</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+
+    <span class="c1">// 安全的并行处理：纯函数无竞态条件</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">transform</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">execution</span><span class="o">::</span><span class="n">par_unseq</span><span class="p">,</span>
+                  <span class="n">input_data</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">input_data</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span>
+                  <span class="n">results</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span>
+                  <span class="n">expensive_calculation</span><span class="p">);</span>  <span class="c1">// 纯函数，完全并行安全</span>
+<span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre></div></div> <p><strong>2. 测试友好示例：</strong></p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 纯函数的单元测试</span>
+<span class="k">namespace</span> <span class="n">Testing</span> <span class="p">{</span>
+
+<span class="c1">// 被测试的纯函数</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">filter_even_numbers</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">numbers</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">result</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">copy_if</span><span class="p">(</span><span class="n">numbers</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">numbers</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">std</span><span class="o">::</span><span class="n">back_inserter</span><span class="p">(</span><span class="n">result</span><span class="p">),</span>
+                <span class="p">[](</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span> <span class="p">});</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// 简单、可靠的测试</span>
+<span class="kt">void</span> <span class="nf">test_filter_even_numbers</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// 测试用例1：基本功能</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">input</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">};</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">expected</span> <span class="o">=</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">};</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">actual</span> <span class="o">=</span> <span class="n">filter_even_numbers</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+        <span class="n">assert</span><span class="p">(</span><span class="n">actual</span> <span class="o">==</span> <span class="n">expected</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 测试用例2：边界情况</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">empty_input</span> <span class="o">=</span> <span class="p">{};</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">empty_expected</span> <span class="o">=</span> <span class="p">{};</span>
+        <span class="n">assert</span><span class="p">(</span><span class="n">filter_even_numbers</span><span class="p">(</span><span class="n">empty_input</span><span class="p">)</span> <span class="o">==</span> <span class="n">empty_expected</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 测试用例3：全奇数</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">odd_input</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">};</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">empty_expected</span> <span class="o">=</span> <span class="p">{};</span>
+        <span class="n">assert</span><span class="p">(</span><span class="n">filter_even_numbers</span><span class="p">(</span><span class="n">odd_input</span><span class="p">)</span> <span class="o">==</span> <span class="n">empty_expected</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 无需模拟外部依赖，无需设置复杂的测试环境</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"All tests passed!"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre></div></div> <h4 id="14-高阶函数函数组合的艺术">1.4 高阶函数：函数组合的艺术</h4> <h5 id="141-map-reduce模式的c实现">1.4.1 Map-Reduce模式的C++实现</h5> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 现代数据处理的基础模式</span>
+<span class="k">namespace</span> <span class="n">MapReduce</span> <span class="p">{</span>
+
+<span class="c1">// 通用map函数：将函数应用到每个元素</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">InputContainer</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">OutputType</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">Transform</span><span class="p">&gt;</span>
+<span class="k">auto</span> <span class="n">map</span><span class="p">(</span><span class="k">const</span> <span class="n">InputContainer</span><span class="o">&amp;</span> <span class="n">input</span><span class="p">,</span> <span class="n">Transform</span> <span class="n">transform</span><span class="p">)</span>
+    <span class="o">-&gt;</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">OutputType</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">OutputType</span><span class="o">&gt;</span> <span class="n">result</span><span class="p">;</span>
+    <span class="n">result</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">input</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">transform</span><span class="p">(</span><span class="n">input</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">input</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">std</span><span class="o">::</span><span class="n">back_inserter</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="n">transform</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// 通用filter函数：筛选满足条件的元素</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">Container</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">Predicate</span><span class="p">&gt;</span>
+<span class="k">auto</span> <span class="n">filter</span><span class="p">(</span><span class="k">const</span> <span class="n">Container</span><span class="o">&amp;</span> <span class="n">input</span><span class="p">,</span> <span class="n">Predicate</span> <span class="n">predicate</span><span class="p">)</span>
+    <span class="o">-&gt;</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">Container</span><span class="o">::</span><span class="n">value_type</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">Container</span><span class="o">::</span><span class="n">value_type</span><span class="o">&gt;</span> <span class="n">result</span><span class="p">;</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">copy_if</span><span class="p">(</span><span class="n">input</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">input</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">std</span><span class="o">::</span><span class="n">back_inserter</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="n">predicate</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// 通用reduce函数：将集合聚合为单一值</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">Container</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">BinaryOp</span><span class="p">&gt;</span>
+<span class="n">T</span> <span class="nf">reduce</span><span class="p">(</span><span class="k">const</span> <span class="n">Container</span><span class="o">&amp;</span> <span class="n">input</span><span class="p">,</span> <span class="n">T</span> <span class="n">initial_value</span><span class="p">,</span> <span class="n">BinaryOp</span> <span class="n">binary_op</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">accumulate</span><span class="p">(</span><span class="n">input</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">input</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">initial_value</span><span class="p">,</span> <span class="n">binary_op</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// 实际应用：销售数据分析</span>
+<span class="k">struct</span> <span class="nc">Sale</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">product</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">amount</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">region</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kt">void</span> <span class="nf">analyze_sales_data</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Sale</span><span class="o">&gt;</span> <span class="n">sales</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">{</span><span class="s">"Laptop"</span><span class="p">,</span> <span class="mf">1200.0</span><span class="p">,</span> <span class="s">"North"</span><span class="p">},</span>
+        <span class="p">{</span><span class="s">"Mouse"</span><span class="p">,</span> <span class="mf">25.0</span><span class="p">,</span> <span class="s">"North"</span><span class="p">},</span>
+        <span class="p">{</span><span class="s">"Laptop"</span><span class="p">,</span> <span class="mf">1200.0</span><span class="p">,</span> <span class="s">"South"</span><span class="p">},</span>
+        <span class="p">{</span><span class="s">"Keyboard"</span><span class="p">,</span> <span class="mf">75.0</span><span class="p">,</span> <span class="s">"North"</span><span class="p">},</span>
+        <span class="p">{</span><span class="s">"Monitor"</span><span class="p">,</span> <span class="mf">300.0</span><span class="p">,</span> <span class="s">"South"</span><span class="p">}</span>
+    <span class="p">};</span>
+
+    <span class="c1">// 函数式数据处理管道</span>
+    <span class="k">auto</span> <span class="n">north_sales</span> <span class="o">=</span> <span class="n">filter</span><span class="p">(</span><span class="n">sales</span><span class="p">,</span> <span class="p">[](</span><span class="k">const</span> <span class="n">Sale</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">s</span><span class="p">.</span><span class="n">region</span> <span class="o">==</span> <span class="s">"North"</span><span class="p">;</span>
+    <span class="p">});</span>
+
+    <span class="k">auto</span> <span class="n">amounts</span> <span class="o">=</span> <span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Sale</span><span class="o">&gt;</span><span class="p">,</span> <span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">north_sales</span><span class="p">,</span> <span class="p">[](</span><span class="k">const</span> <span class="n">Sale</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">s</span><span class="p">.</span><span class="n">amount</span><span class="p">;</span>
+    <span class="p">});</span>
+
+    <span class="kt">double</span> <span class="n">total</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="n">amounts</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">plus</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">{});</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Total North region sales: $"</span> <span class="o">&lt;&lt;</span> <span class="n">total</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="c1">// 等价的命令式代码需要更多行且可读性差：</span>
+    <span class="cm">/*
+    double total_imperative = 0.0;
+    for (const auto&amp; sale : sales) {
+        if (sale.region == "North") {
+            total_imperative += sale.amount;
+        }
+    }
+    */</span>
+<span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre></div></div> <h5 id="142-函数组合与管道模式">1.4.2 函数组合与管道模式</h5> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 函数组合：构建复杂操作</span>
+<span class="k">namespace</span> <span class="n">FunctionComposition</span> <span class="p">{</span>
+
+<span class="c1">// 基础变换函数</span>
+<span class="k">auto</span> <span class="n">add_ten</span> <span class="o">=</span> <span class="p">[](</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">10</span><span class="p">;</span> <span class="p">};</span>
+<span class="k">auto</span> <span class="n">multiply_by_two</span> <span class="o">=</span> <span class="p">[](</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span> <span class="p">};</span>
+<span class="k">auto</span> <span class="n">to_string</span> <span class="o">=</span> <span class="p">[](</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">x</span><span class="p">);</span> <span class="p">};</span>
+
+<span class="c1">// 函数组合工具</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">F</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">G</span><span class="p">&gt;</span>
+<span class="k">auto</span> <span class="nf">compose</span><span class="p">(</span><span class="n">F</span> <span class="n">f</span><span class="p">,</span> <span class="n">G</span> <span class="n">g</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">](</span><span class="k">auto</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">g</span><span class="p">(</span><span class="n">x</span><span class="p">));</span> <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="c1">// 管道操作符（C++23风格）</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">F</span><span class="p">&gt;</span>
+<span class="k">auto</span> <span class="k">operator</span><span class="o">|</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;&amp;</span> <span class="n">value</span><span class="p">,</span> <span class="n">F</span><span class="o">&amp;&amp;</span> <span class="n">func</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="k">decltype</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">forward</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">value</span><span class="p">)))</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">forward</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">value</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">demonstrate_composition</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// 方式1：嵌套调用（难以阅读）</span>
+    <span class="k">auto</span> <span class="n">result1</span> <span class="o">=</span> <span class="n">to_string</span><span class="p">(</span><span class="n">multiply_by_two</span><span class="p">(</span><span class="n">add_ten</span><span class="p">(</span><span class="mi">5</span><span class="p">)));</span>
+
+    <span class="c1">// 方式2：函数组合</span>
+    <span class="k">auto</span> <span class="n">complex_transform</span> <span class="o">=</span> <span class="n">compose</span><span class="p">(</span><span class="n">to_string</span><span class="p">,</span> <span class="n">compose</span><span class="p">(</span><span class="n">multiply_by_two</span><span class="p">,</span> <span class="n">add_ten</span><span class="p">));</span>
+    <span class="k">auto</span> <span class="n">result2</span> <span class="o">=</span> <span class="n">complex_transform</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+
+    <span class="c1">// 方式3：管道操作（最直观）</span>
+    <span class="k">auto</span> <span class="n">result3</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">|</span> <span class="n">add_ten</span> <span class="o">|</span> <span class="n">multiply_by_two</span> <span class="o">|</span> <span class="n">to_string</span><span class="p">;</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Results: "</span> <span class="o">&lt;&lt;</span> <span class="n">result1</span> <span class="o">&lt;&lt;</span> <span class="s">", "</span> <span class="o">&lt;&lt;</span> <span class="n">result2</span> <span class="o">&lt;&lt;</span> <span class="s">", "</span> <span class="o">&lt;&lt;</span> <span class="n">result3</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="c1">// 输出：Results: 30, 30, 30</span>
+<span class="p">}</span>
+
+<span class="c1">// 实际应用：文本处理管道</span>
+<span class="k">namespace</span> <span class="n">TextProcessing</span> <span class="p">{</span>
+
+<span class="k">auto</span> <span class="n">to_lowercase</span> <span class="o">=</span> <span class="p">[](</span><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">transform</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">s</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">s</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="o">::</span><span class="n">tolower</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">s</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">auto</span> <span class="n">remove_spaces</span> <span class="o">=</span> <span class="p">[](</span><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">s</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">remove</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">s</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="sc">' '</span><span class="p">),</span> <span class="n">s</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+    <span class="k">return</span> <span class="n">s</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">auto</span> <span class="n">add_prefix</span> <span class="o">=</span> <span class="p">[](</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">prefix</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">prefix</span><span class="p">](</span><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">s</span><span class="p">;</span> <span class="p">};</span>
+<span class="p">};</span>
+
+<span class="kt">void</span> <span class="nf">process_user_input</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">user_input</span> <span class="o">=</span> <span class="s">"  Hello World  "</span><span class="p">;</span>
+
+    <span class="c1">// 清晰的处理管道</span>
+    <span class="k">auto</span> <span class="n">processed</span> <span class="o">=</span> <span class="n">user_input</span>
+                   <span class="o">|</span> <span class="n">to_lowercase</span>
+                   <span class="o">|</span> <span class="n">remove_spaces</span>
+                   <span class="o">|</span> <span class="n">add_prefix</span><span class="p">(</span><span class="s">"processed_"</span><span class="p">);</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Processed: "</span> <span class="o">&lt;&lt;</span> <span class="n">processed</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="c1">// 输出：Processed: processed_helloworld</span>
+<span class="p">}</span>
+<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div> <h3 id="2-函数式编程的实际价值">2. 函数式编程的实际价值</h3> <h4 id="21-代码简洁性声明式vs命令式">2.1 代码简洁性：声明式vs命令式</h4> <p><strong>问题场景：</strong> 学生成绩管理系统</p> <p>考虑一个常见的数据处理任务：从学生列表中找出数学成绩超过90分的学生，计算他们的平均成绩。</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">Student</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">name</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">math_score</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">english_score</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">grade</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// 命令式方式：关注"如何做"</span>
+<span class="k">namespace</span> <span class="n">Imperative</span> <span class="p">{</span>
+
+<span class="kt">double</span> <span class="n">calculate_high_math_scores_average</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Student</span><span class="o">&gt;&amp;</span> <span class="n">students</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Student</span><span class="o">&gt;</span> <span class="n">high_scorers</span><span class="p">;</span>
+
+    <span class="c1">// 步骤1：筛选高分学生</span>
+    <span class="k">for</span> <span class="p">(</span><span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">student</span> <span class="o">:</span> <span class="n">students</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">student</span><span class="p">.</span><span class="n">math_score</span> <span class="o">&gt;</span> <span class="mi">90</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">high_scorers</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">student</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 步骤2：检查是否有符合条件的学生</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">high_scorers</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="mf">0.0</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 步骤3：累加成绩</span>
+    <span class="kt">int</span> <span class="n">total_score</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">student</span> <span class="o">:</span> <span class="n">high_scorers</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">total_score</span> <span class="o">+=</span> <span class="n">student</span><span class="p">.</span><span class="n">math_score</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 步骤4：计算平均值</span>
+    <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">total_score</span><span class="p">)</span> <span class="o">/</span> <span class="n">high_scorers</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="c1">// 函数式方式：关注"做什么"</span>
+<span class="k">namespace</span> <span class="n">Functional</span> <span class="p">{</span>
+
+<span class="c1">// 完成代码看附录</span>
+<span class="kt">double</span> <span class="n">calculate_high_math_scores_average</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Student</span><span class="o">&gt;&amp;</span> <span class="n">students</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">auto</span> <span class="n">scoreHighEnough</span> <span class="o">=</span> <span class="p">[](</span><span class="k">const</span> <span class="n">Student</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">s</span><span class="p">.</span><span class="n">math_score</span> <span class="o">&gt;</span> <span class="mi">90</span><span class="p">;</span> <span class="p">};</span>
+    <span class="k">auto</span> <span class="n">getScore</span> <span class="o">=</span> <span class="p">[](</span><span class="k">const</span> <span class="n">Student</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">s</span><span class="p">.</span><span class="n">math_score</span><span class="p">;</span> <span class="p">};</span>
+
+    <span class="k">auto</span> <span class="n">high_math_scores</span> <span class="o">=</span> <span class="n">students</span>
+        <span class="o">|</span> <span class="n">filter</span><span class="p">(</span><span class="n">scoreHighEnough</span><span class="p">)</span>
+        <span class="o">|</span> <span class="n">map</span><span class="p">(</span><span class="n">getScore</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">high_math_scores</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span>
+        <span class="o">?</span> <span class="mf">0.0</span>
+        <span class="o">:</span> <span class="n">reduce</span><span class="p">(</span><span class="n">high_math_scores</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">plus</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">{})</span> <span class="o">/</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">high_math_scores</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div> <p><strong>可读性对比：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>命令式代码特点：
+❌ 15行代码，包含大量样板代码
+❌ 需要手动管理临时变量
+❌ 循环和条件判断混杂
+❌ 业务逻辑被实现细节掩盖
+
+函数式代码特点：
+✅ 6行代码，直接表达业务意图
+✅ 无需临时变量管理
+✅ 操作链式组合，逻辑清晰
+✅ 业务逻辑一目了然：筛选→提取→聚合
+</code></pre></div></div> <h4 id="22-测试和维护优势可预测性带来的好处">2.2 测试和维护优势：可预测性带来的好处</h4> <p><strong>案例研究：</strong> 电商系统的订单处理</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 传统方式：全局状态和副作用</span>
+<span class="k">namespace</span> <span class="n">TraditionalApproach</span> <span class="p">{</span>
+
+<span class="c1">// 全局状态</span>
+<span class="k">class</span> <span class="nc">OrderProcessor</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="k">static</span> <span class="kt">int</span> <span class="n">order_id_counter</span><span class="p">;</span>
+    <span class="k">static</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">processed_orders</span><span class="p">;</span>
+    <span class="k">static</span> <span class="kt">double</span> <span class="n">total_revenue</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="c1">// 有副作用的方法</span>
+    <span class="kt">bool</span> <span class="n">process_order</span><span class="p">(</span><span class="k">const</span> <span class="n">OrderRequest</span><span class="o">&amp;</span> <span class="n">request</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 修改全局状态</span>
+        <span class="n">Order</span> <span class="n">order</span><span class="p">;</span>
+        <span class="n">order</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="o">++</span><span class="n">order_id_counter</span><span class="p">;</span>
+        <span class="n">order</span><span class="p">.</span><span class="n">amount</span> <span class="o">=</span> <span class="n">calculate_order_amount</span><span class="p">(</span><span class="n">request</span><span class="p">);</span>
+
+        <span class="c1">// 依赖外部系统状态</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">payment_service</span><span class="p">.</span><span class="n">charge</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="n">payment_info</span><span class="p">,</span> <span class="n">order</span><span class="p">.</span><span class="n">amount</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>  <span class="c1">// 失败时状态不一致</span>
+        <span class="p">}</span>
+
+        <span class="c1">// 修改更多全局状态</span>
+        <span class="n">processed_orders</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">order</span><span class="p">);</span>
+        <span class="n">total_revenue</span> <span class="o">+=</span> <span class="n">order</span><span class="p">.</span><span class="n">amount</span><span class="p">;</span>
+
+        <span class="c1">// 副作用：发送邮件</span>
+        <span class="n">email_service</span><span class="p">.</span><span class="n">send_confirmation</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="n">customer_email</span><span class="p">,</span> <span class="n">order</span><span class="p">);</span>
+
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="kt">double</span> <span class="nf">calculate_order_amount</span><span class="p">(</span><span class="k">const</span> <span class="n">OrderRequest</span><span class="o">&amp;</span> <span class="n">request</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 依赖全局折扣状态</span>
+        <span class="k">return</span> <span class="n">request</span><span class="p">.</span><span class="n">base_amount</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">global_discount_rate</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// 测试困难</span>
+<span class="kt">void</span> <span class="nf">test_order_processing</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// 需要复杂的setup</span>
+    <span class="c1">// 1. 重置全局状态</span>
+    <span class="n">OrderProcessor</span><span class="o">::</span><span class="n">reset_global_state</span><span class="p">();</span>
+
+    <span class="c1">// 2. 模拟外部服务</span>
+    <span class="n">MockPaymentService</span> <span class="n">mock_payment</span><span class="p">;</span>
+    <span class="n">MockEmailService</span> <span class="n">mock_email</span><span class="p">;</span>
+    <span class="n">dependency_injector</span><span class="p">.</span><span class="n">replace_payment_service</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mock_payment</span><span class="p">);</span>
+    <span class="n">dependency_injector</span><span class="p">.</span><span class="n">replace_email_service</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mock_email</span><span class="p">);</span>
+
+    <span class="c1">// 3. 设置外部状态</span>
+    <span class="n">set_global_discount_rate</span><span class="p">(</span><span class="mf">0.1</span><span class="p">);</span>
+
+    <span class="c1">// 4. 执行测试</span>
+    <span class="n">OrderRequest</span> <span class="n">request</span> <span class="o">=</span> <span class="n">create_test_request</span><span class="p">();</span>
+    <span class="kt">bool</span> <span class="n">success</span> <span class="o">=</span> <span class="n">OrderProcessor</span><span class="p">{}.</span><span class="n">process_order</span><span class="p">(</span><span class="n">request</span><span class="p">);</span>
+
+    <span class="c1">// 5. 验证复杂状态</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">success</span><span class="p">);</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">OrderProcessor</span><span class="o">::</span><span class="n">get_processed_orders</span><span class="p">().</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">OrderProcessor</span><span class="o">::</span><span class="n">get_total_revenue</span><span class="p">()</span> <span class="o">==</span> <span class="n">expected_amount</span><span class="p">);</span>
+
+    <span class="c1">// 6. 清理状态</span>
+    <span class="n">OrderProcessor</span><span class="o">::</span><span class="n">reset_global_state</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="c1">// 函数式方式：纯函数和不可变数据</span>
+<span class="k">namespace</span> <span class="n">FunctionalApproach</span> <span class="p">{</span>
+
+<span class="c1">// 不可变数据结构</span>
+<span class="k">struct</span> <span class="nc">OrderResult</span> <span class="p">{</span>
+    <span class="kt">bool</span> <span class="n">success</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">optional</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">order</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">error_message</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">SideEffect</span><span class="o">&gt;</span> <span class="n">side_effects</span><span class="p">;</span>  <span class="c1">// 将副作用建模为数据</span>
+<span class="p">};</span>
+
+<span class="c1">// 纯函数</span>
+<span class="k">class</span> <span class="nc">PureOrderProcessor</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="c1">// 纯函数：计算订单金额</span>
+    <span class="k">static</span> <span class="kt">double</span> <span class="n">calculate_order_amount</span><span class="p">(</span><span class="k">const</span> <span class="n">OrderRequest</span><span class="o">&amp;</span> <span class="n">request</span><span class="p">,</span> <span class="kt">double</span> <span class="n">discount_rate</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">request</span><span class="p">.</span><span class="n">base_amount</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">discount_rate</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 纯函数：验证订单</span>
+    <span class="k">static</span> <span class="n">ValidationResult</span> <span class="nf">validate_order</span><span class="p">(</span><span class="k">const</span> <span class="n">OrderRequest</span><span class="o">&amp;</span> <span class="n">request</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">ValidationResult</span> <span class="n">result</span><span class="p">;</span>
+        <span class="n">result</span><span class="p">.</span><span class="n">is_valid</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="n">base_amount</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">result</span><span class="p">.</span><span class="n">is_valid</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="n">result</span><span class="p">.</span><span class="n">errors</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">"Invalid amount"</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="n">customer_email</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="p">{</span>
+            <span class="n">result</span><span class="p">.</span><span class="n">is_valid</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="n">result</span><span class="p">.</span><span class="n">errors</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">"Email required"</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">result</span><span class="p">;</span>  <span class="c1">// 不修改任何外部状态</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 纯函数：创建订单（不执行副作用）</span>
+    <span class="k">static</span> <span class="n">OrderResult</span> <span class="nf">create_order</span><span class="p">(</span><span class="k">const</span> <span class="n">OrderRequest</span><span class="o">&amp;</span> <span class="n">request</span><span class="p">,</span>
+                                   <span class="kt">int</span> <span class="n">next_order_id</span><span class="p">,</span>
+                                   <span class="kt">double</span> <span class="n">discount_rate</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">validation</span> <span class="o">=</span> <span class="n">validate_order</span><span class="p">(</span><span class="n">request</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">validation</span><span class="p">.</span><span class="n">is_valid</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="p">{</span><span class="nb">false</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">nullopt</span><span class="p">,</span> <span class="n">validation</span><span class="p">.</span><span class="n">errors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">{}};</span>
+        <span class="p">}</span>
+
+        <span class="n">Order</span> <span class="n">order</span><span class="p">;</span>
+        <span class="n">order</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">next_order_id</span><span class="p">;</span>
+        <span class="n">order</span><span class="p">.</span><span class="n">amount</span> <span class="o">=</span> <span class="n">calculate_order_amount</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">discount_rate</span><span class="p">);</span>
+        <span class="n">order</span><span class="p">.</span><span class="n">customer_email</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="n">customer_email</span><span class="p">;</span>
+
+        <span class="c1">// 将副作用建模为数据而非立即执行</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">SideEffect</span><span class="o">&gt;</span> <span class="n">effects</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">PaymentSideEffect</span><span class="p">{</span><span class="n">request</span><span class="p">.</span><span class="n">payment_info</span><span class="p">,</span> <span class="n">order</span><span class="p">.</span><span class="n">amount</span><span class="p">},</span>
+            <span class="n">EmailSideEffect</span><span class="p">{</span><span class="n">request</span><span class="p">.</span><span class="n">customer_email</span><span class="p">,</span> <span class="n">order</span><span class="p">}</span>
+        <span class="p">};</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="nb">true</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="s">""</span><span class="p">,</span> <span class="n">effects</span><span class="p">};</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// 简单、可靠的测试</span>
+<span class="kt">void</span> <span class="nf">test_pure_order_processing</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// 无需复杂setup，直接测试</span>
+    <span class="n">OrderRequest</span> <span class="n">request</span><span class="p">;</span>
+    <span class="n">request</span><span class="p">.</span><span class="n">base_amount</span> <span class="o">=</span> <span class="mf">100.0</span><span class="p">;</span>
+    <span class="n">request</span><span class="p">.</span><span class="n">customer_email</span> <span class="o">=</span> <span class="s">"test@example.com"</span><span class="p">;</span>
+
+    <span class="c1">// 测试订单计算</span>
+    <span class="kt">double</span> <span class="n">amount</span> <span class="o">=</span> <span class="n">PureOrderProcessor</span><span class="o">::</span><span class="n">calculate_order_amount</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">);</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">amount</span> <span class="o">==</span> <span class="mf">90.0</span><span class="p">);</span>  <span class="c1">// 简单、确定的断言</span>
+
+    <span class="c1">// 测试订单验证</span>
+    <span class="k">auto</span> <span class="n">validation</span> <span class="o">=</span> <span class="n">PureOrderProcessor</span><span class="o">::</span><span class="n">validate_order</span><span class="p">(</span><span class="n">request</span><span class="p">);</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">validation</span><span class="p">.</span><span class="n">is_valid</span><span class="p">);</span>
+
+    <span class="c1">// 测试订单创建</span>
+    <span class="k">auto</span> <span class="n">result</span> <span class="o">=</span> <span class="n">PureOrderProcessor</span><span class="o">::</span><span class="n">create_order</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="mi">1001</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">);</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">success</span><span class="p">);</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">order</span><span class="o">-&gt;</span><span class="n">id</span> <span class="o">==</span> <span class="mi">1001</span><span class="p">);</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">order</span><span class="o">-&gt;</span><span class="n">amount</span> <span class="o">==</span> <span class="mf">90.0</span><span class="p">);</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">side_effects</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span><span class="p">);</span>
+
+    <span class="c1">// 无需清理状态，测试之间完全独立</span>
+<span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre></div></div> <p><strong>测试复杂度对比：</strong></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>传统方式测试：
+❌ 需要15+行setup代码
+❌ 依赖外部服务模拟
+❌ 状态管理容易出错
+❌ 测试之间可能相互影响
+❌ 难以测试边界情况
+
+函数式方式测试：
+✅ 3行核心测试代码
+✅ 无外部依赖
+✅ 测试结果完全可预测
+✅ 测试完全独立
+✅ 易于测试所有分支
+</code></pre></div></div> <h4 id="23-并发和性能优势天然的并行性">2.3 并发和性能优势：天然的并行性</h4> <p><strong>并发编程的挑战：</strong> 传统的共享状态并发</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 传统并发：共享状态的问题</span>
+<span class="k">namespace</span> <span class="n">SharedStateConcurrency</span> <span class="p">{</span>
+
+<span class="k">class</span> <span class="nc">BankAccount</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">mutex</span> <span class="n">mutex_</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">balance_</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="n">BankAccount</span><span class="p">(</span><span class="kt">double</span> <span class="n">initial_balance</span><span class="p">)</span> <span class="o">:</span> <span class="n">balance_</span><span class="p">(</span><span class="n">initial_balance</span><span class="p">)</span> <span class="p">{}</span>
+
+    <span class="kt">bool</span> <span class="nf">transfer</span><span class="p">(</span><span class="n">BankAccount</span><span class="o">&amp;</span> <span class="n">to_account</span><span class="p">,</span> <span class="kt">double</span> <span class="n">amount</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">unique_lock</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span> <span class="n">lock1</span><span class="p">(</span><span class="n">mutex_</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">defer_lock</span><span class="p">);</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">unique_lock</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span> <span class="n">lock2</span><span class="p">(</span><span class="n">to_account</span><span class="p">.</span><span class="n">mutex_</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">defer_lock</span><span class="p">);</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">lock</span><span class="p">(</span><span class="n">lock1</span><span class="p">,</span> <span class="n">lock2</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">balance_</span> <span class="o">&gt;=</span> <span class="n">amount</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">balance_</span> <span class="o">-=</span> <span class="n">amount</span><span class="p">;</span>
+            <span class="n">to_account</span><span class="p">.</span><span class="n">balance_</span> <span class="o">+=</span> <span class="n">amount</span><span class="p">;</span>
+            <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">double</span> <span class="nf">get_balance</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">lock_guard</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span> <span class="n">lock</span><span class="p">(</span><span class="n">mutex_</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">balance_</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// 复杂的并发代码</span>
+<span class="kt">void</span> <span class="nf">concurrent_transfers</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">BankAccount</span> <span class="n">account1</span><span class="p">(</span><span class="mf">1000.0</span><span class="p">);</span>
+    <span class="n">BankAccount</span> <span class="n">account2</span><span class="p">(</span><span class="mf">1000.0</span><span class="p">);</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="o">&gt;</span> <span class="n">threads</span><span class="p">;</span>
+
+    <span class="c1">// 多线程转账：复杂的同步逻辑</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">threads</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">([</span><span class="o">&amp;</span><span class="n">account1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">account2</span><span class="p">]()</span> <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">account1</span><span class="p">.</span><span class="n">transfer</span><span class="p">(</span><span class="n">account2</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">);</span>
+                <span class="n">account2</span><span class="p">.</span><span class="n">transfer</span><span class="p">(</span><span class="n">account1</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="n">t</span> <span class="o">:</span> <span class="n">threads</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">t</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Final balances: "</span>
+              <span class="o">&lt;&lt;</span> <span class="n">account1</span><span class="p">.</span><span class="n">get_balance</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">", "</span>
+              <span class="o">&lt;&lt;</span> <span class="n">account2</span><span class="p">.</span><span class="n">get_balance</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="c1">// 函数式并发：不可变数据的优势</span>
+<span class="k">namespace</span> <span class="n">FunctionalConcurrency</span> <span class="p">{</span>
+
+<span class="c1">// 不可变的账户状态</span>
+<span class="k">struct</span> <span class="nc">AccountState</span> <span class="p">{</span>
+    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">account_id</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">double</span> <span class="n">balance</span><span class="p">;</span>
+
+    <span class="n">AccountState</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">id</span><span class="p">,</span> <span class="kt">double</span> <span class="n">bal</span><span class="p">)</span> <span class="o">:</span> <span class="n">account_id</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">id</span><span class="p">)),</span> <span class="n">balance</span><span class="p">(</span><span class="n">bal</span><span class="p">)</span> <span class="p">{}</span>
+<span class="p">};</span>
+
+<span class="c1">// 纯函数：转账操作</span>
+<span class="k">struct</span> <span class="nc">TransferResult</span> <span class="p">{</span>
+    <span class="n">AccountState</span> <span class="n">from_account</span><span class="p">;</span>
+    <span class="n">AccountState</span> <span class="n">to_account</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">success</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">error_message</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">TransferResult</span> <span class="nf">transfer</span><span class="p">(</span><span class="k">const</span> <span class="n">AccountState</span><span class="o">&amp;</span> <span class="n">from</span><span class="p">,</span> <span class="k">const</span> <span class="n">AccountState</span><span class="o">&amp;</span> <span class="n">to</span><span class="p">,</span> <span class="kt">double</span> <span class="n">amount</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">from</span><span class="p">.</span><span class="n">balance</span> <span class="o">&gt;=</span> <span class="n">amount</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="n">AccountState</span><span class="p">(</span><span class="n">from</span><span class="p">.</span><span class="n">account_id</span><span class="p">,</span> <span class="n">from</span><span class="p">.</span><span class="n">balance</span> <span class="o">-</span> <span class="n">amount</span><span class="p">),</span>
+            <span class="n">AccountState</span><span class="p">(</span><span class="n">to</span><span class="p">.</span><span class="n">account_id</span><span class="p">,</span> <span class="n">to</span><span class="p">.</span><span class="n">balance</span> <span class="o">+</span> <span class="n">amount</span><span class="p">),</span>
+            <span class="nb">true</span><span class="p">,</span>
+            <span class="s">""</span>
+        <span class="p">};</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">from</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="s">"Insufficient funds"</span><span class="p">};</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">TransactionProcessor</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span> <span class="n">AccountState</span><span class="o">&gt;</span> <span class="n">accounts_</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">mutex</span> <span class="n">state_mutex_</span><span class="p">;</span>  <span class="c1">// 只需要一个锁</span>
+
+<span class="nl">public:</span>
+    <span class="n">TransactionProcessor</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">initializer_list</span><span class="o">&lt;</span><span class="n">AccountState</span><span class="o">&gt;</span> <span class="n">initial_accounts</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">account</span> <span class="o">:</span> <span class="n">initial_accounts</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">accounts_</span><span class="p">[</span><span class="n">account</span><span class="p">.</span><span class="n">account_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">account</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kt">bool</span> <span class="nf">execute_transfer</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">from_id</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">to_id</span><span class="p">,</span> <span class="kt">double</span> <span class="n">amount</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">lock_guard</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span> <span class="n">lock</span><span class="p">(</span><span class="n">state_mutex_</span><span class="p">);</span>
+
+        <span class="k">auto</span> <span class="n">from_it</span> <span class="o">=</span> <span class="n">accounts_</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">from_id</span><span class="p">);</span>
+        <span class="k">auto</span> <span class="n">to_it</span> <span class="o">=</span> <span class="n">accounts_</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">to_id</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">from_it</span> <span class="o">==</span> <span class="n">accounts_</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="o">||</span> <span class="n">to_it</span> <span class="o">==</span> <span class="n">accounts_</span><span class="p">.</span><span class="n">end</span><span class="p">())</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="c1">// 使用纯函数计算新状态</span>
+        <span class="k">auto</span> <span class="n">result</span> <span class="o">=</span> <span class="n">transfer</span><span class="p">(</span><span class="n">from_it</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">,</span> <span class="n">to_it</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">,</span> <span class="n">amount</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">success</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">accounts_</span><span class="p">[</span><span class="n">from_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="p">.</span><span class="n">from_account</span><span class="p">;</span>
+            <span class="n">accounts_</span><span class="p">[</span><span class="n">to_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="p">.</span><span class="n">to_account</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">result</span><span class="p">.</span><span class="n">success</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">double</span> <span class="nf">get_balance</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">account_id</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">lock_guard</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span> <span class="n">lock</span><span class="p">(</span><span class="n">state_mutex_</span><span class="p">);</span>
+        <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">accounts_</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">account_id</span><span class="p">);</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">it</span> <span class="o">!=</span> <span class="n">accounts_</span><span class="p">.</span><span class="n">end</span><span class="p">())</span> <span class="o">?</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">balance</span> <span class="o">:</span> <span class="mf">0.0</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+<span class="c1">// 简化的并发代码</span>
+<span class="kt">void</span> <span class="nf">functional_concurrent_transfers</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">TransactionProcessor</span> <span class="n">processor</span><span class="p">{</span>
+        <span class="n">AccountState</span><span class="p">(</span><span class="s">"ACC001"</span><span class="p">,</span> <span class="mf">1000.0</span><span class="p">),</span>
+        <span class="n">AccountState</span><span class="p">(</span><span class="s">"ACC002"</span><span class="p">,</span> <span class="mf">1000.0</span><span class="p">)</span>
+    <span class="p">};</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="o">&gt;</span> <span class="n">threads</span><span class="p">;</span>
+
+    <span class="c1">// 多线程转账：简单直接，无死锁风险</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">threads</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">([</span><span class="o">&amp;</span><span class="n">processor</span><span class="p">]()</span> <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">processor</span><span class="p">.</span><span class="n">execute_transfer</span><span class="p">(</span><span class="s">"ACC001"</span><span class="p">,</span> <span class="s">"ACC002"</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">);</span>
+                <span class="n">processor</span><span class="p">.</span><span class="n">execute_transfer</span><span class="p">(</span><span class="s">"ACC002"</span><span class="p">,</span> <span class="s">"ACC001"</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="n">t</span> <span class="o">:</span> <span class="n">threads</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">t</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Final balances: "</span>
+              <span class="o">&lt;&lt;</span> <span class="n">processor</span><span class="p">.</span><span class="n">get_balance</span><span class="p">(</span><span class="s">"ACC001"</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">", "</span>
+              <span class="o">&lt;&lt;</span> <span class="n">processor</span><span class="p">.</span><span class="n">get_balance</span><span class="p">(</span><span class="s">"ACC002"</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// 并行数据处理：无需锁</span>
+<span class="kt">void</span> <span class="nf">parallel_account_processing</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">AccountState</span><span class="o">&gt;</span> <span class="n">accounts</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">AccountState</span><span class="p">(</span><span class="s">"ACC001"</span><span class="p">,</span> <span class="mf">1000.0</span><span class="p">),</span>
+        <span class="n">AccountState</span><span class="p">(</span><span class="s">"ACC002"</span><span class="p">,</span> <span class="mf">1500.0</span><span class="p">),</span>
+        <span class="n">AccountState</span><span class="p">(</span><span class="s">"ACC003"</span><span class="p">,</span> <span class="mf">2000.0</span><span class="p">),</span>
+        <span class="n">AccountState</span><span class="p">(</span><span class="s">"ACC004"</span><span class="p">,</span> <span class="mf">500.0</span><span class="p">)</span>
+    <span class="p">};</span>
+
+    <span class="c1">// 并行计算利息：完全无锁</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">balances_with_interest</span><span class="p">(</span><span class="n">accounts</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">transform</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">execution</span><span class="o">::</span><span class="n">par_unseq</span><span class="p">,</span>
+                  <span class="n">accounts</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">accounts</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span>
+                  <span class="n">balances_with_interest</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span>
+                  <span class="p">[](</span><span class="k">const</span> <span class="n">AccountState</span><span class="o">&amp;</span> <span class="n">acc</span><span class="p">)</span> <span class="p">{</span>
+                      <span class="k">return</span> <span class="n">acc</span><span class="p">.</span><span class="n">balance</span> <span class="o">*</span> <span class="mf">1.05</span><span class="p">;</span>  <span class="c1">// 5%利息</span>
+                  <span class="p">});</span>
+
+    <span class="c1">// 并行聚合：计算总余额</span>
+    <span class="kt">double</span> <span class="n">total_balance</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">transform_reduce</span><span class="p">(</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">execution</span><span class="o">::</span><span class="n">par</span><span class="p">,</span>
+        <span class="n">accounts</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">accounts</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span>
+        <span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">plus</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">{},</span>
+        <span class="p">[](</span><span class="k">const</span> <span class="n">AccountState</span><span class="o">&amp;</span> <span class="n">acc</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">acc</span><span class="p">.</span><span class="n">balance</span><span class="p">;</span> <span class="p">}</span>
+    <span class="p">);</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Total balance: "</span> <span class="o">&lt;&lt;</span> <span class="n">total_balance</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">}</span>
+
+</code></pre></div></div> <h3 id="99-appendix">99. appendix:</h3> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span>
+<span class="cp">#include</span> <span class="cpf">&lt;algorithm&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;iterator&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;numeric&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;type_traits&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;utility&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">Transform</span><span class="p">&gt;</span>
+<span class="k">auto</span> <span class="nf">map</span><span class="p">(</span><span class="n">Transform</span> <span class="n">transform</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">transform</span><span class="p">](</span><span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">input</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">using</span> <span class="n">InputContainer</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">decay_t</span><span class="o">&lt;</span><span class="k">decltype</span><span class="p">(</span><span class="n">input</span><span class="p">)</span><span class="o">&gt;</span><span class="p">;</span>
+        <span class="k">using</span> <span class="n">ValueType</span> <span class="o">=</span> <span class="k">typename</span> <span class="n">InputContainer</span><span class="o">::</span><span class="n">value_type</span><span class="p">;</span>
+        <span class="k">using</span> <span class="n">OutputType</span> <span class="o">=</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">decay_t</span><span class="o">&lt;</span><span class="k">decltype</span><span class="p">(</span><span class="n">transform</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">declval</span><span class="o">&lt;</span><span class="n">ValueType</span><span class="o">&gt;</span><span class="p">()))</span><span class="o">&gt;</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">OutputType</span><span class="o">&gt;</span> <span class="n">result</span><span class="p">;</span>
+        <span class="n">result</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">input</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">transform</span><span class="p">(</span><span class="n">input</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">input</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">std</span><span class="o">::</span><span class="n">back_inserter</span><span class="p">(</span><span class="n">result</span><span class="p">),</span>
+                       <span class="n">transform</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">Predicate</span><span class="p">&gt;</span>
+<span class="k">auto</span> <span class="nf">filter</span><span class="p">(</span><span class="n">Predicate</span> <span class="n">predicate</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">predicate</span><span class="p">](</span><span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">input</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">using</span> <span class="n">InputContainer</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">decay_t</span><span class="o">&lt;</span><span class="k">decltype</span><span class="p">(</span><span class="n">input</span><span class="p">)</span><span class="o">&gt;</span><span class="p">;</span>
+        <span class="k">using</span> <span class="n">ValueType</span> <span class="o">=</span> <span class="k">typename</span> <span class="n">InputContainer</span><span class="o">::</span><span class="n">value_type</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">ValueType</span><span class="o">&gt;</span> <span class="n">result</span><span class="p">;</span>
+        <span class="n">result</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">input</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">copy_if</span><span class="p">(</span><span class="n">input</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">input</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">std</span><span class="o">::</span><span class="n">back_inserter</span><span class="p">(</span><span class="n">result</span><span class="p">),</span>
+                     <span class="n">predicate</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">Container</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">BinaryOp</span><span class="p">&gt;</span>
+<span class="n">T</span> <span class="nf">reduce</span><span class="p">(</span><span class="k">const</span> <span class="n">Container</span><span class="o">&amp;</span> <span class="n">input</span><span class="p">,</span> <span class="n">T</span> <span class="n">initial_value</span><span class="p">,</span> <span class="n">BinaryOp</span> <span class="n">binary_op</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">accumulate</span><span class="p">(</span><span class="n">input</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">input</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">initial_value</span><span class="p">,</span>
+                           <span class="n">binary_op</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">F</span><span class="p">&gt;</span>
+<span class="k">auto</span> <span class="k">operator</span><span class="o">|</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;&amp;</span> <span class="n">value</span><span class="p">,</span> <span class="n">F</span><span class="o">&amp;&amp;</span> <span class="n">func</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="k">decltype</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">forward</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">value</span><span class="p">)))</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">forward</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">value</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="k">struct</span> <span class="nc">Student</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">name</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">math_score</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">english_score</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kt">double</span> <span class="nf">calculate_high_math_scores_average</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Student</span><span class="o">&gt;&amp;</span> <span class="n">students</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">auto</span> <span class="n">scoreHighEnough</span> <span class="o">=</span> <span class="p">[](</span><span class="k">const</span> <span class="n">Student</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">s</span><span class="p">.</span><span class="n">math_score</span> <span class="o">&gt;</span> <span class="mi">90</span><span class="p">;</span> <span class="p">};</span>
+    <span class="k">auto</span> <span class="n">getScore</span> <span class="o">=</span> <span class="p">[](</span><span class="k">const</span> <span class="n">Student</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">s</span><span class="p">.</span><span class="n">math_score</span><span class="p">;</span> <span class="p">};</span>
+    <span class="k">auto</span> <span class="n">high_math_scores</span> <span class="o">=</span> <span class="n">students</span> <span class="o">|</span> <span class="n">filter</span><span class="p">(</span><span class="n">scoreHighEnough</span><span class="p">)</span> <span class="o">|</span> <span class="n">map</span><span class="p">(</span><span class="n">getScore</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nf">reduce</span><span class="p">(</span><span class="n">high_math_scores</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">plus</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">{})</span> <span class="o">/</span>
+           <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">high_math_scores</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Student</span><span class="o">&gt;</span> <span class="n">students</span> <span class="o">=</span> <span class="p">{</span> \
+                                     <span class="p">{</span><span class="s">"Alice"</span><span class="p">,</span> <span class="mi">95</span><span class="p">,</span> <span class="mi">88</span><span class="p">},</span>
+                                     <span class="p">{</span><span class="s">"Bob"</span><span class="p">,</span> <span class="mi">85</span><span class="p">,</span> <span class="mi">92</span><span class="p">},</span>
+                                     <span class="p">{</span><span class="s">"Charlie"</span><span class="p">,</span> <span class="mi">98</span><span class="p">,</span> <span class="mi">81</span><span class="p">},</span>
+                                     <span class="p">{</span><span class="s">"David"</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">79</span><span class="p">},</span>
+                                     <span class="p">{</span><span class="s">"Eve"</span><span class="p">,</span> <span class="mi">91</span><span class="p">,</span> <span class="mi">95</span><span class="p">}};</span>
+    <span class="kt">double</span> <span class="n">average</span> <span class="o">=</span> <span class="n">calculate_high_math_scores_average</span><span class="p">(</span><span class="n">students</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Average math score of students scoring above 90: %.2f</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">average</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">};</span>
+
+</code></pre></div></div> </div> </article> <br> <hr> <br> <ul class="list-disc pl-8"></ul> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2026/signal/">（三）内核那些事儿：CPU中断和信号</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2026/program/">（二）内核那些事儿：程序启动到运行的完整过程</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2026/os/">（一）内核那些事儿：从硬件抽象到系统服务的完整框架</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2026/internet/">（七）内核那些事儿：操作系统对网络包的处理</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2026/interaction/">（五）内核那些事儿：系统和程序的交互</a> </li> </div> </div> <div class="col-sm-4"> <nav id="toc-sidebar" class="sticky-top"></nav> </div> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Marco Huang. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. </div> </footer> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script defer src="/assets/js/bootstrap-toc.min.js?c82ff4de8b0955d6ff14f5b05eed7eb6"></script> <script src="/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/assets/js/common.js?e0514a05c5c95ac1a93a8dfd5249b92e"></script> <script defer src="/assets/js/copy_code.js?c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/js/mathjax-setup.js?a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/assets/js/progress-bar.js?2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script src="/assets/js/vanilla-back-to-top.min.js?f40d453793ff4f64e238e420181a1d17"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/assets/js/search/ninja-keys.min.js?a3446f084dcaecc5f75aa1757d087dcf"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/js/search-setup.js?6c304f7b1992d4b60f7a07956e52f04a"></script> <script src="/assets/js/search-data.js"></script> <script src="/assets/js/shortcut-key.js?6f508d74becd347268a7f822bca7309d"></script> <script src="/assets/js/toc-depth.js"></script> </body> </html>

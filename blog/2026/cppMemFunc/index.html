@@ -1,0 +1,729 @@
+<!DOCTYPE html> <html lang="cn"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> （三）C++对象内存模型那些事儿：特殊成员函数 | Marco's blog </title> <meta name="author" content="Marco Huang"> <meta name="description" content="A blog for documenting my own study notes. "> <meta name="keywords" content="blog, cpp, programmer"> <link rel="stylesheet" href="/assets/css/bootstrap.min.css?a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/assets/css/academicons.min.css?f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" href="/assets/css/scholar-icons.css?62b2ac103a88034e6882a5be5f3e2772"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link defer href="/assets/css/bootstrap-toc.min.css?6f5af0bb9aab25d79b2448143cbeaa88" rel="stylesheet"> <link rel="stylesheet" href="/assets/css/main.css"> <link rel="stylesheet" href="/assets/css/toc-custom.css"> <link rel="shortcut icon" href="/assets/img/mc_logo.ico?cf243b61f6c6d75747808b3ae8298c5b"> <link rel="stylesheet" href="/assets/css/main.css?d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://marco-hmc.github.io/blog/2026/cppMemFunc/"> <script src="/assets/js/theme.js?a81d82887dd692e91686b43de4542f18"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> Marco's blog </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">about </a> </li> <li class="nav-item active"> <a class="nav-link" href="/blog/">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/">projects </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/">cv </a> </li> <li class="nav-item"> <button id="search-toggle" title="Search" onclick="openSearchModal()"> <span class="nav-link">ctrl k <i class="ti ti-search"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="ti ti-sun-moon" id="light-toggle-system"></i> <i class="ti ti-moon-filled" id="light-toggle-dark"></i> <i class="ti ti-sun-filled" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="row"> <div class="col-sm-8"> <div class="post"> <header class="post-header"> <h1 class="post-title">（三）C++对象内存模型那些事儿：特殊成员函数</h1> <p class="post-meta"> Created on January 04, 2026 </p> <p class="post-tags"> <a href="/blog/2026"> <i class="fa-solid fa-calendar fa-sm"></i> 2026 </a>   ·   <a href="/blog/tag/class"> <i class="fa-solid fa-hashtag fa-sm"></i> Class</a>   ·   <a href="/blog/category/c"> <i class="fa-solid fa-tag fa-sm"></i> C++</a> </p> </header> <article class="post-content"> <div id="markdown-content"> <h2 id="三c对象内存模型那些事儿特殊成员函数">（三）C++对象内存模型那些事儿：特殊成员函数</h2> <h3 id="0-引言特殊成员函数概述">0. 引言：特殊成员函数概述</h3> <p>C++编译器会自动为类生成一些特殊成员函数，以支持对象的初始化、拷贝、移动和销毁等基本操作。这些函数被称为”特殊成员函数”，它们的生成遵循特定的规则：</p> <ul> <li>用户定义了某个特殊成员函数，编译器就不会生成该函数的默认版本</li> <li>即使用户未定义，在某些条件下编译器也不会自动生成</li> </ul> <p>C++中的特殊成员函数包括：</p> <ol> <li> <strong>默认构造函数</strong>：<code class="language-plaintext highlighter-rouge">T()</code> </li> <li> <strong>析构函数</strong>：<code class="language-plaintext highlighter-rouge">~T()</code> </li> <li> <strong>拷贝构造函数</strong>：<code class="language-plaintext highlighter-rouge">T(const T&amp; other)</code> </li> <li> <strong>拷贝赋值运算符</strong>：<code class="language-plaintext highlighter-rouge">T&amp; operator=(const T&amp; other)</code> </li> <li> <strong>移动构造函数（C++11）</strong>：<code class="language-plaintext highlighter-rouge">T(T&amp;&amp; other)</code> </li> <li> <strong>移动赋值运算符（C++11）</strong>：<code class="language-plaintext highlighter-rouge">T&amp; operator=(T&amp;&amp; other)</code> </li> </ol> <p>以下是一个包含所有特殊成员函数的完整示例：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;utility&gt;</span><span class="cp">
+</span>
+<span class="k">class</span> <span class="nc">Resource</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="kt">int</span><span class="o">*</span> <span class="n">data</span><span class="p">;</span>
+    <span class="kt">size_t</span> <span class="n">size</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="c1">// 默认构造函数</span>
+    <span class="n">Resource</span><span class="p">()</span> <span class="o">:</span> <span class="n">data</span><span class="p">(</span><span class="nb">nullptr</span><span class="p">),</span> <span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Default constructor called"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 带参数的构造函数</span>
+    <span class="k">explicit</span> <span class="nf">Resource</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">n</span><span class="p">)</span> <span class="o">:</span> <span class="n">size</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="n">size</span><span class="p">];</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Parameterized constructor called"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 析构函数</span>
+    <span class="o">~</span><span class="n">Resource</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">delete</span><span class="p">[]</span> <span class="n">data</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Destructor called"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 拷贝构造函数</span>
+    <span class="n">Resource</span><span class="p">(</span><span class="k">const</span> <span class="n">Resource</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="o">:</span> <span class="n">size</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">size</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="n">size</span><span class="p">];</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">copy</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">data</span><span class="p">,</span> <span class="n">other</span><span class="p">.</span><span class="n">data</span> <span class="o">+</span> <span class="n">size</span><span class="p">,</span> <span class="n">data</span><span class="p">);</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Copy constructor called"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 拷贝赋值运算符</span>
+    <span class="n">Resource</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">Resource</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span> <span class="o">!=</span> <span class="o">&amp;</span><span class="n">other</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">// 自赋值检查</span>
+            <span class="k">delete</span><span class="p">[]</span> <span class="n">data</span><span class="p">;</span>     <span class="c1">// 释放原有资源</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="n">other</span><span class="p">.</span><span class="n">size</span><span class="p">;</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="n">size</span><span class="p">];</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">copy</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">data</span><span class="p">,</span> <span class="n">other</span><span class="p">.</span><span class="n">data</span> <span class="o">+</span> <span class="n">size</span><span class="p">,</span> <span class="n">data</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Copy assignment called"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 移动构造函数</span>
+    <span class="n">Resource</span><span class="p">(</span><span class="n">Resource</span><span class="o">&amp;&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="k">noexcept</span>
+        <span class="o">:</span> <span class="n">data</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">data</span><span class="p">),</span> <span class="n">size</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">size</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">other</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>  <span class="c1">// 转移资源所有权</span>
+        <span class="n">other</span><span class="p">.</span><span class="n">size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Move constructor called"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 移动赋值运算符</span>
+    <span class="n">Resource</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">Resource</span><span class="o">&amp;&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="k">noexcept</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span> <span class="o">!=</span> <span class="o">&amp;</span><span class="n">other</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">delete</span><span class="p">[]</span> <span class="n">data</span><span class="p">;</span>     <span class="c1">// 释放原有资源</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">other</span><span class="p">.</span><span class="n">data</span><span class="p">;</span> <span class="c1">// 转移资源所有权</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="n">other</span><span class="p">.</span><span class="n">size</span><span class="p">;</span>
+            <span class="n">other</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+            <span class="n">other</span><span class="p">.</span><span class="n">size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Move assignment called"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 辅助函数</span>
+    <span class="kt">size_t</span> <span class="n">getSize</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">size</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div> <h3 id="1-构造函数机制">1. 构造函数机制</h3> <h4 id="11-默认构造函数的生成规则">1.1 默认构造函数的生成规则</h4> <p>编译器在以下情况下<strong>不会</strong>生成默认构造函数：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="c1">// 1. 成员对象没有默认构造函数</span>
+<span class="k">class</span> <span class="nc">NoDefaultCtor</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="k">explicit</span> <span class="n">NoDefaultCtor</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="o">:</span> <span class="n">value</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{}</span>
+<span class="k">private</span><span class="o">:</span>
+    <span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// 2. 基类没有默认构造函数</span>
+<span class="k">class</span> <span class="nc">BaseWithParam</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="k">explicit</span> <span class="n">BaseWithParam</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="o">:</span> <span class="n">baseValue</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{}</span>
+<span class="k">private</span><span class="o">:</span>
+    <span class="kt">int</span> <span class="n">baseValue</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">DerivedClass</span> <span class="o">:</span> <span class="k">public</span> <span class="n">BaseWithParam</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="c1">// 2. 基类没有默认构造函数，必须显式调用基类构造函数</span>
+    <span class="n">DerivedClass</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="o">:</span> <span class="n">BaseWithParam</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{}</span>
+<span class="p">};</span>
+
+<span class="c1">// 3. 含有const或引用成员</span>
+<span class="k">class</span> <span class="nc">SpecialMembers</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">constValue</span><span class="p">;</span>        <span class="c1">// 1. const成员</span>
+    <span class="kt">int</span><span class="o">&amp;</span> <span class="n">refValue</span><span class="p">;</span>               <span class="c1">// 2. 引用成员</span>
+
+<span class="nl">public:</span>
+    <span class="c1">// 必须提供构造函数，编译器无法生成默认构造函数</span>
+    <span class="n">SpecialMembers</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span><span class="o">&amp;</span> <span class="n">ref</span><span class="p">)</span> <span class="o">:</span> <span class="n">constValue</span><span class="p">(</span><span class="mi">42</span><span class="p">),</span> <span class="n">refValue</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span> <span class="p">{}</span>
+<span class="p">};</span>
+
+<span class="c1">// 4. 显式删除默认构造函数</span>
+<span class="k">class</span> <span class="nc">DeletedDefault</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">DeletedDefault</span><span class="p">()</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+    <span class="k">explicit</span> <span class="n">DeletedDefault</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="o">:</span> <span class="n">value</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{}</span>
+<span class="k">private</span><span class="o">:</span>
+    <span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// 5. 私有默认构造函数</span>
+<span class="k">class</span> <span class="nc">PrivateDefault</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="n">PrivateDefault</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>  <span class="c1">// 外部无法访问</span>
+<span class="nl">public:</span>
+    <span class="k">static</span> <span class="n">PrivateDefault</span> <span class="n">create</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">PrivateDefault</span><span class="p">();</span> <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div> <p><strong>简单总结</strong>：当基类或成员变量无法进行默认初始化时，编译器就无法生成合法的默认构造函数。</p> <h4 id="12-对象构造顺序与虚函数表的变化">1.2 对象构造顺序与虚函数表的变化</h4> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">C</span> <span class="n">cObj</span><span class="p">;</span>
+    <span class="n">C</span><span class="o">::</span><span class="n">C</span><span class="p">()</span>
+        <span class="n">B</span><span class="o">::</span><span class="n">B</span><span class="p">()</span>
+            <span class="n">A</span><span class="o">::</span><span class="n">A</span><span class="p">()</span>
+                <span class="n">vptr</span> <span class="o">=</span> <span class="n">A</span><span class="o">::</span><span class="n">vftable</span><span class="p">;</span>
+                <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"A::A()"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+            <span class="c1">// done A ctor</span>
+            <span class="n">vptr</span> <span class="o">=</span> <span class="n">B</span><span class="o">::</span><span class="n">vftable</span><span class="p">;</span>
+            <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"B::B()"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="c1">// done B ctor</span>
+        <span class="n">vptr</span> <span class="o">=</span> <span class="n">C</span><span class="o">::</span><span class="n">vftable</span><span class="p">;</span>
+        <span class="n">m_c</span> <span class="o">=</span> <span class="mi">11</span><span class="p">;</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"C::C()"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="c1">// done C ctor</span>
+</code></pre></div></div> <p>在上述代码中，<code class="language-plaintext highlighter-rouge">C</code>类继承自<code class="language-plaintext highlighter-rouge">B</code>类，<code class="language-plaintext highlighter-rouge">B</code>类又继承自<code class="language-plaintext highlighter-rouge">A</code>类。当创建<code class="language-plaintext highlighter-rouge">C</code>类对象<code class="language-plaintext highlighter-rouge">cObj</code>时，构造顺序如下：</p> <ol> <li>首先完整调用<code class="language-plaintext highlighter-rouge">A</code>类的构造函数。在<code class="language-plaintext highlighter-rouge">A</code>类构造函数执行时，对象的虚函数表指针指向<code class="language-plaintext highlighter-rouge">A</code>类的虚函数表。此时如果调用虚函数<code class="language-plaintext highlighter-rouge">print</code>，会调用<code class="language-plaintext highlighter-rouge">A</code>类版本的<code class="language-plaintext highlighter-rouge">print</code>函数。这是因为在父类构造期间，对象的虚函数表指针指向的是父类的虚函数表。</li> <li>接着完整调用<code class="language-plaintext highlighter-rouge">B</code>类的构造函数。此时虚函数表指针更新为指向<code class="language-plaintext highlighter-rouge">B</code>类的虚函数表，但由于在<code class="language-plaintext highlighter-rouge">B</code>类构造函数执行前，<code class="language-plaintext highlighter-rouge">A</code>类构造函数已经执行完毕，所以在<code class="language-plaintext highlighter-rouge">A</code>类构造函数里调用虚函数时，依然调用的是<code class="language-plaintext highlighter-rouge">A</code>类版本的虚函数。</li> <li>最后完整调用<code class="language-plaintext highlighter-rouge">C</code>类的构造函数，对<code class="language-plaintext highlighter-rouge">C</code>类特有的成员变量<code class="language-plaintext highlighter-rouge">m_c</code>进行初始化。</li> </ol> <p>综上所述，在继承体系中，对象的构造是从基类开始，逐步向派生类进行的，并且在构造过程中虚函数表指针会根据当前正在构造的类进行相应更新，这对于理解多态在构造函数中的行为非常关键。</p> <p>因此，在父类构造函数里调用虚函数时，还是调用父类版本的虚函数。</p> <h3 id="2-析构函数机制">2. 析构函数机制</h3> <h4 id="21-合成析构函数的行为">2.1 合成析构函数的行为</h4> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="k">class</span> <span class="nc">Member</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="o">~</span><span class="n">Member</span><span class="p">()</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Member destructor"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Base</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="k">virtual</span> <span class="o">~</span><span class="n">Base</span><span class="p">()</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Base destructor"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Derived</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Base</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="n">Member</span> <span class="n">member1</span><span class="p">;</span>
+    <span class="n">Member</span> <span class="n">member2</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="c1">// 编译器生成的析构函数等价于：</span>
+    <span class="o">~</span><span class="n">Derived</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// 1. 用户代码（如果有）</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Derived destructor"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+        <span class="c1">// 2. 按声明的逆序析构成员变量</span>
+        <span class="c1">// member2.~Member();  // 后声明的先析构</span>
+        <span class="c1">// member1.~Member();</span>
+
+        <span class="c1">// 3. 调用基类析构函数</span>
+        <span class="c1">// Base::~Base();</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="p">{</span>
+        <span class="n">Derived</span> <span class="n">obj</span><span class="p">;</span>
+    <span class="p">}</span>  <span class="c1">// 析构顺序：Derived -&gt; member2 -&gt; member1 -&gt; Base</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div> <h4 id="22-虚析构函数的重要性">2.2 虚析构函数的重要性</h4> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;memory&gt;</span><span class="cp">
+</span>
+<span class="k">class</span> <span class="nc">Base</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="k">virtual</span> <span class="o">~</span><span class="n">Base</span><span class="p">()</span> <span class="p">{</span>  <span class="c1">// 虚析构函数确保正确的多态析构</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Base destructor"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Derived</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Base</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="kt">int</span><span class="o">*</span> <span class="n">data</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="n">Derived</span><span class="p">()</span> <span class="o">:</span> <span class="n">data</span><span class="p">(</span><span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">100</span><span class="p">])</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Derived constructor"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="o">~</span><span class="n">Derived</span><span class="p">()</span> <span class="k">override</span> <span class="p">{</span>
+        <span class="k">delete</span><span class="p">[]</span> <span class="n">data</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Derived destructor"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kt">void</span> <span class="nf">polymorphicDestruction</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">Base</span><span class="o">*</span> <span class="n">ptr</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Derived</span><span class="p">();</span>
+    <span class="k">delete</span> <span class="n">ptr</span><span class="p">;</span>  <span class="c1">// 正确调用：Derived析构 -&gt; Base析构</span>
+
+    <span class="c1">// 如果Base的析构函数不是虚函数，只会调用Base析构函数</span>
+    <span class="c1">// 导致Derived的资源泄露</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">polymorphicDestruction</span><span class="p">();</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div> <h3 id="3-拷贝构造函数">3. 拷贝构造函数</h3> <h4 id="31-拷贝构造函数的生成条件">3.1 拷贝构造函数的生成条件</h4> <p>不会生成默认拷贝构造函数的条件：</p> <ol> <li> <strong>显式声明或删除</strong>：若在类中显式声明了拷贝构造函数，或者将拷贝构造函数声明为<code class="language-plaintext highlighter-rouge">delete</code>，编译器将不会生成默认的拷贝构造函数。</li> <li> <strong>成员或基类问题</strong>：当类成员变量或基类包含没有拷贝构造函数的成员对象时，编译器无法生成默认拷贝构造函数。因为在拷贝时，需要对所有成员进行拷贝，若存在无法拷贝的成员，就无法完成默认拷贝构造。</li> <li> <strong>特殊成员类型</strong>：如果类中含有<code class="language-plaintext highlighter-rouge">const</code>或<code class="language-plaintext highlighter-rouge">引用</code>类型的成员，编译器也不会生成默认拷贝构造函数。因为<code class="language-plaintext highlighter-rouge">const</code>成员一旦初始化后值不能改变，引用必须在初始化时绑定到特定对象，这两种情况都不适合默认的拷贝构造方式。</li> </ol> <p>简单概括，若没有显式定义拷贝函数，且类中的所有成员都支持拷贝操作，编译器会为类生成默认拷贝构造函数。反之，若类中存在无法拷贝的成员，如<code class="language-plaintext highlighter-rouge">std::unique_ptr</code>类型成员，或定义了删除拷贝构造函数的类型成员，或有<code class="language-plaintext highlighter-rouge">const</code>和<code class="language-plaintext highlighter-rouge">引用</code>类型成员变量，编译器就不会生成。</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="c1">// 编译器会生成默认拷贝构造函数的情况</span>
+<span class="k">class</span> <span class="nc">SimpleCopyable</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">data</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="n">SimpleCopyable</span><span class="p">(</span><span class="kt">int</span> <span class="n">v</span><span class="p">,</span> <span class="kt">double</span> <span class="n">d</span><span class="p">)</span> <span class="o">:</span> <span class="n">value</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="n">data</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="p">{}</span>
+    <span class="c1">// 编译器自动生成：SimpleCopyable(const SimpleCopyable&amp; other) = default;</span>
+<span class="p">};</span>
+
+<span class="c1">// 编译器不会生成默认拷贝构造函数的情况</span>
+<span class="k">class</span> <span class="nc">NonCopyable</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">ptr</span><span class="p">;</span>  <span class="c1">// unique_ptr不可拷贝</span>
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">constValue</span><span class="p">;</span>      <span class="c1">// const成员</span>
+    <span class="kt">int</span><span class="o">&amp;</span> <span class="n">refValue</span><span class="p">;</span>             <span class="c1">// 引用成员</span>
+
+<span class="nl">public:</span>
+    <span class="n">NonCopyable</span><span class="p">(</span><span class="kt">int</span><span class="o">&amp;</span> <span class="n">ref</span><span class="p">)</span> <span class="o">:</span> <span class="n">ptr</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">42</span><span class="p">)),</span> <span class="n">constValue</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span> <span class="n">refValue</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span> <span class="p">{}</span>
+
+    <span class="c1">// 必须显式定义或删除拷贝构造函数</span>
+    <span class="n">NonCopyable</span><span class="p">(</span><span class="k">const</span> <span class="n">NonCopyable</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div> <h4 id="32-拷贝构造函数的调用场景">3.2 拷贝构造函数的调用场景</h4> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="k">class</span> <span class="nc">Trackable</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">Trackable</span><span class="p">()</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Default constructor"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="p">}</span>
+    <span class="n">Trackable</span><span class="p">(</span><span class="k">const</span> <span class="n">Trackable</span><span class="o">&amp;</span><span class="p">)</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Copy constructor"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="p">}</span>
+    <span class="o">~</span><span class="n">Trackable</span><span class="p">()</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Destructor"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="n">Trackable</span> <span class="nf">createObject</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">Trackable</span> <span class="n">local</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">local</span><span class="p">;</span>  <span class="c1">// 可能触发拷贝构造（取决于编译器优化）</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">processObject</span><span class="p">(</span><span class="n">Trackable</span> <span class="n">obj</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">// 参数传递时调用拷贝构造</span>
+    <span class="c1">// 函数体</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"=== 直接初始化 ==="</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">Trackable</span> <span class="n">obj1</span><span class="p">;</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"=== 拷贝初始化 ==="</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">Trackable</span> <span class="n">obj2</span> <span class="o">=</span> <span class="n">obj1</span><span class="p">;</span>  <span class="c1">// 调用拷贝构造函数</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"=== 函数参数传递 ==="</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">processObject</span><span class="p">(</span><span class="n">obj1</span><span class="p">);</span>    <span class="c1">// 调用拷贝构造函数</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"=== 函数返回值 ==="</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">Trackable</span> <span class="n">obj3</span> <span class="o">=</span> <span class="n">createObject</span><span class="p">();</span>  <span class="c1">// 可能调用拷贝构造函数</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div> <h5 id="拷贝构造函数的特殊行为">拷贝构造函数的特殊行为</h5> <ul> <li> <p><strong>逐位拷贝构造（浅拷贝）</strong>：当满足以下所有条件时，编译器生成的拷贝构造函数会进行逐位拷贝，这种方式有时也被视为一种特殊的浅拷贝：</p> <ul> <li>类没有用户自定义的拷贝构造函数。</li> <li>类没有虚函数。</li> <li>类没有基类，或者基类没有自定义的拷贝构造函数。</li> <li>类的所有非静态数据成员都支持逐位拷贝。在此情况下，拷贝行为类似于<code class="language-plaintext highlighter-rouge">memset()</code>，直接按位复制数据，不会调用通常意义上的拷贝构造函数，所以有些资料会说此过程不调用拷贝构造函数。</li> </ul> </li> <li> <p><strong>一般拷贝构造（深拷贝或复杂拷贝）</strong>：</p> <ul> <li> <strong>成员拷贝</strong>：对于能够逐位拷贝的成员，进行逐位拷贝；不能够逐位拷贝的成员，调用其拷贝构造函数。</li> <li> <strong>虚函数指针处理</strong>：类的虚函数指针不会被覆盖，以保证多态性的正确实现。</li> <li> <strong>继承体系拷贝</strong>：先调用父类的拷贝构造函数，再调用子类自身的拷贝构造函数，确保继承体系中各级对象都被正确拷贝。</li> </ul> </li> </ul> <h4 id="33-为什么使用-const-引用参数">3.3 为什么使用 const 引用参数</h4> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 错误的拷贝构造函数声明</span>
+<span class="k">class</span> <span class="nc">Wrong</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">Wrong</span><span class="p">(</span><span class="n">Wrong</span> <span class="n">other</span><span class="p">);</span>  <span class="c1">// 会导致无限递归！</span>
+    <span class="c1">// 调用此构造函数需要先拷贝参数other，又会调用拷贝构造函数...</span>
+<span class="p">};</span>
+
+<span class="c1">// 正确的拷贝构造函数声明</span>
+<span class="k">class</span> <span class="nc">Correct</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">Correct</span><span class="p">(</span><span class="k">const</span> <span class="n">Correct</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">);</span>  <span class="c1">// const引用避免递归，提高效率</span>
+
+    <span class="c1">// const引用的优势：</span>
+    <span class="c1">// 1. 无性能开销（不需要拷贝参数）</span>
+    <span class="c1">// 2. 避免无限递归</span>
+    <span class="c1">// 3. 可以接受临时对象</span>
+    <span class="c1">// 4. 可以接受const对象</span>
+<span class="p">};</span>
+</code></pre></div></div> <h3 id="4-移动语义与移动构造函数">4. 移动语义与移动构造函数</h3> <h4 id="41-移动构造函数的生成条件">4.1 移动构造函数的生成条件</h4> <p>编译器在以下条件<strong>全部满足</strong>时才会生成移动构造函数：</p> <ul> <li>没有用户定义的拷贝构造函数</li> <li>没有用户定义的拷贝赋值运算符</li> <li>没有用户定义的析构函数</li> <li>没有用户定义的移动赋值运算符</li> <li>所有成员都可移动</li> </ul> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;memory&gt;</span><span class="cp">
+</span>
+<span class="c1">// 编译器会生成移动构造函数</span>
+<span class="k">class</span> <span class="nc">AutoMovable</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">ptr</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">name</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="n">AutoMovable</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">n</span><span class="p">)</span>
+        <span class="o">:</span> <span class="n">ptr</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">value</span><span class="p">)),</span> <span class="n">name</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="p">{}</span>
+
+    <span class="c1">// 编译器自动生成移动构造函数和移动赋值运算符</span>
+    <span class="c1">// AutoMovable(AutoMovable&amp;&amp;) = default;</span>
+    <span class="c1">// AutoMovable&amp; operator=(AutoMovable&amp;&amp;) = default;</span>
+<span class="p">};</span>
+
+<span class="c1">// 编译器不会生成移动构造函数（因为定义了析构函数）</span>
+<span class="k">class</span> <span class="nc">ManualMovable</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="kt">int</span><span class="o">*</span> <span class="n">data</span><span class="p">;</span>
+    <span class="kt">size_t</span> <span class="n">size</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="k">explicit</span> <span class="n">ManualMovable</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">n</span><span class="p">)</span> <span class="o">:</span> <span class="n">size</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">data</span><span class="p">(</span><span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="n">size</span><span class="p">])</span> <span class="p">{}</span>
+
+    <span class="c1">// 定义了析构函数，编译器不会生成移动构造函数</span>
+    <span class="o">~</span><span class="n">ManualMovable</span><span class="p">()</span> <span class="p">{</span> <span class="k">delete</span><span class="p">[]</span> <span class="n">data</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="c1">// 需要手动定义移动构造函数</span>
+    <span class="n">ManualMovable</span><span class="p">(</span><span class="n">ManualMovable</span><span class="o">&amp;&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="k">noexcept</span>
+        <span class="o">:</span> <span class="n">data</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">data</span><span class="p">),</span> <span class="n">size</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">size</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">other</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+        <span class="n">other</span><span class="p">.</span><span class="n">size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">ManualMovable</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">ManualMovable</span><span class="o">&amp;&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="k">noexcept</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span> <span class="o">!=</span> <span class="o">&amp;</span><span class="n">other</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">delete</span><span class="p">[]</span> <span class="n">data</span><span class="p">;</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">other</span><span class="p">.</span><span class="n">data</span><span class="p">;</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="n">other</span><span class="p">.</span><span class="n">size</span><span class="p">;</span>
+            <span class="n">other</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+            <span class="n">other</span><span class="p">.</span><span class="n">size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div> <h4 id="42-移动语义的本质">4.2 移动语义的本质</h4> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span>
+<span class="k">class</span> <span class="nc">ResourceHolder</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">data</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">name</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="n">ResourceHolder</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">n</span><span class="p">)</span> <span class="o">:</span> <span class="n">name</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">data</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="mi">1000000</span><span class="p">);</span>  <span class="c1">// 大量数据</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Constructor: "</span> <span class="o">&lt;&lt;</span> <span class="n">name</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 拷贝构造：复制资源（开销大）</span>
+    <span class="n">ResourceHolder</span><span class="p">(</span><span class="k">const</span> <span class="n">ResourceHolder</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">)</span>
+        <span class="o">:</span> <span class="n">data</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">data</span><span class="p">),</span> <span class="n">name</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">name</span> <span class="o">+</span> <span class="s">"_copy"</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Copy constructor: "</span> <span class="o">&lt;&lt;</span> <span class="n">name</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 移动构造：转移资源所有权（开销小）</span>
+    <span class="n">ResourceHolder</span><span class="p">(</span><span class="n">ResourceHolder</span><span class="o">&amp;&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="k">noexcept</span>
+        <span class="o">:</span> <span class="n">data</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">data</span><span class="p">)),</span> <span class="n">name</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">name</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">name</span> <span class="o">+=</span> <span class="s">"_moved"</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Move constructor: "</span> <span class="o">&lt;&lt;</span> <span class="n">name</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">getName</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">name</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="n">ResourceHolder</span> <span class="nf">createResource</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">ResourceHolder</span><span class="p">(</span><span class="s">"temp"</span><span class="p">);</span>  <span class="c1">// 返回时可能触发移动构造</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"=== 移动构造示例 ==="</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">ResourceHolder</span> <span class="n">res1</span> <span class="o">=</span> <span class="n">createResource</span><span class="p">();</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"=== 拷贝vs移动对比 ==="</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">ResourceHolder</span> <span class="n">res2</span> <span class="o">=</span> <span class="n">res1</span><span class="p">;</span>                    <span class="c1">// 拷贝构造</span>
+    <span class="n">ResourceHolder</span> <span class="n">res3</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">res1</span><span class="p">);</span>         <span class="c1">// 移动构造</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"res2: "</span> <span class="o">&lt;&lt;</span> <span class="n">res2</span><span class="p">.</span><span class="n">getName</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"res3: "</span> <span class="o">&lt;&lt;</span> <span class="n">res3</span><span class="p">.</span><span class="n">getName</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div> <h4 id="43-为什么移动操作使用-noexcept">4.3 为什么移动操作使用 noexcept</h4> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="k">class</span> <span class="nc">ThrowingMove</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">ThrowingMove</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+
+    <span class="c1">// 移动构造函数可能抛异常</span>
+    <span class="n">ThrowingMove</span><span class="p">(</span><span class="n">ThrowingMove</span><span class="o">&amp;&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 可能抛出异常的操作</span>
+        <span class="k">if</span> <span class="p">(</span><span class="cm">/* 某些条件 */</span> <span class="nb">false</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">"Move failed"</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">NoThrowMove</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">NoThrowMove</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+
+    <span class="c1">// 移动构造函数保证不抛异常</span>
+    <span class="n">NoThrowMove</span><span class="p">(</span><span class="n">NoThrowMove</span><span class="o">&amp;&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="k">noexcept</span> <span class="p">{</span>
+        <span class="c1">// 安全的移动操作，不会抛异常</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kt">void</span> <span class="nf">demonstrateVectorBehavior</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">ThrowingMove</span><span class="o">&gt;</span> <span class="n">vec1</span><span class="p">;</span>
+    <span class="n">vec1</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    <span class="n">vec1</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">();</span>
+    <span class="n">vec1</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">();</span>
+
+    <span class="c1">// 容量不足时扩容：由于移动构造函数可能抛异常，</span>
+    <span class="c1">// vector会选择拷贝而非移动来保证异常安全</span>
+    <span class="n">vec1</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">();</span>  <span class="c1">// 使用拷贝构造函数</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">NoThrowMove</span><span class="o">&gt;</span> <span class="n">vec2</span><span class="p">;</span>
+    <span class="n">vec2</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    <span class="n">vec2</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">();</span>
+    <span class="n">vec2</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">();</span>
+
+    <span class="c1">// 容量不足时扩容：由于移动构造函数标记为noexcept，</span>
+    <span class="c1">// vector会选择移动来提高性能</span>
+    <span class="n">vec2</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">();</span>  <span class="c1">// 使用移动构造函数</span>
+<span class="p">}</span>
+</code></pre></div></div> <h4 id="44-怎么理解移动构造函数">4.4 怎么理解移动构造函数？</h4> <p>移动构造函数的核心意义在于实现对象资源所有权的转移。它在语义层面与传统的拷贝操作有着本质区别，其重点并非在于优化性能，尽管在某些场景下可能带来性能提升。</p> <p>从性能角度看，移动构造函数的开销往往与浅拷贝相近。有一种常见误解，认为移动构造函数依赖于编译器的特殊实现，能够像返回值优化（RVO）那样，完全避免开辟新的内存空间，仅通过更改所有权来完成操作。然而实际情况是，对于自定义类型，在移动过程中通常仍需先开辟空间，之后才对资源所有权进行处理。</p> <p>以包含纯粹基本类型数据的自定义类型为例，其拷贝操作与移动操作在开销上几乎没有差异。这是因为基本类型数据的拷贝本身就较为高效，不存在复杂的资源管理问题，所以移动构造函数在此场景下无法体现出显著的性能优势。</p> <p>因此，理解移动构造函数时，不应单纯从性能优化的角度出发，而要着重把握其语义，即实现资源所有权从一个对象到另一个对象的转移。这种语义上的改变，在处理动态资源（如动态分配的内存、文件句柄等）时，能够有效避免不必要的资源复制，从而在某些情况下提升程序的整体效率，并简化资源管理流程。例如，当一个对象持有动态分配的内存，在移动构造过程中，该内存的所有权直接转移到新对象，原对象不再拥有对这块内存的控制权，避免了重复的内存分配与释放操作，同时确保了资源的正确管理，防止内存泄漏等问题的发生。</p> <h4 id="45-为什么移动的构造赋值用-noexcept但是拷贝的没有">4.5 为什么移动的构造赋值用 noexcept，但是拷贝的没有？</h4> <p>在 C++中，移动构造和移动赋值通常使用<code class="language-plaintext highlighter-rouge">noexcept</code>关键字进行修饰，而拷贝操作则不然，这主要基于以下几方面原因：</p> <p><strong>移动操作的特性</strong>：移动操作的本质通常是转移资源指针，这一过程一般不会抛出异常。例如，<code class="language-plaintext highlighter-rouge">std::vector</code>的移动构造函数就保证了<code class="language-plaintext highlighter-rouge">noexcept</code>。由于移动操作相对简单且稳定，声明<code class="language-plaintext highlighter-rouge">noexcept</code>能够让编译器针对此类操作进行优化。以<code class="language-plaintext highlighter-rouge">std::vector</code>为例，在空间不足时，编译器会优先选择移动元素而非拷贝元素，因为移动操作不抛出异常，编译器可以更高效地进行优化处理，从而提升程序性能。</p> <p><strong>拷贝操作的特性</strong>：拷贝操作往往涉及堆资源的分配，比如使用<code class="language-plaintext highlighter-rouge">new</code>关键字进行内存分配。在这个过程中，可能会因为内存不足等原因抛出异常。所以，拷贝操作不能简单地标记为<code class="language-plaintext highlighter-rouge">noexcept</code>，否则一旦出现异常，程序将面临未定义行为的风险。</p> <p><strong>标准库的约束</strong>：C++标准对容器的操作有明确要求，如果移动构造函数未标记为<code class="language-plaintext highlighter-rouge">noexcept</code>，像<code class="language-plaintext highlighter-rouge">std::vector</code>这样的容器在扩容时会退化为拷贝操作。这意味着原本可以通过移动操作实现的高效资源转移将无法实现，从而丧失移动优化带来的性能优势。</p> <p>综上所述，由于移动操作和拷贝操作本身的特性差异，以及 C++标准库的相关约束，使得移动构造和移动赋值使用<code class="language-plaintext highlighter-rouge">noexcept</code>，而拷贝操作不使用该关键字。</p> <p>除此，<code class="language-plaintext highlighter-rouge">std</code>容器扩容的时候会优先选择移动操作（如果可用且标记为<code class="language-plaintext highlighter-rouge">noexcept</code>），否则才会选择拷贝操作。这也是为什么移动构造函数和移动赋值运算符通常被声明为<code class="language-plaintext highlighter-rouge">noexcept</code>，以确保在容器扩容时能够利用移动语义带来的性能优势。</p> <h3 id="5-成员初始化列表">5. 成员初始化列表</h3> <h4 id="51-必须使用初始化列表的场景">5.1 必须使用初始化列表的场景</h4> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="k">class</span> <span class="nc">RequiredInitList</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">constMember</span><span class="p">;</span>           <span class="c1">// 1. const成员</span>
+    <span class="kt">int</span><span class="o">&amp;</span> <span class="n">refMember</span><span class="p">;</span>                  <span class="c1">// 2. 引用成员</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">stringMember</span><span class="p">;</span>        <span class="c1">// 3. 有参构造函数的类成员</span>
+
+<span class="nl">public:</span>
+    <span class="c1">// 必须使用初始化列表</span>
+    <span class="n">RequiredInitList</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">,</span> <span class="kt">int</span><span class="o">&amp;</span> <span class="n">ref</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">)</span>
+        <span class="o">:</span> <span class="n">constMember</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>         <span class="c1">// const成员必须初始化</span>
+        <span class="p">,</span> <span class="n">refMember</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span>             <span class="c1">// 引用成员必须初始化</span>
+        <span class="p">,</span> <span class="n">stringMember</span><span class="p">(</span><span class="n">str</span><span class="p">)</span>          <span class="c1">// 避免默认构造+赋值的开销</span>
+    <span class="p">{</span>
+        <span class="c1">// 构造函数体：所有成员已经初始化完成</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Constructor body executed"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">BaseWithParam</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="k">explicit</span> <span class="n">BaseWithParam</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="o">:</span> <span class="n">value</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{}</span>
+<span class="k">private</span><span class="o">:</span>
+    <span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">DerivedClass</span> <span class="o">:</span> <span class="k">public</span> <span class="n">BaseWithParam</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="c1">// 4. 基类需要参数时必须在初始化列表中调用</span>
+    <span class="n">DerivedClass</span><span class="p">(</span><span class="kt">int</span> <span class="n">baseValue</span><span class="p">,</span> <span class="kt">int</span> <span class="n">derivedValue</span><span class="p">)</span>
+        <span class="o">:</span> <span class="n">BaseWithParam</span><span class="p">(</span><span class="n">baseValue</span><span class="p">)</span>   <span class="c1">// 必须显式调用基类构造函数</span>
+        <span class="p">,</span> <span class="n">derivedMember</span><span class="p">(</span><span class="n">derivedValue</span><span class="p">)</span>
+    <span class="p">{}</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="kt">int</span> <span class="n">derivedMember</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div> <p>在 C++中，对象的成员变量在进入构造函数体之前就会进行初始化。这是因为若成员变量未初始化，在构造函数内使用中会引发错误。而初始化列表就是一种介入并控制这种初始化行为的有效方式。具体在以下几种情况下必须使用初始化列表：</p> <ol> <li> <strong>成员变量为引用类型</strong>：引用在创建时就必须绑定到一个已存在的对象，无法在构造函数体中进行赋值操作。因此，需要通过初始化列表在构造时完成绑定。例如上述代码中<code class="language-plaintext highlighter-rouge">Derived</code>类的<code class="language-plaintext highlighter-rouge">ref</code>成员变量。</li> <li> <strong>成员变量为<code class="language-plaintext highlighter-rouge">const</code>类型</strong>：<code class="language-plaintext highlighter-rouge">const</code>成员变量一旦初始化后其值就不能改变，所以必须在初始化阶段就赋予其初始值，只能通过初始化列表来实现。如<code class="language-plaintext highlighter-rouge">Derived</code>类中的<code class="language-plaintext highlighter-rouge">constMember</code>成员变量。</li> <li> <strong>类继承自带有参数构造函数的基类</strong>：当派生类继承自一个基类，且基类的构造函数带有参数时，派生类必须在初始化列表中调用基类的构造函数，并传递相应参数，以确保基类部分能正确初始化。就像<code class="language-plaintext highlighter-rouge">Derived</code>类对<code class="language-plaintext highlighter-rouge">Base</code>类的继承关系。</li> <li> <strong>成员变量为类类型且该类构造函数有参数</strong>：如果类中包含其他类类型的成员变量，并且该成员变量所属类的构造函数需要参数，那么就需要在初始化列表中为其传递参数来完成初始化。例如<code class="language-plaintext highlighter-rouge">Derived</code>类中的<code class="language-plaintext highlighter-rouge">AnotherClass</code>类型成员变量<code class="language-plaintext highlighter-rouge">another</code>。</li> </ol> <p>若在上述情况下不使用初始化列表，代码将无法通过编译。因此，也不需要一一记忆。只需要大致理解即可。</p> <h4 id="52-初始化列表的优势与执行顺序">5.2 初始化列表的优势与执行顺序</h4> <p>初始化列表在 C++编程中具有显著优势，主要体现在提升程序运行效率方面，尤其对于类类型的数据，效果更为明显，而对于内置类型，效率提升相对不显著。</p> <ul> <li> <p><strong>类类型与内置类型的效率差异</strong>：</p> <ul> <li> <strong>类类型</strong>：将类类型的成员变量放在初始化列表中初始化，效率提升较为明显。这是因为若不在初始化列表中进行初始化，在进入当前类的构造函数之前，会先通过默认构造函数创建类类型成员变量的临时对象，在构造函数体中可能还会涉及类似拷贝构造或赋值的操作，最后临时对象析构，这一系列过程产生了较大的开销。<strong>例如，若有一个自定义类<code class="language-plaintext highlighter-rouge">MyClass</code>，其构造函数有参数，若不在初始化列表中初始化，会先默认构造一个临时对象，然后在构造函数体中再对其进行赋值操作，而临时对象的创建和析构都需要额外的时间和资源。</strong> </li> <li> <strong>内置类型</strong>：对于内置类型，使用初始化列表和在构造函数体内初始化的效率基本一致。因为内置类型的初始化相对简单，通常只是进行简单的赋值操作，不存在复杂的构造和析构过程。</li> </ul> </li> <li> <p><strong>初始化列表的执行特点</strong>：</p> <ul> <li> <strong>执行位置</strong>：初始化列表中的代码实际上是由编译器安插在构造函数之中的，并且在构造函数的函数体代码执行之前就会被执行。这意味着在构造函数体开始执行时，所有成员变量已经通过初始化列表完成了初始化，构造函数体中可以直接使用这些已初始化的成员变量。</li> <li> <strong>初始化顺序</strong>：初始化列表中成员变量的初始化顺序取决于它们在类中定义的顺序，而非在初始化列表中出现的顺序。特别地，对于类类型的成员变量，在进入构造函数体前，会先调用其默认构造函数进行初始化（若不在初始化列表中显式指定构造方式）。例如：</li> </ul> </li> </ul> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="k">class</span> <span class="nc">ExpensiveClass</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">ExpensiveClass</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"ExpensiveClass default constructor"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">ExpensiveClass</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"ExpensiveClass parameterized constructor: "</span> <span class="o">&lt;&lt;</span> <span class="n">value</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">ExpensiveClass</span><span class="p">(</span><span class="k">const</span> <span class="n">ExpensiveClass</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"ExpensiveClass copy constructor"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">ExpensiveClass</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">ExpensiveClass</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"ExpensiveClass assignment operator"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">InitializationDemo</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="kt">int</span> <span class="n">member1</span><span class="p">;</span>
+    <span class="n">ExpensiveClass</span> <span class="n">member2</span><span class="p">;</span>  <span class="c1">// 注意：声明顺序决定初始化顺序</span>
+    <span class="kt">int</span> <span class="n">member3</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="c1">// 推荐：使用初始化列表</span>
+    <span class="n">InitializationDemo</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">,</span> <span class="kt">int</span> <span class="n">c</span><span class="p">)</span>
+        <span class="o">:</span> <span class="n">member3</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>        <span class="c1">// 尽管在初始化列表中写在前面</span>
+        <span class="p">,</span> <span class="n">member1</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>        <span class="c1">// 但实际初始化顺序仍按声明顺序</span>
+        <span class="p">,</span> <span class="n">member2</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>        <span class="c1">// 直接调用带参构造函数</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Constructor body"</span> <span class="o">&lt;&lt;</span> <span class="n">stdendl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 不推荐：在构造函数体中赋值</span>
+    <span class="cm">/*
+    InitializationDemo(int a, int b, int c) {
+        // member2首先被默认构造，然后赋值
+        // 这样会调用默认构造函数 + 赋值运算符，效率低
+        member1 = a;
+        member2 = ExpensiveClass(b);  // 创建临时对象并赋值
+        member3 = c;
+    }
+    */</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"=== 使用初始化列表 ==="</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">InitializationDemo</span> <span class="n">obj</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+
+    <span class="c1">// 输出顺序（按声明顺序）：</span>
+    <span class="c1">// ExpensiveClass parameterized constructor: 42</span>
+    <span class="c1">// Constructor body</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div> <h3 id="6-成员函数调用机制">6. 成员函数调用机制</h3> <h4 id="61-非静态成员函数的调用">6.1 非静态成员函数的调用</h4> <p><strong>非静态成员函数</strong>：非静态成员函数依赖于对象实例进行调用。C++ 确保非静态成员函数的调用效率至少与普通函数相当，为此编译器会对其进行一系列转换：</p> <ol> <li> <strong>插入 <code class="language-plaintext highlighter-rouge">this</code> 指针参数</strong>：编译器将非静态成员函数改写为普通函数形式，并插入一个额外参数，即 <code class="language-plaintext highlighter-rouge">this</code> 指针。<code class="language-plaintext highlighter-rouge">this</code> 指针指向调用该成员函数的对象实例，为访问对象的成员变量和其他成员函数提供通道。例如，对于类 <code class="language-plaintext highlighter-rouge">MyClass</code> 中的非静态成员函数 <code class="language-plaintext highlighter-rouge">void func()</code>，编译器可能将其改写为 <code class="language-plaintext highlighter-rouge">void func(MyClass* this)</code>。</li> <li> <strong>通过 <code class="language-plaintext highlighter-rouge">this</code> 指针访问成员</strong>：在改写后的函数里，所有对非静态成员变量和成员函数的访问操作，都调整为通过 <code class="language-plaintext highlighter-rouge">this</code> 指针来实现。比如，原函数中访问成员变量 <code class="language-plaintext highlighter-rouge">data</code>，会被改写为 <code class="language-plaintext highlighter-rouge">this-&gt;data</code>。</li> <li> <strong>生成唯一外部函数名</strong>：编译器会把成员函数转变为外部函数，并为其生成独一无二的名称，防止与其他函数重名。这个独特名称一般包含类名与成员函数名相关信息。例如，类 <code class="language-plaintext highlighter-rouge">MyClass</code> 中的 <code class="language-plaintext highlighter-rouge">func</code> 函数，可能被命名为 <code class="language-plaintext highlighter-rouge">MyClass_func</code>。</li> </ol> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="k">class</span> <span class="nc">MyClass</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="kt">int</span> <span class="n">data</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="n">MyClass</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">)</span> <span class="o">:</span> <span class="n">data</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="p">{}</span>
+
+    <span class="c1">// 非静态成员函数</span>
+    <span class="kt">void</span> <span class="nf">memberFunction</span><span class="p">(</span><span class="kt">int</span> <span class="n">param</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">data</span> <span class="o">+=</span> <span class="n">param</span><span class="p">;</span>  <span class="c1">// 实际上是 this-&gt;data += param;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Member function called, data = "</span> <span class="o">&lt;&lt;</span> <span class="n">data</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 静态成员函数</span>
+    <span class="k">static</span> <span class="kt">void</span> <span class="nf">staticFunction</span><span class="p">(</span><span class="kt">int</span> <span class="n">param</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 没有this指针，无法访问非静态成员</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Static function called with param = "</span> <span class="o">&lt;&lt;</span> <span class="n">param</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// 编译器将成员函数转换为类似这样的形式：</span>
+<span class="kt">void</span> <span class="nf">MyClass_memberFunction</span><span class="p">(</span><span class="n">MyClass</span><span class="o">*</span> <span class="k">this</span><span class="p">,</span> <span class="kt">int</span> <span class="n">param</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">+=</span> <span class="n">param</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Member function called, data = "</span> <span class="o">&lt;&lt;</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">MyClass</span> <span class="n">obj</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+    <span class="c1">// 成员函数调用</span>
+    <span class="n">obj</span><span class="p">.</span><span class="n">memberFunction</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>  <span class="c1">// 编译器转换为 MyClass_memberFunction(&amp;obj, 5);</span>
+    <span class="c1">// 静态函数调用</span>
+    <span class="n">MyClass</span><span class="o">::</span><span class="n">staticFunction</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>  <span class="c1">// 直接调用，无需对象实例</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div> <h3 id="7-继承中的特殊成员函数处理">7. 继承中的特殊成员函数处理</h3> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="k">class</span> <span class="nc">Base</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">baseName</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="n">Base</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">name</span><span class="p">)</span> <span class="o">:</span> <span class="n">baseName</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Base constructor: "</span> <span class="o">&lt;&lt;</span> <span class="n">baseName</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">Base</span><span class="p">(</span><span class="k">const</span> <span class="n">Base</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="o">:</span> <span class="n">baseName</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">baseName</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Base copy constructor: "</span> <span class="o">&lt;&lt;</span> <span class="n">baseName</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">Base</span><span class="p">(</span><span class="n">Base</span><span class="o">&amp;&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="k">noexcept</span> <span class="o">:</span> <span class="n">baseName</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">baseName</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Base move constructor: "</span> <span class="o">&lt;&lt;</span> <span class="n">baseName</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">virtual</span> <span class="o">~</span><span class="n">Base</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Base destructor: "</span> <span class="o">&lt;&lt;</span> <span class="n">baseName</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">Base</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">Base</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span> <span class="o">!=</span> <span class="o">&amp;</span><span class="n">other</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">baseName</span> <span class="o">=</span> <span class="n">other</span><span class="p">.</span><span class="n">baseName</span><span class="p">;</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Base copy assignment: "</span> <span class="o">&lt;&lt;</span> <span class="n">baseName</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">Base</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">Base</span><span class="o">&amp;&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="k">noexcept</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span> <span class="o">!=</span> <span class="o">&amp;</span><span class="n">other</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">baseName</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">baseName</span><span class="p">);</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Base move assignment: "</span> <span class="o">&lt;&lt;</span> <span class="n">baseName</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Derived</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Base</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">derivedName</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="n">Derived</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">base</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">derived</span><span class="p">)</span>
+        <span class="o">:</span> <span class="n">Base</span><span class="p">(</span><span class="n">base</span><span class="p">),</span> <span class="n">derivedName</span><span class="p">(</span><span class="n">derived</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Derived constructor: "</span> <span class="o">&lt;&lt;</span> <span class="n">derivedName</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 拷贝构造：必须显式调用基类拷贝构造</span>
+    <span class="n">Derived</span><span class="p">(</span><span class="k">const</span> <span class="n">Derived</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">)</span>
+        <span class="o">:</span> <span class="n">Base</span><span class="p">(</span><span class="n">other</span><span class="p">),</span> <span class="n">derivedName</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">derivedName</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Derived copy constructor: "</span> <span class="o">&lt;&lt;</span> <span class="n">derivedName</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 移动构造：必须显式调用基类移动构造</span>
+    <span class="n">Derived</span><span class="p">(</span><span class="n">Derived</span><span class="o">&amp;&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="k">noexcept</span>
+        <span class="o">:</span> <span class="n">Base</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">other</span><span class="p">)),</span> <span class="n">derivedName</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">derivedName</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Derived move constructor: "</span> <span class="o">&lt;&lt;</span> <span class="n">derivedName</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="o">~</span><span class="n">Derived</span><span class="p">()</span> <span class="k">override</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Derived destructor: "</span> <span class="o">&lt;&lt;</span> <span class="n">derivedName</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 拷贝赋值：必须调用基类拷贝赋值</span>
+    <span class="n">Derived</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">Derived</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span> <span class="o">!=</span> <span class="o">&amp;</span><span class="n">other</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">Base</span><span class="o">::</span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">other</span><span class="p">);</span>  <span class="c1">// 调用基类拷贝赋值</span>
+            <span class="n">derivedName</span> <span class="o">=</span> <span class="n">other</span><span class="p">.</span><span class="n">derivedName</span><span class="p">;</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Derived copy assignment: "</span> <span class="o">&lt;&lt;</span> <span class="n">derivedName</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 移动赋值：必须调用基类移动赋值</span>
+    <span class="n">Derived</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">Derived</span><span class="o">&amp;&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="k">noexcept</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span> <span class="o">!=</span> <span class="o">&amp;</span><span class="n">other</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">Base</span><span class="o">::</span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">other</span><span class="p">));</span>  <span class="c1">// 调用基类移动赋值</span>
+            <span class="n">derivedName</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">derivedName</span><span class="p">);</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Derived move assignment: "</span> <span class="o">&lt;&lt;</span> <span class="n">derivedName</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div> <p>在继承体系中，对于析构函数及其他特殊成员函数，需遵循特定的处理方式。</p> <p><strong>析构函数</strong>：若存在基类，基类的析构函数通常应声明为虚函数。这是为了保证在通过基类指针或引用释放派生类对象时，能够正确调用派生类的析构函数，防止资源泄漏。例如，当在基类指针上执行<code class="language-plaintext highlighter-rouge">delete</code>操作时，如果基类析构函数不是虚函数，就只会调用基类的析构函数，派生类中分配的资源可能无法释放。子类析构函数会自动调用父类的析构函数，无需在派生类中显式调用。</p> <p><strong>构造函数</strong>：</p> <ul> <li> <strong>默认构造函数</strong>：派生类无论是使用默认的构造函数，还是自定义构造函数，都会自动调用父类的默认构造函数，无需额外操作。</li> <li> <strong>有参构造函数</strong>：由于基类无法得知派生类构造时应传入的参数，因此派生类在使用有参构造函数时，必须手动调用父类的有参构造函数。实际开发中，常出现父类同时具备默认构造函数和有参构造函数，而派生类使用有参构造函数时，未显式调用父类有参构造函数，从而导致默认调用父类的默认构造函数。为避免重复调用父类构造函数，应通过初始化列表调用父类的有参构造函数。</li> </ul> <p><strong>拷贝构造、拷贝赋值、移动构造、移动赋值函数</strong>：在派生类中实现这些函数时，首先要在初始化列表中调用父类的相应函数，然后再实现派生类自身的逻辑。以移动操作为例，虽然使用<code class="language-plaintext highlighter-rouge">std::move(other)</code>看似将整个对象的资源都移动走了，但实际上父类只会处理父类的资源，子类资源不受影响，可继续安全使用。也就是说，初始化列表中的<code class="language-plaintext highlighter-rouge">std::move</code>操作仅对父类资源进行移动，子类仍可利用<code class="language-plaintext highlighter-rouge">other</code>对象完成自身资源的移动。</p> <p>总结如下：</p> <ul> <li>基类析构函数应声明为虚函数，确保派生类析构函数能正确调用。</li> <li>派生类构造函数，特别是有参构造函数，需显式调用基类的构造函数。</li> <li>派生类的拷贝构造函数、拷贝赋值运算符、移动构造函数和移动赋值运算符，应在初始化列表中显式调用基类的相应函数，以保证基类部分能正确复制或移动。</li> </ul> <h3 id="8-quiz">8. quiz</h3> <h4 id="1-override-关键字的意义">1. override 关键字的意义</h4> <p>在 C++中，使用<code class="language-plaintext highlighter-rouge">override</code>关键字具有重要意义，主要体现在以下几个方面：</p> <p><strong>对开发人员而言</strong>：</p> <ul> <li> <strong>明确意图</strong>：<code class="language-plaintext highlighter-rouge">override</code>关键字清晰地表明派生类中的函数是对基类虚函数的重写，显著提高了代码的可读性和可维护性。开发人员在阅读代码时，能迅速了解函数之间的重写关系，使代码意图一目了然。例如，当看到派生类函数声明中有<code class="language-plaintext highlighter-rouge">override</code>关键字，就可明确该函数是对基类虚函数的重新定义，方便理解代码逻辑。</li> </ul> <p><strong>对编译器来说</strong>：</p> <ul> <li> <strong>编译器检查</strong>：<code class="language-plaintext highlighter-rouge">override</code>关键字可让编译器对函数签名进行检查，确保其与基类中的虚函数正确匹配。若函数签名不匹配，编译器会报错，有效避免潜在错误。例如，若基类虚函数有特定参数列表，而派生类重写函数的参数列表与之不同，使用<code class="language-plaintext highlighter-rouge">override</code>关键字时编译器就能及时发现并提示错误。</li> <li> <strong>防止意外重载</strong>：若派生类中的函数签名与基类虚函数不匹配，编译器会将其视为新函数，而非重写函数。使用<code class="language-plaintext highlighter-rouge">override</code>关键字可防止这种意外重载情况的发生，保证代码按照预期的多态行为运行。</li> </ul> <p>虽然使用<code class="language-plaintext highlighter-rouge">override</code>和不使用<code class="language-plaintext highlighter-rouge">override</code>生成的代码在运行时行为上并无差异，去掉已有代码中的所有<code class="language-plaintext highlighter-rouge">override</code>关键字也不会改变程序的运行结果，但为提升代码质量，避免潜在问题，强烈建议在重写基类虚函数时使用<code class="language-plaintext highlighter-rouge">override</code>关键字。</p> <h4 id="2-如果父类声明了虚析构那么同样地拷贝移动也需要是虚的吗">2. 如果父类声明了虚析构，那么同样地，拷贝，移动也需要是虚的吗？</h4> <p>答案是不需要。</p> <p>父类声明虚析构函数，主要目的是确保在多态场景下析构方法能被正确调用。以<code class="language-plaintext highlighter-rouge">std::vector&lt;Animal*&gt;</code>容器为例，当释放其中存储的对象资源时，如果<code class="language-plaintext highlighter-rouge">Animal</code>类（作为父类）的析构函数不是虚函数，且容器中实际存放的是派生类对象指针，那么在析构时就只能调用到父类的析构函数，派生类的析构函数不会被执行，进而无法正确释放派生类特有的资源。这是因为对于多态类型，析构操作通常在 RAII（资源获取即初始化）管理器中进行，或者在对象自身被销毁时执行。若此时对象的静态类型是基类类型，而非实际的派生类类型，就会出现资源释放不完整的问题。</p> <p>然而，拷贝构造函数和移动构造函数本质上属于构造方法，在构造过程中不能使用虚函数。这是由于对象构造过程遵循特定顺序：先调用基类的构造函数，再调用派生类的构造函数。在基类构造函数执行阶段，派生类部分尚未构造完成。</p> <p>具体来说，在父类构造函数执行时，虚函数指针指向的是基类虚函数表。因为子类虚函数可能依赖子类成员变量，而此时子类成员变量还未初始化，所以子类虚函数不应被调用。从安全角度考虑，父类构造时虚函数指针只能指向父类方法。只有在子类构造完成后，虚函数指针才会指向子类虚函数表。所以，即便在构造函数中调用虚函数，父类构造调用的是父类虚方法，子类构造调用的是子类虚方法，无法体现多态特性。因此，拷贝和移动构造函数不需要声明为虚函数。</p> <h4 id="3-构造析构异常处理">3. 构造/析构异常处理</h4> <p>这个问题的考量在于一旦构造函数抛出异常，对象的创建就会失败，它的析构函数不会被调用。而析构函数不调用就会有潜在的内存泄露风险。</p> <p>面对这种问题，一般得这么做：（1）构造函数内部捕获异常，如果异常就 delete 资源。如果有多个资源，实现哪些资源需要 delete 的时候，会比较麻烦。（2）智能指针管理资源。因为智能指针对于这个类来说，是栈上的资源。栈上的资源即使抛出异常也会正常释放。这个时候资源的管理是安全的。</p> <p>当构造函数中使用 <code class="language-plaintext highlighter-rouge">new</code> 操作符分配内存时，如果分配成功，资源会被分配给指针变量。如果在构造函数的某个 <code class="language-plaintext highlighter-rouge">new</code> 操作之后抛出异常，构造函数会立即退出，且不会调用析构函数，因为对象还没有完全构造出来。</p> <p>然而，已经成功构造的成员变量会被自动销毁，这意味着它们的析构函数会被调用，从而释放已经分配的资源。可如果成员变量是堆上的资源，则会出现资源泄露问题。因此最好是使用智能指针去管理。</p> <p>类的析构函数也是类似的。</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;memory&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdexcept&gt;</span><span class="cp">
+</span>
+<span class="c1">// 问题示例：构造函数中的原始指针</span>
+<span class="k">class</span> <span class="nc">ProblematicClass</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="kt">int</span><span class="o">*</span> <span class="n">ptr1</span><span class="p">;</span>
+    <span class="kt">int</span><span class="o">*</span> <span class="n">ptr2</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="n">ProblematicClass</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">ptr1</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span>
+
+        <span class="c1">// 如果这里抛出异常，ptr1会泄露！</span>
+        <span class="k">if</span> <span class="p">(</span><span class="cm">/* 某些条件 */</span> <span class="nb">false</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">"Construction failed"</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">ptr2</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">int</span><span class="p">(</span><span class="mi">24</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="o">~</span><span class="n">ProblematicClass</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">delete</span> <span class="n">ptr1</span><span class="p">;</span>
+        <span class="k">delete</span> <span class="n">ptr2</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// 推荐方案1：智能指针</span>
+<span class="k">class</span> <span class="nc">SafeClass</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">ptr1</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">ptr2</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="n">SafeClass</span><span class="p">()</span>
+        <span class="o">:</span> <span class="n">ptr1</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">42</span><span class="p">))</span>
+        <span class="p">,</span> <span class="n">ptr2</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">24</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="c1">// 即使这里抛出异常，智能指针也会自动清理</span>
+        <span class="k">if</span> <span class="p">(</span><span class="cm">/* 某些条件 */</span> <span class="nb">false</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">"Construction failed"</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 无需显式析构函数，智能指针自动管理内存</span>
+<span class="p">};</span>
+
+<span class="c1">// 推荐方案2：RAII包装</span>
+<span class="k">class</span> <span class="nc">RAIIClass</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="kt">int</span><span class="o">*</span> <span class="n">ptr1</span><span class="p">;</span>
+    <span class="kt">int</span><span class="o">*</span> <span class="n">ptr2</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="n">RAIIClass</span><span class="p">()</span> <span class="o">:</span> <span class="n">ptr1</span><span class="p">(</span><span class="nb">nullptr</span><span class="p">),</span> <span class="n">ptr2</span><span class="p">(</span><span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="n">ptr1</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="cm">/* 某些条件 */</span> <span class="nb">false</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">"Construction failed"</span><span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="n">ptr2</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">int</span><span class="p">(</span><span class="mi">24</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">catch</span> <span class="p">(...)</span> <span class="p">{</span>
+            <span class="c1">// 异常处理：清理已分配的资源</span>
+            <span class="k">delete</span> <span class="n">ptr1</span><span class="p">;</span>
+            <span class="k">delete</span> <span class="n">ptr2</span><span class="p">;</span>
+            <span class="k">throw</span><span class="p">;</span>  <span class="c1">// 重新抛出异常</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="o">~</span><span class="n">RAIIClass</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">delete</span> <span class="n">ptr1</span><span class="p">;</span>
+        <span class="k">delete</span> <span class="n">ptr2</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div> <h4 id="4-成员函数模板可以为虚函数吗">4. 成员函数模板可以为虚函数吗？</h4> <p>成员函数模板不能成为虚函数。原因在于，若允许成员函数模板为虚函数，每次以不同的模板类型调用该虚函数模板时，都会生成一个新的虚函数实例。这将使得虚函数表的内容无法在编译阶段确定，而只能在程序链接阶段才能明确。</p> <p>虚函数表在 C++ 中起着关键作用，它存储了类的虚函数地址。正常情况下，虚函数表的内容在编译阶段就已确定，以便在运行时能够高效地进行虚函数调用。然而，若虚函数表的内容需在链接阶段确定，链接器就需要重新解析和调整所有涉及虚函数调用的代码。这无疑会极大地增加链接器的复杂性和工作量，对程序的构建过程产生不利影响。所以，基于这种机制和实际操作的考量，成员函数模板不能被定义为虚函数。</p> <h4 id="5-为什么拷贝赋值移动赋值要判断this指针不相同">5. 为什么拷贝赋值、移动赋值要判断<code class="language-plaintext highlighter-rouge">this</code>指针不相同？</h4> <p>在拷贝赋值操作中，如果不先判断<code class="language-plaintext highlighter-rouge">this</code>指针与传入对象的指针是否相同，而是直接先释放自身资源再进行拷贝，就可能出现严重问题。例如，当进行自赋值（即<code class="language-plaintext highlighter-rouge">this</code>指针与传入对象指针相同）时，释放自身资源后，就无法从传入对象（此时自身已被释放）拷贝数据，从而导致程序出错。</p> <p>对于移动赋值操作同样如此。若不判断<code class="language-plaintext highlighter-rouge">this</code>指针与传入对象指针是否相同，直接窃取传入对象的资源，在自赋值情况下，会出现“自己释放自己资源”的错误。比如执行<code class="language-plaintext highlighter-rouge">data = other.data; other.data = nullptr;</code>语句时，如果是自赋值，<code class="language-plaintext highlighter-rouge">data</code>会被错误地置空。所以，在拷贝赋值和移动赋值操作中，判断<code class="language-plaintext highlighter-rouge">this</code>指针是否相同是非常必要的，以避免这些潜在错误。</p> <h4 id="6-如果拷贝构造函数使用t-other作为形参会怎样">6. 如果拷贝构造函数使用<code class="language-plaintext highlighter-rouge">T&amp; other</code>作为形参会怎样？</h4> <p>在 C++中，拷贝构造函数即便使用<code class="language-plaintext highlighter-rouge">T&amp; other</code>作为形参，也是可以声明的。然而，通常我们会选择覆盖编译器默认生成的拷贝构造函数，并且使用<code class="language-plaintext highlighter-rouge">const T&amp; other</code>作为形参具有明显优势。</p> <p><code class="language-plaintext highlighter-rouge">const T&amp; other</code>这种形式能够从任何对象（包括<code class="language-plaintext highlighter-rouge">const</code>对象和临时对象）进行拷贝。这是因为在 C++语言规则中，临时对象（右值）不能绑定到非<code class="language-plaintext highlighter-rouge">const</code>的左值引用上，但可以绑定到<code class="language-plaintext highlighter-rouge">const</code>的左值引用上。这样设计主要是为了防止临时对象被意外修改。若使用<code class="language-plaintext highlighter-rouge">T&amp; other</code>作为形参，就无法从临时对象进行拷贝，限制了拷贝构造函数的使用场景。所以，从通用性和安全性角度考虑，<code class="language-plaintext highlighter-rouge">const T&amp; other</code>是更优的选择。</p> <h4 id="7-拷贝构造函数实现方式可以用memcpy方法吗">7. 拷贝构造函数实现方式可以用<code class="language-plaintext highlighter-rouge">memcpy()</code>方法吗？</h4> <p>不建议在拷贝构造函数中使用<code class="language-plaintext highlighter-rouge">memcpy()</code>方法。如前文所述，编译器会为类添加一些隐藏成员变量，例如虚函数指针。当使用<code class="language-plaintext highlighter-rouge">memcpy()</code>进行逐位拷贝时，虚函数指针往往无法得到正确处理。虚函数指针对于类的多态性实现至关重要，不正确的拷贝可能导致运行时错误，使程序在调用虚函数时出现未定义行为。因此，为确保拷贝构造函数的正确性和可靠性，不应使用<code class="language-plaintext highlighter-rouge">memcpy()</code>来实现。</p> <h4 id="8-如果在构造函数中调用-memsetthis-0-sizeofthis来初始化内存空间有什么问题吗">8. 如果在构造函数中调用 memset(this, 0, sizeof(*this))来初始化内存空间，有什么问题吗？</h4> <p>在构造函数中调用<code class="language-plaintext highlighter-rouge">memset(this, 0, sizeof(*this))</code>初始化内存空间存在诸多问题：</p> <ul> <li> <p><strong>对象成员初始化混乱</strong>：对于类中的非<code class="language-plaintext highlighter-rouge">POD</code>（Plain Old Data，平凡旧数据类型，如包含构造函数、虚函数等的类）成员，<code class="language-plaintext highlighter-rouge">memset</code>会破坏对象的内部结构。例如，若类中包含<code class="language-plaintext highlighter-rouge">std::string</code>类型成员，<code class="language-plaintext highlighter-rouge">std::string</code>内部有自己的管理机制，<code class="language-plaintext highlighter-rouge">memset</code>将其内存置零后，会导致<code class="language-plaintext highlighter-rouge">std::string</code>对象处于无效状态，后续使用时可能引发未定义行为，如内存访问错误。</p> </li> <li> <p><strong>虚函数表指针问题</strong>：如果类中有虚函数，虚函数表指针对于实现多态至关重要。<code class="language-plaintext highlighter-rouge">memset</code>将内存清零会破坏虚函数表指针，使得程序在调用虚函数时无法正确找到对应的函数地址，从而导致运行时错误。</p> </li> <li> <p><strong>基类部分初始化问题</strong>：在继承体系中，这样做无法正确初始化基类部分。<code class="language-plaintext highlighter-rouge">memset</code>会覆盖基类已经初始化好的成员变量和虚函数表等重要信息，导致基类部分功能异常。</p> </li> <li> <p><strong>初始化不完整</strong>：<code class="language-plaintext highlighter-rouge">memset</code>只能对基本数据类型进行简单的按位清零操作，对于类中的指针成员，只是将指针值清零，而不会释放指针所指向的内存，可能导致内存泄漏。</p> </li> </ul> <p>综上所述，虽然<code class="language-plaintext highlighter-rouge">memset</code>在某些特定场景下对<code class="language-plaintext highlighter-rouge">POD</code>类型数据的初始化有用，但在类的构造函数中使用它来初始化整个对象内存空间，会带来一系列严重问题，应避免这种做法。</p> <h4 id="9-什么是三五零法则">9. 什么是三五零法则？</h4> <p>三五零法则是 C++ 中关于类的特殊成员函数的一个经验法则，旨在帮助开发者正确管理类的资源和行为。具体内容如下：</p> <ul> <li> <strong>三法则（Rule of Three）</strong>：如果一个类需要自定义析构函数、拷贝构造函数或拷贝赋值运算符中的任何一个，那么通常也需要自定义另外两个。这是因为这些函数通常涉及资源管理（如动态内存分配），如果只实现其中一个，可能会导致资源泄漏或双重释放等问题。</li> <li> <strong>五法则（Rule of Five）</strong>：随着 C++11 引入了移动语义，三法则扩展为五法则。如果一个类需要自定义析构函数、拷贝构造函数、拷贝赋值运算符、移动构造函数或移动赋值运算符中的任何一个，那么通常也需要自定义另外四个。这是因为移动操作同样涉及资源管理，若只实现部分函数，可能会导致资源管理不当。</li> <li> <strong>零法则（Rule of Zero）</strong>：如果一个类不需要自定义任何特殊成员函数，那么最好不要定义它们。通过使用智能指针和其他资源管理类，可以让编译器自动生成合适的特殊成员函数，从而简化代码并减少错误风险。</li> </ul> </div> </article> <br> <hr> <br> <ul class="list-disc pl-8"></ul> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2026/signal/">（三）内核那些事儿：CPU中断和信号</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2026/program/">（二）内核那些事儿：程序启动到运行的完整过程</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2026/os/">（一）内核那些事儿：从硬件抽象到系统服务的完整框架</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2026/internet/">（七）内核那些事儿：操作系统对网络包的处理</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2026/interaction/">（五）内核那些事儿：系统和程序的交互</a> </li> </div> </div> <div class="col-sm-4"> <nav id="toc-sidebar" class="sticky-top"></nav> </div> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Marco Huang. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. </div> </footer> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script defer src="/assets/js/bootstrap-toc.min.js?c82ff4de8b0955d6ff14f5b05eed7eb6"></script> <script src="/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/assets/js/common.js?e0514a05c5c95ac1a93a8dfd5249b92e"></script> <script defer src="/assets/js/copy_code.js?c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/js/mathjax-setup.js?a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/assets/js/progress-bar.js?2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script src="/assets/js/vanilla-back-to-top.min.js?f40d453793ff4f64e238e420181a1d17"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/assets/js/search/ninja-keys.min.js?a3446f084dcaecc5f75aa1757d087dcf"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/js/search-setup.js?6c304f7b1992d4b60f7a07956e52f04a"></script> <script src="/assets/js/search-data.js"></script> <script src="/assets/js/shortcut-key.js?6f508d74becd347268a7f822bca7309d"></script> <script src="/assets/js/toc-depth.js"></script> </body> </html>

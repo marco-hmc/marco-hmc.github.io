@@ -1,0 +1,620 @@
+<!DOCTYPE html> <html lang="cn"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> 迈向 C++ 语言律师之路 | Marco's blog </title> <meta name="author" content="Marco Huang"> <meta name="description" content="A blog for documenting my own study notes. "> <meta name="keywords" content="blog, cpp, programmer"> <link rel="stylesheet" href="/assets/css/bootstrap.min.css?a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/assets/css/academicons.min.css?f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" href="/assets/css/scholar-icons.css?62b2ac103a88034e6882a5be5f3e2772"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link defer href="/assets/css/bootstrap-toc.min.css?6f5af0bb9aab25d79b2448143cbeaa88" rel="stylesheet"> <link rel="stylesheet" href="/assets/css/main.css"> <link rel="stylesheet" href="/assets/css/toc-custom.css"> <link rel="shortcut icon" href="/assets/img/mc_logo.ico?cf243b61f6c6d75747808b3ae8298c5b"> <link rel="stylesheet" href="/assets/css/main.css?d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://marco-hmc.github.io/blog/2026/cppQuiz/"> <script src="/assets/js/theme.js?a81d82887dd692e91686b43de4542f18"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> Marco's blog </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">about </a> </li> <li class="nav-item active"> <a class="nav-link" href="/blog/">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/">projects </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/">cv </a> </li> <li class="nav-item"> <button id="search-toggle" title="Search" onclick="openSearchModal()"> <span class="nav-link">ctrl k <i class="ti ti-search"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="ti ti-sun-moon" id="light-toggle-system"></i> <i class="ti ti-moon-filled" id="light-toggle-dark"></i> <i class="ti ti-sun-filled" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="row"> <div class="col-sm-8"> <div class="post"> <header class="post-header"> <h1 class="post-title">迈向 C++ 语言律师之路</h1> <p class="post-meta"> Created on January 04, 2026 </p> <p class="post-tags"> <a href="/blog/2026"> <i class="fa-solid fa-calendar fa-sm"></i> 2026 </a>   ·   <a href="/blog/tag/grammar"> <i class="fa-solid fa-hashtag fa-sm"></i> Grammar</a>   ·   <a href="/blog/category/c"> <i class="fa-solid fa-tag fa-sm"></i> C++</a> </p> </header> <article class="post-content"> <div id="markdown-content"> <h2 id="迈向-c-语言律师之路">迈向 C++ 语言律师之路</h2> <h3 id="1-现代-c-语法特性">1. 现代 C++ 语法特性</h3> <h4 id="11-attributes属性">1.1 Attributes（属性）</h4> <p>C++11 引入了标准化的属性语法，用于向编译器提供额外的信息。</p> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// C++14: deprecated 属性</span>
+<span class="p">[[</span><span class="n">deprecated</span><span class="p">(</span><span class="s">"This function is deprecated. Use newFunction() instead."</span><span class="p">)]]</span>
+<span class="kt">void</span> <span class="nf">oldFunction</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"This is the old function."</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// C++17: nodiscard 属性</span>
+<span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="kt">int</span> <span class="nf">calculate</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="mi">42</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// C++17: maybe_unused 属性</span>
+<span class="kt">void</span> <span class="nf">someFunction</span><span class="p">([[</span><span class="n">maybe_unused</span><span class="p">]]</span> <span class="kt">int</span> <span class="n">param</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// param 可能未被使用，但不会产生警告</span>
+<span class="p">}</span>
+
+<span class="c1">// C++20: likely/unlikely 属性</span>
+<span class="kt">int</span> <span class="nf">processData</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">[[</span><span class="n">likely</span><span class="p">]]</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">[[</span><span class="n">unlikely</span><span class="p">]]</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// C++20: no_unique_address 属性</span>
+<span class="k">struct</span> <span class="nc">Empty</span> <span class="p">{};</span>
+<span class="k">struct</span> <span class="nc">S</span> <span class="p">{</span>
+    <span class="p">[[</span><span class="n">no_unique_address</span><span class="p">]]</span> <span class="n">Empty</span> <span class="n">e</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">data</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div> <p><strong>常用属性总结：</strong></p> <ul> <li> <code class="language-plaintext highlighter-rouge">[[deprecated]]</code>：标记废弃的函数或类</li> <li> <code class="language-plaintext highlighter-rouge">[[nodiscard]]</code>：返回值不应被忽略</li> <li> <code class="language-plaintext highlighter-rouge">[[maybe_unused]]</code>：可能未使用的变量/参数</li> <li> <code class="language-plaintext highlighter-rouge">[[likely]]/[[unlikely]]</code>：分支预测提示</li> <li> <code class="language-plaintext highlighter-rouge">[[no_unique_address]]</code>：空基类优化</li> </ul> <h4 id="12-引用限定成员函数ref-qualified-member-functions">1.2 引用限定成员函数（Ref-qualified Member Functions）</h4> <p>C++11 允许成员函数根据对象的值类别进行重载。</p> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">Bar</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">value</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="nc">Foo</span> <span class="p">{</span>
+    <span class="c1">// 左值引用版本：返回拷贝，保持原对象不变</span>
+    <span class="n">Bar</span> <span class="n">getBar</span><span class="p">()</span> <span class="o">&amp;</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"lvalue version</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">bar</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// const 左值引用版本</span>
+    <span class="n">Bar</span> <span class="n">getBar</span><span class="p">()</span> <span class="k">const</span> <span class="o">&amp;</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"const lvalue version</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">bar</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 右值引用版本：可以移动，因为对象即将销毁</span>
+    <span class="n">Bar</span> <span class="n">getBar</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"rvalue version</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">bar</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// const 右值引用版本</span>
+    <span class="n">Bar</span> <span class="n">getBar</span><span class="p">()</span> <span class="k">const</span> <span class="o">&amp;&amp;</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"const rvalue version</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">bar</span><span class="p">;</span>
+    <span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="n">Bar</span> <span class="n">bar</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kt">void</span> <span class="nf">testRefQualified</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">Foo</span> <span class="n">foo</span><span class="p">{};</span>
+    <span class="n">Bar</span> <span class="n">bar1</span> <span class="o">=</span> <span class="n">foo</span><span class="p">.</span><span class="n">getBar</span><span class="p">();</span>        <span class="c1">// 调用 &amp; 版本</span>
+
+    <span class="k">const</span> <span class="n">Foo</span> <span class="n">cfoo</span><span class="p">{};</span>
+    <span class="n">Bar</span> <span class="n">bar2</span> <span class="o">=</span> <span class="n">cfoo</span><span class="p">.</span><span class="n">getBar</span><span class="p">();</span>       <span class="c1">// 调用 const &amp; 版本</span>
+
+    <span class="n">Bar</span> <span class="n">bar3</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">{}.</span><span class="n">getBar</span><span class="p">();</span>      <span class="c1">// 调用 &amp;&amp; 版本</span>
+    <span class="n">Bar</span> <span class="n">bar4</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">foo</span><span class="p">).</span><span class="n">getBar</span><span class="p">();</span> <span class="c1">// 调用 &amp;&amp; 版本</span>
+    <span class="n">Bar</span> <span class="n">bar5</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">cfoo</span><span class="p">).</span><span class="n">getBar</span><span class="p">();</span> <span class="c1">// 调用 const &amp;&amp; 版本</span>
+<span class="p">}</span>
+</code></pre></div></div> <h4 id="14-尾置返回类型trailing-return-type">1.4 尾置返回类型（Trailing Return Type）</h4> <p>解决复杂返回类型和模板推导问题。</p> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/*
+1. **返回类型依赖于参数**
+    当返回类型需要根据函数参数推导时，尾置返回类型可以访问参数列表中的类型。最典型的例子是模板函数中使用`auto`结合`decltype`：
+    这里，`decltype(t + u)`需要知道`t`和`u`的类型，而传统返回类型语法无法在函数名前访问参数列表。
+*/</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">U</span><span class="p">&gt;</span>
+<span class="k">auto</span> <span class="nf">add</span><span class="p">(</span><span class="n">T</span> <span class="n">t</span><span class="p">,</span> <span class="n">U</span> <span class="n">u</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="k">decltype</span><span class="p">(</span><span class="n">t</span> <span class="o">+</span> <span class="n">u</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">t</span> <span class="o">+</span> <span class="n">u</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// C++14 简化版本</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">U</span><span class="p">&gt;</span>
+<span class="k">auto</span> <span class="nf">add_modern</span><span class="p">(</span><span class="n">T</span> <span class="n">t</span><span class="p">,</span> <span class="n">U</span> <span class="n">u</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">t</span> <span class="o">+</span> <span class="n">u</span><span class="p">;</span>  <span class="c1">// 自动推导</span>
+<span class="p">}</span>
+
+<span class="cm">/*
+2. **复杂返回类型简化可读性**
+    对于复杂的返回类型（如嵌套模板或函数指针），尾置语法可以使函数头部更清晰：
+*/</span>
+<span class="k">auto</span> <span class="nf">createAdder</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">)</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[](</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span> <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="cm">/*
+3. **lambda表达式的显式返回类型**
+    当lambda表达式的返回类型需要显式指定时，必须使用尾置语法：
+*/</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">auto</span> <span class="n">getMemberFunction</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="p">(</span><span class="n">T</span><span class="o">::*</span><span class="p">)()</span> <span class="k">const</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="o">&amp;</span><span class="n">T</span><span class="o">::</span><span class="n">getValue</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/*
+4. **元编程与类型推导**
+    在模板元编程中，尾置返回类型常用于结合`decltype`进行复杂的类型推导：
+*/</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">Container</span><span class="p">&gt;</span>
+<span class="k">auto</span> <span class="nf">getElement</span><span class="p">(</span><span class="n">Container</span><span class="o">&amp;</span> <span class="n">c</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">index</span><span class="p">)</span>
+    <span class="o">-&gt;</span> <span class="k">decltype</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="n">index</span><span class="p">])</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">c</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="c1">// 5. SFINAE 应用</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">auto</span> <span class="nf">hasSize</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;&amp;</span> <span class="n">t</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="k">decltype</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span> <span class="n">std</span><span class="o">::</span><span class="n">true_type</span><span class="p">{})</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{};</span>
+<span class="p">}</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">false_type</span> <span class="nf">hasSize</span><span class="p">(...)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{};</span>
+<span class="p">}</span>
+</code></pre></div></div> <h4 id="15-adlargument-dependent-lookup">1.5 ADL（Argument-Dependent Lookup）</h4> <p>也称为 Koenig 查找，根据参数类型在相应命名空间中查找函数。</p> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;vector&gt;</span><span class="c1">#</span><span class="cp">
+</span>
+<span class="k">namespace</span> <span class="n">Library</span> <span class="p">{</span>
+    <span class="k">struct</span> <span class="nc">Point</span> <span class="p">{</span>
+        <span class="kt">double</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span>
+        <span class="n">Point</span><span class="p">(</span><span class="kt">double</span> <span class="n">x</span><span class="p">,</span> <span class="kt">double</span> <span class="n">y</span><span class="p">)</span> <span class="o">:</span> <span class="n">x</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">y</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="p">{}</span>
+    <span class="p">};</span>
+
+    <span class="c1">// 在 Point 所在命名空间定义相关函数</span>
+    <span class="kt">void</span> <span class="nf">print</span><span class="p">(</span><span class="k">const</span> <span class="n">Point</span><span class="o">&amp;</span> <span class="n">p</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Point("</span> <span class="o">&lt;&lt;</span> <span class="n">p</span><span class="p">.</span><span class="n">x</span> <span class="o">&lt;&lt;</span> <span class="s">", "</span> <span class="o">&lt;&lt;</span> <span class="n">p</span><span class="p">.</span><span class="n">y</span> <span class="o">&lt;&lt;</span> <span class="s">")</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">Point</span> <span class="k">operator</span><span class="o">+</span><span class="p">(</span><span class="k">const</span> <span class="n">Point</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">,</span> <span class="k">const</span> <span class="n">Point</span><span class="o">&amp;</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">b</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">b</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// 模板函数利用 ADL</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="kt">void</span> <span class="nf">debugPrint</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">obj</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">print</span><span class="p">(</span><span class="n">obj</span><span class="p">);</span>  <span class="c1">// ADL 会在 T 的命名空间中查找 print</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="kt">void</span> <span class="nf">processContainer</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;</span> <span class="n">vec</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">item</span> <span class="o">:</span> <span class="n">vec</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">print</span><span class="p">(</span><span class="n">item</span><span class="p">);</span>  <span class="c1">// ADL 查找</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// ADL 的经典应用：swap</span>
+<span class="k">namespace</span> <span class="n">MySpace</span> <span class="p">{</span>
+    <span class="k">struct</span> <span class="nc">MyType</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
+        <span class="n">MyType</span><span class="p">(</span><span class="kt">int</span> <span class="n">v</span><span class="p">)</span> <span class="o">:</span> <span class="n">value</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="p">{}</span>
+    <span class="p">};</span>
+
+    <span class="kt">void</span> <span class="nf">swap</span><span class="p">(</span><span class="n">MyType</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">,</span> <span class="n">MyType</span><span class="o">&amp;</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Custom swap called</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">swap</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">value</span><span class="p">,</span> <span class="n">b</span><span class="p">.</span><span class="n">value</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="kt">void</span> <span class="nf">genericSwap</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">,</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">using</span> <span class="n">std</span><span class="o">::</span><span class="n">swap</span><span class="p">;</span>  <span class="c1">// 引入 std::swap 作为备选</span>
+    <span class="n">swap</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">);</span>       <span class="c1">// ADL 会优先查找 T 命名空间中的 swap</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">testADL</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">Library</span><span class="o">::</span><span class="n">Point</span> <span class="n">p1</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">);</span>
+    <span class="n">Library</span><span class="o">::</span><span class="n">Point</span> <span class="n">p2</span><span class="p">(</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">);</span>
+
+    <span class="n">debugPrint</span><span class="p">(</span><span class="n">p1</span><span class="p">);</span>  <span class="c1">// 调用 Library::print</span>
+
+    <span class="k">auto</span> <span class="n">p3</span> <span class="o">=</span> <span class="n">p1</span> <span class="o">+</span> <span class="n">p2</span><span class="p">;</span>  <span class="c1">// ADL 查找 operator+</span>
+    <span class="n">debugPrint</span><span class="p">(</span><span class="n">p3</span><span class="p">);</span>
+
+    <span class="n">MySpace</span><span class="o">::</span><span class="n">MyType</span> <span class="n">obj1</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+    <span class="n">MySpace</span><span class="o">::</span><span class="n">MyType</span> <span class="n">obj2</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
+    <span class="n">genericSwap</span><span class="p">(</span><span class="n">obj1</span><span class="p">,</span> <span class="n">obj2</span><span class="p">);</span>  <span class="c1">// 调用 MySpace::swap</span>
+<span class="p">}</span>
+</code></pre></div></div> <h4 id="16-simd-向量化优化">1.6 SIMD 向量化优化</h4> <p>编译器自动向量化技术，利用 CPU 的 SIMD 指令集。</p> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;numeric#&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;algorith#m&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;execution&gt;</span><span class="c1">#</span><span class="cp">
+</span>
+<span class="c1">// 1. 基础向量化示例</span>
+<span class="kt">void</span> <span class="nf">basicVectorization</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">data</span><span class="p">(</span><span class="mi">1000000</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">iota</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">data</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="mi">1</span><span class="p">);</span>
+
+    <span class="c1">// 编译器可能向量化的循环</span>
+    <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">data</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">sum</span> <span class="o">+=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>  <span class="c1">// 可能被向量化为 4 个元素并行计算</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 更好的方式：使用标准算法</span>
+    <span class="kt">int</span> <span class="n">sum2</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">accumulate</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">data</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="mi">0</span><span class="p">);</span>
+
+    <span class="c1">// C++17 并行算法</span>
+    <span class="kt">int</span> <span class="n">sum3</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">reduce</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">execution</span><span class="o">::</span><span class="n">par_unseq</span><span class="p">,</span>
+                          <span class="n">data</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">data</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// 2. 向量化友好的代码</span>
+<span class="kt">void</span> <span class="nf">vectorFriendlyCode</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">a</span><span class="p">(</span><span class="mi">1000</span><span class="p">),</span> <span class="n">b</span><span class="p">(</span><span class="mi">1000</span><span class="p">),</span> <span class="n">c</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+
+    <span class="c1">// 向量化友好：连续内存访问</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">a</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>  <span class="c1">// 编译器容易向量化</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 更好的方式：使用标准算法</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">transform</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">execution</span><span class="o">::</span><span class="n">par_unseq</span><span class="p">,</span>
+                   <span class="n">a</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">a</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span>
+                   <span class="n">b</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">c</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span>
+                   <span class="n">std</span><span class="o">::</span><span class="n">plus</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">{});</span>
+<span class="p">}</span>
+
+<span class="c1">// 3. 编译器指令提示</span>
+<span class="kt">void</span> <span class="nf">compilerHints</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">constexpr</span> <span class="kt">size_t</span> <span class="n">N</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">a</span><span class="p">[</span><span class="n">N</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="n">N</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="n">N</span><span class="p">];</span>
+
+    <span class="c1">// GCC/Clang 向量化提示</span>
+    <span class="cp">#pragma GCC ivdep
+</span>    <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mf">1.0</span><span class="n">f</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 显式 SIMD（需要编译器支持）</span>
+    <span class="cp">#pragma omp simd
+</span>    <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">sqrt</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div> <h4 id="17-四种类型转换详解">1.7 四种类型转换详解</h4> <p>C++ 提供四种显式类型转换，各有特定用途。</p> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;memory&gt;</span><span class="c1">#</span><span class="cp">
+</span>
+<span class="c1">// 基类和派生类用于演示</span>
+<span class="k">class</span> <span class="nc">Base</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="k">virtual</span> <span class="o">~</span><span class="n">Base</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">speak</span><span class="p">()</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Base speaking</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Derived</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Base</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="kt">void</span> <span class="n">speak</span><span class="p">()</span> <span class="k">override</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Derived speaking</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span> <span class="p">}</span>
+    <span class="kt">void</span> <span class="nf">derivedMethod</span><span class="p">()</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Derived method</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kt">void</span> <span class="nf">demonstrateCasts</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// 1. static_cast：编译时类型转换</span>
+    <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+        <span class="kt">double</span> <span class="n">d</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>  <span class="c1">// 数值转换</span>
+
+        <span class="c1">// 指针转换（上行转换总是安全的，即使是**多继承情况**）</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">Derived</span><span class="o">&gt;</span> <span class="n">derived</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="n">Derived</span><span class="o">&gt;</span><span class="p">();</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">Base</span><span class="o">&gt;</span> <span class="n">base</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">derived</span><span class="p">);</span>  <span class="c1">// 隐式转换</span>
+
+        <span class="c1">// 下行转换（需要程序员保证安全性）</span>
+        <span class="n">Base</span><span class="o">*</span> <span class="n">basePtr</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Derived</span><span class="p">();</span>
+        <span class="n">Derived</span><span class="o">*</span> <span class="n">derivedPtr</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="n">Derived</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">basePtr</span><span class="p">);</span>  <span class="c1">// 不安全但快速</span>
+        <span class="n">derivedPtr</span><span class="o">-&gt;</span><span class="n">derivedMethod</span><span class="p">();</span>
+        <span class="k">delete</span> <span class="n">basePtr</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 2. dynamic_cast：运行时类型检查</span>
+    <span class="p">{</span>
+        <span class="n">Base</span><span class="o">*</span> <span class="n">basePtr</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Derived</span><span class="p">();</span>
+
+        <span class="c1">// 安全的下行转换</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">Derived</span><span class="o">*</span> <span class="n">derivedPtr</span> <span class="o">=</span> <span class="k">dynamic_cast</span><span class="o">&lt;</span><span class="n">Derived</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">basePtr</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">derivedPtr</span><span class="o">-&gt;</span><span class="n">derivedMethod</span><span class="p">();</span>  <span class="c1">// 转换成功</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Cast failed</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="c1">// 引用版本（失败时抛异常）</span>
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="n">Base</span><span class="o">&amp;</span> <span class="n">baseRef</span> <span class="o">=</span> <span class="o">*</span><span class="n">basePtr</span><span class="p">;</span>
+            <span class="n">Derived</span><span class="o">&amp;</span> <span class="n">derivedRef</span> <span class="o">=</span> <span class="k">dynamic_cast</span><span class="o">&lt;</span><span class="n">Derived</span><span class="o">&amp;&gt;</span><span class="p">(</span><span class="n">baseRef</span><span class="p">);</span>
+            <span class="n">derivedRef</span><span class="p">.</span><span class="n">derivedMethod</span><span class="p">();</span>
+        <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">bad_cast</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Cast failed: "</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">delete</span> <span class="n">basePtr</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 3. const_cast：修改 const/volatile 属性</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="kt">int</span> <span class="n">ci</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+        <span class="kt">int</span><span class="o">&amp;</span> <span class="n">modifiable</span> <span class="o">=</span> <span class="k">const_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&amp;&gt;</span><span class="p">(</span><span class="n">ci</span><span class="p">);</span>
+        <span class="c1">// modifiable = 100;  // 未定义行为！不要修改原本是 const 的对象</span>
+
+        <span class="c1">// 正确用法：移除指向非 const 对象的 const 指针的 const</span>
+        <span class="kt">int</span> <span class="n">original</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+        <span class="k">const</span> <span class="kt">int</span><span class="o">*</span> <span class="n">cptr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">original</span><span class="p">;</span>
+        <span class="kt">int</span><span class="o">*</span> <span class="n">ptr</span> <span class="o">=</span> <span class="k">const_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">cptr</span><span class="p">);</span>
+        <span class="o">*</span><span class="n">ptr</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>  <span class="c1">// 这是安全的，因为原始对象不是 const</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Modified: "</span> <span class="o">&lt;&lt;</span> <span class="n">original</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 4. reinterpret_cast：低级别重新解释</span>
+    <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mh">0x12345678</span><span class="p">;</span>
+
+        <span class="c1">// 将整数重新解释为字节数组</span>
+        <span class="kt">char</span><span class="o">*</span> <span class="n">bytes</span> <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">*&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i</span><span class="p">);</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Bytes: "</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">"%02x "</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">char</span><span class="o">&gt;</span><span class="p">(</span><span class="n">bytes</span><span class="p">[</span><span class="n">j</span><span class="p">]));</span>
+        <span class="p">}</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
+
+        <span class="c1">// 指针与整数之间的转换</span>
+        <span class="kt">void</span><span class="o">*</span> <span class="n">vptr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">i</span><span class="p">;</span>
+        <span class="kt">uintptr_t</span> <span class="n">addr</span> <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">uintptr_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">vptr</span><span class="p">);</span>
+        <span class="kt">void</span><span class="o">*</span> <span class="n">vptr2</span> <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">addr</span><span class="p">);</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Address: "</span> <span class="o">&lt;&lt;</span> <span class="n">vptr</span> <span class="o">&lt;&lt;</span> <span class="s">" == "</span> <span class="o">&lt;&lt;</span> <span class="n">vptr2</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div> <h3 id="2-c-内部机制深度解析">2. C++ 内部机制深度解析</h3> <h4 id="21-引用的底层实现">2.1 引用的底层实现</h4> <p>在 C++ 中，当我们说”引用”时，我们通常不会说它被”拷贝”，因为引用本身并不占用任何存储空间，它只是一个<code class="language-plaintext highlighter-rouge">别名</code>。当你将一个对象作为引用传递给函数时，实际上并没有发生任何拷贝操作。函数接收的是对原始对象的直接引用，而不是任何形式的拷贝。</p> <p>然而，从底层实现的角度来看，引用在某种程度上可以被视为一个常量指针。当你创建一个引用并将其初始化为一个对象时，编译器会在底层创建一个指向该对象的常量指针。这个指针在初始化后就不能改变，它将一直指向初始化时的那个对象。因此，当你通过引用访问对象时，实际上是通过这个常量指针访问的。</p> <p>但是，这并不意味着引用是通过拷贝指针来实现的。引用的实现细节可能因编译器和平台的不同而不同。</p> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="c1">// 引用的实现机制演示</span>
+<span class="kt">void</span> <span class="nf">referenceImplementation</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">value</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+    <span class="kt">int</span><span class="o">&amp;</span> <span class="n">ref</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>  <span class="c1">// 编译器通常实现为 int* const ref = &amp;value;</span>
+
+    <span class="c1">// 从汇编角度看，以下两种访问方式不同：</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>       <span class="c1">// 直接内存访问：mov DWORD PTR [rbp-4], 100</span>
+    <span class="n">ref</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>         <span class="c1">// 间接访问：mov rax, [rbp-8]; mov DWORD PTR [rax], 200</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"value: "</span> <span class="o">&lt;&lt;</span> <span class="n">value</span> <span class="o">&lt;&lt;</span> <span class="s">", ref: "</span> <span class="o">&lt;&lt;</span> <span class="n">ref</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre></div></div> <h4 id="22-栈内存管理机制">2.2 栈内存管理机制</h4> <p>如果说 a 和 b 都在栈上，那怎么取 b 的值呢？需要每一次取值都经历出栈和入栈吗？</p> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="c1">// ...</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div> <p>在函数执行过程中，局部变量 a 和 b 都存储在栈上。栈是一个连续的内存区域，局部变量在栈帧中按顺序分配。取变量 b 的值并不需要每次都经历出栈和入栈操作，而是通过栈帧中的偏移量直接访问。</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    main:
+    push    ebp             ; 保存调用者的基址指针
+    mov     ebp, esp        ; 设置当前栈帧的基址指针
+    sub     esp, 8          ; 为局部变量 a 和 b 分配 8 字节的空间
+
+    mov     DWORD PTR [ebp-4], 1  ; 将 1 存储到 a
+    mov     DWORD PTR [ebp-8], 2  ; 将 2 存储到 b
+
+    ; 访问 b 的值
+    mov     eax, DWORD PTR [ebp-8] ; 将 b 的值加载到 eax 寄存器
+
+    mov     esp, ebp        ; 恢复栈指针
+    pop     ebp             ; 恢复基址指针
+    ret                     ; 返回调用者
+</code></pre></div></div> <h4 id="23-编译器如何处理自定义类型">2.3 编译器如何处理自定义类型</h4> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;cstddef&gt;</span><span class="c1">#</span><span class="cp">
+</span>
+<span class="c1">// 演示编译器如何处理结构体</span>
+<span class="k">struct</span> <span class="nc">ComplexStruct</span> <span class="p">{</span>
+    <span class="kt">char</span> <span class="n">c</span><span class="p">;</span>        <span class="c1">// offset 0</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>         <span class="c1">// offset 4 (aligned)</span>
+    <span class="kt">double</span> <span class="n">d</span><span class="p">;</span>      <span class="c1">// offset 8 (aligned)</span>
+    <span class="kt">char</span> <span class="n">c2</span><span class="p">;</span>       <span class="c1">// offset 16</span>
+    <span class="c1">// padding to 24 for next object alignment</span>
+<span class="p">};</span>
+
+<span class="c1">// 包装结构体（取消对齐）</span>
+<span class="cp">#pragma pack(push, 1)#
+</span><span class="k">struct</span> <span class="nc">PackedStruct</span> <span class="p">{</span>
+    <span class="kt">char</span> <span class="n">c</span><span class="p">;</span>        <span class="c1">// offset 0</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>         <span class="c1">// offset 1</span>
+    <span class="kt">double</span> <span class="n">d</span><span class="p">;</span>      <span class="c1">// offset 5</span>
+    <span class="kt">char</span> <span class="n">c2</span><span class="p">;</span>       <span class="c1">// offset 13</span>
+    <span class="c1">// total size: 14</span>
+<span class="p">};</span>
+<span class="cp">#p#ragma pack(pop)
+</span>
+<span class="c1">// 模拟编译器生成的访问代码</span>
+<span class="kt">void</span> <span class="nf">demonstrateStructLayout</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">ComplexStruct</span> <span class="n">obj</span><span class="p">;</span>
+
+    <span class="c1">// 编译器生成类似这样的偏移计算：</span>
+    <span class="c1">// obj.c  -&gt; base_address + 0</span>
+    <span class="c1">// obj.i  -&gt; base_address + 4</span>
+    <span class="c1">// obj.d  -&gt; base_address + 8</span>
+    <span class="c1">// obj.c2 -&gt; base_address + 16</span>
+
+    <span class="kt">char</span><span class="o">*</span> <span class="n">base</span> <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">*&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">obj</span><span class="p">);</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"ComplexStruct layout:</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Total size: "</span> <span class="o">&lt;&lt;</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">ComplexStruct</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"c offset: "</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">*&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">obj</span><span class="p">.</span><span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="n">base</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"i offset: "</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">*&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">obj</span><span class="p">.</span><span class="n">i</span><span class="p">)</span> <span class="o">-</span> <span class="n">base</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"d offset: "</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">*&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">obj</span><span class="p">.</span><span class="n">d</span><span class="p">)</span> <span class="o">-</span> <span class="n">base</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"c2 offset: "</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">*&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">obj</span><span class="p">.</span><span class="n">c2</span><span class="p">)</span> <span class="o">-</span> <span class="n">base</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
+
+    <span class="n">PackedStruct</span> <span class="n">packed</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n</span><span class="s">PackedStruct size: "</span> <span class="o">&lt;&lt;</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">PackedStruct</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// 虚函数表的内存布局</span>
+<span class="k">class</span> <span class="nc">BaseWithVirtual</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">func1</span><span class="p">()</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Base::func1</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span> <span class="p">}</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">func2</span><span class="p">()</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Base::func2</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span> <span class="p">}</span>
+    <span class="k">virtual</span> <span class="o">~</span><span class="n">BaseWithVirtual</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="kt">int</span> <span class="n">data</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">DerivedWithVirtual</span> <span class="o">:</span> <span class="k">public</span> <span class="n">BaseWithVirtual</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="kt">void</span> <span class="n">func1</span><span class="p">()</span> <span class="k">override</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Derived::func1</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span> <span class="p">}</span>
+    <span class="kt">void</span> <span class="nf">func3</span><span class="p">()</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Derived::func3</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="kt">double</span> <span class="n">extraData</span> <span class="o">=</span> <span class="mf">3.14</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kt">void</span> <span class="nf">demonstrateVTable</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// 对象内存布局：[vptr][BaseWithVirtual::data][DerivedWithVirtual::extraData]</span>
+    <span class="n">DerivedWithVirtual</span> <span class="n">obj</span><span class="p">;</span>
+
+    <span class="c1">// 获取 vptr（虚函数表指针）</span>
+    <span class="kt">void</span><span class="o">**</span> <span class="n">vptr</span> <span class="o">=</span> <span class="o">*</span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">***&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">obj</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Object address: "</span> <span class="o">&lt;&lt;</span> <span class="o">&amp;</span><span class="n">obj</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"VTable address: "</span> <span class="o">&lt;&lt;</span> <span class="n">vptr</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
+
+    <span class="c1">// 通过基类指针调用虚函数</span>
+    <span class="n">BaseWithVirtual</span><span class="o">*</span> <span class="n">basePtr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">obj</span><span class="p">;</span>
+    <span class="n">basePtr</span><span class="o">-&gt;</span><span class="n">func1</span><span class="p">();</span>  <span class="c1">// 动态分发到 DerivedWithVirtual::func1</span>
+<span class="p">}</span>
+</code></pre></div></div> <h3 id="99-quiz">99. quiz</h3> <h4 id="1-c中-null-和-nullptr-的区别">1. c++中 NULL 和 nullptr 的区别</h4> <p>在 C 语言里，NULL 一般借助宏定义为<code class="language-plaintext highlighter-rouge">#define NULL ((void *)0)</code>。从本质上来说，NULL 代表的是一个空指针。下面这段代码在 C 语言环境中是能够正常编译的：</p> <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#def#ine NULL ((void *)0)
+</span>
+<span class="kt">int</span>  <span class="o">*</span><span class="n">pi</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+<span class="kt">char</span> <span class="o">*</span><span class="n">pc</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</code></pre></div></div> <p>这是由于在 C 语言中，当把<code class="language-plaintext highlighter-rouge">void*</code>类型的空指针赋值给<code class="language-plaintext highlighter-rouge">int*</code>或者<code class="language-plaintext highlighter-rouge">char*</code>类型的指针时，会自动进行隐式类型转换，从而将<code class="language-plaintext highlighter-rouge">void*</code>转换为对应的指针类型。不过，如果使用 C++编译器来编译上述代码，就会出现错误。这是因为 C++属于强类型语言，它不允许将<code class="language-plaintext highlighter-rouge">void*</code>类型的指针隐式转换为其他类型的指针。所以，在 C++环境中，编译器提供的头文件对 NULL 的定义进行了调整：</p> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#ifdef# __cplusplus
+#define NULL 0#
+#else#
+#defi#ne NULL ((void *)0)
+#endif#
+</span></code></pre></div></div> <p>然而，把 NULL 定义为 0 会引发函数重载时的类型匹配问题。例如下面的代码：</p> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">foo</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+<span class="kt">void</span> <span class="nf">foo</span><span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">);</span>
+<span class="n">foo</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>  <span class="c1">// 这里会调用哪个函数呢？</span>
+</code></pre></div></div> <p>在 C++里，当执行<code class="language-plaintext highlighter-rouge">foo(NULL)</code>这一调用时，实际上传递的实参是整数 0。因为 NULL 被定义成了 0，所以它会优先匹配参数类型为<code class="language-plaintext highlighter-rouge">int</code>的重载函数，而不是参数类型为<code class="language-plaintext highlighter-rouge">char*</code>的函数。这种情况往往和程序员的预期不符，容易引发隐藏的错误。为了避免这类问题，在 C++11 及后续的版本中，建议使用<code class="language-plaintext highlighter-rouge">nullptr</code>来表示空指针。<code class="language-plaintext highlighter-rouge">nullptr</code>是一种特殊的空指针类型，能够隐式转换为任意类型的指针，而且不会和整数类型产生混淆。使用<code class="language-plaintext highlighter-rouge">nullptr</code>可以让代码的意图更加清晰明确：</p> <h4 id="2-一个通过new创建出来的指针若被delete两次会怎样">2. 一个通过<code class="language-plaintext highlighter-rouge">new</code>创建出来的指针，若被<code class="language-plaintext highlighter-rouge">delete</code>两次会怎样？</h4> <p>如果一个指针被<code class="language-plaintext highlighter-rouge">delete</code>两次，会引发未定义行为（Undefined Behavior）。这是因为在第一次执行<code class="language-plaintext highlighter-rouge">delete</code>之后，该指针所指向的已不再是有效的内存区域。再次尝试对其执行<code class="language-plaintext highlighter-rouge">delete</code>操作，实际上是对无效内存进行操作，这在程序运行规则中是不允许的。</p> <p>未定义行为可能引发多种不良后果，其中包括但不限于以下情况：</p> <ul> <li> <strong>程序崩溃</strong>：操作系统或运行时环境检测到非法内存访问，从而强制终止程序运行。</li> <li> <strong>数据损坏</strong>：对无效内存的操作可能会改写其他合法数据，导致程序后续逻辑出现错误。</li> <li> <strong>出现难以预测和解释的行为</strong>：由于未定义行为不受特定规则约束，程序的运行结果可能在不同的编译环境、运行环境甚至不同的运行时刻都有所不同，给调试和维护带来极大困难。</li> </ul> <p>为了避免此类情况发生，在编写代码时，务必保证每个<code class="language-plaintext highlighter-rouge">new</code>操作都有且仅有一个对应的<code class="language-plaintext highlighter-rouge">delete</code>操作，并且每个<code class="language-plaintext highlighter-rouge">delete</code>操作仅执行一次。在 C++ 代码中，<code class="language-plaintext highlighter-rouge">std::unique_ptr</code>类通过封装<code class="language-plaintext highlighter-rouge">new</code>和<code class="language-plaintext highlighter-rouge">delete</code>操作，实现了对资源的自动管理，有效避免了这种因重复释放指针而引发的问题。</p> <h4 id="3-为什么在-delete-之后通常都会将指针设置为-nullptr">3. 为什么在 delete 之后，通常都会将指针设置为 nullptr</h4> <p>在 C++编程中，当使用<code class="language-plaintext highlighter-rouge">delete</code>释放一个指针所指向的内存后，通常会将该指针设置为<code class="language-plaintext highlighter-rouge">nullptr</code>，这主要基于以下几方面原因：</p> <ol> <li> <p><strong>防止产生悬挂指针</strong>：当使用<code class="language-plaintext highlighter-rouge">delete</code>释放指针所指向的内存后，该指针就成为了悬挂指针（Dangling Pointer）。此时它虽不再指向有效的内存区域，但仍保留着之前的地址值。若后续不小心再次使用这个悬挂指针，就会引发未定义行为，可能导致程序崩溃或出现难以排查的错误。而将指针设置为<code class="language-plaintext highlighter-rouge">nullptr</code>，能有效避免这种情况，因为<code class="language-plaintext highlighter-rouge">nullptr</code>是一个特殊指针值，表示该指针不指向任何对象，使用指向<code class="language-plaintext highlighter-rouge">nullptr</code>的指针进行操作（如解引用）会在大多数情况下引发明确的运行时错误，便于开发者定位问题。</p> </li> <li> <p><strong>安全地重复执行 delete 操作</strong>：在 C++语言规则中，对<code class="language-plaintext highlighter-rouge">nullptr</code>执行<code class="language-plaintext highlighter-rouge">delete</code>操作是安全的，不会产生任何实际效果。因此，若将已释放内存的指针设置为<code class="language-plaintext highlighter-rouge">nullptr</code>，后续即便不小心再次尝试对其执行<code class="language-plaintext highlighter-rouge">delete</code>操作，也不会导致未定义行为，从而增强了程序的健壮性。</p> </li> <li> <p><strong>方便检查指针是否已被释放</strong>：将指针设置为<code class="language-plaintext highlighter-rouge">nullptr</code>后，通过简单检查该指针是否等于<code class="language-plaintext highlighter-rouge">nullptr</code>，就能清晰判断它所指向的内存是否已经被释放。这在复杂的代码逻辑中，对于追踪指针状态、确保内存管理的正确性非常有帮助。</p> </li> </ol> <p>综上所述，在使用<code class="language-plaintext highlighter-rouge">delete</code>释放指针后，将其设置为<code class="language-plaintext highlighter-rouge">nullptr</code>是一种良好的编程习惯，有助于提高程序的安全性与稳定性，减少因内存管理不当而引发的错误。</p> <h4 id="4-通过指针访问和直接访问的区别是什么">4. 通过指针访问和直接访问的区别是什么？</h4> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">Point3d</span> <span class="p">{</span>
+    <span class="kt">double</span> <span class="n">x</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">Point3d</span> <span class="n">origin</span><span class="p">;</span>
+<span class="n">Point3d</span><span class="o">*</span> <span class="n">pt</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">origin</span><span class="p">;</span>
+<span class="n">origin</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span> <span class="c1">// (1)</span>
+<span class="n">pt</span><span class="o">-&gt;</span><span class="n">x</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>    <span class="c1">// (2)</span>
+</code></pre></div></div> <p>(1) 和 (2) 这两种方式均用于将 <code class="language-plaintext highlighter-rouge">Point3d</code> 对象 <code class="language-plaintext highlighter-rouge">origin</code> 的 <code class="language-plaintext highlighter-rouge">x</code> 成员值设置为 <code class="language-plaintext highlighter-rouge">0.0</code> 。它们的差异在于访问方式不同，从编译器层面来看：</p> <ul> <li>(1) <code class="language-plaintext highlighter-rouge">origin.x = 0.0;</code> 这种方式是直接借助对象名与成员名来访问并修改成员值。编译器在编译阶段就能确定 <code class="language-plaintext highlighter-rouge">origin</code> 的内存地址，随后依据偏移量定位到 <code class="language-plaintext highlighter-rouge">x</code> 成员的位置，直接在此处写入 <code class="language-plaintext highlighter-rouge">0.0</code> 。</li> <li>(2) <code class="language-plaintext highlighter-rouge">pt-&gt;x = 0.0;</code> 该方式则是通过指向对象的指针来访问与修改成员值。<code class="language-plaintext highlighter-rouge">pt</code> 是指向 <code class="language-plaintext highlighter-rouge">origin</code> 的指针，<code class="language-plaintext highlighter-rouge">pt-&gt;x</code> 代表 <code class="language-plaintext highlighter-rouge">pt</code> 所指向对象的 <code class="language-plaintext highlighter-rouge">x</code> 成员。在编译时，编译器无法确定 <code class="language-plaintext highlighter-rouge">pt</code> 所指向的内存地址，因为这一地址是在运行时由操作系统分配的。所以在运行时，编译器需要先读取 <code class="language-plaintext highlighter-rouge">pt</code> 的值（即 <code class="language-plaintext highlighter-rouge">origin</code> 的地址），接着通过偏移量找到 <code class="language-plaintext highlighter-rouge">x</code> 成员的位置，最后在此处写入 <code class="language-plaintext highlighter-rouge">0.0</code> 。</li> </ul> <p>总体而言，这两种实现效果一致，都能将 <code class="language-plaintext highlighter-rouge">origin</code> 的 <code class="language-plaintext highlighter-rouge">x</code> 成员值设为 <code class="language-plaintext highlighter-rouge">0.0</code> 。但是<code class="language-plaintext highlighter-rouge">(1)</code>会比<code class="language-plaintext highlighter-rouge">(2)</code>要好，<code class="language-plaintext highlighter-rouge">(2)</code>会有运行时开销。</p> <h4 id="5-静态绑定和虚函数">5. 静态绑定和虚函数</h4> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="k">struct</span> <span class="nc">A</span> <span class="p">{</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">foo</span> <span class="p">(</span><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"A"</span> <span class="o">&lt;&lt;</span> <span class="n">a</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="nc">B</span> <span class="o">:</span> <span class="n">A</span> <span class="p">{</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">foo</span> <span class="p">(</span><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"B"</span> <span class="o">&lt;&lt;</span> <span class="n">a</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="n">A</span> <span class="o">*</span><span class="n">b</span> <span class="o">=</span> <span class="k">new</span> <span class="n">B</span><span class="p">;</span>
+    <span class="n">b</span><span class="o">-&gt;</span><span class="n">foo</span><span class="p">();</span>   <span class="c1">// B1</span>
+<span class="p">}</span>
+</code></pre></div></div> <h4 id="6-一般哪些函数可以使用-noexcept">6. 一般哪些函数可以使用 noexcept?</h4> <p>在 C++ 中，<code class="language-plaintext highlighter-rouge">noexcept</code>关键字准确意思不是表明一个函数不会抛出任何异常，而是说这个函数即使抛出异常外部也不会<code class="language-plaintext highlighter-rouge">catch</code>，可以直接原地调用<code class="language-plaintext highlighter-rouge">terminate()</code>的意思，这对于编译器优化代码有意义，同时也提升了代码的可读性。以下是几类常见可使用<code class="language-plaintext highlighter-rouge">noexcept</code>的函数：</p> <ol> <li> <strong>析构函数</strong>：析构函数一般不应抛出任何异常。这是因为若在析构函数中抛出异常，极有可能致使程序出现未定义行为。例如，当对象被自动销毁或容器中的对象析构时，若析构函数抛出异常，程序的后续行为将无法预测，可能导致崩溃或数据损坏等严重问题。</li> <li> <strong>移动构造函数与移动赋值操作符</strong>：这些函数通常应标记为<code class="language-plaintext highlighter-rouge">noexcept</code>。因为它们大多仅涉及指针和基本类型的转移，正常情况下不应抛出异常。而且，标记为<code class="language-plaintext highlighter-rouge">noexcept</code>的移动操作能被标准库容器（如<code class="language-plaintext highlighter-rouge">std::vector</code>）更高效地运用。比如，当<code class="language-plaintext highlighter-rouge">std::vector</code>进行扩容或重新分配内存时，若移动操作标记为<code class="language-plaintext highlighter-rouge">noexcept</code>，<code class="language-plaintext highlighter-rouge">std::vector</code>可以采用更优化的策略，避免不必要的复制操作，从而显著提升性能。</li> <li> <strong>交换函数</strong>：像<code class="language-plaintext highlighter-rouge">std::swap</code>这类交换函数，通常也应标记为<code class="language-plaintext highlighter-rouge">noexcept</code>。这是由于它们通常仅涉及指针和基本类型的转移，正常情况下不会抛出异常。例如，在进行两个对象的交换操作时，仅仅是交换它们内部的指针或基本数据成员，这种操作的稳定性较高，不易引发异常。</li> <li> <strong>其他不会抛出异常的函数</strong>：倘若你明确知晓某个函数不会抛出异常，那么就应当使用<code class="language-plaintext highlighter-rouge">noexcept</code>关键字。这不仅有助于编译器对代码进行优化，例如，编译器可能会针对<code class="language-plaintext highlighter-rouge">noexcept</code>函数进行特定的优化，生成更高效的机器码；同时也能向其他开发者清晰地表明该函数不会引发异常，使得代码的行为更加明确和可预测。</li> </ol> <h4 id="7-c怎么定义隐式转换规则">7. c++怎么定义隐式转换规则</h4> <p>在 C++ 中，隐式转换（也称为自动类型转换）由编译器自动执行。这些转换规则由 C++ 语言明确规定，例如从 <code class="language-plaintext highlighter-rouge">int</code> 到 <code class="language-plaintext highlighter-rouge">double</code> 的转换，或者从派生类到基类的转换。 然而，你也可以为自定义类型定义隐式转换规则。这可以通过定义转换函数来达成。转换函数是一种特殊的成员函数，它能够将一个类的对象转换为其他类型的对象。 例如，假设你有一个名为 <code class="language-plaintext highlighter-rouge">MyClass</code> 的类，并且希望它能隐式转换为 <code class="language-plaintext highlighter-rouge">int</code> 类型。你可以在 <code class="language-plaintext highlighter-rouge">MyClass</code> 类中定义一个名为 <code class="language-plaintext highlighter-rouge">operator int()</code> 的转换函数，如下所示：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">MyClass</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="k">operator</span> <span class="kt">int</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+        <span class="c1">// 在这里返回一个 int 值</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div> <p>随后，你便可以像这样使用它：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">MyClass</span> <span class="n">obj</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">obj</span><span class="p">;</span>  <span class="c1">// 隐式转换</span>
+</code></pre></div></div> <p>需要注意的是，尽管隐式转换看似方便，但它可能引发一些意想不到的问题。比如，当函数重载时，隐式转换可能会导致编译器选择错误的函数版本。因此，一般建议尽量避免使用隐式转换，或者至少要确保清楚地知道它何时会发生以及会产生什么效果。</p> <h4 id="8-多态场景下调用哪个方法">8. 多态场景下，调用哪个方法？</h4> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="k">struct</span> <span class="nc">Foo</span> <span class="p">{</span>
+    <span class="k">virtual</span> <span class="o">~</span><span class="n">Foo</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">speak</span><span class="p">()</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Foo::speak (dynamic dispatch)</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="nc">Bar</span> <span class="o">:</span> <span class="n">Foo</span> <span class="p">{</span>
+    <span class="kt">void</span> <span class="n">speak</span><span class="p">()</span> <span class="k">override</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Bar::speak (dynamic dispatch)</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kt">void</span> <span class="nf">func</span><span class="p">(</span><span class="n">Foo</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"func(Foo*) called</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span> <span class="p">}</span>
+<span class="kt">void</span> <span class="nf">func</span><span class="p">(</span><span class="n">Bar</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"func(Bar*) called</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">Foo</span><span class="o">*</span> <span class="n">bar</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Bar</span><span class="p">();</span>
+    <span class="n">func</span><span class="p">(</span><span class="n">bar</span><span class="p">);</span>
+    <span class="n">func</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">Bar</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">bar</span><span class="p">));</span>
+    <span class="n">bar</span><span class="o">-&gt;</span><span class="n">speak</span><span class="p">();</span>
+    <span class="k">delete</span> <span class="n">bar</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="cm">/*
+    func(Foo*) called
+    func(Bar*) called
+    Bar::speak (dynamic dispatch)
+*/</span>
+</code></pre></div></div> <h4 id="9-不使用-final-怎么实现-final-效果">9. 不使用 final 怎么实现 final 效果</h4> <p>在 C++ 中，如果希望一个类 <code class="language-plaintext highlighter-rouge">B</code> 不可以被继承，可以采用以下方式。首先，定义一个类 <code class="language-plaintext highlighter-rouge">A</code>，将 <code class="language-plaintext highlighter-rouge">A</code> 的构造函数私有化。然后让类 <code class="language-plaintext highlighter-rouge">B</code> 继承自 <code class="language-plaintext highlighter-rouge">A</code>，并声明 <code class="language-plaintext highlighter-rouge">B</code> 是 <code class="language-plaintext highlighter-rouge">A</code> 的友元。这样，<code class="language-plaintext highlighter-rouge">B</code> 能够正常构造，因为作为友元，<code class="language-plaintext highlighter-rouge">B</code> 可以访问 <code class="language-plaintext highlighter-rouge">A</code> 的私有构造函数。然而，当有类 <code class="language-plaintext highlighter-rouge">C</code> 试图继承 <code class="language-plaintext highlighter-rouge">B</code> 时，由于 <code class="language-plaintext highlighter-rouge">C</code> 不是 <code class="language-plaintext highlighter-rouge">A</code> 的友元，不能调用 <code class="language-plaintext highlighter-rouge">A</code> 的私有构造函数，所以 <code class="language-plaintext highlighter-rouge">C</code> 无法继承 <code class="language-plaintext highlighter-rouge">B</code>，从而实现了类似 <code class="language-plaintext highlighter-rouge">final</code> 的阻止类被继承的效果。以下是具体代码示例：</p> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">A</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="n">A</span><span class="p">()</span> <span class="p">{}</span> <span class="c1">// A 的构造函数私有化</span>
+    <span class="k">friend</span> <span class="k">class</span> <span class="nc">B</span><span class="p">;</span> <span class="c1">// 声明 B 为 A 的友元</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">B</span> <span class="o">:</span> <span class="k">public</span> <span class="n">A</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">B</span><span class="p">()</span> <span class="p">{}</span> <span class="c1">// B 可以正常构造，因为是 A 的友元</span>
+<span class="p">};</span>
+
+<span class="c1">// 尝试继承 B</span>
+<span class="c1">// class C : public B {</span>
+<span class="c1">// public:</span>
+<span class="c1">//     C() {} // 这里会报错，因为 C 不能调用 A 的私有构造函数</span>
+<span class="c1">// };</span>
+</code></pre></div></div> <p>在上述代码中，若取消对 <code class="language-plaintext highlighter-rouge">class C</code> 定义部分的注释，编译时会报错，提示无法访问 <code class="language-plaintext highlighter-rouge">A</code> 的私有构造函数，从而表明 <code class="language-plaintext highlighter-rouge">C</code> 不能继承 <code class="language-plaintext highlighter-rouge">B</code>，达成了类似 <code class="language-plaintext highlighter-rouge">final</code> 关键字阻止类被继承的效果。</p> <h4 id="10-函数声明陷阱">10. 函数声明陷阱</h4> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="k">struct</span> <span class="nc">X</span> <span class="p">{</span>
+    <span class="n">X</span><span class="p">()</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"X"</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="p">{</span>
+        <span class="c1">// confusing case: 可能会引起误解</span>
+        <span class="n">X</span> <span class="n">x</span><span class="p">();</span>  <span class="c1">// 这是声明了一个名为x，返回类型为X的函数，还是声明了一个名为x，使用默认构造的对象？</span>
+    <span class="p">}</span>
+    <span class="p">{</span>
+        <span class="c1">// 方法1：省略括号（推荐）</span>
+        <span class="n">X</span> <span class="n">x</span><span class="p">;</span>  <span class="c1">// 正确创建对象x，调用默认构造函数</span>
+    <span class="p">}</span>
+
+    <span class="p">{</span>
+        <span class="c1">// 方法2：使用统一初始化语法（C++11及以后）</span>
+        <span class="n">X</span> <span class="n">x</span><span class="p">{};</span>  <span class="c1">// 同样正确，避免了语法歧义</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div> <h4 id="11-黑魔法">11. 黑魔法</h4> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">ans</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="s">" </span><span class="se">\n</span><span class="s">"</span><span class="p">[</span><span class="n">i</span> <span class="o">==</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span>
+<span class="p">}</span>
+</code></pre></div></div> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="o">--</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+</code></pre></div></div> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">vec</span><span class="p">;</span>
+<span class="n">vec</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">idx</span> <span class="o">=</span> <span class="n">vec</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">idx</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">idx</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"===== </span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div> <ul> <li>inexplicit conversion</li> </ul> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="kt">void</span> <span class="nf">print</span><span class="p">(</span><span class="kt">char</span> <span class="k">const</span> <span class="o">*</span><span class="n">str</span><span class="p">)</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">str</span><span class="p">;</span> <span class="p">}</span>
+<span class="kt">void</span> <span class="nf">print</span><span class="p">(</span><span class="kt">short</span> <span class="n">num</span><span class="p">)</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">num</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">print</span><span class="p">(</span><span class="s">"abc"</span><span class="p">);</span>
+    <span class="n">print</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="n">print</span><span class="p">(</span><span class="sc">'A'</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 带括号的会被看成左值表达式，被推出引用。</span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">decltype</span><span class="p">((</span><span class="n">a</span><span class="p">))</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+    <span class="n">b</span><span class="o">++</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a</span> <span class="o">&lt;&lt;</span> <span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div> <h4 id="12-在msvc中一个模板类要如何导出">12. 在msvc中，一个模板类要如何导出？</h4> <p>在 MSVC（Microsoft Visual C++）中，导出模板类通常涉及使用 <code class="language-plaintext highlighter-rouge">__declspec(dllexport)</code> 和 <code class="language-plaintext highlighter-rouge">__declspec(dllimport)</code> 关键字来控制符号的导出和导入。由于模板类的实例化是在编译时进行的，因此需要确保在 DLL 中正确地导出模板类的实例化版本。</p> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// a.hpp</span>
+<span class="cp">#ifdef MYLIBRARY_EXPORTS
+#define MYLIBRARY_API __declspec(dllexport)
+#else
+#define MYLIBRARY_API __declspec(dllimport)
+#endif
+</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">MYLIBRARY_API</span> <span class="n">MyTemplateClass</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">MyTemplateClass</span><span class="p">(</span><span class="n">T</span> <span class="n">value</span><span class="p">)</span> <span class="o">:</span> <span class="n">value_</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="p">{}</span>
+    <span class="n">T</span> <span class="n">getValue</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">value_</span><span class="p">;</span> <span class="p">}</span>
+<span class="k">private</span><span class="o">:</span>
+    <span class="n">T</span> <span class="n">value_</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="c1">// 显式实例化模板类以确保导出</span>
+<span class="k">extern</span> <span class="k">template</span> <span class="k">class</span> <span class="nc">MYLIBRARY_API</span> <span class="n">MyTemplateClass</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">&gt;;</span>
+<span class="k">extern</span> <span class="k">template</span> <span class="k">class</span> <span class="nc">MYLIBRARY_API</span> <span class="n">MyTemplateClass</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">&gt;;</span>
+
+<span class="c1">// a.cpp</span>
+<span class="cp">#include</span> <span class="cpf">"a.hpp"</span><span class="cp">
+</span><span class="c1">// 显式实例化模板类</span>
+<span class="k">template</span> <span class="k">class</span> <span class="nc">MYLIBRARY_API</span> <span class="n">MyTemplateClass</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">&gt;;</span>
+<span class="k">template</span> <span class="k">class</span> <span class="nc">MYLIBRARY_API</span> <span class="n">MyTemplateClass</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">&gt;;</span>
+</code></pre></div></div> </div> </article> <br> <hr> <br> <ul class="list-disc pl-8"></ul> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2026/signal/">（三）内核那些事儿：CPU中断和信号</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2026/program/">（二）内核那些事儿：程序启动到运行的完整过程</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2026/os/">（一）内核那些事儿：从硬件抽象到系统服务的完整框架</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2026/internet/">（七）内核那些事儿：操作系统对网络包的处理</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2026/interaction/">（五）内核那些事儿：系统和程序的交互</a> </li> </div> </div> <div class="col-sm-4"> <nav id="toc-sidebar" class="sticky-top"></nav> </div> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Marco Huang. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. </div> </footer> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script defer src="/assets/js/bootstrap-toc.min.js?c82ff4de8b0955d6ff14f5b05eed7eb6"></script> <script src="/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/assets/js/common.js?e0514a05c5c95ac1a93a8dfd5249b92e"></script> <script defer src="/assets/js/copy_code.js?c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/js/mathjax-setup.js?a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/assets/js/progress-bar.js?2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script src="/assets/js/vanilla-back-to-top.min.js?f40d453793ff4f64e238e420181a1d17"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/assets/js/search/ninja-keys.min.js?a3446f084dcaecc5f75aa1757d087dcf"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/js/search-setup.js?6c304f7b1992d4b60f7a07956e52f04a"></script> <script src="/assets/js/search-data.js"></script> <script src="/assets/js/shortcut-key.js?6f508d74becd347268a7f822bca7309d"></script> <script src="/assets/js/toc-depth.js"></script> </body> </html>
