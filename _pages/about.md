@@ -1,6 +1,6 @@
 ---
 layout: about
-title: about
+title: About
 permalink: /
 # subtitle: .
 
@@ -10,7 +10,7 @@ profile:
   image_circular: false
   # more_info: >
 
-social: false # includes social icons at the bottom of the page
+social: true # includes social icons at the bottom of the page
 
 latest_posts:
   enabled: true
@@ -19,12 +19,18 @@ latest_posts:
 ---
 
 <br>
-<p>可能还有写作习惯的人确实不多了</p>
-<p>但我曾听过这么一句话</p>
-<p>一个人闲暇时候会去做的</p>
-<p>决定了这个人和他人有什么不同</p>
-<p>似乎还蛮有道理的，那就写点东西吧</p>
-<p>也许某天七老八十</p>
-<p>至少也能聊以回忆</p>
-<p>听上去也算有点意思</p>
+<p>I’m a programmer, a lifelong learner, and a passionate sharer.</p>
+<p>I also love basketball—though I play it far better in spirit than in skill.</p>
+<p> </p>
+<p>I’ve always believed in this idea:</p>
+<p>“If you can’t explain it simply, you don’t understand it well enough.”</p>
+<p>That’s why, whenever I truly understand a topic, I like to turn it into a clear and practical tutorial.</p>
+<p>You’ll find most of those tutorials in the <strong>Project</strong> section.</p>
+<p>I also build small experimental projects to test and deepen my understanding, and I share them there as well.</p>
+<p>For ideas, insights, and important notes that are less code-focused, I publish them in <strong>Blogs</strong>.</p>
+<p> </p>
+<p>I sincerely hope what I share here can be helpful to you.</p>
+<p>Knowledge grows through sharing, and sharing drives learning.</p>
+<p> </p>
+<p>Thanks for visiting.</p>
 <br>

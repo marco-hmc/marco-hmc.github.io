@@ -1,11 +1,11 @@
 ---
 layout: page
-title: projects
+title: Projects
 permalink: /projects/
 description: A growing collection of my cool projects.
 nav: true
 nav_order: 3
-display_categories: [Codebase, Gallery]
+display_categories: [Tutorial, Codebase, Gallery]
 horizontal: false
 ---
 
