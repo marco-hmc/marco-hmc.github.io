@@ -30,26 +30,26 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "projects-parallel-programming",
-          title: 'parallel-programming',
-          description: "Threads, processes, coroutines and more...",
+        },{id: "projects-all-the-things-about-c",
+          title: 'All the things about C++',
+          description: "Grammar, functional, template, etc.",
           section: "Projects",handler: () => {
-              window.location.href = "/projects/Codebase/parallel-programing/";
-            },},{id: "projects-rtti-libs",
-          title: 'rtti-libs',
-          description: "Rtti impl and benchmark",
+              window.location.href = "/projects/handbook-cpp/";
+            },},{id: "projects-design",
+          title: 'Design',
+          description: "The things about design, including design pattern, system design, module design, optimization design and development specification design.",
           section: "Projects",handler: () => {
-              window.location.href = "/projects/Codebase/rtti-lib/";
-            },},{id: "projects-rtti-libs",
-          title: 'rtti-libs',
-          description: "A tiny memory pool system implementation",
+              window.location.href = "/projects/handbook-design/";
+            },},{id: "projects-计算机网络",
+          title: '计算机网络',
+          description: "计算机网络和网络编程应用",
           section: "Projects",handler: () => {
-              window.location.href = "/projects/Codebase/tiny-mps/";
-            },},{id: "projects-rtti-libs",
-          title: 'rtti-libs',
-          description: "A tiny std library implementation",
+              window.location.href = "/projects/handbook-internet-programming/";
+            },},{id: "projects-parallel-programming",
+          title: 'parallel programming',
+          description: "notes about parallel programming in cpp, including threads, process, coroutine",
           section: "Projects",handler: () => {
-              window.location.href = "/projects/Codebase/tiny-std/";
+              window.location.href = "/projects/handbook-parallel-programming/";
             },},{
         id: 'social-email',
         title: 'email',
