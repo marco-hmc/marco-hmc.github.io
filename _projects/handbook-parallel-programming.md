@@ -1,0 +1,60 @@
+---
+layout: page
+title: parallel programming
+description: notes about parallel programming in cpp, including threads, process, coroutine
+img: assets/img/4.jpg
+importance: 1
+category: Tutorial
+---
+
+## 并发编程基础
+
+[Github Repo Link](https://github.com/marco-hmc/handbook_parallel_programming)
+
+CPU 的单核性能提升接近瓶颈，多核是未来的趋势，并发技术能充分利用多核特性：在同一时间段内交替执行多个任务，提高程序执行效率和资源利用率。同时，并发也提升了处理任务数量的能力——网络请求的高并发往往依赖协程，十万并发时服务器开不了十万个线程，但开十万个协程完全可行。
+
+本目录围绕并发编程的三种主要手段——**多线程**（共享内存空间的轻量级执行单元）、**多进程**（独立内存空间的重量级执行单元）、**协程**（用户态管理的轻量级并发）——提供从教程代码到基准测试的完整实践。
+
+### 1. 目录结构
+
+| 目录                                                     | 内容                                                                                                                                                                                         |
+| -------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`0_tutorial/1_multiThread`](0_tutorial/1_multiThread)   | 多线程教程代码：线程创建（`thread`/`async`/`packaged_task`/`jthread`/并行算法）、同步机制，以及生产者消费者、读写锁、打印顺序、原子 vs 互斥等练习（`5_threadsQuiz`）                         |
+| [`0_tutorial/2_multiProcess`](0_tutorial/2_multiProcess) | 多进程教程代码                                                                                                                                                                               |
+| [`0_tutorial/3_coroutine`](0_tutorial/3_coroutine)       | 协程教程代码：C++20 协程（promise/awaiter/generator/task/scheduler）、协程实现原理（手写状态机、宏协程、简单调度器）与 Boost.Coroutine                                                       |
+| [`1_benchmark`](1_benchmark)                             | 基准测试：基础测试（0_basic_test）、线程池测试（1_threadPool_test）、TBB 测试（2_tbb_test）、八皇后问题（3_eightQueen）、PPL 策略测试（4_ppl_strategy_test），每组均附 `BENCHMARK_REPORT.md` |
+| [`docs/`](docs)                                          | 笔记：线程（`1_threads`，含原子、TBB、OpenMP）、进程（`2_process`）、协程（`3_corotuine`，含 Boost 与 C++20 协程）                                                                           |
+| [`lib/`](lib)                                            | 可复用组件：自研 `threadPool` 与基于 TBB 的 `tbbThreadPool`                                                                                                                                  |
+| [`utils/`](utils)                                        | 公共工具                                                                                                                                                                                     |
+
+### 2. 三种并发模式对比
+
+**调度与开销**：
+
+- 进程由内核调度，切换涉及完整地址空间（页表、FD、寄存器），开销约 1–10 微秒
+- 线程由内核调度，共享进程地址空间，切换保存私有栈与寄存器，开销约 0.1–1 微秒
+- 协程由用户态调度，程序代码控制切换点（`await`/`yield`），操作系统不感知，开销约 10–100 纳秒
+
+**隔离与通信**：
+
+- 进程强隔离、崩溃互不影响，但跨进程通信需 IPC（管道、消息队列、共享内存），成本高
+- 线程共享内存与句柄，通信成本低，但需显式同步（锁/原子），单线程崩溃影响整个进程
+- 协程共享所在线程上下文，少用锁，依赖任务调度与消息传递，但阻塞 I/O 会卡住整个线程，需配合非阻塞 I/O/事件循环
+
+**选择建议**：
+
+- 高稳定隔离 → 优先多进程，跨故障域部署更安全
+- 真并行利用多核 → 线程（或多进程 + 共享内存/IPC），配合线程池
+- 海量 I/O/低延迟 → 协程/异步框架，确保全链路非阻塞
+- 简单且正确优先 → 先用线程池/成熟异步框架，再按瓶颈定位优化（无锁/协程/进程隔离）
+
+更深入的内容（进程/线程状态机、调度器机制、切换开销分析、可重入函数与线程安全的辨析等）见 [`docs/`](docs) 中的笔记。
+
+---
+
+## 版权与许可
+
+本项目采用 [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/deed.zh-hans) 许可协议授权，完整条款见本目录下的 [LICENSE](LICENSE) 文件。
+
+- **BY（署名）**：使用、分享、演绎时必须保留原作者署名，并注明原始许可协议。
+- **NC（非商业性使用）**：不得将本材料用于商业目的。
