@@ -19,3 +19,6 @@ vendor
 # Python bytecode from bin/ helper scripts
 __pycache__/
 *.pyc
+readme_preview/
+lighthouse_results/
+tmp/
