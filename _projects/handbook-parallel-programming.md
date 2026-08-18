@@ -1,7 +1,7 @@
 ---
 layout: page
-title: parallel programming
-description: notes about parallel programming in cpp, including threads, process, coroutine
+title: 并行编程那些事儿
+description: 多线程、多进程、协程、异步编程等等
 img: assets/img/4.jpg
 importance: 1
 category: Tutorial

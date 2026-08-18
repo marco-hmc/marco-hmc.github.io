@@ -1,7 +1,7 @@
 ---
 layout: page
-title: 计算机网络
-description: 计算机网络和网络编程应用
+title: 计网那些事儿
+description: 计算机网络和网络编程应用（wip）
 img: assets/img/6.jpg
 importance: 1
 category: Tutorial

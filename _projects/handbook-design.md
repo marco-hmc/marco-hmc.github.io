@@ -1,11 +1,12 @@
 ---
 layout: page
-title: Design
+title: 设计那些事儿
 description: The things about design, including design pattern, system design, module design, optimization design and development specification design.
 img: assets/img/5.jpg
 importance: 1
 category: Tutorial
 ---
+
 
 ## 设计
 

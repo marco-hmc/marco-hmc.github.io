@@ -1,7 +1,7 @@
 ---
 layout: page
-title: All the things about C++
-description: Grammar, functional, template, etc.
+title: C++ 那些事儿
+description: Grammar, Functional, template, CMake, Qt, HPC, etc.
 img: assets/img/3.jpg
 importance: 1
 category: Tutorial
