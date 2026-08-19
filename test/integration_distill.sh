@@ -5,10 +5,21 @@ tmp_dir="$(mktemp -d)"
 tmp_override="${tmp_dir}/distill-override.yml"
 tmp_site="${tmp_dir}/site"
 
+# The post under test is starter example content that a real site deletes;
+# copy it into _posts only for the duration of this build.
+fixture_post="2018-12-22-distill.md"
 cleanup() {
+  rm -f "_posts/${fixture_post}"
+  rmdir _posts 2>/dev/null || true
   rm -rf "${tmp_dir}"
 }
 trap cleanup EXIT
+mkdir -p _posts
+if [ -e "_posts/${fixture_post}" ]; then
+  echo "refusing to overwrite existing _posts/${fixture_post}" >&2
+  exit 1
+fi
+cp "test/fixtures/posts/${fixture_post}" "_posts/${fixture_post}"
 
 cat >"${tmp_override}" <<'YAML'
 giscus:
