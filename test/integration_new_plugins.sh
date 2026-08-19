@@ -8,10 +8,29 @@
 set -euo pipefail
 
 tmp_dir="$(mktemp -d)"
+
+# The posts under test are starter example content that a real site deletes;
+# copy them into _posts only for the duration of this build.
+fixture_posts=(
+  2022-10-15-rtl.md
+  2025-04-28-marimo.md
+)
 cleanup() {
+  for name in "${fixture_posts[@]}"; do
+    rm -f "_posts/${name}"
+  done
+  rmdir _posts 2>/dev/null || true
   rm -rf "${tmp_dir}"
 }
 trap cleanup EXIT
+mkdir -p _posts
+for name in "${fixture_posts[@]}"; do
+  if [ -e "_posts/${name}" ]; then
+    echo "refusing to overwrite existing _posts/${name}" >&2
+    exit 1
+  fi
+  cp "test/fixtures/posts/${name}" "_posts/${name}"
+done
 
 build() {
   local name="$1"
