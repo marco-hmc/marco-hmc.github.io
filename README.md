@@ -2,7 +2,6 @@
 
 [![deploy](https://github.com/alshedivat/al-folio/actions/workflows/deploy.yml/badge.svg)](https://github.com/alshedivat/al-folio/actions/workflows/deploy.yml)
 
-
 ## Getting started
 
 **⚠️ Important: Use "Use this template" (not fork)**
